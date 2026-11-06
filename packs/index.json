@@ -1,0 +1,6 @@
+{
+  "packs": [
+    { "packId": "math-k2", "subject": "math", "level": "K2", "title": "Math · Kinder 2", "file": "math-k2.json", "young": true },
+    { "packId": "math-g4", "subject": "math", "level": "G4", "title": "Math · Grade 4", "file": "math-g4.json", "young": false }
+  ]
+}

@@ -1,0 +1,197 @@
+{
+  "packId": "math-g4",
+  "version": "1.0.0",
+  "subject": "math",
+  "title": "Math · Grade 4",
+  "topics": [
+    {
+      "topicId": "g4-whole-numbers",
+      "title": "Whole numbers to 100,000",
+      "icon": "🔢",
+      "summary": "Place value, reading and comparing large numbers.",
+      "skills": [
+        {
+          "skillId": "g4-place-value",
+          "title": "Place value to ten thousands",
+          "lesson": { "steps": [
+            { "stage": "concrete", "text": "Base-ten blocks: a flat is 100, a rod is 10, a cube is 1. This shows 243.", "visual": { "kind": "blocks", "value": 243 } },
+            { "stage": "pictorial", "text": "Each place is 10 times the place on its right:\nones → tens → hundreds → thousands → ten thousands." },
+            { "stage": "abstract", "text": "In 47,352 the 4 is in the ten thousands place, so it stands for 40,000. The 7 stands for 7,000." }
+          ] },
+          "generator": { "type": "placeValue", "digits": 5 }
+        },
+        {
+          "skillId": "g4-compare",
+          "title": "Compare numbers",
+          "lesson": { "steps": [
+            { "stage": "pictorial", "text": "Line the numbers up by place value:\n38,415\n38,154" },
+            { "stage": "abstract", "text": "Start from the left. 3 = 3, 8 = 8, then 4 > 1. So 38,415 is greater. The first place that differs decides." }
+          ] },
+          "generator": { "type": "compare", "min": 10000, "max": 99999 }
+        },
+        {
+          "skillId": "g4-add-sub",
+          "title": "Add and subtract 4-digit numbers",
+          "lesson": { "steps": [
+            { "stage": "pictorial", "text": "Line up ones under ones, tens under tens. Start from the ones." },
+            { "stage": "abstract", "text": "4,568 + 2,775: ones 8 + 5 = 13, write 3 carry 1. Tens 6 + 7 + 1 = 14, write 4 carry 1. Keep going: 7,343." }
+          ] },
+          "generator": { "type": "addition", "min": 1000, "max": 4999, "regroup": true },
+          "questions": [
+            { "id": "g4-as-1", "type": "numeric", "prompt": "6,302 − 2,748 = ?", "answer": 3554, "hint": "You need to rename across the zero: 6,302 = 62 hundreds + 10 tens… take it one place at a time.", "explain": "6,302 − 2,748 = 3,554" },
+            { "id": "g4-as-2", "type": "numeric", "prompt": "9,000 − 4,567 = ?", "answer": 4433, "hint": "Think 8,999 + 1. Subtract from 8,999 first, then add 1.", "explain": "8,999 − 4,567 = 4,432, plus 1 = 4,433" }
+          ]
+        }
+      ]
+    },
+    {
+      "topicId": "g4-factors",
+      "title": "Factors and multiples",
+      "icon": "🧮",
+      "summary": "Find factors and multiples of whole numbers.",
+      "skills": [
+        {
+          "skillId": "g4-factors-multiples",
+          "title": "Factors and multiples",
+          "lesson": { "steps": [
+            { "stage": "concrete", "text": "Arrange 12 counters in equal rows. 3 rows of 4 works, so 3 and 4 are factors of 12.", "visual": { "kind": "groups", "groups": 3, "each": 4 } },
+            { "stage": "abstract", "text": "Factors of 12: 1, 2, 3, 4, 6, 12.\nMultiples of 4: 4, 8, 12, 16, 20, …\nA factor divides exactly. A multiple is in the times table." }
+          ] },
+          "generator": { "type": "factorsMultiples", "max": 72 }
+        }
+      ]
+    },
+    {
+      "topicId": "g4-multiply-divide",
+      "title": "Multiplication and division",
+      "icon": "✖️",
+      "summary": "Multiply and divide larger numbers.",
+      "skills": [
+        {
+          "skillId": "g4-times-tables",
+          "title": "Times tables 6 to 9",
+          "lesson": { "steps": [
+            { "stage": "pictorial", "text": "7 × 4 means 7 groups of 4, or 4 groups of 7. Both make 28.", "visual": { "kind": "groups", "groups": 4, "each": 7 } },
+            { "stage": "abstract", "text": "Use facts you know: 7 × 8 = 7 × 4 × 2 = 28 × 2 = 56." }
+          ] },
+          "generator": { "type": "multiplication", "tables": [6, 7, 8, 9], "maxFactor": 10 }
+        },
+        {
+          "skillId": "g4-multiply-by-1digit",
+          "title": "Multiply by a 1-digit number",
+          "lesson": { "steps": [
+            { "stage": "concrete", "text": "Think of 243 × 3 as 3 groups of 243 blocks.", "visual": { "kind": "blocks", "value": 243 } },
+            { "stage": "abstract", "text": "Multiply each place: 3 ones × 3 = 9, 4 tens × 3 = 12 tens (write 2, carry 1 hundred), 2 hundreds × 3 + 1 = 7 hundreds. 243 × 3 = 729." }
+          ] },
+          "generator": { "type": "multiplyLong", "digits": 3, "byDigits": 1 }
+        },
+        {
+          "skillId": "g4-multiply-by-2digit",
+          "title": "Multiply by a 2-digit number",
+          "lesson": { "steps": [
+            { "stage": "pictorial", "text": "Split the 2-digit number into tens and ones: 34 × 26 = 34 × 20 + 34 × 6." },
+            { "stage": "abstract", "text": "34 × 20 = 680 and 34 × 6 = 204. Add: 680 + 204 = 884." }
+          ] },
+          "generator": { "type": "multiplyLong", "digits": 2, "byDigits": 2 }
+        },
+        {
+          "skillId": "g4-divide",
+          "title": "Divide by a 1-digit number",
+          "lesson": { "steps": [
+            { "stage": "concrete", "text": "Share 84 counters into 4 equal groups. Share the 8 tens first (2 tens each), then the 4 ones (1 each). Each group gets 21." },
+            { "stage": "abstract", "text": "Divide from the left: 8 tens ÷ 4 = 2 tens. 4 ones ÷ 4 = 1. So 84 ÷ 4 = 21." }
+          ] },
+          "generator": { "type": "divideLong", "digits": 3, "remainder": false }
+        },
+        {
+          "skillId": "g4-divide-remainder",
+          "title": "Division with remainder",
+          "lesson": { "steps": [
+            { "stage": "concrete", "text": "Share 17 sweets among 5 children. Each gets 3, and 2 are left over.", "visual": { "kind": "groups", "groups": 5, "each": 3 } },
+            { "stage": "abstract", "text": "17 ÷ 5 = 3 remainder 2. Check: 5 × 3 + 2 = 17. The remainder is always smaller than the number you divide by." }
+          ] },
+          "generator": { "type": "divideLong", "digits": 3, "remainder": true }
+        }
+      ]
+    },
+    {
+      "topicId": "g4-fractions",
+      "title": "Fractions",
+      "icon": "🍕",
+      "summary": "Equivalent fractions, and adding and subtracting fractions.",
+      "skills": [
+        {
+          "skillId": "g4-equivalent-fractions",
+          "title": "Equivalent fractions",
+          "lesson": { "steps": [
+            { "stage": "concrete", "text": "Fold a strip of paper in half and shade one half.", "visual": { "kind": "fraction", "numerator": 1, "denominator": 2, "shape": "bar" } },
+            { "stage": "pictorial", "text": "Fold it again. Now 2 of 4 parts are shaded. Same amount, so 1/2 = 2/4.", "visual": { "kind": "fraction", "numerator": 2, "denominator": 4, "shape": "bar" } },
+            { "stage": "abstract", "text": "Multiply the top and bottom by the same number: 1/2 = 2/4 = 4/8." }
+          ] },
+          "generator": { "type": "equivalentFraction", "maxDen": 12 }
+        },
+        {
+          "skillId": "g4-fraction-add-sub",
+          "title": "Add and subtract like fractions",
+          "lesson": { "steps": [
+            { "stage": "pictorial", "text": "2/8 shaded, then 3/8 more. Count the eighths: 5 of them.", "visual": { "kind": "fraction", "numerator": 5, "denominator": 8, "shape": "bar" } },
+            { "stage": "abstract", "text": "The parts are the same size, so add the tops: 2/8 + 3/8 = 5/8. Type the top and bottom numbers in the boxes." }
+          ] },
+          "generator": { "type": "fractionSameDen", "maxDen": 12 }
+        }
+      ]
+    },
+    {
+      "topicId": "g4-decimals",
+      "title": "Decimals",
+      "icon": "🔟",
+      "summary": "Tenths, and adding and subtracting decimals.",
+      "skills": [
+        {
+          "skillId": "g4-decimals-tenths",
+          "title": "Tenths",
+          "lesson": { "steps": [
+            { "stage": "pictorial", "text": "Cut a whole into 10 equal parts. Each part is one tenth, 0.1. Three parts are 0.3.", "visual": { "kind": "fraction", "numerator": 3, "denominator": 10, "shape": "bar" } },
+            { "stage": "abstract", "text": "2 and 4 tenths is written 2.4. Line up the decimal points to add: 2.4 + 1.5 = 3.9." }
+          ] },
+          "generator": { "type": "decimals", "max": 10 }
+        }
+      ]
+    },
+    {
+      "topicId": "g4-word-problems",
+      "title": "Word problems with bar models",
+      "icon": "📊",
+      "summary": "Draw a bar model, then solve.",
+      "skills": [
+        {
+          "skillId": "g4-wp-part-whole",
+          "title": "Part and whole",
+          "lesson": { "steps": [
+            { "stage": "pictorial", "text": "Ana has 1,250 stickers. Ben has 860. How many altogether? Draw one bar with two parts.", "visual": { "kind": "bar", "rows": [ { "label": "", "segments": [ { "units": 1250, "text": "Ana: 1,250" }, { "units": 860, "text": "Ben: 860" } ] } ], "braces": [ { "row": 0, "from": 0, "to": 2, "side": "above", "text": "?" } ] } },
+            { "stage": "abstract", "text": "Whole = part + part: 1,250 + 860 = 2,110.\nIf the whole is known and a part is missing, subtract." }
+          ] },
+          "generator": { "type": "wordProblem", "kinds": ["partWhole"], "max": 9000 }
+        },
+        {
+          "skillId": "g4-wp-compare",
+          "title": "Comparing (more than, fewer than)",
+          "lesson": { "steps": [
+            { "stage": "pictorial", "text": "Raj has 340 cards. Mei has 125 more than Raj. Draw two bars. Mei's bar is Raj's bar plus an extra part.", "visual": { "kind": "bar", "rows": [ { "label": "Mei", "segments": [ { "units": 340, "text": "" }, { "units": 125, "text": "125" } ] }, { "label": "Raj", "segments": [ { "units": 340, "text": "" } ] } ], "braces": [ { "row": 0, "from": 0, "to": 2, "side": "above", "text": "?" }, { "row": 1, "from": 0, "to": 1, "side": "below", "text": "340" } ] } },
+            { "stage": "abstract", "text": "Mei = 340 + 125 = 465.\nThe extra part is the difference between the two bars." }
+          ] },
+          "generator": { "type": "wordProblem", "kinds": ["compare"], "max": 5000 }
+        },
+        {
+          "skillId": "g4-wp-multiply",
+          "title": "Times as many (units)",
+          "lesson": { "steps": [
+            { "stage": "pictorial", "text": "Lea has 3 times as many shells as Jun. Jun has 24. Draw 1 unit for Jun and 3 equal units for Lea.", "visual": { "kind": "bar", "rows": [ { "label": "Lea", "segments": [ { "units": 24, "text": "" }, { "units": 24, "text": "" }, { "units": 24, "text": "" } ] }, { "label": "Jun", "segments": [ { "units": 24, "text": "24" } ] } ], "braces": [ { "rows": [0, 1], "side": "right", "text": "?" } ] } },
+            { "stage": "abstract", "text": "1 unit = 24. Altogether there are 4 units: 4 × 24 = 96. Lea alone has 3 units: 72." }
+          ] },
+          "generator": { "type": "wordProblem", "kinds": ["multiply"], "max": 900, "maxTimes": 9 }
+        }
+      ]
+    }
+  ]
+}

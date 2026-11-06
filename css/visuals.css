@@ -1,0 +1,123 @@
+/* Lesson and question pictures: ten frames, blocks, bonds, bar models, shapes. */
+
+.visual {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+}
+.visual svg { display: block; width: 100%; height: auto; }
+
+/* Pictures (emoji) */
+.pic-group { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; }
+.pic { font-size: 2.2rem; line-height: 1.1; }
+.pic-gap { width: 14px; }
+.pic-crossed { position: relative; opacity: 0.35; }
+.pic-crossed::after {
+  content: "";
+  position: absolute;
+  left: -2px;
+  right: -2px;
+  top: 50%;
+  border-top: 4px solid var(--bad);
+  transform: rotate(-30deg);
+}
+.visual-picture-rows { flex-direction: column; align-items: flex-start; }
+.pic-row { display: flex; }
+.op-sign { font-size: 2rem; font-weight: 800; color: var(--muted); }
+
+.visual-sequence { gap: 8px; }
+.seq-item { font-size: 2.3rem; }
+.seq-unknown {
+  display: inline-grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border: 3px dashed var(--primary);
+  border-radius: var(--radius-sm);
+  color: var(--primary);
+  font-weight: 800;
+  font-size: 1.8rem;
+}
+
+/* Shapes */
+.shape { width: 110px; height: 110px; fill: var(--accent); stroke: var(--text); stroke-width: 3; }
+.visual-shape .shape { width: 140px; height: 140px; }
+
+/* Ten frames */
+.ten-frame {
+  display: grid;
+  grid-template-columns: repeat(5, 30px);
+  gap: 4px;
+  padding: 6px;
+  border: 3px solid var(--text);
+  border-radius: 8px;
+  background: var(--surface);
+}
+.ten-frame .cell { width: 30px; height: 30px; border-radius: 50%; border: 2px dashed var(--border); }
+.ten-frame .filled { border: 0; background: var(--primary); }
+.ten-frame .filled-extra { border: 0; background: var(--extra); }
+
+/* Number bond */
+.visual-bond svg { max-width: 260px; }
+.bond-line { stroke: var(--text); stroke-width: 3; }
+.bond-circle { fill: var(--surface); stroke: var(--primary); stroke-width: 3; }
+.bond-whole { fill: var(--primary-soft); }
+.bond-unknown { stroke: var(--accent); stroke-dasharray: 6 4; }
+.bond-text { text-anchor: middle; font-weight: 800; font-size: 22px; fill: var(--text); }
+
+/* Base-ten blocks */
+.visual-blocks { align-items: flex-end; }
+.block-col { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.block-set { display: flex; flex-wrap: wrap; gap: 3px; max-width: 220px; justify-content: center; align-items: flex-end; }
+.block-flat { width: 50px; height: 50px; background: var(--primary); border: 2px solid var(--primary-soft); border-radius: 3px; }
+.block-rod { width: 10px; height: 50px; background: var(--good); border-radius: 2px; }
+.block-cube { width: 10px; height: 10px; background: var(--accent); border-radius: 2px; }
+
+/* Equal groups */
+.visual-groups { gap: 10px; }
+.group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  max-width: 84px;
+  padding: 8px;
+  border: 2px solid var(--primary);
+  border-radius: 50%;
+  justify-content: center;
+}
+.dot { width: 14px; height: 14px; border-radius: 50%; background: var(--primary); }
+
+/* Number line */
+.visual-number-line svg { max-width: 420px; }
+.nl-axis, .nl-tick { stroke: var(--text); stroke-width: 2.5; }
+.nl-label { text-anchor: middle; font-size: 15px; fill: var(--text); }
+.nl-mark { font-weight: 800; fill: var(--primary); font-size: 18px; }
+.nl-dot { fill: var(--primary); }
+
+/* Fractions */
+.visual-fraction svg { max-width: 260px; }
+.frac-on { fill: var(--primary); stroke: var(--surface); stroke-width: 2; }
+.frac-off { fill: var(--surface); stroke: var(--text); stroke-width: 2; }
+
+/* Bar model */
+.visual-bar-model { background: var(--surface); border: 2px dashed var(--border); }
+.visual-bar-model svg { max-width: 520px; }
+.bm-seg { fill: var(--primary-soft); stroke: var(--primary); stroke-width: 2; }
+.bm-unknown { fill: var(--accent-soft); stroke: var(--accent); }
+.bm-seg-text, .bm-brace-text { font-size: 15px; font-weight: 700; fill: var(--text); text-anchor: middle; }
+.bm-brace-text { font-size: 18px; font-weight: 800; fill: var(--primary); }
+.bm-left { text-anchor: start; }
+.bm-label { font-size: 15px; font-weight: 700; fill: var(--text); text-anchor: end; }
+.bm-brace { fill: none; stroke: var(--primary); stroke-width: 2; }
+
+/* Parent chart */
+.chart { margin: 0; }
+.chart svg { width: 100%; height: auto; }
+.chart-bar { fill: var(--primary); }
+.chart-axis { stroke: var(--border); stroke-width: 1; }
+.chart-label { font-size: 8px; fill: var(--muted); text-anchor: middle; }

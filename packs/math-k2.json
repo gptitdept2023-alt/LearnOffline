@@ -1,0 +1,170 @@
+{
+  "packId": "math-k2",
+  "version": "1.0.0",
+  "subject": "math",
+  "title": "Math · Kinder 2",
+  "topics": [
+    {
+      "topicId": "k2-counting",
+      "title": "Counting to 20",
+      "icon": "🔢",
+      "summary": "Count objects, and know which number comes next.",
+      "skills": [
+        {
+          "skillId": "k2-count-10",
+          "title": "Count to 10",
+          "lesson": { "steps": [
+            { "stage": "concrete", "text": "Let's count! Point to each apple and say a number. 1, 2, 3, 4, 5.", "visual": { "kind": "pictures", "emoji": "🍎", "count": 5 } },
+            { "stage": "pictorial", "text": "A ten frame holds 10. Count the dots. There are 7.", "visual": { "kind": "tenFrames", "value": 7 } },
+            { "stage": "abstract", "text": "The last number you say tells how many. 1, 2, 3, 4, 5, 6, 7, 8, 9, 10. Ten stars!", "visual": { "kind": "pictures", "emoji": "⭐", "count": 10 } }
+          ] },
+          "generator": { "type": "countPictures", "max": 10 }
+        },
+        {
+          "skillId": "k2-count-20",
+          "title": "Count to 20",
+          "lesson": { "steps": [
+            { "stage": "concrete", "text": "When you have more than 10, make a group of 10 first. Here is 10, and 3 more. That is 13.", "visual": { "kind": "tenFrames", "value": 13 } },
+            { "stage": "pictorial", "text": "Count in fives: 5, 10, 15, then 16, 17.", "visual": { "kind": "pictures", "emoji": "🐟", "count": 17 } },
+            { "stage": "abstract", "text": "11, 12, 13, 14, 15, 16, 17, 18, 19, 20. Twenty is two tens." }
+          ] },
+          "generator": { "type": "countPictures", "max": 20 }
+        },
+        {
+          "skillId": "k2-number-order",
+          "title": "What comes next?",
+          "lesson": { "steps": [
+            { "stage": "pictorial", "text": "Numbers go in order on a number line. After 4 comes 5.", "visual": { "kind": "numberLine", "from": 1, "to": 7, "mark": 4 } },
+            { "stage": "abstract", "text": "The number after is one more. The number before is one less. Before 4 comes 3." }
+          ] },
+          "generator": { "type": "numberOrder", "max": 20 }
+        }
+      ]
+    },
+    {
+      "topicId": "k2-compare",
+      "title": "More and fewer",
+      "icon": "⚖️",
+      "summary": "Find which group has more.",
+      "skills": [
+        {
+          "skillId": "k2-more-fewer",
+          "title": "More or fewer",
+          "lesson": { "steps": [
+            { "stage": "concrete", "text": "Line them up, one under the other. The row that sticks out has more.", "visual": { "kind": "pictureRows", "rows": [ { "emoji": "🚗", "count": 6 }, { "emoji": "🎈", "count": 4 } ] } },
+            { "stage": "abstract", "text": "6 cars and 4 balloons. 6 is more than 4. 4 is fewer than 6." }
+          ] },
+          "generator": { "type": "moreOrFewer", "max": 10 }
+        }
+      ]
+    },
+    {
+      "topicId": "k2-shapes",
+      "title": "Shapes",
+      "icon": "🔺",
+      "summary": "Name circles, squares, triangles and more.",
+      "skills": [
+        {
+          "skillId": "k2-shapes-basic",
+          "title": "Circle, square, triangle, rectangle",
+          "lesson": { "steps": [
+            { "stage": "pictorial", "text": "A circle is round. It has no corners.", "visual": { "kind": "shape", "shape": "circle" } },
+            { "stage": "pictorial", "text": "A triangle has 3 sides and 3 corners.", "visual": { "kind": "shape", "shape": "triangle" } },
+            { "stage": "pictorial", "text": "A square has 4 sides that are all the same length.", "visual": { "kind": "shape", "shape": "square" } },
+            { "stage": "pictorial", "text": "A rectangle has 4 sides too. Two are long and two are short.", "visual": { "kind": "shape", "shape": "rectangle" } }
+          ] },
+          "generator": { "type": "shapes", "set": ["circle", "square", "triangle", "rectangle"] }
+        },
+        {
+          "skillId": "k2-shapes-more",
+          "title": "Star and heart too",
+          "lesson": { "steps": [
+            { "stage": "pictorial", "text": "A star has 5 points.", "visual": { "kind": "shape", "shape": "star" } },
+            { "stage": "pictorial", "text": "A heart is round on top and pointy at the bottom.", "visual": { "kind": "shape", "shape": "heart" } }
+          ] },
+          "generator": { "type": "shapes", "set": ["circle", "square", "triangle", "rectangle", "star", "heart"] }
+        }
+      ]
+    },
+    {
+      "topicId": "k2-patterns",
+      "title": "Patterns",
+      "icon": "🧩",
+      "summary": "Find what repeats and what comes next.",
+      "skills": [
+        {
+          "skillId": "k2-patterns-ab",
+          "title": "Simple patterns",
+          "lesson": { "steps": [
+            { "stage": "pictorial", "text": "Apple, star, apple, star. The pattern repeats. What comes next? Apple!", "visual": { "kind": "sequence", "items": ["🍎", "⭐", "🍎", "⭐", "?"] } },
+            { "stage": "abstract", "text": "Say the pattern out loud. Your voice helps you hear what comes next." }
+          ] },
+          "generator": { "type": "patterns", "kinds": ["AB", "ABB"] }
+        },
+        {
+          "skillId": "k2-patterns-more",
+          "title": "Trickier patterns",
+          "lesson": { "steps": [
+            { "stage": "pictorial", "text": "Fish, fish, flower. Fish, fish, flower. The part that repeats has 3 pictures.", "visual": { "kind": "sequence", "items": ["🐟", "🐟", "🌸", "🐟", "🐟", "🌸", "?"] } }
+          ] },
+          "generator": { "type": "patterns", "kinds": ["AAB", "ABC"] }
+        }
+      ]
+    },
+    {
+      "topicId": "k2-adding",
+      "title": "Adding",
+      "icon": "➕",
+      "summary": "Put groups together and count them all.",
+      "skills": [
+        {
+          "skillId": "k2-add-5",
+          "title": "Add within 5",
+          "lesson": { "steps": [
+            { "stage": "concrete", "text": "2 chicks and 1 more chick. Put them together. How many? 3 chicks!", "visual": { "kind": "pictureAdd", "emoji": "🐥", "a": 2, "b": 1 } },
+            { "stage": "pictorial", "text": "3 and 2 make 5. The whole is 5.", "visual": { "kind": "bond", "whole": 5, "parts": [3, 2] } },
+            { "stage": "abstract", "text": "We write it like this: 3 + 2 = 5." }
+          ] },
+          "generator": { "type": "addPictures", "max": 5 }
+        },
+        {
+          "skillId": "k2-add-10",
+          "title": "Add within 10",
+          "lesson": { "steps": [
+            { "stage": "concrete", "text": "Start with the bigger group and count on. 6… 7, 8, 9.", "visual": { "kind": "pictureAdd", "emoji": "🍌", "a": 6, "b": 3 } },
+            { "stage": "pictorial", "text": "On a ten frame, blue is 6 and orange is 3 more. 9 in all.", "visual": { "kind": "tenFrames", "value": 6, "extra": 3 } },
+            { "stage": "abstract", "text": "6 + 3 = 9." }
+          ] },
+          "generator": { "type": "addPictures", "max": 10 }
+        }
+      ]
+    },
+    {
+      "topicId": "k2-take-away",
+      "title": "Taking away",
+      "icon": "➖",
+      "summary": "Take some away and count what is left.",
+      "skills": [
+        {
+          "skillId": "k2-take-5",
+          "title": "Take away within 5",
+          "lesson": { "steps": [
+            { "stage": "concrete", "text": "There are 5 balloons. 2 fly away. Count the ones left: 1, 2, 3.", "visual": { "kind": "pictureTakeAway", "emoji": "🎈", "a": 5, "b": 2 } },
+            { "stage": "abstract", "text": "We write it like this: 5 − 2 = 3." }
+          ] },
+          "generator": { "type": "takeAwayPictures", "max": 5 }
+        },
+        {
+          "skillId": "k2-take-10",
+          "title": "Take away within 10",
+          "lesson": { "steps": [
+            { "stage": "concrete", "text": "8 flowers. 3 are picked. 5 are left.", "visual": { "kind": "pictureTakeAway", "emoji": "🌸", "a": 8, "b": 3 } },
+            { "stage": "pictorial", "text": "8 is made of 5 and 3. Take away 3 and 5 is left.", "visual": { "kind": "bond", "whole": 8, "parts": [5, 3] } },
+            { "stage": "abstract", "text": "8 − 3 = 5." }
+          ] },
+          "generator": { "type": "takeAwayPictures", "max": 10 }
+        }
+      ]
+    }
+  ]
+}
