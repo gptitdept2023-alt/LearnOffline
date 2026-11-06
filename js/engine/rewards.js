@@ -1,6 +1,10 @@
 /**
  * Stars, daily streaks and badges. Pure functions over a rewards record:
- * { profileId, stars, streak, bestStreak, lastActiveDay, badges: string[], setsCompleted, perfectSets }
+ * { profileId, stars, streak, bestStreak, lastActiveDay, badges: string[], setsCompleted, perfectSets,
+ *   spentStars, owned: string[], equipped: {slot: itemId}, quest, questsDone, gameBest: {gameId: score} }
+ *
+ * `stars` is the lifetime total (badges use it); stars spent in the shop are
+ * tracked in `spentStars`, so the child's wallet is stars − spentStars.
  */
 
 export const PERFECT_BONUS = 5;
@@ -16,6 +20,11 @@ export const BADGES = Object.freeze([
   { id: 'stars-500', icon: '🏆', title: '500 stars', description: 'Collect 500 stars.', test: (r) => r.stars >= 500 },
   { id: 'first-mastered', icon: '🧠', title: 'Skill master', description: 'Master your first skill.', test: (r, ctx) => ctx.masteredCount >= 1 },
   { id: 'topic-complete', icon: '🗺️', title: 'Topic champion', description: 'Master every skill in a topic.', test: (r, ctx) => ctx.topicCompleted },
+  { id: 'quest-1', icon: '🎁', title: 'Quest done', description: 'Open your first quest chest.', test: (r) => (r.questsDone || 0) >= 1 },
+  { id: 'quest-10', icon: '👑', title: 'Quest hero', description: 'Open 10 quest chests.', test: (r) => (r.questsDone || 0) >= 10 },
+  { id: 'first-buy', icon: '🛍️', title: 'Dress up', description: 'Buy something in the shop.', test: (r) => (r.owned || []).length >= 1 },
+  { id: 'gamer', icon: '🎮', title: 'Game time', description: 'Play a game.', test: (r) => Object.keys(r.gameBest || {}).length >= 1 },
+  { id: 'speedy', icon: '⚡', title: 'Lightning fast', description: 'Score 20 in Speed Round.', test: (r) => (r.gameBest?.speed || 0) >= 20 },
 ]);
 
 export const emptyRewards = (profileId) => ({
@@ -27,7 +36,16 @@ export const emptyRewards = (profileId) => ({
   badges: [],
   setsCompleted: 0,
   perfectSets: 0,
+  spentStars: 0,
+  owned: [],
+  equipped: {},
+  quest: null,
+  questsDone: 0,
+  gameBest: {},
 });
+
+/** Stars the child can spend in the shop. */
+export const walletOf = (rewards) => Math.max(0, rewards.stars - (rewards.spentStars || 0));
 
 /** Local calendar day as YYYY-MM-DD (streaks follow the child's day, not UTC). */
 export const dayKey = (date = new Date()) => {
@@ -52,23 +70,36 @@ export const starsForSet = (correct, total) => correct + (total > 0 && correct =
  */
 export const applySet = (rewards, set, today = dayKey()) => {
   const earnedStars = starsForSet(set.correct, set.total);
-  let { streak } = rewards;
-  if (rewards.lastActiveDay !== today) {
-    streak = rewards.lastActiveDay === previousDay(today) ? streak + 1 : 1;
-  }
   const next = {
-    ...rewards,
+    ...touchDay(rewards, today),
     stars: rewards.stars + earnedStars,
-    streak,
-    bestStreak: Math.max(rewards.bestStreak, streak),
-    lastActiveDay: today,
     setsCompleted: rewards.setsCompleted + 1,
     perfectSets: rewards.perfectSets + (set.total > 0 && set.correct === set.total ? 1 : 0),
   };
+  return { ...awardBadges(next, set), earnedStars };
+};
+
+/** Mark today as active: keeps or grows the streak (any activity counts). */
+export const touchDay = (rewards, today = dayKey()) => {
+  if (rewards.lastActiveDay === today) return rewards;
+  const streak = rewards.lastActiveDay === previousDay(today) ? rewards.streak + 1 : 1;
+  return { ...rewards, streak, bestStreak: Math.max(rewards.bestStreak, streak), lastActiveDay: today };
+};
+
+/** Add any newly earned badges. Returns { rewards, newBadges }. */
+export const awardBadges = (rewards, ctx = {}) => {
   const owned = new Set(rewards.badges);
-  const newBadges = BADGES.filter((b) => !owned.has(b.id) && b.test(next, set)).map((b) => b.id);
-  next.badges = [...rewards.badges, ...newBadges];
-  return { rewards: next, earnedStars, newBadges };
+  const newBadges = BADGES.filter((b) => !owned.has(b.id) && b.test(rewards, ctx)).map((b) => b.id);
+  return { rewards: { ...rewards, badges: [...rewards.badges, ...newBadges] }, newBadges };
+};
+
+/**
+ * A lesson, guided practice or game finished: count the day for the streak
+ * and add any stars it earned. Returns { rewards, earnedStars, newBadges }.
+ */
+export const applyActivity = (rewards, { stars = 0 } = {}, today = dayKey()) => {
+  const next = { ...touchDay(rewards, today), stars: rewards.stars + stars };
+  return { ...awardBadges(next), earnedStars: stars };
 };
 
 /** Streak shown today: if the child missed yesterday, the streak has lapsed. */

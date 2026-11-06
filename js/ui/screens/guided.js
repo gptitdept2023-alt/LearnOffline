@@ -8,7 +8,9 @@
 import { h, mount } from '../../core/dom.js';
 import { getState } from '../../core/state.js';
 import { speak, stopSpeaking } from '../../core/speech.js';
-import { getRewards } from '../../data/repo.js';
+import { getRewards, recordActivity } from '../../data/repo.js';
+import { playSfx } from '../../core/sfx.js';
+import { confetti } from '../components/celebrate.js';
 import { questionsForSkill } from '../../engine/practice.js';
 import { methodFor } from '../../engine/techniques.js';
 import { learnerBar, progressBar } from '../components/common.js';
@@ -40,6 +42,9 @@ export const renderGuided = async (view, skillId) => {
 
   const finish = () => {
     stopSpeaking();
+    recordActivity(profile.profileId, { kind: 'lesson' }, young).catch((e) => console.error(e));
+    confetti({ count: 40 });
+    playSfx('fanfare');
     mount(stage,
       h('div.results-emoji', { 'aria-hidden': 'true' }, '🌟'),
       h('h2', null, 'You know the steps!'),

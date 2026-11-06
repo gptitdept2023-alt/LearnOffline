@@ -1,49 +1,48 @@
 /**
- * Learner home: Daily mix plus the course map of topics.
+ * Learner home: Pip and today's greeting, quick actions (Daily mix, games,
+ * shop, badges), the parent's goal, today's quest and the learning map.
  */
 
 import { h } from '../../core/dom.js';
 import { t } from '../../core/i18n.js';
+import { render } from '../../core/router.js';
 import { getState } from '../../core/state.js';
-import { getMasteryMap, getRewards } from '../../data/repo.js';
-import { statusOf } from '../../engine/mastery.js';
-import { learnerBar, progressBar } from '../components/common.js';
+import { getMasteryMap, getRewardsWithQuest, getWeekSessions } from '../../data/repo.js';
+import { lookOf } from '../../engine/shop.js';
+import { learnerBar } from '../components/common.js';
+import { mascotSays, greeting } from '../components/mascot.js';
+import { questCard, goalCard } from '../components/cards.js';
+import { learningMap } from '../components/map.js';
 
-/** Count mastered skills per topic from the mastery map (no DB access in loops). */
-const topicProgress = (topic, mastery) => {
-  const total = topic.skills.length;
-  let mastered = 0;
-  let started = 0;
-  for (const s of topic.skills) {
-    const status = statusOf(mastery.get(s.skillId));
-    if (status === 'mastered') mastered += 1;
-    if (status !== 'notStarted') started += 1;
-  }
-  return { total, mastered, started };
-};
+const action = (href, icon, label, cls = '') => h(`a.home-action${cls}`, { href },
+  h('span.home-action-icon', { 'aria-hidden': 'true' }, icon), h('span', null, label));
 
 export const renderHome = async (view) => {
   const { profile, indexed } = getState();
-  const [mastery, rewards] = await Promise.all([getMasteryMap(profile.profileId), getRewards(profile.profileId)]);
+  const young = Boolean(indexed.pack.young);
+  const goalOn = profile.goal?.setsPerDay > 0;
+  const [mastery, rewards, weekSessions] = await Promise.all([
+    getMasteryMap(profile.profileId),
+    getRewardsWithQuest(profile.profileId, young),
+    goalOn ? getWeekSessions(profile.profileId) : [],
+  ]);
+  const look = lookOf(rewards);
   const { pack } = indexed;
 
-  view.append(
+  view.classList.toggle('young', young);
+  // Native append() would print false/null, so optional cards are filtered out.
+  view.append(...[
     learnerBar(profile, rewards),
-    h('h1.page-title', null, pack.title),
-    h('a.mix-card', { href: '#/practice/mix' },
-      h('span.mix-icon', { 'aria-hidden': 'true' }, '🎯'),
-      h('span.mix-text', null, h('strong', null, t('dailyMix')), h('small', null, t('dailyMixHelp'))),
-      h('span.mix-go', { 'aria-hidden': 'true' }, '▶')),
-    h('h2.section-title', null, 'Topics'),
-    h('ol.topic-list', null, pack.topics.map((topic, i) => {
-      const p = topicProgress(topic, mastery);
-      return h('li', null, h('a.topic-card', { href: `#/topic/${encodeURIComponent(topic.topicId)}` },
-        h('span.topic-num', { 'aria-hidden': 'true' }, topic.icon || i + 1),
-        h('span.topic-body', null,
-          h('strong', null, topic.title),
-          progressBar(p.mastered, p.total, `${p.mastered} of ${p.total} skills mastered`),
-          h('small.muted', null, `${p.mastered} of ${p.total} skills mastered`)),
-        p.mastered === p.total && h('span.topic-done', { 'aria-label': 'Complete' }, '✓')));
-    })),
-  );
+    h(`section.home-hero.scene-${look.scene || 'default'}`, null,
+      mascotSays(greeting(profile.name), { mood: 'happy', look, size: 'lg' }),
+      h('div.home-actions', null,
+        action('#/practice/mix', '🎯', t('dailyMix'), '.home-action-main'),
+        action('#/games', '🎮', 'Games'),
+        action('#/shop', '🛍️', 'Shop'),
+        action('#/badges', '🏅', t('badges')))),
+    goalOn && goalCard(profile.goal, weekSessions),
+    questCard(rewards.quest, { profileId: profile.profileId, young, onChange: render }),
+    h('h2.section-title', null, `${pack.title}: learning map`),
+    learningMap(pack.topics, mastery, look),
+  ].filter(Boolean));
 };

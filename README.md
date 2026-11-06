@@ -32,6 +32,15 @@ Each skill follows the same path, shown on the topic screen:
 
 Techniques (`js/engine/techniques.js`): count on, make ten, number bonds, column addition and subtraction with renaming, skip counting, split by place value, long division, equivalent fractions, same-denominator fractions, the bar model (draw → label → choose the operation → calculate), and Kinder touch-and-count.
 
+## Keeping kids engaged
+
+- **Pip**, a friendly companion, cheers right answers, says "let's look together" after a wrong one, and celebrates at the end of a set. Confetti and sound effects are generated in the browser, so there are no audio files to download. Parents can turn sounds off under Parents → Voice and sounds.
+- **Daily quest**: three small goals a day. Practice is always one of them. Finishing all three opens a chest of bonus stars.
+- **Reward shop**: stars buy colours, hats, pets and places for Pip. Items only change how Pip looks, never the learning. Badges count lifetime stars, so spending stars never takes a badge away.
+- **Learning map**: topics are levels on a winding path. Each level has a progress ring and up to 3 stars, and Pip stands on the current level. No level is ever locked.
+- **Games**: Speed Round (number pad; 60 s, or 90 s for Kinder) and Pop the Balloon (10 rounds). Kinder gets counting and facts within 10, and Grade 4 gets times and division facts. Stars from games are capped, so practice stays the main way to earn them.
+- **Parent goals**: practice sets per day, days per week and an optional reward, set in the parent area. The child sees today's progress and a week tracker on the home screen.
+
 ## Voice
 
 The app ships a **recorded voice pack** (`audio/voice/`, about 10 MB, cached for offline use): every lesson sentence, every Kinder question and hint, praise and nudges were recorded with the open-source [Piper](https://github.com/rhasspy/piper) engine using the *Kathleen* voice (CC0). Sentences that are not recorded (for example a random Grade 4 sum) use the device's best offline voice, read a little slower and higher. Parents can change voice, speed and pitch under **Parents → Voice**.

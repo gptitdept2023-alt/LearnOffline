@@ -17,11 +17,14 @@ import { renderResults } from './ui/screens/results.js';
 import { renderBadges } from './ui/screens/badges.js';
 import { renderParent } from './ui/screens/parent.js';
 import { renderGuided } from './ui/screens/guided.js';
+import { renderShop } from './ui/screens/shop.js';
+import { renderGames, renderGame } from './ui/screens/games.js';
+import { setSfxEnabled } from './core/sfx.js';
 import { setVoiceSettings, loadRecordedVoice } from './core/speech.js';
 import { getSetting } from './data/repo.js';
 
 /** Screens that need an active learner. */
-const LEARNER_SCREENS = new Set(['home', 'topic', 'lesson', 'guided', 'practice', 'results', 'badges']);
+const LEARNER_SCREENS = new Set(['home', 'topic', 'lesson', 'guided', 'practice', 'results', 'badges', 'shop', 'games', 'game']);
 
 const registerRoutes = () => {
   route('', renderStart);
@@ -33,6 +36,9 @@ const registerRoutes = () => {
   route('results', renderResults);
   route('badges', renderBadges);
   route('parent', renderParent);
+  route('shop', renderShop);
+  route('games', renderGames);
+  route('game', renderGame);
   setNotFound(renderStart);
 
   setBeforeEach(async (name) => {
@@ -97,6 +103,7 @@ const start = async () => {
   navigator.storage?.persist?.().catch(() => {});
   // Voice: parent's saved choice, plus the recorded voice pack (works offline).
   setVoiceSettings(await getSetting('voice').catch(() => null));
+  setSfxEnabled(await getSetting('sfx', true).catch(() => true));
   loadRecordedVoice();
   registerRoutes();
   startRouter();

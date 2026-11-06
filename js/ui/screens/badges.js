@@ -17,7 +17,7 @@ export const renderBadges = async (view) => {
     learnerBar(profile, rewards, { back: '#/home' }),
     h('h1.page-title', null, t('badges')),
     h('div.stat-row', null,
-      h('div.stat', null, h('strong', null, rewards.stars), h('small', null, t('stars'))),
+      h('div.stat', null, h('strong', null, rewards.stars), h('small', null, 'Stars earned')),
       h('div.stat', null, h('strong', null, rewards.bestStreak), h('small', null, 'Best streak')),
       h('div.stat', null, h('strong', null, rewards.setsCompleted), h('small', null, 'Sets done'))),
     h('div.badge-grid', null, BADGES.map((b) => h(`div.badge${owned.has(b.id) ? '.badge-earned' : '.badge-locked'}`, null,

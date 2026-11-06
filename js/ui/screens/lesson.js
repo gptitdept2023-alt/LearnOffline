@@ -10,7 +10,7 @@ import { h, mount } from '../../core/dom.js';
 import { t } from '../../core/i18n.js';
 import { getState } from '../../core/state.js';
 import { speak, canSpeak, stopSpeaking } from '../../core/speech.js';
-import { getRewards } from '../../data/repo.js';
+import { getRewards, recordActivity } from '../../data/repo.js';
 import { methodFor } from '../../engine/techniques.js';
 import { generate } from '../../engine/generators.js';
 import { learnerBar, progressBar } from '../components/common.js';
@@ -58,6 +58,7 @@ export const renderLesson = async (view, skillId) => {
     ? { href: `#/guided/${id}`, label: 'Try with help' }
     : { href: `#/practice/${id}`, label: t('practice') };
   let index = 0;
+  let counted = false; // the lesson counts for the quest and streak once per visit
 
   const card = h('section.lesson-card');
 
@@ -65,6 +66,10 @@ export const renderLesson = async (view, skillId) => {
     stopSpeaking();
     const step = steps[index];
     const last = index === steps.length - 1;
+    if (last && !counted) {
+      counted = true;
+      recordActivity(profile.profileId, { kind: 'lesson' }, Boolean(indexed.pack.young)).catch((e) => console.error(e));
+    }
     const nextBtn = last
       ? h('a.btn.btn-primary', { href: afterLesson.href }, afterLesson.label, ' ▶')
       : h('button.btn.btn-primary', { type: 'button', onclick: () => { index += 1; show(); } }, t('next'), ' ▶');

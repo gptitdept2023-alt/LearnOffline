@@ -9,8 +9,10 @@ import { render } from '../../core/router.js';
 import { getState, setParentUnlocked } from '../../core/state.js';
 import { hashPin, newSalt, isValidPin } from '../../core/pin.js';
 import {
-  listProfiles, getMasteryMap, getRewards, getSessionsSince, deleteProfile, getSetting, setSetting,
+  listProfiles, getMasteryMap, getRewards, getSessionsSince, deleteProfile, getSetting, setSetting, saveGoal,
 } from '../../data/repo.js';
+import { normaliseGoal } from '../../engine/goals.js';
+import { setSfxEnabled, sfxEnabled, playSfx } from '../../core/sfx.js';
 import { loadPack } from '../../data/packs.js';
 import { downloadBackup, readBackupFile, restoreAll, validateBackup } from '../../data/backup.js';
 import { statusOf } from '../../engine/mastery.js';
@@ -178,6 +180,41 @@ const learnersPanel = (profiles) => h('section.panel', null,
     }, t('delete'))))),
   h('button.btn.btn-primary', { type: 'button', onclick: async () => { if (await openProfileEditor()) render(); } }, '+ ', t('addLearner')));
 
+/**
+ * Goals: practice sets per day, days per week and an optional reward.
+ * The child sees their progress on the home screen.
+ */
+const goalsPanel = (profiles) => h('section.panel.form', null,
+  h('h2', null, 'Goals'),
+  h('p.muted', null, 'Set a daily practice goal. Your child sees it on their home screen with a week tracker. Add a reward to look forward to when the week is complete.'),
+  profiles.map((p) => {
+    const goal = normaliseGoal(p.goal);
+    const sets = h('select', { name: 'setsPerDay', 'aria-label': `Practice sets per day for ${p.name}` },
+      [0, 1, 2, 3, 4, 5].map((n) => h('option', { value: n, selected: n === goal.setsPerDay }, n === 0 ? 'No goal' : `${n} set${n === 1 ? '' : 's'} a day`)));
+    const days = h('select', { name: 'daysPerWeek', 'aria-label': `Days per week for ${p.name}` },
+      [3, 4, 5, 6, 7].map((n) => h('option', { value: n, selected: n === goal.daysPerWeek }, `${n} days a week`)));
+    const reward = h('input', { name: 'reward', maxlength: 60, placeholder: 'Reward (optional), e.g. ice cream 🍦', value: goal.reward, 'aria-label': `Reward for ${p.name}` });
+    const form = h('form.goal-form', {
+      onsubmit: async (event) => {
+        event.preventDefault();
+        const btn = form.querySelector('button');
+        btn.disabled = true;
+        try {
+          await saveGoal(p.profileId, { setsPerDay: sets.value, daysPerWeek: days.value, reward: reward.value });
+          toast(`Goal saved for ${p.name}.`, 'success');
+        } catch (error) {
+          toast(error.message, 'error');
+        } finally {
+          btn.disabled = false;
+        }
+      },
+    },
+    h('span.goal-who', null, h('span.avatar.avatar-sm', { 'aria-hidden': 'true' }, p.avatar), h('strong', null, p.name)),
+    sets, days, reward,
+    h('button.btn.btn-primary.btn-sm', { type: 'submit' }, t('save')));
+    return form;
+  }));
+
 const backupPanel = () => {
   const fileInput = h('input', { type: 'file', accept: 'application/json,.json', hidden: true });
   fileInput.addEventListener('change', async () => {
@@ -229,6 +266,13 @@ const voicePanel = () => {
   const voices = listVoices();
   const recorded = toggle('recorded', 'Use the recorded friendly voice (works offline)', current.recorded);
   const enabled = toggle('enabled', 'Read aloud', current.enabled);
+  const sfx = toggle('sfx', 'Sound effects and music (dings, pops, cheers)', sfxEnabled());
+  sfx.addEventListener('change', async () => {
+    const on = sfx.querySelector('input').checked;
+    setSfxEnabled(on);
+    await setSetting('sfx', on);
+    if (on) playSfx('correct');
+  });
   const select = h('select', { name: 'voiceURI' },
     h('option', { value: '' }, 'Best available (automatic)'),
     voices.map((v) => h('option', { value: v.voiceURI, selected: v.voiceURI === current.voiceURI }, `${v.name}${v.offline ? '' : ' (needs internet)'}`)));
@@ -250,8 +294,9 @@ const voicePanel = () => {
   for (const el of [enabled, recorded, select, rate, pitch]) el.addEventListener('change', save);
 
   return h('section.panel.form', null,
-    h('h2', null, 'Voice'),
+    h('h2', null, 'Voice and sounds'),
     enabled,
+    sfx,
     recorded,
     h('label.field', null, h('span', null, 'Device voice (used for sentences that are not recorded)'), select),
     h('label.field', null, h('span', null, 'Speed'), rate),
@@ -304,6 +349,7 @@ export const renderParent = async (view) => {
     h('h1.page-title', null, 'Progress'),
     profiles.length ? reports : h('p.muted', null, 'No learners yet. Add one below.'),
     learnersPanel(profiles),
+    profiles.length > 0 && goalsPanel(profiles),
     voicePanel(),
     backupPanel(),
     pinPanel(hasPin),

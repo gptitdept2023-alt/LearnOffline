@@ -5,7 +5,10 @@
 
 import { STORES, tx, get, getAll, getAllByIndex, put, promisify } from './db.js';
 import { applyAnswer, applySetResult, emptyMastery, statusOf } from '../engine/mastery.js';
-import { applySet, emptyRewards } from '../engine/rewards.js';
+import { applySet, applyActivity, awardBadges, emptyRewards, dayKey } from '../engine/rewards.js';
+import { ensureQuest, progressQuest, questComplete, chestStarsFor } from '../engine/quests.js';
+import { buy, equip } from '../engine/shop.js';
+import { normaliseGoal, weekStart } from '../engine/goals.js';
 import { uid } from '../core/random.js';
 
 export const MAX_PROFILES = 6;
@@ -83,7 +86,8 @@ export const getMasteryMap = async (profileId) => {
   return new Map(rows.map((r) => [r.skillId, r]));
 };
 
-export const getRewards = async (profileId) => (await get(STORES.rewards, profileId)) || emptyRewards(profileId);
+/** Rewards record, with fields added by newer versions filled in. */
+export const getRewards = async (profileId) => ({ ...emptyRewards(profileId), ...(await get(STORES.rewards, profileId)) });
 
 /** Finished sets since `sinceMs`, oldest first. */
 export const getSessionsSince = (profileId, sinceMs) =>
@@ -100,9 +104,10 @@ export const getSessionsSince = (profileId, sinceMs) =>
  * @param {string} args.label What was practised ("Daily mix" or a skill title).
  * @param {{skillId: string, correct: boolean, given: string, prompt: string, timeMs: number}[]} args.answers
  * @param {Map<string, string[]>} args.topicSkills topicId -> skillIds, for topics touched by this set.
+ * @param {boolean} [args.young] Kinder pack (smaller daily-quest targets).
  * @returns {Promise<{rewards: Object, earnedStars: number, newBadges: string[], mastery: Map}>}
  */
-export const saveSetResult = ({ profileId, packId, label, answers, topicSkills }) =>
+export const saveSetResult = ({ profileId, packId, label, answers, topicSkills, young = false }) =>
   tx([STORES.attempts, STORES.mastery, STORES.rewards, STORES.sessions], 'readwrite', async (s) => {
     const now = Date.now();
     const masteryStore = s[STORES.mastery];
@@ -152,8 +157,12 @@ export const saveSetResult = ({ profileId, packId, label, answers, topicSkills }
 
     // 5. Rewards and session row.
     const correct = answers.filter((a) => a.correct).length;
-    const current = (await promisify(s[STORES.rewards].get(profileId))) || emptyRewards(profileId);
+    const current = { ...emptyRewards(profileId), ...(await promisify(s[STORES.rewards].get(profileId))) };
     const result = applySet(current, { correct, total: answers.length, masteredCount, topicCompleted });
+    // 6. Daily quest progress, in the same write.
+    const quest = withQuestEvent(result.rewards, { kind: 'set', correct, stars: result.earnedStars }, young);
+    result.rewards = quest.rewards;
+    result.questJustCompleted = quest.justCompleted;
     s[STORES.rewards].put(result.rewards);
     s[STORES.sessions].put({
       sessionId: uid('s'), profileId, packId, label, finishedAt: now,
@@ -163,6 +172,93 @@ export const saveSetResult = ({ profileId, packId, label, answers, topicSkills }
 
     return { ...result, mastery: after };
   });
+
+/* ------------------------------------------------------------------ */
+/* Daily quest, activities, shop and goals                             */
+/* ------------------------------------------------------------------ */
+
+/** Apply a quest event to a rewards record. Pure helper used inside transactions. */
+const withQuestEvent = (rewards, event, young) => {
+  const withQuest = ensureQuest(rewards, dayKey(), young);
+  const wasDone = questComplete(withQuest.quest);
+  const quest = progressQuest(withQuest.quest, event);
+  return { rewards: { ...withQuest, quest }, justCompleted: !wasDone && questComplete(quest) };
+};
+
+/**
+ * Read-modify-write the rewards record in ONE transaction, so two quick taps
+ * (or two tabs) can never lose an update.
+ * @param {(rewards: Object) => {rewards: Object}} change
+ */
+const updateRewards = (profileId, change) => tx(STORES.rewards, 'readwrite', async (s) => {
+  const current = { ...emptyRewards(profileId), ...(await promisify(s[STORES.rewards].get(profileId))) };
+  const result = change(current);
+  s[STORES.rewards].put(result.rewards);
+  return result;
+});
+
+/** Today's quest, created if needed (saved so it stays the same all day). */
+export const getRewardsWithQuest = (profileId, young) =>
+  updateRewards(profileId, (r) => ({ rewards: ensureQuest(r, dayKey(), young) })).then((x) => x.rewards);
+
+/**
+ * A lesson, "Try with help" or game was finished: streak, stars, quest, best score.
+ * @param {{kind: 'lesson'|'game', stars?: number, correct?: number, gameId?: string, score?: number}} event
+ * @returns {Promise<{rewards: Object, earnedStars: number, newBadges: string[], questJustCompleted: boolean, newBest: boolean}>}
+ */
+export const recordActivity = (profileId, event, young) => updateRewards(profileId, (current) => {
+  let newBest = false;
+  let base = current;
+  if (event.gameId) {
+    const best = current.gameBest?.[event.gameId] || 0;
+    newBest = (event.score || 0) > best;
+    base = { ...current, gameBest: { ...current.gameBest, [event.gameId]: Math.max(best, event.score || 0) } };
+  }
+  const applied = applyActivity(base, { stars: event.stars || 0 });
+  const quest = withQuestEvent(applied.rewards, event, young);
+  // Badges again: the best score above may have earned one.
+  const badges = awardBadges(quest.rewards);
+  return {
+    rewards: badges.rewards,
+    earnedStars: applied.earnedStars,
+    newBadges: [...applied.newBadges, ...badges.newBadges],
+    questJustCompleted: quest.justCompleted,
+    newBest,
+  };
+});
+
+/** Open today's quest chest. Resolves with the stars inside; throws if not ready. */
+export const claimQuestChest = (profileId, young) => updateRewards(profileId, (current) => {
+  const r = ensureQuest(current, dayKey(), young);
+  if (!questComplete(r.quest)) throw new Error('Finish all three quest goals first.');
+  if (r.quest.claimed) throw new Error('You already opened today’s chest.');
+  const stars = chestStarsFor(young);
+  const { rewards, newBadges } = awardBadges({
+    ...r,
+    stars: r.stars + stars,
+    questsDone: (r.questsDone || 0) + 1,
+    quest: { ...r.quest, claimed: true },
+  });
+  return { rewards, stars, newBadges };
+});
+
+/** Buy a shop item (and wear it). Throws a friendly error if not enough stars. */
+export const buyShopItem = (profileId, itemId) => updateRewards(profileId, (current) => awardBadges(buy(current, itemId)));
+
+/** Wear an owned item, or take one off (itemId null). */
+export const equipShopItem = (profileId, slot, itemId) => updateRewards(profileId, (current) => ({ rewards: equip(current, slot, itemId) }));
+
+/** Save a parent-set goal on the learner's profile. */
+export const saveGoal = async (profileId, goal) => {
+  const profile = await getProfile(profileId);
+  if (!profile) throw new Error('That learner no longer exists.');
+  const next = { ...profile, goal: normaliseGoal(goal) };
+  await put(STORES.profiles, next);
+  return next;
+};
+
+/** Finished sets since Monday, for goal progress. */
+export const getWeekSessions = (profileId) => getSessionsSince(profileId, weekStart().getTime());
 
 /* ------------------------------------------------------------------ */
 /* Settings                                                            */

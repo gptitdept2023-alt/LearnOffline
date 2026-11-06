@@ -7,7 +7,7 @@
  * tests/precache.test.mjs fails if a file is missing from PRECACHE.
  */
 
-const CACHE_VERSION = 'v5';
+const CACHE_VERSION = 'v6';
 const VOICE_MANIFEST = './audio/voice/manifest.json';
 const CACHE_NAME = `learnoffline-${CACHE_VERSION}`;
 
@@ -20,6 +20,7 @@ const PRECACHE = [
   './css/screens.css',
   './css/visuals.css',
   './css/interactive.css',
+  './css/engage.css',
   './icons/icon-192.png',
   './icons/icon-512.png',
   './icons/icon-maskable-512.png',
@@ -31,6 +32,7 @@ const PRECACHE = [
   './js/core/pin.js',
   './js/core/random.js',
   './js/core/router.js',
+  './js/core/sfx.js',
   './js/core/speech.js',
   './js/core/state.js',
   './js/data/backup.js',
@@ -38,22 +40,32 @@ const PRECACHE = [
   './js/data/packs.js',
   './js/data/repo.js',
   './js/engine/answers.js',
+  './js/engine/games.js',
+  './js/engine/goals.js',
   './js/engine/generators.js',
   './js/engine/longDivision.js',
   './js/engine/mastery.js',
   './js/engine/practice.js',
+  './js/engine/quests.js',
   './js/engine/rewards.js',
+  './js/engine/shop.js',
   './js/engine/techniques.js',
+  './js/ui/components/cards.js',
+  './js/ui/components/celebrate.js',
   './js/ui/components/common.js',
   './js/ui/components/interactive.js',
+  './js/ui/components/map.js',
+  './js/ui/components/mascot.js',
   './js/ui/components/visuals.js',
   './js/ui/screens/badges.js',
+  './js/ui/screens/games.js',
   './js/ui/screens/guided.js',
   './js/ui/screens/home.js',
   './js/ui/screens/lesson.js',
   './js/ui/screens/parent.js',
   './js/ui/screens/practice.js',
   './js/ui/screens/results.js',
+  './js/ui/screens/shop.js',
   './js/ui/screens/start.js',
   './js/ui/screens/topic.js',
   './packs/index.json',

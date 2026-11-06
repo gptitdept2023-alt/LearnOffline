@@ -39,6 +39,19 @@ for (const cheer of ['Perfect!', 'Great work!', 'Good effort!', 'Keep practising
   for (const total of [6, 10]) for (let c = 0; c <= total; c += 1) add(`${cheer} ${c} out of ${total}.`);
 }
 
+// Kinder games and the quest chest.
+add('How many? Pop the right number!');
+add('Quest complete! You found 10 stars!');
+add('Quest complete! You found 15 stars!');
+for (let n = 0; n <= 10; n += 1) add(`Pop the balloon with ${n}!`);
+for (let a = 0; a <= 5; a += 1) {
+  for (let b = 0; b <= 5; b += 1) {
+    add(`Pop the answer to ${a} + ${b}`);
+    add(`${a} + ${b} = ?`);
+    if (a >= b) add(`${a} − ${b} = ?`);
+  }
+}
+
 // Lessons in every pack.
 const index = JSON.parse(readFileSync(`${root}packs/index.json`, 'utf8'));
 for (const entry of index.packs) {

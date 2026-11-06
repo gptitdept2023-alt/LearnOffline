@@ -4,7 +4,7 @@
 
 import { h, openDialog } from '../../core/dom.js';
 import { t } from '../../core/i18n.js';
-import { currentStreak } from '../../engine/rewards.js';
+import { currentStreak, walletOf } from '../../engine/rewards.js';
 import { saveProfile } from '../../data/repo.js';
 import { loadPackIndex } from '../../data/packs.js';
 
@@ -19,7 +19,7 @@ export const learnerBar = (profile, rewards, { back } = {}) =>
     h('span.avatar.avatar-sm', { 'aria-hidden': 'true' }, profile.avatar),
     h('strong.learner-name', null, profile.name),
     h('span.spacer'),
-    h('a.chip', { href: '#/badges', title: t('stars') }, '⭐ ', h('span', null, rewards.stars)),
+    h('a.chip', { href: '#/shop', title: 'Stars to spend in the shop' }, '⭐ ', h('span', null, walletOf(rewards))),
     h('span.chip', { title: t('streak') }, '🔥 ', h('span', null, currentStreak(rewards))),
   );
 

@@ -18,6 +18,10 @@ import { progressBar } from '../components/common.js';
 import { renderVisual, renderBarModel, shapeSvg } from '../components/visuals.js';
 import { methodPlayer } from '../components/interactive.js';
 import { methodFor } from '../../engine/techniques.js';
+import { playSfx } from '../../core/sfx.js';
+import { mascot, pickLine } from '../components/mascot.js';
+import { getRewards } from '../../data/repo.js';
+import { lookOf } from '../../engine/shop.js';
 
 const MIX_ID = 'mix';
 
@@ -67,7 +71,9 @@ export const renderPractice = async (view, skillId) => {
   if (!questions.length) throw new Error('No questions are available for this practice yet.');
 
   const young = indexed.pack.young;
+  const look = lookOf(await getRewards(profile.profileId));
   const answers = [];
+  let inARow = 0; // correct answers in a row, for Pip's cheers
   let index = 0;
   let startedAt = 0;
   let saving = false;
@@ -99,6 +105,7 @@ export const renderPractice = async (view, skillId) => {
         label,
         answers,
         topicSkills: topicSkillsFor(indexed, skillIds),
+        young: Boolean(young),
       }), 'Saving…');
       setLastResult({ ...result, label, answers, skillIds, retry: skillId });
       navigate('results');
@@ -115,8 +122,15 @@ export const renderPractice = async (view, skillId) => {
       if (last) finish();
       else { index += 1; showQuestion(); }
     };
+    inARow = correct ? inARow + 1 : 0;
+    const pipLine = correct ? pickLine(inARow >= 3 && inARow % 3 === 0 ? 'streak' : 'correct') : pickLine('wrong');
+    playSfx(correct ? 'correct' : 'wrong');
     const feedback = h(`div.feedback.${correct ? 'feedback-good' : 'feedback-bad'}`, { role: 'status' },
-      h('strong.feedback-title', null, correct ? `✓ ${t('correct')}` : t('notQuite')),
+      h('div.feedback-pip', null,
+        mascot({ mood: correct ? 'cheer' : 'oops', look, size: 'sm' }),
+        h('div', null,
+          h('strong.feedback-title', null, correct ? `✓ ${t('correct')}` : t('notQuite')),
+          h('small.feedback-line', null, pipLine))),
       !correct && h('p', null, `${t('answerWas')} `, h('strong', null, typeof question.answer === 'number' ? question.answer.toLocaleString('en-US') : String(question.answer)), '.'),
       !correct && question.explain && !methodFor(question) && h('p.muted', null, question.explain),
       h('button.btn.btn-primary.btn-lg', { type: 'button', autofocus: true, onclick: next }, last ? t('done') : t('continue'), ' ▶'));
