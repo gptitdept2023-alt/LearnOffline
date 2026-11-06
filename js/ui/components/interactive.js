@@ -151,9 +151,23 @@ export const methodPlayer = (method, { autoSpeak = true, onDone, compact = false
 
   const renderStep = (i) => {
     const step = method.steps[i];
+    // Each picture builds on the one before, so only the newest step shows
+    // its picture; earlier ones fold away (tap "Picture" to look again).
+    // This keeps the panel short on a phone.
+    list.lastElementChild?.classList.add('is-past');
+    const picture = renderVisual(step.visual);
     const li = h('li.method-step', null,
       h('span.method-num', { 'aria-hidden': 'true' }, i + 1),
-      h('div.method-body', null, h('p', null, step.text), renderVisual(step.visual)));
+      h('div.method-body', null,
+        h('p', null, step.text),
+        picture,
+        picture && h('button.method-peek', {
+          type: 'button',
+          onclick: (e) => {
+            const open = li.classList.toggle('is-open');
+            e.currentTarget.textContent = open ? 'Hide picture' : '🖼 Picture';
+          },
+        }, '🖼 Picture')));
     list.append(li);
     li.scrollIntoView?.({ block: 'nearest', behavior: 'smooth' });
     return step;

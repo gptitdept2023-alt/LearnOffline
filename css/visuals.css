@@ -121,3 +121,110 @@
 .chart-bar { fill: var(--primary); }
 .chart-axis { stroke: var(--border); stroke-width: 1; }
 .chart-label { font-size: 8px; fill: var(--muted); text-anchor: middle; }
+
+/* Several pictures together ------------------------------------------ */
+.visual-stack { display: flex; flex-wrap: wrap; gap: 10px; align-items: stretch; }
+.visual-stack > .visual { flex: 1 1 220px; min-width: 0; }
+.visual-stack-column { flex-direction: column; }
+.visual-stack-column > .visual { flex: none; }
+.visual-caption { margin: 0; width: 100%; text-align: center; font-weight: 800; }
+
+/* Place-value discs ---------------------------------------------------- */
+.disc {
+  display: inline-grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 0, 0, 0.18);
+  color: #fff;
+  font-size: 0.62rem;
+  font-weight: 800;
+  line-height: 1;
+  flex: none;
+  animation: pop-in 0.3s cubic-bezier(0.3, 1.6, 0.5, 1) both;
+  animation-delay: calc(var(--i, 0) * 45ms);
+}
+.disc-1 { background: #1f9d55; }
+.disc-10 { background: #2f6fde; }
+.disc-100 { background: #e07a10; }
+.disc-1000 { background: #8a3fd1; font-size: 0.5rem; }
+.disc-10000 { background: #c2185b; font-size: 0.42rem; }
+.disc-pile { display: inline-flex; flex-wrap: wrap; gap: 3px; max-width: 170px; justify-content: center; }
+.disc-pile-big { flex-direction: column; max-width: none; }
+.disc-bundle { display: flex; gap: 2px; padding: 2px; border: 2px dashed var(--border); border-radius: 999px; }
+.disc-bundle .disc { width: 20px; height: 20px; font-size: 0.5rem; border-width: 1px; }
+.disc-chip { display: inline-flex; align-items: center; gap: 3px; font-weight: 800; font-size: 0.9rem; white-space: nowrap; }
+.disc-chip .disc { width: 24px; height: 24px; font-size: 0.5rem; }
+
+/* Place-value chart */
+.visual-place-chart { background: var(--surface); }
+.pv-grid { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); width: 100%; max-width: 440px; border: 2px solid var(--text); border-radius: 10px; overflow: hidden; }
+.pv-head { padding: 4px 2px; text-align: center; font-size: 0.72rem; overflow-wrap: anywhere; font-weight: 800; text-transform: capitalize; background: var(--surface-2); border-bottom: 2px solid var(--text); }
+.pv-head + .pv-head, .pv-cell + .pv-cell, .pv-label + .pv-cell { border-left: 2px solid var(--border); }
+.pv-label { display: grid; place-items: center; font-weight: 800; font-size: 1.3rem; color: var(--muted); }
+.pv-cell { display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 4px; padding: 6px 2px; min-height: 64px; }
+.pv-cell, .pv-label { border-top: 1px solid var(--border); }
+.pv-discs { display: grid; grid-template-columns: repeat(3, auto); gap: 2px; justify-content: center; }
+.pv-discs .disc { width: 20px; height: 20px; font-size: 0.42rem; border-width: 1px; }
+.pv-labelled { grid-template-columns: 28px repeat(var(--cols), minmax(0, 1fr)); }
+.pv-digit { font-size: 1.2rem; }
+
+/* Trading (renaming) */
+.visual-trade { flex-direction: column; background: var(--surface); }
+.trade-row { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; }
+.trade-arrow { font-size: 1.8rem; font-weight: 800; color: var(--extra); }
+
+/* Sharing into equal groups */
+.visual-share { flex-direction: column; align-items: stretch; background: var(--surface); }
+.share-groups { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.share-group {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-width: 64px;
+  max-width: 118px;
+  min-height: 56px;
+  padding: 14px 8px 8px;
+  border: 2px solid var(--primary);
+  border-radius: 16px;
+  background: var(--primary-soft);
+  animation: slide-up 0.3s ease both;
+  animation-delay: calc(var(--i, 0) * 60ms);
+}
+.share-num { position: absolute; top: -10px; left: 8px; padding: 0 6px; border-radius: 999px; background: var(--primary); color: var(--primary-ink); font-size: 0.7rem; font-weight: 800; }
+.share-place { display: flex; flex-wrap: wrap; gap: 3px; justify-content: center; }
+.share-place .disc { width: 24px; height: 24px; font-size: 0.5rem; }
+.share-zero { color: var(--muted); font-weight: 800; }
+.share-left { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; padding: 6px; border: 2px dashed var(--extra); border-radius: 12px; }
+.share-left-title, .share-left-note { font-weight: 800; color: var(--extra); }
+
+/* Long division layout */
+.visual-long-division { background: var(--surface); }
+.ld-grid { display: grid; grid-template-columns: repeat(var(--cols), 34px); font-variant-numeric: tabular-nums; }
+.ld-cell { display: grid; place-items: center; height: 38px; font-size: 1.45rem; font-weight: 800; border-radius: 6px; }
+.ld-quotient { color: var(--primary); animation: pop-in 0.3s both; }
+.ld-divisor { color: var(--muted); }
+.ld-dividend { border-top: 3px solid var(--text); border-radius: 0; }
+.ld-first { border-left: 3px solid var(--text); border-top-left-radius: 12px; }
+.ld-minus { color: var(--muted); }
+.ld-rule { border-top: 2px solid var(--text); border-radius: 0; }
+.ld-down { color: var(--extra); animation: slide-up 0.35s both; }
+.ld-hot { background: var(--accent-soft); box-shadow: inset 0 0 0 2px var(--accent); }
+
+/* Area model */
+.visual-area { background: var(--surface); }
+.area-grid { display: grid; grid-template-columns: auto repeat(var(--cols), minmax(56px, 1fr)); width: 100%; max-width: 440px; gap: 3px; }
+.area-corner, .area-head { display: grid; place-items: center; padding: 4px; font-weight: 800; color: var(--muted); }
+.area-cell { display: grid; place-items: center; min-height: 52px; padding: 4px; border: 2px solid var(--primary); border-radius: 6px; background: var(--surface); font-weight: 800; font-size: 1.05rem; }
+.area-done { background: var(--primary-soft); animation: pop-in 0.3s both; }
+.area-hot { border-color: var(--accent); background: var(--accent-soft); }
+
+/* Fraction extras */
+.frac-figure { margin: 0; width: 100%; max-width: 260px; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.frac-label { font-weight: 800; }
+.frac-extra { fill: var(--extra); stroke: var(--surface); stroke-width: 2; }
+.frac-cross { stroke: var(--bad); stroke-width: 3; stroke-linecap: round; }

@@ -11,12 +11,24 @@
  * Pure and DOM-free, so every technique is unit-tested against the answer.
  */
 
+import { longDivisionSteps } from './longDivision.js';
+
 const fmt = (n) => Number(n).toLocaleString('en-US');
 const digits = (n) => String(n).split('').reverse().map(Number); // ones first
 const PLACE = ['ones', 'tens', 'hundreds', 'thousands', 'ten thousands', 'hundred thousands'];
 
 /** A numeric sub-question. */
 const ask = (prompt, answer, visual) => ({ prompt, answer, answerType: 'numeric', visual });
+
+/** "1 hundred", "30 tens": count of a place, by index into PLACE. */
+const placeCount = (n, idx) => `${fmt(n)} ${n === 1 ? PLACE[idx].replace(/s$/, '') : PLACE[idx]}`;
+const capitalise = (text) => text[0].toUpperCase() + text.slice(1);
+
+/** Two or more pictures shown together. */
+const stack = (...items) => ({ kind: 'stack', items: items.filter(Boolean) });
+
+/** Discs are drawn for numbers up to 4 digits; bigger numbers keep the plain layout. */
+const discsFit = (...nums) => nums.every((n) => n < 10000);
 
 /* ------------------------------------------------------------------ */
 /* Addition and subtraction                                            */
@@ -68,7 +80,11 @@ const columnAdd = ({ a, b }) => {
   const db = digits(b);
   const places = Math.max(da.length, db.length);
   const toNumber = (ds) => (ds.length ? Number(ds.slice().reverse().join('')) : undefined);
-  const steps = [{ text: 'Line up the numbers by place value. Start with the ones.', visual: { kind: 'column', a, b, op: '+', shown: 0, carries: [] } }];
+  const firstColumn = { kind: 'column', a, b, op: '+', shown: 0, carries: [] };
+  const steps = [{
+    text: 'Line up the numbers by place value. Start with the ones.',
+    visual: discsFit(a, b) ? stack({ kind: 'placeChart', rows: [{ value: a }, { value: b, label: '+' }] }, firstColumn) : firstColumn,
+  }];
   const guided = [];
   const carries = [];
   const written = []; // result digits, ones first
@@ -85,7 +101,11 @@ const columnAdd = ({ a, b }) => {
     if (sum >= 10 && !last) {
       written.push(sum % 10);
       carries[i + 1] = 1;
-      steps.push({ text: `${place}: ${parts} = ${sum}. Write ${sum % 10}, carry 1 to the ${PLACE[i + 1]}.`, visual: { kind: 'column', a, b, op: '+', shown: i + 1, carries: carries.slice(), focus: i, result: toNumber(written) } });
+      const columnView = { kind: 'column', a, b, op: '+', shown: i + 1, carries: carries.slice(), focus: i, result: toNumber(written) };
+      steps.push({
+        text: `${place}: ${parts} = ${sum}. That is 10 ${PLACE[i]} and ${sum % 10} more. Change 10 ${PLACE[i]} for 1 ${PLACE[i + 1].replace(/s$/, '')}: write ${sum % 10}, carry 1.`,
+        visual: discsFit(a, b) ? stack({ kind: 'trade', from: 10 ** i, count: 10, into: 10 ** (i + 1) }, columnView) : columnView,
+      });
     } else {
       written.push(sum % 10);
       if (sum >= 10) written.push(1);
@@ -103,7 +123,11 @@ const columnSub = ({ a, b }) => {
   const da = digits(a);
   const db = digits(b);
   const top = da.slice();
-  const steps = [{ text: 'Line up the numbers by place value. Start with the ones.', visual: { kind: 'column', a, b, op: '−', shown: 0 } }];
+  const firstColumn = { kind: 'column', a, b, op: '−', shown: 0 };
+  const steps = [{
+    text: `Show ${fmt(a)} with place-value discs. Take away ${fmt(b)}, starting with the ones.`,
+    visual: discsFit(a) ? stack({ kind: 'placeChart', rows: [{ value: a }] }, firstColumn) : firstColumn,
+  }];
   const guided = [];
   const resultDigits = [];
   const renamed = [];
@@ -126,7 +150,12 @@ const columnSub = ({ a, b }) => {
     const diff = top[i] - y;
     resultDigits.push(diff);
     const resultSoFar = Number(resultDigits.slice().reverse().join(''));
-    steps.push({ text: `${note}${PLACE[i][0].toUpperCase() + PLACE[i].slice(1)}: ${top[i]} − ${y} = ${diff}.`, visual: { kind: 'column', a, b, op: '−', shown: i + 1, focus: i, top: top.slice(), result: resultSoFar } });
+    const columnView = { kind: 'column', a, b, op: '−', shown: i + 1, focus: i, top: top.slice(), result: resultSoFar };
+    const renamedHere = renamed[renamed.length - 1] === i;
+    steps.push({
+      text: `${note}${PLACE[i][0].toUpperCase() + PLACE[i].slice(1)}: ${top[i]} − ${y} = ${diff}.`,
+      visual: renamedHere && discsFit(a) ? stack({ kind: 'trade', from: 10 ** (i + 1), count: 1 }, columnView) : columnView,
+    });
     guided.push(ask(`${note}${PLACE[i][0].toUpperCase() + PLACE[i].slice(1)}: ${top[i]} − ${y} = ?`, diff, { kind: 'column', a, b, op: '−', shown: i, focus: i, top: top.slice(), result: i ? Number(resultDigits.slice(0, i).reverse().join('')) : undefined }));
   }
   steps.push({ text: `${fmt(a)} − ${fmt(b)} = ${fmt(a - b)}.` });
@@ -185,97 +214,181 @@ const divideByFact = ({ dividend, divisor }) => {
   };
 };
 
-/** Split the number by place value and multiply each part. */
+/** Split the number by place value and multiply each part (area model). */
 const splitMultiply = ({ a, b }) => {
   if (b >= 10) {
     // 2-digit multiplier: a × tens + a × ones.
     const tens = Math.floor(b / 10) * 10;
     const ones = b % 10;
+    const area = (filled, focus) => ({ kind: 'area', cols: [a], rows: [tens, ones].filter(Boolean), filled, focus });
     return {
       name: 'Split and multiply',
       steps: [
-        { text: `Split ${b} into ${tens} and ${ones}.`, visual: { kind: 'bond', whole: b, parts: [tens, ones] } },
-        { text: `${fmt(a)} × ${tens} = ${fmt(a * tens)}.` },
-        { text: `${fmt(a)} × ${ones} = ${fmt(a * ones)}.` },
-        { text: `Add the parts: ${fmt(a * tens)} + ${fmt(a * ones)} = ${fmt(a * b)}.` },
+        { text: `Split ${b} into ${tens} and ${ones}. Draw a box for each part.`, visual: stack({ kind: 'bond', whole: b, parts: [tens, ones] }, area(0)) },
+        { text: `Top box: ${fmt(a)} × ${tens} = ${fmt(a * tens)}.`, visual: area(1, 0) },
+        ...(ones ? [{ text: `Bottom box: ${fmt(a)} × ${ones} = ${fmt(a * ones)}.`, visual: area(2, 1) }] : []),
+        { text: `Add the boxes: ${fmt(a * tens)} + ${fmt(a * ones)} = ${fmt(a * b)}.`, visual: area(2) },
       ],
       guided: [
-        ask(`${fmt(a)} × ${tens} = ?`, a * tens, { kind: 'bond', whole: b, parts: [tens, ones] }),
-        ask(`${fmt(a)} × ${ones} = ?`, a * ones),
-        ask(`${fmt(a * tens)} + ${fmt(a * ones)} = ?`, a * b),
+        ask(`${fmt(a)} × ${tens} = ?`, a * tens, area(0, 0)),
+        ...(ones ? [ask(`${fmt(a)} × ${ones} = ?`, a * ones, area(1, 1))] : []),
+        ask(`${fmt(a * tens)} + ${fmt(a * ones)} = ?`, a * b, area(2)),
       ],
     };
   }
-  const parts = digits(a).map((d, i) => d * 10 ** i).filter(Boolean).reverse();
+  const n = String(a).length;
+  const parts = digits(a)
+    .map((d, i) => ({ d, i, value: d * 10 ** i }))
+    .filter((p) => p.d)
+    .reverse(); // biggest place first
+  const cols = parts.map((p) => p.value);
+  const area = (filled, focus) => ({ kind: 'area', cols, rows: [b], filled, focus });
   return {
     name: 'Split by place value',
     steps: [
-      { text: `Split ${fmt(a)} by place value: ${parts.map(fmt).join(' + ')}.`, visual: a < 1000 ? { kind: 'blocks', value: a } : undefined },
-      ...parts.map((p) => ({ text: `${fmt(p)} × ${b} = ${fmt(p * b)}.` })),
-      { text: `Add: ${parts.map((p) => fmt(p * b)).join(' + ')} = ${fmt(a * b)}.` },
+      {
+        text: `Split ${fmt(a)} by place value: ${cols.map(fmt).join(' + ')}. Multiply each part by ${b}.`,
+        visual: stack(discsFit(a) && { kind: 'placeChart', rows: [{ value: a }] }, area(0)),
+      },
+      ...parts.map((p, k) => ({
+        text: `${capitalise(PLACE[p.i])}: ${b} groups of ${placeCount(p.d, p.i)} = ${placeCount(p.d * b, p.i)} = ${fmt(p.value * b)}.`,
+        visual: stack(p.i < 4 && { kind: 'share', groups: b, each: [{ place: 10 ** p.i, n: p.d }], focus: 10 ** p.i }, area(k + 1, k)),
+      })),
+      { text: `Add the parts: ${parts.map((p) => fmt(p.value * b)).join(' + ')} = ${fmt(a * b)}.`, visual: area(parts.length) },
     ],
     guided: [
-      ...parts.map((p) => ask(`${fmt(p)} × ${b} = ?`, p * b)),
-      ask(`${parts.map((p) => fmt(p * b)).join(' + ')} = ?`, a * b),
+      ...parts.map((p, k) => ask(`${fmt(p.value)} × ${b} = ?`, p.value * b, area(k, k))),
+      ask(`${parts.map((p) => fmt(p.value * b)).join(' + ')} = ?`, a * b, area(parts.length)),
     ],
   };
 };
 
-/** Long division by sharing each place, left to right. */
+/**
+ * Long division by sharing place-value discs, biggest place first.
+ * Each step shows the discs being shared AND the written layout growing,
+ * so the child sees why each digit goes where it does.
+ */
 const longDivide = ({ dividend, divisor }) => {
-  const ds = String(dividend).split('').map(Number);
-  const steps = [{ text: `Share ${fmt(dividend)} into ${divisor} equal groups. Start from the biggest place.` }];
-  let carry = 0;
-  let quotient = '';
-  ds.forEach((d, i) => {
-    const place = PLACE[ds.length - 1 - i];
-    const value = carry * 10 + d;
-    const q = Math.floor(value / divisor);
-    const r = value % divisor;
-    quotient += String(q);
-    steps.push({ text: `${value} ${place} ÷ ${divisor} = ${q}${r ? `, ${r} left over${i < ds.length - 1 ? ` (becomes ${r * 10} ${PLACE[ds.length - 2 - i]})` : ''}` : ''}.` });
-    carry = r;
-  });
+  const plan = longDivisionSteps(dividend, divisor);
+  const n = plan.length;
   const q = Math.floor(dividend / divisor);
   const r = dividend % divisor;
-  steps.push({ text: `${fmt(dividend)} ÷ ${divisor} = ${fmt(q)}${r ? ` remainder ${r}` : ''}. Check: ${divisor} × ${fmt(q)}${r ? ` + ${r}` : ''} = ${fmt(dividend)}.` });
-  return {
-    name: 'Long division',
-    steps,
-    guided: [
-      ask(`${divisor} × ? is as close to ${fmt(dividend)} as possible without going over.`, q),
-      ...(r ? [ask(`${fmt(dividend)} − ${divisor} × ${fmt(q)} = ? (the remainder)`, r)] : []),
+  const pictures = discsFit(dividend);
+  const layout = (upto, focus) => ({ kind: 'longDivision', dividend, divisor, upto, focus });
+  const each = []; // what one group has so far, by place
+  const steps = [{
+    text: `Show ${fmt(dividend)} with place-value discs. Share them into ${divisor} equal groups. Start with the biggest place.`,
+    visual: stack(pictures && { kind: 'placeChart', rows: [{ value: dividend }] }, layout(0)),
+  }];
+  const guided = [];
+
+  plan.forEach((s, k) => {
+    const idx = n - 1 - s.i;              // index into PLACE
+    const place = 10 ** idx;
+    const last = s.i === n - 1;
+    const name = capitalise(PLACE[idx]);
+    const prev = plan[k - 1];
+    const carriedIn = prev && prev.rem ? prev.rem * 10 : 0;
+    const now = carriedIn
+      ? `now there are ${s.digit ? `${fmt(carriedIn)} + ${s.digit} = ` : ''}${placeCount(s.cur, idx)}. `
+      : '';
+    const change = s.rem && !last
+      ? ` Change ${s.rem === 1 ? 'it' : 'them'} into ${PLACE[idx - 1]}: ${placeCount(s.rem, idx)} = ${placeCount(s.rem * 10, idx - 1)}.`
+      : '';
+    const remainderNote = s.rem && last ? ` The ${s.rem} left over is the remainder.` : '';
+    const view = layout(k + 1, k);
+
+    if (s.q === 0) {
+      const few = s.cur === 0
+        ? `${name}: there are no ${PLACE[idx]} to share.`
+        : `${name}: ${now}${placeCount(s.cur, idx)} ${s.cur === 1 ? 'is' : 'are'} not enough to give each of the ${divisor} groups one.`;
+      const writeZero = s.lead ? '' : ' Write 0 on top.';
+      const picture = !pictures || s.cur === 0 ? null
+        : last ? { kind: 'share', groups: divisor, each: each.slice(), focus: place, left: { place, count: s.rem } }
+          : { kind: 'trade', from: place, count: s.cur };
+      steps.push({ text: `${few}${writeZero}${change}${remainderNote}`, visual: stack(picture, view) });
+    } else {
+      each.push({ place, n: s.q });
+      const leftOver = s.rem ? `, and ${s.rem} ${s.rem === 1 ? 'is' : 'are'} left over` : '';
+      steps.push({
+        text: `${name}: ${now}${now ? 'Share' : 'share'} ${placeCount(s.cur, idx)} into ${divisor} groups. Each group gets ${s.q}${leftOver}. Write ${s.q} on top.${change}${remainderNote}`,
+        visual: stack(
+          pictures && { kind: 'share', groups: divisor, each: each.slice(), focus: place, left: s.rem ? { place, count: s.rem, into: last ? undefined : place / 10 } : undefined },
+          view,
+        ),
+      });
+    }
+    if (!s.lead) {
+      guided.push(ask(`${name}: share ${placeCount(s.cur, idx)} into ${divisor} groups. How many ${PLACE[idx]} in each group?`, s.q, layout(k, k)));
+    }
+  });
+
+  const check = `Check: ${fmt(q)} × ${divisor}${r ? ` + ${r}` : ''} = ${fmt(dividend)}.`;
+  const bar = !r && divisor <= 9 && {
+    kind: 'bar',
+    rows: [{ segments: Array.from({ length: divisor }, () => ({ units: 1, text: '' })) }],
+    braces: [
+      { row: 0, from: 0, to: divisor, side: 'above', text: fmt(dividend) },
+      { row: 0, from: 0, to: 1, side: 'below', text: fmt(q) },
     ],
   };
+  steps.push({
+    text: `Each group gets ${fmt(q)}. So ${fmt(dividend)} ÷ ${divisor} = ${fmt(q)}${r ? ` remainder ${r}` : ''}. ${check}`,
+    visual: stack(bar, layout(n)),
+  });
+  guided.push(ask(`So ${fmt(dividend)} ÷ ${divisor} = ?${r ? ' (the number on top)' : ''}`, q, layout(n)));
+  if (r) guided.push(ask(`What is left over? (the remainder)`, r, layout(n)));
+  return { name: 'Long division', steps, guided };
 };
+
 
 /* ------------------------------------------------------------------ */
 /* Fractions                                                           */
 /* ------------------------------------------------------------------ */
 
-const equivalentFraction = ({ num, den, factor }) => ({
-  name: 'Multiply top and bottom',
-  steps: [
-    { text: `Shade ${num}/${den}.`, visual: { kind: 'fraction', numerator: num, denominator: den, shape: 'bar' } },
-    { text: `Cut every part into ${factor}. The bottom becomes ${den} × ${factor} = ${den * factor}.`, visual: { kind: 'fraction', numerator: num * factor, denominator: den * factor, shape: 'bar' } },
-    { text: `The shaded amount is the same, and the top becomes ${num} × ${factor} = ${num * factor}.` },
-  ],
-  guided: [
-    ask(`${den} × ? = ${den * factor}`, factor, { kind: 'fraction', numerator: num, denominator: den, shape: 'bar' }),
-    ask(`Multiply the top by ${factor} too: ${num} × ${factor} = ?`, num * factor, { kind: 'fraction', numerator: num * factor, denominator: den * factor, shape: 'bar' }),
-  ],
-});
+const fractionBar = (numerator, denominator, extra = {}) => ({ kind: 'fraction', numerator, denominator, shape: 'bar', label: `${numerator}/${denominator}`, ...extra });
+
+const equivalentFraction = ({ num, den, factor }) => {
+  const before = fractionBar(num, den);
+  const after = fractionBar(num * factor, den * factor);
+  return {
+    name: 'Multiply top and bottom',
+    steps: [
+      { text: `Shade ${num}/${den} of a bar.`, visual: before },
+      { text: `Cut every part into ${factor}. Now there are ${den} × ${factor} = ${den * factor} parts.`, visual: { kind: 'stack', column: true, items: [before, { ...after, label: `${den * factor} parts` }] } },
+      { text: `The shaded amount did not change. It is now ${num} × ${factor} = ${num * factor} parts. So ${num}/${den} = ${num * factor}/${den * factor}.`, visual: { kind: 'stack', column: true, items: [before, after] } },
+    ],
+    guided: [
+      ask(`${den} × ? = ${den * factor}`, factor, { kind: 'stack', column: true, items: [before, { ...after, numerator: 0, label: `${den * factor} parts` }] }),
+      ask(`Multiply the top by ${factor} too: ${num} × ${factor} = ?`, num * factor, { kind: 'stack', column: true, items: [before, { ...after, label: '?' }] }),
+    ],
+  };
+};
 
 const sameDenominator = ({ x, y, den, op }) => {
-  const num = op === '+' ? x + y : x - y;
+  const add = op === '+';
+  const num = add ? x + y : x - y;
+  const result = add
+    ? fractionBar(x, den, { extra: y, label: `${x}/${den} + ${y}/${den} = ${num}/${den}` })
+    : fractionBar(x, den, { crossed: y, label: `${x}/${den} − ${y}/${den} = ${num}/${den}` });
   return {
     name: 'Same-size parts',
     steps: [
-      { text: `Both fractions are in ${den}ths: the parts are the same size.`, visual: { kind: 'fraction', numerator: x, denominator: den, shape: 'bar' } },
-      { text: `${op === '+' ? 'Add' : 'Subtract'} the tops: ${x} ${op === '+' ? '+' : '−'} ${y} = ${num}. Keep the bottom: ${den}.`, visual: { kind: 'fraction', numerator: num, denominator: den, shape: 'bar' } },
-      { text: `The answer is ${num}/${den}.` },
+      {
+        text: `Both fractions are cut into ${den} same-size parts.`,
+        visual: add
+          ? { kind: 'stack', column: true, items: [fractionBar(x, den), fractionBar(y, den)] }
+          : fractionBar(x, den),
+      },
+      {
+        text: add
+          ? `Put the parts together: ${x} + ${y} = ${num} parts. The size of the parts stays ${den}ths.`
+          : `Take away ${y} parts: ${x} − ${y} = ${num} parts. The size of the parts stays ${den}ths.`,
+        visual: result,
+      },
+      { text: `The answer is ${num}/${den}.`, visual: fractionBar(num, den) },
     ],
-    guided: [ask(`${x} ${op === '+' ? '+' : '−'} ${y} = ? (the top number)`, num, { kind: 'fraction', numerator: x, denominator: den, shape: 'bar' })],
+    guided: [ask(`${x} ${add ? '+' : '−'} ${y} = ? (the top number)`, num, { ...result, label: `? / ${den}` })],
   };
 };
 

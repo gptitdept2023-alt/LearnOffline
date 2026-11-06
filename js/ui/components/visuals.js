@@ -6,6 +6,7 @@
  */
 
 import { h, svg } from '../../core/dom.js';
+import { longDivisionSteps } from '../../engine/longDivision.js';
 
 /* ------------------------------------------------------------------ */
 /* Pictures (Kinder)                                                   */
@@ -133,8 +134,12 @@ const renderNumberLine = ({ from, to, mark }) => {
       svg('circle', { cx: x(mark), cy: 36, r: 7, class: 'nl-dot' })));
 };
 
-/** A fraction as a shaded bar or circle. */
-const renderFraction = ({ numerator, denominator, shape = 'bar' }) => {
+/**
+ * A fraction as a shaded bar or circle.
+ * Bars also support `extra` (parts added, in a second colour), `crossed`
+ * (shaded parts taken away) and a `label` under the bar.
+ */
+const renderFraction = ({ numerator, denominator, shape = 'bar', extra = 0, crossed = 0, label }) => {
   const parts = [];
   if (shape === 'circle') {
     if (denominator === 1) {
@@ -151,9 +156,15 @@ const renderFraction = ({ numerator, denominator, shape = 'bar' }) => {
   }
   const w = 240 / denominator;
   for (let i = 0; i < denominator; i += 1) {
-    parts.push(svg('rect', { x: 10 + i * w, y: 10, width: w, height: 40, class: i < numerator ? 'frac-on' : 'frac-off' }));
+    const x = 10 + i * w;
+    const cls = i < numerator ? 'frac-on' : i < numerator + extra ? 'frac-extra' : 'frac-off';
+    parts.push(svg('rect', { x, y: 10, width: w, height: 40, class: cls, style: `--i:${i}` }));
+    if (i < numerator && i >= numerator - crossed) {
+      parts.push(svg('path', { d: `M${x + 4} 14 L${x + w - 4} 46 M${x + w - 4} 14 L${x + 4} 46`, class: 'frac-cross' }));
+    }
   }
-  return h('div.visual.visual-fraction', null, svg('svg', { viewBox: '0 0 260 60', role: 'img', 'aria-label': `${numerator} out of ${denominator} parts shaded` }, parts));
+  const chart = svg('svg', { viewBox: '0 0 260 60', role: 'img', 'aria-label': `${numerator} out of ${denominator} parts shaded` }, parts);
+  return h('div.visual.visual-fraction', null, label ? h('figure.frac-figure', null, chart, h('figcaption.frac-label', null, label)) : chart);
 };
 
 /* ------------------------------------------------------------------ */
@@ -210,6 +221,194 @@ const renderJumps = ({ from = 0, step = 1, count = 1, hideEnd = false }) => {
   return h('div.visual.visual-jumps', null,
     svg('svg', { viewBox: '0 0 340 106', role: 'img', 'aria-label': `${count} jumps of ${step} from ${from}` }, nodes));
 };
+
+/* ------------------------------------------------------------------ */
+/* Place-value discs: chart, trading, sharing into groups              */
+/* ------------------------------------------------------------------ */
+
+const PLACE_NAMES = { 1: ['one', 'ones'], 10: ['ten', 'tens'], 100: ['hundred', 'hundreds'], 1000: ['thousand', 'thousands'], 10000: ['ten thousand', 'ten thousands'] };
+
+/** "3 hundreds", "1 ten". */
+const placeCount = (n, place) => `${n.toLocaleString('en-US')} ${(PLACE_NAMES[place] || ['', ''])[n === 1 ? 0 : 1]}`;
+
+/** One place-value disc ("100", "10", "1"). `i` staggers the pop-in animation. */
+const disc = (place, i = 0) => h(`span.disc.disc-${place}`, { style: { '--i': i }, 'aria-hidden': 'true' }, place);
+
+/** `count` discs; big piles are bundled in tens so they stay easy to count. */
+const discPile = (place, count) => {
+  if (count <= 10) return h('span.disc-pile', null, Array.from({ length: count }, (_, i) => disc(place, i)));
+  const bundles = [];
+  for (let start = 0; start < count; start += 10) {
+    bundles.push(h('span.disc-bundle', null,
+      Array.from({ length: Math.min(10, count - start) }, (_, i) => disc(place, start + i))));
+  }
+  return h('span.disc-pile.disc-pile-big', null, bundles);
+};
+
+/** Places used by a number, biggest first: 305 -> [100, 10, 1]. */
+const placesOf = (value) => {
+  const count = String(Math.max(0, value)).length;
+  return Array.from({ length: count }, (_, k) => 10 ** (count - 1 - k));
+};
+
+/**
+ * Place-value chart with discs. One row per number.
+ * @param {{rows: {value: number, label?: string}[]}} spec
+ */
+const renderPlaceChart = ({ rows }) => {
+  const places = placesOf(Math.max(...rows.map((r) => r.value)));
+  const labelled = rows.some((r) => r.label);
+  const header = [labelled && h('span.pv-head'), places.map((p) => h(`span.pv-head.pv-head-${p}`, null, PLACE_NAMES[p]?.[1] || p))];
+  const body = rows.map((r) => {
+    const ds = String(r.value).padStart(places.length, ' ').split('');
+    return [
+      labelled && h('span.pv-label', null, r.label || ''),
+      places.map((p, k) => {
+        const n = Number(ds[k]) || 0;
+        return h('span.pv-cell', null, h('span.pv-discs', null, Array.from({ length: n }, (_, i) => disc(p, i))), h('b.pv-digit', null, n));
+      }),
+    ];
+  });
+  return h('div.visual.visual-place-chart', { role: 'img', 'aria-label': rows.map((r) => r.value).join(' and ') + ' in a place-value chart' },
+    h(`div.pv-grid${labelled ? '.pv-labelled' : ''}`, { style: { '--cols': places.length } }, header, body));
+};
+
+/**
+ * Trading (renaming): change `count` discs of `from` into discs of `into`.
+ * 3 hundreds -> 30 tens (sharing, borrowing) or 10 ones -> 1 ten (carrying).
+ * @param {{from: number, count: number, into?: number}} spec
+ */
+const renderTrade = ({ from, count, into = from / 10 }) => {
+  const result = (count * from) / into;
+  const caption = `${placeCount(count, from)} = ${placeCount(result, into)}`;
+  return h('div.visual.visual-trade', { role: 'img', 'aria-label': caption },
+    h('div.trade-row', null, discPile(from, count), h('span.trade-arrow', { 'aria-hidden': 'true' }, '→'), discPile(into, result)),
+    h('p.visual-caption', null, caption));
+};
+
+/**
+ * Equal groups of place-value discs (sharing for division, groups for multiplication).
+ * The place being worked on (`focus`) shows every disc; earlier places are
+ * shown as "6 × (10)" chips so the picture stays readable.
+ * @param {{groups: number, each: {place: number, n: number}[], focus?: number,
+ *          left?: {place: number, count: number, into?: number}}} spec
+ */
+const renderShare = ({ groups, each, focus, left }) => {
+  const groupEl = (g) => h('div.share-group', { style: { '--i': g } },
+    h('span.share-num', { 'aria-hidden': 'true' }, g + 1),
+    each.filter((e) => e.n > 0 || e.place === focus).map((e) => (e.place === focus
+      ? h('span.share-place', null, e.n ? Array.from({ length: e.n }, (_, i) => disc(e.place, g * 2 + i)) : h('span.share-zero', null, '0'))
+      : h('span.disc-chip', null, disc(e.place), `× ${e.n}`))));
+  const total = each.reduce((s, e) => s + e.place * e.n, 0);
+  return h('div.visual.visual-share', { role: 'img', 'aria-label': `${groups} groups of ${total}` },
+    h('div.share-groups', null, Array.from({ length: groups }, (_, g) => groupEl(g))),
+    left && left.count > 0 && h('div.share-left', null,
+      h('span.share-left-title', null, 'Left over'),
+      discPile(left.place, left.count),
+      left.into && h('span.share-left-note', null, `→ ${placeCount((left.count * left.place) / left.into, left.into)}`)));
+};
+
+/* ------------------------------------------------------------------ */
+/* Long division layout, built step by step                            */
+/* ------------------------------------------------------------------ */
+
+/**
+ * The written long-division layout (divisor, bracket, quotient on top,
+ * subtract and bring down), drawn up to step `upto` (exclusive). The step
+ * being worked on (`focus`) and the number it shares are highlighted.
+ * @param {{dividend: number, divisor: number, upto?: number, focus?: number}} spec
+ */
+const renderLongDivision = ({ dividend, divisor, upto, focus }) => {
+  const steps = longDivisionSteps(dividend, divisor);
+  const digitsText = String(dividend);
+  const shown = upto ?? steps.length;
+  const cols = steps.length + 1; // column 0 holds the divisor and minus signs
+  const firstWork = steps.findIndex((s) => !s.lead);
+  const cells = [];
+
+  /** Emit one grid row from a Map(col -> {text, cls}). */
+  const row = (map) => {
+    for (let c = 0; c < cols; c += 1) {
+      const x = map.get(c);
+      cells.push(h(`span.ld-cell${x?.cls || ''}`, null, x?.text ?? ''));
+    }
+  };
+  /** Digits of `num`, right-aligned so the last digit sits in column `end`. */
+  const digitsAt = (num, end, cls = '') => {
+    const map = new Map();
+    String(num).split('').reverse().forEach((d, k) => map.set(end - k, { text: d, cls }));
+    return map;
+  };
+  const hot = (k) => (k === focus ? '.ld-hot' : '');
+
+  // Quotient on top.
+  const top = new Map();
+  steps.forEach((s, k) => { if (k < shown && !s.lead) top.set(s.i + 1, { text: String(s.q), cls: `.ld-quotient${hot(k)}` }); });
+  row(top);
+
+  // Divisor and dividend under the bracket. Highlight the digits being shared
+  // while the work still happens in this row (the first sharing step).
+  const inDividend = focus !== undefined && focus <= firstWork;
+  const dividendRow = new Map([[0, { text: String(divisor), cls: '.ld-divisor' }]]);
+  digitsText.split('').forEach((d, k) => dividendRow.set(k + 1, {
+    text: d,
+    cls: `.ld-dividend${k === 0 ? '.ld-first' : ''}${inDividend && k <= steps[focus].i ? '.ld-hot' : ''}`,
+  }));
+  row(dividendRow);
+
+  // Subtract, then the remainder with the next digit brought down.
+  steps.forEach((s, k) => {
+    if (s.lead || k >= shown) return;
+    const end = s.i + 1;
+    const used = digitsAt(s.product, end, hot(k));
+    used.set(end - String(s.product).length, { text: '−', cls: `.ld-minus${hot(k)}` });
+    row(used);
+
+    const nextShown = s.i < steps.length - 1 && (k + 1 < shown || k + 1 === focus);
+    const nextHot = hot(k + 1);
+    const rest = s.rem > 0 || !nextShown ? digitsAt(s.rem, end, nextHot) : new Map();
+    if (nextShown) rest.set(end + 1, { text: digitsText[s.i + 1], cls: `.ld-down${nextHot}` });
+    for (let c = end - String(s.cur).length + 1; c <= end; c += 1) {
+      const x = rest.get(c) || { text: '', cls: '' };
+      rest.set(c, { ...x, cls: `${x.cls}.ld-rule` });
+    }
+    row(rest);
+  });
+
+  return h('div.visual.visual-long-division', { role: 'img', 'aria-label': `${dividend} divided by ${divisor}, written as long division` },
+    h('div.ld-grid', { style: { '--cols': cols } }, cells));
+};
+
+/* ------------------------------------------------------------------ */
+/* Area model for multiplication                                       */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Rectangle split by place value: column headers × row headers.
+ * Cells are filled in reading order up to `filled`; `focus` is highlighted.
+ * @param {{cols: number[], rows: number[], filled?: number, focus?: number}} spec
+ */
+const renderArea = ({ cols, rows, filled = 0, focus }) => {
+  const f = (n) => n.toLocaleString('en-US');
+  const cells = [h('span.area-corner', null, '×'), cols.map((c) => h('span.area-head', null, f(c)))];
+  rows.forEach((r, ri) => {
+    cells.push(h('span.area-head.area-row-head', null, f(r)));
+    cols.forEach((c, ci) => {
+      const k = ri * cols.length + ci;
+      cells.push(h(`span.area-cell${k === focus ? '.area-hot' : ''}${k < filled ? '.area-done' : ''}`, null, k < filled ? f(c * r) : ''));
+    });
+  });
+  return h('div.visual.visual-area', { role: 'img', 'aria-label': `Area model: ${cols.map(f).join(' + ')} times ${rows.map(f).join(' + ')}` },
+    h('div.area-grid', { style: { '--cols': cols.length } }, cells));
+};
+
+/* ------------------------------------------------------------------ */
+/* Several pictures side by side (or stacked)                          */
+/* ------------------------------------------------------------------ */
+
+/** @param {{items: Object[], column?: boolean}} spec */
+const renderStack = ({ items, column = false }) =>
+  h(`div.visual-stack${column ? '.visual-stack-column' : ''}`, null, items.map((item) => renderVisual(item)));
 
 /* ------------------------------------------------------------------ */
 /* Bar models                                                          */
@@ -303,6 +502,12 @@ const RENDERERS = {
   bar: renderBarModel,
   column: renderColumn,
   jumps: renderJumps,
+  placeChart: renderPlaceChart,
+  trade: renderTrade,
+  share: renderShare,
+  longDivision: renderLongDivision,
+  area: renderArea,
+  stack: renderStack,
 };
 
 /**

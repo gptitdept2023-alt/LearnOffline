@@ -178,3 +178,20 @@ test('generated questions are never ambiguous', () => {
     assert.equal(q.choices.filter((c) => Math.abs(val(c) - val(q.answer)) < 1e-9).length, 1, `${q.answer} ${q.choices}`);
   }
 });
+
+test('long division steps rebuild the quotient and remainder', async () => {
+  const { longDivisionSteps } = await import('../js/engine/longDivision.js');
+  const { methodFor } = await import('../js/engine/techniques.js');
+  for (let divisor = 2; divisor <= 9; divisor += 1) {
+    for (const dividend of [17, 84, 305, 612, 600, 847, 999, 1000, 9876]) {
+      const steps = longDivisionSteps(dividend, divisor);
+      const quotient = Number(steps.filter((s) => !s.lead).map((s) => s.q).join(''));
+      assert.equal(quotient, Math.floor(dividend / divisor), `${dividend} ÷ ${divisor}`);
+      assert.equal(steps[steps.length - 1].rem, dividend % divisor, `${dividend} ÷ ${divisor} remainder`);
+      const m = methodFor({ method: { kind: 'longDivide', dividend, divisor } });
+      for (const s of m.steps) assert.ok(!/undefined|NaN/.test(s.text), s.text);
+      const placeAnswers = m.guided.filter((g) => / in each group\?$/.test(g.prompt)).map((g) => g.answer).join('');
+      assert.equal(Number(placeAnswers), Math.floor(dividend / divisor), `guided digits for ${dividend} ÷ ${divisor}`);
+    }
+  }
+});
