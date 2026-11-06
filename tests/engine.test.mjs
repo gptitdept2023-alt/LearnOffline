@@ -195,3 +195,20 @@ test('long division steps rebuild the quotient and remainder', async () => {
     }
   }
 });
+
+test('spoken maths reads naturally, with pauses in chains', async () => {
+  const { toSpokenText } = await import('../js/core/speech.js');
+  assert.equal(toSpokenText('Use facts you know: 7 × 8 = 7 × 4 × 2 = 28 × 2 = 56.'),
+    'Use facts you know. 7 times 8 equals 7 times 4 times 2, equals 28 times 2, equals 56.');
+  assert.equal(toSpokenText('8 + 5 = 13.'), '8 plus 5 equals 13.');
+  assert.equal(toSpokenText('305 ÷ 5 = ?'), '305 divided by 5 equals what?');
+  assert.equal(toSpokenText('2/3 = ?/6'), '2 thirds equals how many sixths?');
+  assert.equal(toSpokenText('1/2 + 1/4'), '1 half plus 1 fourth');
+  assert.equal(toSpokenText('The parts stay 8ths.'), 'The parts stay eighths.');
+  assert.equal(toSpokenText('3 × ? = 12'), '3 times what equals 12');
+});
+
+test('spoken maths keeps separate clauses separate', async () => {
+  const { toSpokenText } = await import('../js/core/speech.js');
+  assert.equal(toSpokenText('3 = 3, 8 = 8, then 4 > 1.'), '3 equals 3, 8 equals 8, then 4 is greater than 1.');
+});
