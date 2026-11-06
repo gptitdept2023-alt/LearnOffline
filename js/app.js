@@ -16,15 +16,19 @@ import { renderPractice } from './ui/screens/practice.js';
 import { renderResults } from './ui/screens/results.js';
 import { renderBadges } from './ui/screens/badges.js';
 import { renderParent } from './ui/screens/parent.js';
+import { renderGuided } from './ui/screens/guided.js';
+import { setVoiceSettings, loadRecordedVoice } from './core/speech.js';
+import { getSetting } from './data/repo.js';
 
 /** Screens that need an active learner. */
-const LEARNER_SCREENS = new Set(['home', 'topic', 'lesson', 'practice', 'results', 'badges']);
+const LEARNER_SCREENS = new Set(['home', 'topic', 'lesson', 'guided', 'practice', 'results', 'badges']);
 
 const registerRoutes = () => {
   route('', renderStart);
   route('home', renderHome);
   route('topic', renderTopic);
   route('lesson', renderLesson);
+  route('guided', renderGuided);
   route('practice', renderPractice);
   route('results', renderResults);
   route('badges', renderBadges);
@@ -91,6 +95,9 @@ const start = async () => {
   }
   // Ask the browser not to evict our data under storage pressure (best effort).
   navigator.storage?.persist?.().catch(() => {});
+  // Voice: parent's saved choice, plus the recorded voice pack (works offline).
+  setVoiceSettings(await getSetting('voice').catch(() => null));
+  loadRecordedVoice();
   registerRoutes();
   startRouter();
   registerServiceWorker();

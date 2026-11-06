@@ -1,0 +1,133 @@
+/* Interactive lessons, techniques and the learning path. */
+
+/* Animations ------------------------------------------------------- */
+@keyframes pop-in { from { opacity: 0; transform: scale(0.4); } to { opacity: 1; transform: scale(1); } }
+@keyframes grow-x { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes draw { from { stroke-dashoffset: 300; } to { stroke-dashoffset: 0; } }
+@keyframes slide-up { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(47, 111, 222, 0.5); } 50% { box-shadow: 0 0 0 10px rgba(47, 111, 222, 0); } }
+@keyframes shake { 0%, 100% { transform: none; } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+
+/* Counters, dots and pictures pop in one after another (CSS var --i set per item). */
+.pic, .ten-frame .filled, .ten-frame .filled-extra, .tap-item, .dot {
+  animation: pop-in 0.35s cubic-bezier(0.3, 1.6, 0.5, 1) both;
+  animation-delay: calc(var(--i, 0) * 70ms);
+}
+.ten-frame-input .cell { animation: none; }
+.bm-seg { transform-box: fill-box; transform-origin: left center; animation: grow-x 0.5s ease-out both; animation-delay: calc(var(--i, 0) * 180ms); }
+.jump-arc { fill: none; stroke: var(--extra); stroke-width: 2.5; stroke-dasharray: 300; animation: draw 0.6s ease-out both; animation-delay: calc(var(--i, 0) * 350ms); }
+.jump-label { font-size: 12px; font-weight: 800; fill: var(--extra); text-anchor: middle; }
+
+.pulse { animation: pulse 1.4s ease-in-out 3; }
+.shake { animation: shake 0.3s ease; }
+.is-locked { opacity: 0.45; pointer-events: none; }
+
+/* Tap to count ------------------------------------------------------ */
+.tap-count { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.tap-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; max-width: 440px; }
+.tap-item {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  border: 3px dashed var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+  font-size: 2.2rem;
+  cursor: pointer;
+}
+.tap-item.tapped { border-style: solid; border-color: var(--good); background: var(--good-soft); }
+.tap-item.tapped::after {
+  content: attr(data-n);
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  min-width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: var(--good);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 28px;
+  animation: pop-in 0.25s both;
+}
+.tap-status { margin: 0; font-weight: 700; font-size: 1.1rem; }
+.tap-count.done .tap-status { color: var(--good); }
+
+/* Fill a ten frame ------------------------------------------------- */
+.fill-frame { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.ten-frame-input .cell { width: 44px; height: 44px; cursor: pointer; background: var(--surface); padding: 0; }
+.ten-frame-input { grid-template-columns: repeat(5, 44px); }
+.ten-frame-input .cell.filled { background: var(--primary); border-color: var(--primary); }
+
+/* Quick check -------------------------------------------------------- */
+.quick-check { display: flex; flex-direction: column; gap: 10px; }
+.check-prompt { font-weight: 800; font-size: 1.15rem; margin: 0; }
+.check-feedback { margin: 0; font-weight: 700; min-height: 1.4em; }
+.choice-right { border-color: var(--good); background: var(--good-soft); }
+.choice-wrong { border-color: var(--bad); background: var(--bad-soft); opacity: 0.6; }
+
+/* Technique (worked steps) ----------------------------------------- */
+.method { display: flex; flex-direction: column; gap: 10px; padding: 14px; border-radius: var(--radius); background: var(--primary-soft); border: 2px solid var(--primary); animation: slide-up 0.3s ease; }
+.method-compact { padding: 10px; }
+.method-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.method-tag { padding: 2px 10px; border-radius: 999px; background: var(--primary); color: var(--primary-ink); font-weight: 800; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; }
+.method-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.method-step { display: flex; gap: 10px; align-items: flex-start; animation: slide-up 0.35s ease both; }
+.method-num { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--primary); color: var(--primary-ink); font-weight: 800; flex: none; }
+.method-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+.method-body p { margin: 0; font-weight: 600; }
+.method-body .visual { background: var(--surface); }
+.method-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.feedback .method { margin: 6px 0; }
+
+/* Guided ("Try with help") ------------------------------------------ */
+.guided { display: flex; flex-direction: column; gap: 10px; padding: 14px; border-radius: var(--radius); background: var(--accent-soft); border: 2px solid var(--accent); }
+.guided-step { display: flex; flex-direction: column; gap: 10px; }
+.guided-step:empty { display: none; }
+.guided-count { margin: 0; font-size: 0.85rem; }
+.guided-trail { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.guided-trail:empty { display: none; }
+.guided-trail li { display: flex; gap: 6px; align-items: baseline; animation: slide-up 0.3s ease; }
+.guided-check { color: var(--good); font-weight: 800; }
+.stage-try { background: var(--accent-soft); color: #9a6a00; }
+
+/* Learning path on the topic screen ------------------------------- */
+.skill-path { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; counter-reset: path; }
+.path-step {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 56px;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--border);
+  color: var(--text);
+  text-decoration: none;
+  background: var(--surface);
+}
+.path-step > span:last-child { display: flex; flex-direction: column; line-height: 1.2; }
+.path-step small { color: var(--muted); }
+.path-icon { font-size: 1.5rem; }
+.path-learn { border-color: var(--accent); background: var(--accent-soft); }
+.path-guided { border-color: var(--good); background: var(--good-soft); }
+.path-practice { border-color: var(--primary); background: var(--primary-soft); }
+
+/* Column method ---------------------------------------------------- */
+.visual-column { background: var(--surface); }
+.col-grid { display: grid; grid-template-columns: repeat(var(--cols), 40px); justify-content: center; font-variant-numeric: tabular-nums; }
+.col-cell { display: grid; place-items: center; height: 42px; font-size: 1.6rem; font-weight: 800; border-radius: 8px; }
+.col-small { height: 22px; font-size: 0.95rem; color: var(--extra); }
+.col-op { color: var(--muted); }
+.col-focus { background: var(--accent-soft); }
+.col-struck { text-decoration: line-through; text-decoration-color: var(--bad); color: var(--muted); }
+.col-renamed { color: var(--bad); }
+.col-line { grid-column: 1 / -1; border-top: 3px solid var(--text); margin: 2px 0; }
+.col-result { color: var(--primary); }
+.col-result:not(:empty) { animation: pop-in 0.3s both; }
+
+/* Jumps ---------------------------------------------------------------- */
+.visual-jumps svg { max-width: 460px; }
+
+.stage-technique { background: var(--primary); color: var(--primary-ink); }
+.lesson-actions { flex-wrap: nowrap; }

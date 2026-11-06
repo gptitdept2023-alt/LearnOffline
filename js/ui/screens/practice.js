@@ -16,6 +16,8 @@ import { pickDailyMix } from '../../engine/mastery.js';
 import { buildSkillSet, buildMixSet } from '../../engine/practice.js';
 import { progressBar } from '../components/common.js';
 import { renderVisual, renderBarModel, shapeSvg } from '../components/visuals.js';
+import { methodPlayer } from '../components/interactive.js';
+import { methodFor } from '../../engine/techniques.js';
 
 const MIX_ID = 'mix';
 
@@ -115,10 +117,15 @@ export const renderPractice = async (view, skillId) => {
     };
     const feedback = h(`div.feedback.${correct ? 'feedback-good' : 'feedback-bad'}`, { role: 'status' },
       h('strong.feedback-title', null, correct ? `✓ ${t('correct')}` : t('notQuite')),
-      !correct && h('p', null, `${t('answerWas')} `, h('strong', null, String(question.answer)), '.'),
-      !correct && question.explain && h('p.muted', null, question.explain),
+      !correct && h('p', null, `${t('answerWas')} `, h('strong', null, typeof question.answer === 'number' ? question.answer.toLocaleString('en-US') : String(question.answer)), '.'),
+      !correct && question.explain && !methodFor(question) && h('p.muted', null, question.explain),
       h('button.btn.btn-primary.btn-lg', { type: 'button', autofocus: true, onclick: next }, last ? t('done') : t('continue'), ' ▶'));
     stage.querySelector('.answer-area').replaceChildren(feedback);
+    // After a wrong answer, show the technique step by step (Singapore method made visible).
+    const method = !correct && methodFor(question);
+    if (method && !stage.querySelector('.method')) {
+      feedback.insertBefore(methodPlayer(method, { autoSpeak: false, compact: true }), feedback.lastChild);
+    }
     feedback.querySelector('button').focus();
     if (profile.readAloud || young) speak(correct ? t('correct') : `${t('answerWas')} ${question.answer}`);
   };
@@ -163,6 +170,10 @@ export const renderPractice = async (view, skillId) => {
           type: 'button',
           onclick: (e) => { modelBox.hidden = false; e.currentTarget.remove(); },
         }, '📊 ', t('showModel')),
+        methodFor(question) && h('button.btn.btn-secondary', {
+          type: 'button',
+          onclick: (e) => { e.currentTarget.replaceWith(methodPlayer(methodFor(question), { compact: true })); },
+        }, '🧭 Show me how'),
         question.hint && h('button.btn.btn-ghost', {
           type: 'button',
           onclick: (e) => { hintBox.hidden = false; e.currentTarget.remove(); if (young || profile.readAloud) speak(question.hint); },

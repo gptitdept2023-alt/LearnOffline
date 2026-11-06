@@ -1,6 +1,6 @@
 {
   "packId": "math-g4",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "subject": "math",
   "title": "Math · Grade 4",
   "topics": [
@@ -13,33 +13,150 @@
         {
           "skillId": "g4-place-value",
           "title": "Place value to ten thousands",
-          "lesson": { "steps": [
-            { "stage": "concrete", "text": "Base-ten blocks: a flat is 100, a rod is 10, a cube is 1. This shows 243.", "visual": { "kind": "blocks", "value": 243 } },
-            { "stage": "pictorial", "text": "Each place is 10 times the place on its right:\nones → tens → hundreds → thousands → ten thousands." },
-            { "stage": "abstract", "text": "In 47,352 the 4 is in the ten thousands place, so it stands for 40,000. The 7 stands for 7,000." }
-          ] },
-          "generator": { "type": "placeValue", "digits": 5 }
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Base-ten blocks: a flat is 100, a rod is 10, a cube is 1. This shows 243.",
+                "visual": {
+                  "kind": "blocks",
+                  "value": 243
+                }
+              },
+              {
+                "stage": "pictorial",
+                "text": "Each place is 10 times the place on its right:\nones → tens → hundreds → thousands → ten thousands."
+              },
+              {
+                "stage": "abstract",
+                "text": "In 47,352 the 4 is in the ten thousands place, so it stands for 40,000.",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "In 47,352, what value does the 7 stand for?",
+                  "choices": [
+                    "7",
+                    "70",
+                    "700",
+                    "7,000"
+                  ],
+                  "answer": "7,000",
+                  "explain": "The 7 is in the thousands place: 7,000."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "placeValue",
+            "digits": 5
+          }
         },
         {
           "skillId": "g4-compare",
           "title": "Compare numbers",
-          "lesson": { "steps": [
-            { "stage": "pictorial", "text": "Line the numbers up by place value:\n38,415\n38,154" },
-            { "stage": "abstract", "text": "Start from the left. 3 = 3, 8 = 8, then 4 > 1. So 38,415 is greater. The first place that differs decides." }
-          ] },
-          "generator": { "type": "compare", "min": 10000, "max": 99999 }
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "Line the numbers up by place value:\n38,415\n38,154"
+              },
+              {
+                "stage": "abstract",
+                "text": "Start from the left. 3 = 3, 8 = 8, then 4 > 1. The first place that differs decides.",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which number is greater?",
+                  "choices": [
+                    "38,415",
+                    "38,154"
+                  ],
+                  "answer": "38,415",
+                  "explain": "In the hundreds, 4 is greater than 1."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "compare",
+            "min": 10000,
+            "max": 99999
+          }
         },
         {
           "skillId": "g4-add-sub",
           "title": "Add and subtract 4-digit numbers",
-          "lesson": { "steps": [
-            { "stage": "pictorial", "text": "Line up ones under ones, tens under tens. Start from the ones." },
-            { "stage": "abstract", "text": "4,568 + 2,775: ones 8 + 5 = 13, write 3 carry 1. Tens 6 + 7 + 1 = 14, write 4 carry 1. Keep going: 7,343." }
-          ] },
-          "generator": { "type": "addition", "min": 1000, "max": 4999, "regroup": true },
+          "lesson": {
+            "steps": [
+              {
+                "stage": "technique",
+                "text": "Column addition: add each place, starting from the ones. Carry when a place makes 10 or more.",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "columnAdd",
+                    "a": 4568,
+                    "b": 2775
+                  }
+                }
+              },
+              {
+                "stage": "technique",
+                "text": "Column subtraction: when the top digit is too small, rename 1 from the next place.",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "columnSub",
+                    "a": 6302,
+                    "b": 2748
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 3,456 + 1,879.",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "columnAdd",
+                    "a": 3456,
+                    "b": 1879
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "addition",
+            "min": 1000,
+            "max": 4999,
+            "regroup": true
+          },
           "questions": [
-            { "id": "g4-as-1", "type": "numeric", "prompt": "6,302 − 2,748 = ?", "answer": 3554, "hint": "You need to rename across the zero: 6,302 = 62 hundreds + 10 tens… take it one place at a time.", "explain": "6,302 − 2,748 = 3,554" },
-            { "id": "g4-as-2", "type": "numeric", "prompt": "9,000 − 4,567 = ?", "answer": 4433, "hint": "Think 8,999 + 1. Subtract from 8,999 first, then add 1.", "explain": "8,999 − 4,567 = 4,432, plus 1 = 4,433" }
+            {
+              "id": "g4-as-1",
+              "type": "numeric",
+              "prompt": "6,302 − 2,748 = ?",
+              "answer": 3554,
+              "hint": "You need to rename across the zero: 6,302 = 62 hundreds + 10 tens… take it one place at a time.",
+              "explain": "6,302 − 2,748 = 3,554",
+              "method": {
+                "kind": "columnSub",
+                "a": 6302,
+                "b": 2748
+              }
+            },
+            {
+              "id": "g4-as-2",
+              "type": "numeric",
+              "prompt": "9,000 − 4,567 = ?",
+              "answer": 4433,
+              "hint": "Think 8,999 + 1. Subtract from 8,999 first, then add 1.",
+              "explain": "8,999 − 4,567 = 4,432, plus 1 = 4,433",
+              "method": {
+                "kind": "columnSub",
+                "a": 9000,
+                "b": 4567
+              }
+            }
           ]
         }
       ]
@@ -53,11 +170,39 @@
         {
           "skillId": "g4-factors-multiples",
           "title": "Factors and multiples",
-          "lesson": { "steps": [
-            { "stage": "concrete", "text": "Arrange 12 counters in equal rows. 3 rows of 4 works, so 3 and 4 are factors of 12.", "visual": { "kind": "groups", "groups": 3, "each": 4 } },
-            { "stage": "abstract", "text": "Factors of 12: 1, 2, 3, 4, 6, 12.\nMultiples of 4: 4, 8, 12, 16, 20, …\nA factor divides exactly. A multiple is in the times table." }
-          ] },
-          "generator": { "type": "factorsMultiples", "max": 72 }
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Arrange 12 counters in equal rows. 3 rows of 4 works, so 3 and 4 are factors of 12.",
+                "visual": {
+                  "kind": "groups",
+                  "groups": 3,
+                  "each": 4
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Factors of 12: 1, 2, 3, 4, 6, 12.\nMultiples of 4: 4, 8, 12, 16, 20, …",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which number is a factor of 12?",
+                  "choices": [
+                    "5",
+                    "6",
+                    "7",
+                    "8"
+                  ],
+                  "answer": "6",
+                  "explain": "12 ÷ 6 = 2 exactly, so 6 is a factor."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "factorsMultiples",
+            "max": 72
+          }
         }
       ]
     },
@@ -70,47 +215,205 @@
         {
           "skillId": "g4-times-tables",
           "title": "Times tables 6 to 9",
-          "lesson": { "steps": [
-            { "stage": "pictorial", "text": "7 × 4 means 7 groups of 4, or 4 groups of 7. Both make 28.", "visual": { "kind": "groups", "groups": 4, "each": 7 } },
-            { "stage": "abstract", "text": "Use facts you know: 7 × 8 = 7 × 4 × 2 = 28 × 2 = 56." }
-          ] },
-          "generator": { "type": "multiplication", "tables": [6, 7, 8, 9], "maxFactor": 10 }
+          "lesson": {
+            "steps": [
+              {
+                "stage": "technique",
+                "text": "Skip counting turns a times table into jumps on a number line.",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "skipCount",
+                    "groups": 4,
+                    "each": 7
+                  }
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Use facts you know: 7 × 8 = 7 × 4 × 2 = 28 × 2 = 56."
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 6 × 8.",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "skipCount",
+                    "groups": 6,
+                    "each": 8
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "multiplication",
+            "tables": [
+              6,
+              7,
+              8,
+              9
+            ],
+            "maxFactor": 10
+          }
         },
         {
           "skillId": "g4-multiply-by-1digit",
           "title": "Multiply by a 1-digit number",
-          "lesson": { "steps": [
-            { "stage": "concrete", "text": "Think of 243 × 3 as 3 groups of 243 blocks.", "visual": { "kind": "blocks", "value": 243 } },
-            { "stage": "abstract", "text": "Multiply each place: 3 ones × 3 = 9, 4 tens × 3 = 12 tens (write 2, carry 1 hundred), 2 hundreds × 3 + 1 = 7 hundreds. 243 × 3 = 729." }
-          ] },
-          "generator": { "type": "multiplyLong", "digits": 3, "byDigits": 1 }
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Think of 243 × 3 as 3 groups of 243 blocks. Split by place value and multiply each part.",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "splitMultiply",
+                    "a": 243,
+                    "b": 3
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 125 × 4.",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "splitMultiply",
+                    "a": 125,
+                    "b": 4
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "multiplyLong",
+            "digits": 3,
+            "byDigits": 1
+          }
         },
         {
           "skillId": "g4-multiply-by-2digit",
           "title": "Multiply by a 2-digit number",
-          "lesson": { "steps": [
-            { "stage": "pictorial", "text": "Split the 2-digit number into tens and ones: 34 × 26 = 34 × 20 + 34 × 6." },
-            { "stage": "abstract", "text": "34 × 20 = 680 and 34 × 6 = 204. Add: 680 + 204 = 884." }
-          ] },
-          "generator": { "type": "multiplyLong", "digits": 2, "byDigits": 2 }
+          "lesson": {
+            "steps": [
+              {
+                "stage": "technique",
+                "text": "Split the 2-digit number into tens and ones, multiply each, then add.",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "splitMultiply",
+                    "a": 34,
+                    "b": 26
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 52 × 13.",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "splitMultiply",
+                    "a": 52,
+                    "b": 13
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "multiplyLong",
+            "digits": 2,
+            "byDigits": 2
+          }
         },
         {
           "skillId": "g4-divide",
           "title": "Divide by a 1-digit number",
-          "lesson": { "steps": [
-            { "stage": "concrete", "text": "Share 84 counters into 4 equal groups. Share the 8 tens first (2 tens each), then the 4 ones (1 each). Each group gets 21." },
-            { "stage": "abstract", "text": "Divide from the left: 8 tens ÷ 4 = 2 tens. 4 ones ÷ 4 = 1. So 84 ÷ 4 = 21." }
-          ] },
-          "generator": { "type": "divideLong", "digits": 3, "remainder": false }
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Share 84 counters into 4 equal groups. Share the tens first, then the ones.",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "longDivide",
+                    "dividend": 84,
+                    "divisor": 4
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 96 ÷ 3.",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "longDivide",
+                    "dividend": 96,
+                    "divisor": 3
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "divideLong",
+            "digits": 3,
+            "remainder": false
+          }
         },
         {
           "skillId": "g4-divide-remainder",
           "title": "Division with remainder",
-          "lesson": { "steps": [
-            { "stage": "concrete", "text": "Share 17 sweets among 5 children. Each gets 3, and 2 are left over.", "visual": { "kind": "groups", "groups": 5, "each": 3 } },
-            { "stage": "abstract", "text": "17 ÷ 5 = 3 remainder 2. Check: 5 × 3 + 2 = 17. The remainder is always smaller than the number you divide by." }
-          ] },
-          "generator": { "type": "divideLong", "digits": 3, "remainder": true }
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Share 17 sweets among 5 children. Each gets 3, and 2 are left over.",
+                "visual": {
+                  "kind": "groups",
+                  "groups": 5,
+                  "each": 3
+                }
+              },
+              {
+                "stage": "technique",
+                "text": "The remainder is what is left after sharing equally.",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "longDivide",
+                    "dividend": 17,
+                    "divisor": 5
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 47 ÷ 6.",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "longDivide",
+                    "dividend": 47,
+                    "divisor": 6
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "divideLong",
+            "digits": 3,
+            "remainder": true
+          }
         }
       ]
     },
@@ -123,21 +426,94 @@
         {
           "skillId": "g4-equivalent-fractions",
           "title": "Equivalent fractions",
-          "lesson": { "steps": [
-            { "stage": "concrete", "text": "Fold a strip of paper in half and shade one half.", "visual": { "kind": "fraction", "numerator": 1, "denominator": 2, "shape": "bar" } },
-            { "stage": "pictorial", "text": "Fold it again. Now 2 of 4 parts are shaded. Same amount, so 1/2 = 2/4.", "visual": { "kind": "fraction", "numerator": 2, "denominator": 4, "shape": "bar" } },
-            { "stage": "abstract", "text": "Multiply the top and bottom by the same number: 1/2 = 2/4 = 4/8." }
-          ] },
-          "generator": { "type": "equivalentFraction", "maxDen": 12 }
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Fold a strip of paper in half and shade one half.",
+                "visual": {
+                  "kind": "fraction",
+                  "numerator": 1,
+                  "denominator": 2,
+                  "shape": "bar"
+                }
+              },
+              {
+                "stage": "technique",
+                "text": "Cut each part into smaller equal parts. The shaded amount stays the same.",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "equivalentFraction",
+                    "num": 1,
+                    "den": 2,
+                    "factor": 4
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 2/3 = ?/9.",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "equivalentFraction",
+                    "num": 2,
+                    "den": 3,
+                    "factor": 3
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "equivalentFraction",
+            "maxDen": 12
+          }
         },
         {
           "skillId": "g4-fraction-add-sub",
           "title": "Add and subtract like fractions",
-          "lesson": { "steps": [
-            { "stage": "pictorial", "text": "2/8 shaded, then 3/8 more. Count the eighths: 5 of them.", "visual": { "kind": "fraction", "numerator": 5, "denominator": 8, "shape": "bar" } },
-            { "stage": "abstract", "text": "The parts are the same size, so add the tops: 2/8 + 3/8 = 5/8. Type the top and bottom numbers in the boxes." }
-          ] },
-          "generator": { "type": "fractionSameDen", "maxDen": 12 }
+          "lesson": {
+            "steps": [
+              {
+                "stage": "technique",
+                "text": "When the parts are the same size, add or subtract the tops and keep the bottom.",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "sameDenominator",
+                    "x": 2,
+                    "y": 3,
+                    "den": 8,
+                    "op": "+"
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 5/9 − 2/9.",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "sameDenominator",
+                    "x": 5,
+                    "y": 2,
+                    "den": 9,
+                    "op": "−"
+                  }
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "In practice, type the top and bottom numbers in the two boxes."
+              }
+            ]
+          },
+          "generator": {
+            "type": "fractionSameDen",
+            "maxDen": 12
+          }
         }
       ]
     },
@@ -150,11 +526,45 @@
         {
           "skillId": "g4-decimals-tenths",
           "title": "Tenths",
-          "lesson": { "steps": [
-            { "stage": "pictorial", "text": "Cut a whole into 10 equal parts. Each part is one tenth, 0.1. Three parts are 0.3.", "visual": { "kind": "fraction", "numerator": 3, "denominator": 10, "shape": "bar" } },
-            { "stage": "abstract", "text": "2 and 4 tenths is written 2.4. Line up the decimal points to add: 2.4 + 1.5 = 3.9." }
-          ] },
-          "generator": { "type": "decimals", "max": 10 }
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "Cut a whole into 10 equal parts. Each part is one tenth, 0.1. Three parts are 0.3.",
+                "visual": {
+                  "kind": "fraction",
+                  "numerator": 3,
+                  "denominator": 10,
+                  "shape": "bar"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "2 and 4 tenths is written 2.4. Line up the decimal points to add: 2.4 + 1.5 = 3.9.",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which decimal is 4 tenths?",
+                  "visual": {
+                    "kind": "fraction",
+                    "numerator": 4,
+                    "denominator": 10,
+                    "shape": "bar"
+                  },
+                  "choices": [
+                    "0.4",
+                    "4.0",
+                    "0.04"
+                  ],
+                  "answer": "0.4",
+                  "explain": "Tenths are the first place after the point."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "decimals",
+            "max": 10
+          }
         }
       ]
     },
@@ -167,29 +577,355 @@
         {
           "skillId": "g4-wp-part-whole",
           "title": "Part and whole",
-          "lesson": { "steps": [
-            { "stage": "pictorial", "text": "Ana has 1,250 stickers. Ben has 860. How many altogether? Draw one bar with two parts.", "visual": { "kind": "bar", "rows": [ { "label": "", "segments": [ { "units": 1250, "text": "Ana: 1,250" }, { "units": 860, "text": "Ben: 860" } ] } ], "braces": [ { "row": 0, "from": 0, "to": 2, "side": "above", "text": "?" } ] } },
-            { "stage": "abstract", "text": "Whole = part + part: 1,250 + 860 = 2,110.\nIf the whole is known and a part is missing, subtract." }
-          ] },
-          "generator": { "type": "wordProblem", "kinds": ["partWhole"], "max": 9000 }
+          "lesson": {
+            "steps": [
+              {
+                "stage": "technique",
+                "text": "Ana has 1,250 stickers. Ben has 860. How many altogether? Watch how to draw it.",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "barModel",
+                    "model": {
+                      "rows": [
+                        {
+                          "label": "",
+                          "segments": [
+                            {
+                              "units": 1250,
+                              "text": "Ana: 1,250"
+                            },
+                            {
+                              "units": 860,
+                              "text": "Ben: 860"
+                            }
+                          ]
+                        }
+                      ],
+                      "braces": [
+                        {
+                          "row": 0,
+                          "from": 0,
+                          "to": 2,
+                          "side": "above",
+                          "text": "?"
+                        }
+                      ]
+                    },
+                    "op": "+",
+                    "a": 1250,
+                    "b": 860,
+                    "answer": 2110
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: Ana and Ben have 3,000 stickers altogether. Ana has 1,800. How many does Ben have?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "barModel",
+                    "model": {
+                      "rows": [
+                        {
+                          "label": "",
+                          "segments": [
+                            {
+                              "units": 1800,
+                              "text": "Ana: 1,800"
+                            },
+                            {
+                              "units": 1200,
+                              "text": "Ben: ?"
+                            }
+                          ]
+                        }
+                      ],
+                      "braces": [
+                        {
+                          "row": 0,
+                          "from": 0,
+                          "to": 2,
+                          "side": "above",
+                          "text": "3,000"
+                        }
+                      ]
+                    },
+                    "op": "−",
+                    "a": 3000,
+                    "b": 1800,
+                    "answer": 1200
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "wordProblem",
+            "kinds": [
+              "partWhole"
+            ],
+            "max": 9000
+          }
         },
         {
           "skillId": "g4-wp-compare",
           "title": "Comparing (more than, fewer than)",
-          "lesson": { "steps": [
-            { "stage": "pictorial", "text": "Raj has 340 cards. Mei has 125 more than Raj. Draw two bars. Mei's bar is Raj's bar plus an extra part.", "visual": { "kind": "bar", "rows": [ { "label": "Mei", "segments": [ { "units": 340, "text": "" }, { "units": 125, "text": "125" } ] }, { "label": "Raj", "segments": [ { "units": 340, "text": "" } ] } ], "braces": [ { "row": 0, "from": 0, "to": 2, "side": "above", "text": "?" }, { "row": 1, "from": 0, "to": 1, "side": "below", "text": "340" } ] } },
-            { "stage": "abstract", "text": "Mei = 340 + 125 = 465.\nThe extra part is the difference between the two bars." }
-          ] },
-          "generator": { "type": "wordProblem", "kinds": ["compare"], "max": 5000 }
+          "lesson": {
+            "steps": [
+              {
+                "stage": "technique",
+                "text": "Raj has 340 cards. Mei has 125 more than Raj. How many does Mei have? Watch the two bars.",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "barModel",
+                    "model": {
+                      "rows": [
+                        {
+                          "label": "Mei",
+                          "segments": [
+                            {
+                              "units": 340,
+                              "text": ""
+                            },
+                            {
+                              "units": 125,
+                              "text": "125"
+                            }
+                          ]
+                        },
+                        {
+                          "label": "Raj",
+                          "segments": [
+                            {
+                              "units": 340,
+                              "text": ""
+                            }
+                          ]
+                        }
+                      ],
+                      "braces": [
+                        {
+                          "row": 0,
+                          "from": 0,
+                          "to": 2,
+                          "side": "above",
+                          "text": "?"
+                        },
+                        {
+                          "row": 1,
+                          "from": 0,
+                          "to": 1,
+                          "side": "below",
+                          "text": "340"
+                        }
+                      ]
+                    },
+                    "op": "+",
+                    "a": 340,
+                    "b": 125,
+                    "answer": 465
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: Mei has 820 cards. Raj has 560. How many more does Mei have?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "barModel",
+                    "model": {
+                      "rows": [
+                        {
+                          "label": "Mei",
+                          "segments": [
+                            {
+                              "units": 560,
+                              "text": ""
+                            },
+                            {
+                              "units": 260,
+                              "text": "?"
+                            }
+                          ]
+                        },
+                        {
+                          "label": "Raj",
+                          "segments": [
+                            {
+                              "units": 560,
+                              "text": ""
+                            }
+                          ]
+                        }
+                      ],
+                      "braces": [
+                        {
+                          "row": 0,
+                          "from": 0,
+                          "to": 2,
+                          "side": "above",
+                          "text": "820"
+                        },
+                        {
+                          "row": 1,
+                          "from": 0,
+                          "to": 1,
+                          "side": "below",
+                          "text": "560"
+                        }
+                      ]
+                    },
+                    "op": "−",
+                    "a": 820,
+                    "b": 560,
+                    "answer": 260
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "wordProblem",
+            "kinds": [
+              "compare"
+            ],
+            "max": 5000
+          }
         },
         {
           "skillId": "g4-wp-multiply",
           "title": "Times as many (units)",
-          "lesson": { "steps": [
-            { "stage": "pictorial", "text": "Lea has 3 times as many shells as Jun. Jun has 24. Draw 1 unit for Jun and 3 equal units for Lea.", "visual": { "kind": "bar", "rows": [ { "label": "Lea", "segments": [ { "units": 24, "text": "" }, { "units": 24, "text": "" }, { "units": 24, "text": "" } ] }, { "label": "Jun", "segments": [ { "units": 24, "text": "24" } ] } ], "braces": [ { "rows": [0, 1], "side": "right", "text": "?" } ] } },
-            { "stage": "abstract", "text": "1 unit = 24. Altogether there are 4 units: 4 × 24 = 96. Lea alone has 3 units: 72." }
-          ] },
-          "generator": { "type": "wordProblem", "kinds": ["multiply"], "max": 900, "maxTimes": 9 }
+          "lesson": {
+            "steps": [
+              {
+                "stage": "technique",
+                "text": "Lea has 3 times as many shells as Jun. Jun has 24. How many do they have altogether? Draw units!",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "barModel",
+                    "model": {
+                      "rows": [
+                        {
+                          "label": "Lea",
+                          "segments": [
+                            {
+                              "units": 24,
+                              "text": ""
+                            },
+                            {
+                              "units": 24,
+                              "text": ""
+                            },
+                            {
+                              "units": 24,
+                              "text": ""
+                            }
+                          ]
+                        },
+                        {
+                          "label": "Jun",
+                          "segments": [
+                            {
+                              "units": 24,
+                              "text": "24"
+                            }
+                          ]
+                        }
+                      ],
+                      "braces": [
+                        {
+                          "rows": [
+                            0,
+                            1
+                          ],
+                          "side": "right",
+                          "text": "?"
+                        }
+                      ]
+                    },
+                    "op": "×",
+                    "a": 4,
+                    "b": 24,
+                    "answer": 96
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: Siti has 5 times as many marbles as Tomas. Tomas has 15. How many does Siti have?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "barModel",
+                    "model": {
+                      "rows": [
+                        {
+                          "label": "Siti",
+                          "segments": [
+                            {
+                              "units": 15,
+                              "text": ""
+                            },
+                            {
+                              "units": 15,
+                              "text": ""
+                            },
+                            {
+                              "units": 15,
+                              "text": ""
+                            },
+                            {
+                              "units": 15,
+                              "text": ""
+                            },
+                            {
+                              "units": 15,
+                              "text": ""
+                            }
+                          ]
+                        },
+                        {
+                          "label": "Tomas",
+                          "segments": [
+                            {
+                              "units": 15,
+                              "text": "15"
+                            }
+                          ]
+                        }
+                      ],
+                      "braces": [
+                        {
+                          "row": 0,
+                          "from": 0,
+                          "to": 5,
+                          "side": "above",
+                          "text": "?"
+                        }
+                      ]
+                    },
+                    "op": "×",
+                    "a": 5,
+                    "b": 15,
+                    "answer": 75
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "wordProblem",
+            "kinds": [
+              "multiply"
+            ],
+            "max": 900,
+            "maxTimes": 9
+          }
         }
       ]
     }

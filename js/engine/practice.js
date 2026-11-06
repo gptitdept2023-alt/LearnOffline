@@ -22,6 +22,7 @@ const fromFixed = (q) => ({
   model: q.model,
   hint: q.hint,
   explain: q.explain,
+  method: q.method,
 });
 
 /**

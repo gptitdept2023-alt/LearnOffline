@@ -7,7 +7,8 @@
  * tests/precache.test.mjs fails if a file is missing from PRECACHE.
  */
 
-const CACHE_VERSION = 'v1';
+const CACHE_VERSION = 'v2';
+const VOICE_MANIFEST = './audio/voice/manifest.json';
 const CACHE_NAME = `learnoffline-${CACHE_VERSION}`;
 
 const PRECACHE = [
@@ -18,12 +19,14 @@ const PRECACHE = [
   './css/components.css',
   './css/screens.css',
   './css/visuals.css',
+  './css/interactive.css',
   './icons/icon-192.png',
   './icons/icon-512.png',
   './icons/icon-maskable-512.png',
   './icons/icon.svg',
   './js/app.js',
   './js/core/dom.js',
+  './js/core/hash.js',
   './js/core/i18n.js',
   './js/core/pin.js',
   './js/core/random.js',
@@ -39,9 +42,12 @@ const PRECACHE = [
   './js/engine/mastery.js',
   './js/engine/practice.js',
   './js/engine/rewards.js',
+  './js/engine/techniques.js',
   './js/ui/components/common.js',
+  './js/ui/components/interactive.js',
   './js/ui/components/visuals.js',
   './js/ui/screens/badges.js',
+  './js/ui/screens/guided.js',
   './js/ui/screens/home.js',
   './js/ui/screens/lesson.js',
   './js/ui/screens/parent.js',
@@ -56,10 +62,31 @@ const PRECACHE = [
 
 self.addEventListener('install', (event) => {
   // cache: 'reload' bypasses the HTTP cache so a new version never stores stale files.
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(PRECACHE.map((url) => new Request(url, { cache: 'reload' })))),
-  );
+  event.waitUntil((async () => {
+    const cache = await caches.open(CACHE_NAME);
+    await cache.addAll(PRECACHE.map((url) => new Request(url, { cache: 'reload' })));
+    await cacheVoicePack(cache);
+  })());
 });
+
+/**
+ * Cache the recorded voice clips listed in the voice manifest. Clips are
+ * fetched in small batches so a slow phone connection is not flooded. A clip
+ * that fails is skipped: the app falls back to the device voice for it.
+ */
+const cacheVoicePack = async (cache) => {
+  try {
+    const response = await fetch(VOICE_MANIFEST, { cache: 'reload' });
+    if (!response.ok) return;
+    await cache.put(VOICE_MANIFEST, response.clone());
+    const { keys = [] } = await response.json();
+    const BATCH = 24;
+    for (let i = 0; i < keys.length; i += BATCH) {
+      await Promise.all(keys.slice(i, i + BATCH).map((key) =>
+        cache.add(new Request(`./audio/voice/${key}.ogg`, { cache: 'reload' })).catch(() => {})));
+    }
+  } catch { /* voice pack is optional */ }
+};
 
 self.addEventListener('activate', (event) => {
   event.waitUntil((async () => {

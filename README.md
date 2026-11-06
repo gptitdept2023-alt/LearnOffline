@@ -22,6 +22,28 @@ Progress is stored **on each device**. To move a child's progress between
 the PC and the phone, use *Parents → Download backup* on one device and
 *Restore from file* on the other.
 
+## How a skill is taught
+
+Each skill follows the same path, shown on the topic screen:
+
+1. **Learn (watch and do):** an interactive lesson that moves Concrete → Pictorial → Abstract. Children tap to count, fill ten frames, answer quick checks, and watch animated worked examples of the technique.
+2. **Try with help:** a few questions solved step by step with the technique (for example *make ten*: "8 needs ? to make 10", "split 5 into 2 and ?", "10 + 3 = ?"). Mistakes here get a nudge, not a mark.
+3. **Practise on my own:** graded practice. **Show me how** plays the technique for that exact question, and a wrong answer shows the worked steps automatically.
+
+Techniques (`js/engine/techniques.js`): count on, make ten, number bonds, column addition and subtraction with renaming, skip counting, split by place value, long division, equivalent fractions, same-denominator fractions, the bar model (draw → label → choose the operation → calculate), and Kinder touch-and-count.
+
+## Voice
+
+The app ships a **recorded voice pack** (`audio/voice/`, about 10 MB, cached for offline use): every lesson sentence, every Kinder question and hint, praise and nudges were recorded with the open-source [Piper](https://github.com/rhasspy/piper) engine using the *Kathleen* voice (CC0). Sentences that are not recorded (for example a random Grade 4 sum) use the device's best offline voice, read a little slower and higher. Parents can change voice, speed and pitch under **Parents → Voice**.
+
+After changing lesson text or Kinder generators, re-record the new sentences (existing clips are kept):
+
+```bash
+pip install piper-tts
+node tools/collect-speech.mjs > speech.json
+python3 tools/build_voice_pack.py speech.json path/to/en-us-kathleen-low.onnx
+```
+
 ## Deploy (GitHub Pages, free)
 
 Repository → **Settings → Pages** → *Deploy from a branch* → `main`, folder
@@ -68,7 +90,10 @@ first, then the weakest skills, then the next new skill.
 ## Adding content
 
 Add a pack file under `packs/`, list it in `packs/index.json`, and add it to
-`PRECACHE` in `sw.js` (the tests fail if you forget). A skill can use a
+`PRECACHE` in `sw.js` (the tests fail if you forget). Lesson steps can be
+interactive with `"interact"`: `tapCount`, `fillFrame`, `check`, `worked`
+(plays a technique) or `tryIt` (guided technique), for example
+`{ "kind": "worked", "method": { "kind": "makeTen", "a": 8, "b": 5 } }`. A skill can use a
 **generator** for endless questions, fixed **questions**, or both:
 
 ```json

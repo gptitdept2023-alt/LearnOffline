@@ -16,7 +16,7 @@ const pictureGroup = (emoji, count, { crossed = 0 } = {}) => {
   const items = [];
   for (let i = 0; i < count; i += 1) {
     const isCrossed = i >= count - crossed;
-    items.push(h(`span.pic${isCrossed ? '.pic-crossed' : ''}`, { 'aria-hidden': 'true' }, emoji));
+    items.push(h(`span.pic${isCrossed ? '.pic-crossed' : ''}`, { 'aria-hidden': 'true', style: { '--i': i } }, emoji));
     if ((i + 1) % 5 === 0 && i + 1 < count) items.push(h('span.pic-gap'));
   }
   return h('div.pic-group', null, items);
@@ -76,7 +76,7 @@ const renderTenFrames = ({ value, extra = 0 }) => {
     for (let c = 0; c < 10; c += 1) {
       const n = f * 10 + c;
       const cls = n < value ? 'cell.filled' : n < total ? 'cell.filled-extra' : 'cell';
-      cells.push(h(`span.${cls}`));
+      cells.push(h(`span.${cls}`, { style: { '--i': n } }));
     }
     nodes.push(h('div.ten-frame', null, cells));
   }
@@ -157,6 +157,61 @@ const renderFraction = ({ numerator, denominator, shape = 'bar' }) => {
 };
 
 /* ------------------------------------------------------------------ */
+/* Techniques: column method and skip-count jumps                      */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Column method layout. `shown` = how many places (from the ones) are done,
+ * `focus` = the place being worked on, `top` = renamed top digits (ones first),
+ * `carries` = carried 1s by place, `result` = the answer written so far.
+ */
+const renderColumn = ({ a, b, op, shown = 0, focus, top, carries = [], result }) => {
+  const da = String(a).split('').reverse();
+  const db = String(b).split('').reverse();
+  const dr = result === undefined ? [] : String(result).split('').reverse();
+  const cols = Math.max(da.length, db.length, dr.length) + 1; // +1 for the operator column
+  const cell = (text, cls = '') => h(`span.col-cell${cls}`, null, text ?? '');
+  const rowOf = (fn) => Array.from({ length: cols }, (_, k) => fn(cols - 1 - k)); // k: left to right, place = cols-1-k
+  const focusCls = (place) => (place === focus ? '.col-focus' : '');
+
+  const carryRow = rowOf((place) => {
+    const renamed = top && top[place] !== undefined && String(top[place]) !== da[place];
+    if (renamed) return cell(String(top[place]), `.col-small.col-renamed${focusCls(place)}`);
+    return cell(carries[place] ? '1' : '', `.col-small${focusCls(place)}`);
+  });
+  const aRow = rowOf((place) => {
+    const renamed = top && top[place] !== undefined && String(top[place]) !== da[place];
+    return cell(da[place], `${renamed ? '.col-struck' : ''}${focusCls(place)}`);
+  });
+  const bRow = rowOf((place) => (place === cols - 1 ? cell(op, '.col-op') : cell(db[place], focusCls(place))));
+  const rRow = rowOf((place) => cell(place < shown || place >= Math.max(da.length, db.length) ? dr[place] : '', `.col-result${focusCls(place)}`));
+
+  return h('div.visual.visual-column', { role: 'img', 'aria-label': `${a} ${op} ${b} in columns` },
+    h('div.col-grid', { style: { '--cols': cols } }, carryRow, aRow, bRow, h('span.col-line'), rRow));
+};
+
+/** Jumps along a number line: skip counting, counting on. */
+const renderJumps = ({ from = 0, step = 1, count = 1, hideEnd = false }) => {
+  const end = from + step * count;
+  const x = (n) => 20 + ((n - from) / Math.max(1, end - from)) * 300;
+  const nodes = [svg('line', { x1: 10, y1: 70, x2: 330, y2: 70, class: 'nl-axis' })];
+  for (let i = 0; i <= count; i += 1) {
+    const n = from + step * i;
+    const label = hideEnd && i === count ? '?' : n;
+    nodes.push(svg('line', { x1: x(n), y1: 64, x2: x(n), y2: 76, class: 'nl-tick' }));
+    nodes.push(svg('text', { x: x(n), y: 96, class: `nl-label${i === count ? ' nl-mark' : ''}` }, label));
+    if (i > 0) {
+      const p = from + step * (i - 1);
+      const mid = (x(p) + x(n)) / 2;
+      nodes.push(svg('path', { d: `M${x(p)} 62 Q${mid} ${Math.max(14, 62 - (x(n) - x(p)) * 0.6)} ${x(n)} 62`, class: 'jump-arc', style: `--i:${i}` }));
+      if (step > 1 && count <= 10) nodes.push(svg('text', { x: mid, y: Math.max(22, 50 - (x(n) - x(p)) * 0.3), class: 'jump-label' }, `+${step}`));
+    }
+  }
+  return h('div.visual.visual-jumps', null,
+    svg('svg', { viewBox: '0 0 340 106', role: 'img', 'aria-label': `${count} jumps of ${step} from ${from}` }, nodes));
+};
+
+/* ------------------------------------------------------------------ */
 /* Bar models                                                          */
 /* ------------------------------------------------------------------ */
 
@@ -189,7 +244,7 @@ export const renderBarModel = (model) => {
     r.segments.forEach((g, j) => {
       const x0 = edges[i][j];
       const x1 = edges[i][j + 1];
-      nodes.push(svg('rect', { x: x0, y, width: Math.max(2, x1 - x0), height: rowH, class: `bm-seg${g.text === '?' || g.text?.endsWith(': ?') ? ' bm-unknown' : ''}` }));
+      nodes.push(svg('rect', { x: x0, y, width: Math.max(2, x1 - x0), height: rowH, style: `--i:${i * 3 + j}`, class: `bm-seg${g.text === '?' || g.text?.endsWith(': ?') ? ' bm-unknown' : ''}` }));
       if (g.text) {
         // Text too wide for a short segment goes under the bar instead of overflowing it.
         const fits = g.text.length * 8.5 <= x1 - x0;
@@ -246,6 +301,8 @@ const RENDERERS = {
   numberLine: renderNumberLine,
   fraction: renderFraction,
   bar: renderBarModel,
+  column: renderColumn,
+  jumps: renderJumps,
 };
 
 /**

@@ -15,7 +15,8 @@ import { loadPack } from '../../data/packs.js';
 import { downloadBackup, readBackupFile, restoreAll, validateBackup } from '../../data/backup.js';
 import { statusOf } from '../../engine/mastery.js';
 import { dayKey, currentStreak } from '../../engine/rewards.js';
-import { openProfileEditor, statusPill } from '../components/common.js';
+import { openProfileEditor, statusPill, toggle } from '../components/common.js';
+import { listVoices, getVoiceSettings, setVoiceSettings, speak } from '../../core/speech.js';
 
 const PIN_KEY = 'parentPin';
 const ACTIVITY_DAYS = 14;
@@ -222,6 +223,45 @@ const backupPanel = () => {
       fileInput));
 };
 
+/** Voice settings: recorded voice on/off, device voice, speed and pitch. */
+const voicePanel = () => {
+  const current = getVoiceSettings();
+  const voices = listVoices();
+  const recorded = toggle('recorded', 'Use the recorded friendly voice (works offline)', current.recorded);
+  const enabled = toggle('enabled', 'Read aloud', current.enabled);
+  const select = h('select', { name: 'voiceURI' },
+    h('option', { value: '' }, 'Best available (automatic)'),
+    voices.map((v) => h('option', { value: v.voiceURI, selected: v.voiceURI === current.voiceURI }, `${v.name}${v.offline ? '' : ' (needs internet)'}`)));
+  const rate = h('input', { type: 'range', min: 0.6, max: 1.2, step: 0.05, value: String(current.rate), 'aria-label': 'Speed' });
+  const pitch = h('input', { type: 'range', min: 0.8, max: 1.5, step: 0.05, value: String(current.pitch), 'aria-label': 'Pitch' });
+
+  const read = () => ({
+    enabled: enabled.querySelector('input').checked,
+    recorded: recorded.querySelector('input').checked,
+    voiceURI: select.value,
+    rate: Number(rate.value),
+    pitch: Number(pitch.value),
+  });
+  const save = async () => {
+    const next = read();
+    setVoiceSettings(next);
+    await setSetting('voice', next);
+  };
+  for (const el of [enabled, recorded, select, rate, pitch]) el.addEventListener('change', save);
+
+  return h('section.panel.form', null,
+    h('h2', null, 'Voice'),
+    enabled,
+    recorded,
+    h('label.field', null, h('span', null, 'Device voice (used for sentences that are not recorded)'), select),
+    h('label.field', null, h('span', null, 'Speed'), rate),
+    h('label.field', null, h('span', null, 'Pitch'), pitch),
+    h('div.button-row', null,
+      h('button.btn.btn-secondary', { type: 'button', onclick: async () => { await save(); speak('Great job! 8 plus 5 equals 13.'); } }, '🔊 Test recorded voice'),
+      h('button.btn.btn-ghost', { type: 'button', onclick: async () => { await save(); speak(`Let's count: ${Math.floor(Math.random() * 90) + 10} and 7 more.`); } }, '🔊 Test device voice')),
+    h('p.muted', null, 'Tip: for a better device voice, on Android open Settings → Accessibility → Text-to-speech, choose “Speech Services by Google” and download a voice. On Windows open Settings → Time & language → Speech → Add voices.'));
+};
+
 const pinPanel = (hasPin) => h('section.panel', null,
   h('h2', null, 'Parent PIN'),
   h('p.muted', null, hasPin ? 'A PIN protects this area.' : 'No PIN set. Children can open this area.'),
@@ -264,6 +304,7 @@ export const renderParent = async (view) => {
     h('h1.page-title', null, 'Progress'),
     profiles.length ? reports : h('p.muted', null, 'No learners yet. Add one below.'),
     learnersPanel(profiles),
+    voicePanel(),
     backupPanel(),
     pinPanel(hasPin),
   );

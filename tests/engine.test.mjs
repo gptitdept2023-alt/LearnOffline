@@ -116,3 +116,36 @@ test('practice sets have the requested size and no repeated prompts', () => {
   const mix = buildMixSet([skill, { skillId: 'y', questions: [{ type: 'numeric', prompt: '1+1', answer: 2 }] }], false, rng);
   assert.ok(mix.length <= 10 && mix.some((q) => q.skillId === 'y'));
 });
+
+test('every technique leads to the question answer', async () => {
+  const { methodFor } = await import('../js/engine/techniques.js');
+  const rng = seededRng(11);
+  let checked = 0;
+  for (const type of Object.keys(GENERATORS)) {
+    for (let i = 0; i < 300; i += 1) {
+      const q = generate({ type, ...PARAMS[type] }, rng);
+      const m = methodFor(q);
+      if (!q.method) continue;
+      assert.ok(m, `${type}: method ${q.method.kind} resolves`);
+      assert.ok(m.steps.length >= 2 && m.guided.length >= 1, `${type}: has steps and guided`);
+      for (const s of m.steps) assert.ok(s.text && !/undefined|NaN/.test(s.text), `${type}: step text ${s.text}`);
+      for (const g of m.guided) assert.ok(!/undefined|NaN/.test(g.prompt), `${type}: guided ${g.prompt}`);
+      // The last guided step answers the whole question (except remainders and kinder taps, which equal it too).
+      const last = m.guided[m.guided.length - 1];
+      if (q.method.kind !== 'longDivide' && q.method.kind !== 'equivalentFraction' && q.method.kind !== 'sameDenominator') {
+        assert.equal(String(last.answer), String(q.answer), `${type}/${q.method.kind}: ${q.prompt}`);
+      }
+      checked += 1;
+    }
+  }
+  assert.ok(checked > 3000);
+});
+
+test('column subtraction renames across zeros correctly', async () => {
+  const { methodFor } = await import('../js/engine/techniques.js');
+  const m = methodFor({ method: { kind: 'columnSub', a: 6002, b: 2748 } });
+  const digitsFromGuided = m.guided.slice(0, -1).map((g) => g.answer).reverse().join('');
+  assert.equal(Number(digitsFromGuided), 6002 - 2748);
+  const add = methodFor({ method: { kind: 'columnAdd', a: 9876, b: 4567 } });
+  assert.equal(add.steps.at(-2).visual.result, 9876 + 4567);
+});

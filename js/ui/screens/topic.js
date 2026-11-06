@@ -8,6 +8,7 @@ import { getState } from '../../core/state.js';
 import { getMasteryMap, getRewards } from '../../data/repo.js';
 import { statusOf } from '../../engine/mastery.js';
 import { learnerBar, statusPill } from '../components/common.js';
+import { skillHasGuided } from './lesson.js';
 
 export const renderTopic = async (view, topicId) => {
   const { profile, indexed } = getState();
@@ -28,9 +29,11 @@ export const renderTopic = async (view, topicId) => {
           h('strong', null, skill.title),
           statusPill(status)),
         rec && h('small.muted', null, `Score ${Math.round(rec.score)} · ${rec.attempts} questions answered`),
-        h('div.skill-actions', null,
-          skill.lesson && h('a.btn.btn-secondary', { href: `#/lesson/${id}` }, '📖 ', t('lesson')),
-          h('a.btn.btn-primary', { href: `#/practice/${id}` }, '✏️ ', t('practice'))));
+        // The learning path: watch and do, try with help, then practise alone.
+        h('ol.skill-path', null,
+          skill.lesson && h('li', null, h('a.path-step.path-learn', { href: `#/lesson/${id}` }, h('span.path-icon', null, '📖'), h('span', null, h('strong', null, 'Learn'), h('small', null, 'Watch and do')))),
+          skillHasGuided(skill) && h('li', null, h('a.path-step.path-guided', { href: `#/guided/${id}` }, h('span.path-icon', null, '🧭'), h('span', null, h('strong', null, 'Try with help'), h('small', null, 'Step by step')))),
+          h('li', null, h('a.path-step.path-practice', { href: `#/practice/${id}` }, h('span.path-icon', null, '✏️'), h('span', null, h('strong', null, t('practice')), h('small', null, 'On my own'))))));
     })),
   );
 };

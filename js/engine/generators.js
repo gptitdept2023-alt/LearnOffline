@@ -154,6 +154,7 @@ const numberBond = ({ maxWhole = 10, minWhole = 5 }, rng) => {
     visual: { kind: 'bond', whole, parts: [part, '?'] },
     hint: `Start at ${part} and count on until you reach ${whole}.`,
     explain: `${part} + ${whole - part} = ${whole}`,
+    method: { kind: 'subtractBond', a: whole, b: part },
   };
 };
 
@@ -177,7 +178,15 @@ const addition = ({ min = 0, max = 10, maxSum, regroup }, rng) => {
     visual: sum <= 20 ? { kind: 'tenFrames', value: a, extra: b } : undefined,
     hint: sum <= 20 ? 'Make a ten first, then add what is left.' : 'Add the ones first, then the tens. Carry if the ones make 10 or more.',
     explain: `${fmt(a)} + ${fmt(b)} = ${fmt(sum)}`,
+    method: additionMethod(a, b),
   };
+};
+
+/** Which Singapore technique fits an addition: count on, make ten, or column method. */
+const additionMethod = (a, b) => {
+  if (a + b <= 10) return { kind: 'countOn', a, b };
+  if (a <= 9 && b <= 9) return { kind: 'makeTen', a, b };
+  return { kind: 'columnAdd', a, b };
 };
 
 /** Subtraction with a non-negative answer. */
@@ -196,6 +205,7 @@ const subtraction = ({ min = 0, max = 10, regroup }, rng) => {
     answer: a - b,
     hint: a <= 20 ? `Count back ${b} from ${a}, or think: ${b} + ? = ${a}.` : 'Subtract the ones first. If you cannot, rename 1 ten as 10 ones.',
     explain: `${fmt(a)} − ${fmt(b)} = ${fmt(a - b)}`,
+    method: a <= 20 ? { kind: 'subtractBond', a, b } : { kind: 'columnSub', a, b },
   };
 };
 
@@ -216,6 +226,7 @@ const multiplication = ({ tables = [2, 5, 10], maxFactor = 10 }, rng) => {
     visual: a * b <= 40 ? { kind: 'groups', groups: x, each: y } : undefined,
     hint: `Think of ${x} groups of ${y}. Skip-count by ${y}.`,
     explain: `${x} × ${y} = ${a * b}`,
+    method: { kind: 'skipCount', groups: x, each: y },
   };
 };
 
@@ -231,6 +242,7 @@ const division = ({ tables = [2, 5, 10], maxFactor = 10 }, rng) => {
     visual: dividend <= 40 ? { kind: 'groups', groups: quotient, each: divisor, shareView: true } : undefined,
     hint: `Which number times ${divisor} makes ${dividend}?`,
     explain: `${divisor} × ${quotient} = ${dividend}, so ${dividend} ÷ ${divisor} = ${quotient}`,
+    method: { kind: 'divideByFact', dividend, divisor },
   };
 };
 
@@ -244,6 +256,7 @@ const multiplyLong = ({ digits = 2, byDigits = 1 }, rng) => {
     answer: a * b,
     hint: byDigits === 1 ? 'Multiply the ones, then the tens, then the hundreds. Remember to carry.' : `Split ${b} into ${Math.floor(b / 10) * 10} and ${b % 10}, multiply each, then add.`,
     explain: `${fmt(a)} × ${b} = ${fmt(a * b)}`,
+    method: { kind: 'splitMultiply', a, b },
   };
 };
 
@@ -267,6 +280,7 @@ const divideLong = ({ digits = 2, remainder = false }, rng) => {
     answer: askRemainder ? r : q,
     hint: 'Divide the biggest place first. Bring down the next digit and divide again.',
     explain: `${fmt(dividend)} ÷ ${divisor} = ${fmt(q)}${r ? ` remainder ${r}` : ''}`,
+    method: { kind: 'longDivide', dividend, divisor },
   };
 };
 
@@ -333,6 +347,7 @@ const equivalentFraction = ({ maxDen = 12 }, rng) => {
     visual: { kind: 'fraction', numerator: num, denominator: den, shape: 'bar' },
     hint: `The bottom was multiplied by ${factor}. Do the same to the top.`,
     explain: `${num} × ${factor} = ${num * factor}, so ${num}/${den} = ${num * factor}/${den * factor}`,
+    method: { kind: 'equivalentFraction', num, den, factor },
   };
 };
 
@@ -350,6 +365,7 @@ const fractionSameDen = ({ maxDen = 12 }, rng) => {
     answer: `${num}/${den}`,
     hint: 'The parts are the same size, so keep the bottom number and work with the top numbers.',
     explain: `${x} ${add ? '+' : '−'} ${y} = ${num}, so the answer is ${num}/${den} (any equal fraction is accepted).`,
+    method: { kind: 'sameDenominator', x, y, den, op: add ? '+' : '−' },
   };
 };
 
@@ -390,7 +406,7 @@ const decimals = ({ max = 10 }, rng) => {
  *  - compare:   one quantity is more/less than another
  *  - multiply:  one quantity is n times another (P2+)
  */
-const wordProblem = ({ kinds = ['partWhole'], max = 20, maxTimes = 5 }, rng) => {
+const wordProblemBase = ({ kinds = ['partWhole'], max = 20, maxTimes = 5 }, rng) => {
   const kind = pick(kinds, rng);
   const [p, q] = twoNames(rng);
   const item = pick(ITEMS, rng);
@@ -410,6 +426,7 @@ const wordProblem = ({ kinds = ['partWhole'], max = 20, maxTimes = 5 }, rng) => 
         },
         hint: 'The parts are known and the whole is missing. Add the parts.',
         explain: `${fmt(a)} + ${fmt(b)} = ${fmt(a + b)}`,
+        calc: [a, '+', b],
       };
     }
     return {
@@ -422,6 +439,7 @@ const wordProblem = ({ kinds = ['partWhole'], max = 20, maxTimes = 5 }, rng) => 
       },
       hint: 'The whole and one part are known. Subtract to find the other part.',
       explain: `${fmt(a + b)} − ${fmt(a)} = ${fmt(b)}`,
+      calc: [a + b, '−', a],
     };
   }
 
@@ -450,6 +468,7 @@ const wordProblem = ({ kinds = ['partWhole'], max = 20, maxTimes = 5 }, rng) => 
         model: m,
         hint: `${p}'s bar is as long as ${q}'s bar plus ${fmt(diff)} more.`,
         explain: `${fmt(small)} + ${fmt(diff)} = ${fmt(big)}`,
+        calc: [small, '+', diff],
       };
     }
     if (variant === 'findSmall') {
@@ -462,6 +481,7 @@ const wordProblem = ({ kinds = ['partWhole'], max = 20, maxTimes = 5 }, rng) => 
         model: m,
         hint: `${q}'s bar is ${p}'s bar with ${fmt(diff)} taken away.`,
         explain: `${fmt(big)} − ${fmt(diff)} = ${fmt(small)}`,
+        calc: [big, '−', diff],
       };
     }
     const m = rows(fmt(big), '?', fmt(small));
@@ -473,6 +493,7 @@ const wordProblem = ({ kinds = ['partWhole'], max = 20, maxTimes = 5 }, rng) => 
       model: m,
       hint: 'Line up the two bars. The extra part of the longer bar is the difference.',
       explain: `${fmt(big)} − ${fmt(small)} = ${fmt(diff)}`,
+      calc: [big, '−', small],
     };
   }
 
@@ -500,7 +521,15 @@ const wordProblem = ({ kinds = ['partWhole'], max = 20, maxTimes = 5 }, rng) => 
     explain: findTotal
       ? `${times + 1} units × ${unit} = ${unit * (times + 1)}`
       : `${times} units × ${unit} = ${unit * times}`,
+    calc: findTotal ? [times + 1, '×', unit] : [times, '×', unit],
   };
+};
+
+/** Word problem tagged with the bar-model technique (draw, label, choose operation, calculate). */
+const wordProblem = (params, rng) => {
+  const { calc, ...q } = wordProblemBase(params, rng);
+  const [a, op, b] = calc;
+  return { ...q, method: { kind: 'barModel', model: q.model, op, a, b, answer: q.answer } };
 };
 
 /* ------------------------------------------------------------------ */
@@ -509,15 +538,18 @@ const wordProblem = ({ kinds = ['partWhole'], max = 20, maxTimes = 5 }, rng) => 
 
 // Emoji render offline from the device's own font, so no image files are needed.
 const PICTURES = [
-  { emoji: '🍎', many: 'apples' },
-  { emoji: '⭐', many: 'stars' },
-  { emoji: '🐟', many: 'fish' },
-  { emoji: '🌸', many: 'flowers' },
-  { emoji: '🚗', many: 'cars' },
-  { emoji: '🐥', many: 'chicks' },
-  { emoji: '🎈', many: 'balloons' },
-  { emoji: '🍌', many: 'bananas' },
+  { emoji: '🍎', one: 'apple', many: 'apples' },
+  { emoji: '⭐', one: 'star', many: 'stars' },
+  { emoji: '🐟', one: 'fish', many: 'fish' },
+  { emoji: '🌸', one: 'flower', many: 'flowers' },
+  { emoji: '🚗', one: 'car', many: 'cars' },
+  { emoji: '🐥', one: 'chick', many: 'chicks' },
+  { emoji: '🎈', one: 'balloon', many: 'balloons' },
+  { emoji: '🍌', one: 'banana', many: 'bananas' },
 ];
+
+/** "1 apple", "3 apples". */
+const countOf = (n, pic) => `${n} ${n === 1 ? pic.one : pic.many}`;
 
 const SHAPES = ['circle', 'square', 'triangle', 'rectangle', 'star', 'heart'];
 
@@ -538,6 +570,7 @@ const countPictures = ({ max = 10 }, rng) => {
     choices: nearbyNumberChoices(n, rng, 1, max + 2),
     visual: { kind: 'pictures', emoji: pic.emoji, count: n },
     hint: 'Touch each one as you count. Say the numbers out loud.',
+    method: { kind: 'tapCount', emoji: pic.emoji, count: n },
     young: true,
   };
 };
@@ -628,10 +661,11 @@ const addPictures = ({ max = 10 }, rng) => {
   const pic = pick(PICTURES, rng);
   return {
     answerType: 'choice',
-    prompt: `${a} ${pic.many} and ${b} more. How many ${pic.many} in all?`,
+    prompt: `${countOf(a, pic)} and ${b} more. How many ${pic.many} in all?`,
     answer: String(a + b),
     choices: nearbyNumberChoices(a + b, rng, 1, max + 2),
     visual: { kind: 'pictureAdd', emoji: pic.emoji, a, b },
+    method: { kind: 'countAll', emoji: pic.emoji, a, b },
     hint: `Start at ${a} and count on ${b} more.`,
     young: true,
   };
@@ -644,10 +678,11 @@ const takeAwayPictures = ({ max = 10 }, rng) => {
   const pic = pick(PICTURES, rng);
   return {
     answerType: 'choice',
-    prompt: `There are ${a} ${pic.many}. ${b} go away. How many are left?`,
+    prompt: `There are ${countOf(a, pic)}. ${b} ${b === 1 ? 'goes' : 'go'} away. How many are left?`,
     answer: String(a - b),
     choices: nearbyNumberChoices(a - b, rng, 0, max),
     visual: { kind: 'pictureTakeAway', emoji: pic.emoji, a, b },
+    method: { kind: 'takeAwayCount', emoji: pic.emoji, a, b },
     hint: 'Cover the ones that went away and count the rest.',
     young: true,
   };
