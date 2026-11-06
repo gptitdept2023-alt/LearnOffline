@@ -1,6 +1,6 @@
 {
   "packId": "math-g4",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "subject": "math",
   "title": "Math · Grade 4",
   "topics": [
@@ -924,6 +924,63 @@
               "multiply"
             ],
             "max": 900,
+            "maxTimes": 9
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g4-challenge",
+      "title": "Challenge zone",
+      "icon": "⭐",
+      "challenge": true,
+      "summary": "Ready for more? Bigger numbers and harder problems, a step towards Grade 5.",
+      "skills": [
+        {
+          "skillId": "g4-ch-big-numbers",
+          "title": "Numbers to 1,000,000",
+          "generator": {
+            "type": "placeValue",
+            "digits": 6
+          }
+        },
+        {
+          "skillId": "g4-ch-multiply",
+          "title": "3-digit × 2-digit",
+          "generator": {
+            "type": "multiplyLong",
+            "digits": 3,
+            "byDigits": 2
+          }
+        },
+        {
+          "skillId": "g4-ch-divide",
+          "title": "Divide 4-digit numbers",
+          "generator": {
+            "type": "divideLong",
+            "digits": 4,
+            "remainder": true
+          }
+        },
+        {
+          "skillId": "g4-ch-factors",
+          "title": "Factors and multiples to 144",
+          "generator": {
+            "type": "factorsMultiples",
+            "max": 144
+          }
+        },
+        {
+          "skillId": "g4-ch-word",
+          "title": "Mixed word problems",
+          "generator": {
+            "type": "wordProblem",
+            "kinds": [
+              "partWhole",
+              "compare",
+              "multiply"
+            ],
+            "max": 9000,
             "maxTimes": 9
           }
         }

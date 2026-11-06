@@ -19,12 +19,13 @@ import { renderParent } from './ui/screens/parent.js';
 import { renderGuided } from './ui/screens/guided.js';
 import { renderShop } from './ui/screens/shop.js';
 import { renderGames, renderGame } from './ui/screens/games.js';
+import { renderLevels } from './ui/screens/levels.js';
 import { setSfxEnabled } from './core/sfx.js';
 import { setVoiceSettings, loadRecordedVoice } from './core/speech.js';
 import { getSetting } from './data/repo.js';
 
 /** Screens that need an active learner. */
-const LEARNER_SCREENS = new Set(['home', 'topic', 'lesson', 'guided', 'practice', 'results', 'badges', 'shop', 'games', 'game']);
+const LEARNER_SCREENS = new Set(['home', 'topic', 'lesson', 'guided', 'practice', 'results', 'badges', 'shop', 'games', 'game', 'levels']);
 
 const registerRoutes = () => {
   route('', renderStart);
@@ -39,6 +40,7 @@ const registerRoutes = () => {
   route('shop', renderShop);
   route('games', renderGames);
   route('game', renderGame);
+  route('levels', renderLevels);
   setNotFound(renderStart);
 
   setBeforeEach(async (name) => {

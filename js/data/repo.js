@@ -6,9 +6,10 @@
 import { STORES, tx, get, getAll, getAllByIndex, put, promisify } from './db.js';
 import { applyAnswer, applySetResult, emptyMastery, statusOf } from '../engine/mastery.js';
 import { applySet, applyActivity, awardBadges, emptyRewards, dayKey } from '../engine/rewards.js';
-import { ensureQuest, progressQuest, questComplete, chestStarsFor } from '../engine/quests.js';
+import { ensureQuest, progressQuest, questComplete, chestStarsFor, afterClaim } from '../engine/quests.js';
 import { buy, equip } from '../engine/shop.js';
 import { normaliseGoal, weekStart } from '../engine/goals.js';
+import { applyLevel } from '../engine/levels.js';
 import { uid } from '../core/random.js';
 
 export const MAX_PROFILES = 6;
@@ -105,9 +106,10 @@ export const getSessionsSince = (profileId, sinceMs) =>
  * @param {{skillId: string, correct: boolean, given: string, prompt: string, timeMs: number}[]} args.answers
  * @param {Map<string, string[]>} args.topicSkills topicId -> skillIds, for topics touched by this set.
  * @param {boolean} [args.young] Kinder pack (smaller daily-quest targets).
+ * @param {boolean} [args.challenge] A Challenge-zone set (counts for the bonus quest).
  * @returns {Promise<{rewards: Object, earnedStars: number, newBadges: string[], mastery: Map}>}
  */
-export const saveSetResult = ({ profileId, packId, label, answers, topicSkills, young = false }) =>
+export const saveSetResult = ({ profileId, packId, label, answers, topicSkills, young = false, challenge = false }) =>
   tx([STORES.attempts, STORES.mastery, STORES.rewards, STORES.sessions], 'readwrite', async (s) => {
     const now = Date.now();
     const masteryStore = s[STORES.mastery];
@@ -160,7 +162,8 @@ export const saveSetResult = ({ profileId, packId, label, answers, topicSkills, 
     const current = { ...emptyRewards(profileId), ...(await promisify(s[STORES.rewards].get(profileId))) };
     const result = applySet(current, { correct, total: answers.length, masteredCount, topicCompleted });
     // 6. Daily quest progress, in the same write.
-    const quest = withQuestEvent(result.rewards, { kind: 'set', correct, stars: result.earnedStars }, young);
+    const perfect = answers.length > 0 && correct === answers.length;
+    const quest = withQuestEvent(result.rewards, { kind: 'set', correct, stars: result.earnedStars, perfect, challenge }, young);
     result.rewards = quest.rewards;
     result.questJustCompleted = quest.justCompleted;
     s[STORES.rewards].put(result.rewards);
@@ -232,14 +235,16 @@ export const claimQuestChest = (profileId, young) => updateRewards(profileId, (c
   const r = ensureQuest(current, dayKey(), young);
   if (!questComplete(r.quest)) throw new Error('Finish all three quest goals first.');
   if (r.quest.claimed) throw new Error('You already opened today’s chest.');
-  const stars = chestStarsFor(young);
+  const tier = r.quest.tier || 1;
+  const stars = chestStarsFor(young, tier);
+  const next = afterClaim(r.quest);
   const { rewards, newBadges } = awardBadges({
     ...r,
     stars: r.stars + stars,
     questsDone: (r.questsDone || 0) + 1,
-    quest: { ...r.quest, claimed: true },
+    quest: next,
   });
-  return { rewards, stars, newBadges };
+  return { rewards, stars, newBadges, unlockedTier: next.tier !== tier ? next.tier : null };
 });
 
 /** Buy a shop item (and wear it). Throws a friendly error if not enough stars. */
@@ -247,6 +252,16 @@ export const buyShopItem = (profileId, itemId) => updateRewards(profileId, (curr
 
 /** Wear an owned item, or take one off (itemId null). */
 export const equipShopItem = (profileId, slot, itemId) => updateRewards(profileId, (current) => ({ rewards: equip(current, slot, itemId) }));
+
+/**
+ * Save a level result: best stars, first-clear bonus (bigger for bosses), badges.
+ * @returns {Promise<{rewards: Object, bonus: number, firstClear: boolean, best: number, newBadges: string[]}>}
+ */
+export const recordLevel = (profileId, n, stars, young) => updateRewards(profileId, (current) => {
+  const level = applyLevel(current, n, stars, young);
+  const badges = awardBadges(level.rewards);
+  return { ...level, rewards: badges.rewards, newBadges: badges.newBadges };
+});
 
 /** Save a parent-set goal on the learner's profile. */
 export const saveGoal = async (profileId, goal) => {

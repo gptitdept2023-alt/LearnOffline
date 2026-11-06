@@ -25,6 +25,9 @@ export const BADGES = Object.freeze([
   { id: 'first-buy', icon: '🛍️', title: 'Dress up', description: 'Buy something in the shop.', test: (r) => (r.owned || []).length >= 1 },
   { id: 'gamer', icon: '🎮', title: 'Game time', description: 'Play a game.', test: (r) => Object.keys(r.gameBest || {}).length >= 1 },
   { id: 'speedy', icon: '⚡', title: 'Lightning fast', description: 'Score 20 in Speed Round.', test: (r) => (r.gameBest?.speed || 0) >= 20 },
+  { id: 'boss-1', icon: '🛡️', title: 'Boss beater', description: 'Beat your first boss level.', test: (r) => (r.bossesBeaten || 0) >= 1 },
+  { id: 'level-50', icon: '🧗', title: 'Halfway hero', description: 'Pass level 50.', test: (r) => (r.levels?.[50] || 0) > 0 },
+  { id: 'level-100', icon: '🌠', title: 'Level legend', description: 'Pass all 100 levels.', test: (r) => (r.levels?.[100] || 0) > 0 },
 ]);
 
 export const emptyRewards = (profileId) => ({
@@ -42,6 +45,8 @@ export const emptyRewards = (profileId) => ({
   quest: null,
   questsDone: 0,
   gameBest: {},
+  levels: {},
+  bossesBeaten: 0,
 });
 
 /** Stars the child can spend in the shop. */

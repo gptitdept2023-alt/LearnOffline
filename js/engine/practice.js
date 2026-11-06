@@ -66,9 +66,9 @@ export const buildSkillSet = (skill, young = false, rng = Math.random) =>
 /**
  * A Daily mix: questions spread across several skills, then shuffled.
  * @param {Object[]} skills Skills chosen by pickDailyMix, highest priority first.
+ * @param {number} [size] Questions in the set (levels use longer sets).
  */
-export const buildMixSet = (skills, young = false, rng = Math.random) => {
-  const size = setSizeFor(young);
+export const buildMixSet = (skills, young = false, rng = Math.random, size = setSizeFor(young)) => {
   if (!skills.length) return [];
   const per = Math.ceil(size / skills.length);
   const all = skills.flatMap((s) => questionsForSkill(s, per, rng));

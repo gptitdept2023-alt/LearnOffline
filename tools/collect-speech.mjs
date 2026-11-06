@@ -43,7 +43,10 @@ for (const cheer of ['Perfect!', 'Great work!', 'Good effort!', 'Keep practising
 add('How many? Pop the right number!');
 add('Quest complete! You found 10 stars!');
 add('Quest complete! You found 15 stars!');
-for (let n = 0; n <= 10; n += 1) add(`Pop the balloon with ${n}!`);
+for (let n = 0; n <= 10; n += 1) { add(`Pop the balloon with ${n}!`); add(`Where is ${n}?`); }
+add('Find the pairs! Match each one to its number.');
+add('Find two bubbles that make 5.');
+add('Find two bubbles that make 10.');
 for (let a = 0; a <= 5; a += 1) {
   for (let b = 0; b <= 5; b += 1) {
     add(`Pop the answer to ${a} + ${b}`);
@@ -72,8 +75,10 @@ for (const entry of index.packs) {
           }
         }
       }
-      // Young packs: sample generated questions exhaustively.
-      if (entry.young && skill.generator) {
+      // Young packs: sample generated questions exhaustively. Challenge-zone
+      // skills (numbers to 100, story sums…) have too many sentences to record,
+      // so they use the device voice.
+      if (entry.young && skill.generator && !topic.challenge) {
         const rng = seededRng(skill.skillId.length * 7919);
         let quiet = 0;
         while (quiet < 3000) {

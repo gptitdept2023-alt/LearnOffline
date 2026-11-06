@@ -9,7 +9,8 @@ import { t } from '../../core/i18n.js';
 import { navigate } from '../../core/router.js';
 import { getState, setLastResult } from '../../core/state.js';
 import { speak, canSpeak, stopSpeaking } from '../../core/speech.js';
-import { getMasteryMap, saveSetResult } from '../../data/repo.js';
+import { getMasteryMap, saveSetResult, recordLevel } from '../../data/repo.js';
+import { buildLevels, levelStars, isUnlocked, WORLDS } from '../../engine/levels.js';
 import { topicSkillsFor } from '../../data/packs.js';
 import { isCorrect, isBlank } from '../../engine/answers.js';
 import { pickDailyMix } from '../../engine/mastery.js';
@@ -19,19 +20,43 @@ import { renderVisual, renderBarModel, shapeSvg } from '../components/visuals.js
 import { methodPlayer } from '../components/interactive.js';
 import { methodFor } from '../../engine/techniques.js';
 import { playSfx } from '../../core/sfx.js';
-import { mascot, pickLine } from '../components/mascot.js';
+import { mascot, mascotSays, pickLine } from '../components/mascot.js';
 import { getRewards } from '../../data/repo.js';
 import { lookOf } from '../../engine/shop.js';
 
 const MIX_ID = 'mix';
+const CHALLENGE_ID = 'challenge';
+
+/** Skill ids of the pack's Challenge zone topics (harder, stretch content). */
+const challengeSkillIds = (indexed) =>
+  indexed.pack.topics.filter((tp) => tp.challenge).flatMap((tp) => tp.skills.map((s) => s.skillId));
+
+const LEVEL_PREFIX = 'level-';
+
+/** The level for a "level-12" route, or null. */
+const levelFor = (indexed, skillId) => {
+  if (!String(skillId).startsWith(LEVEL_PREFIX)) return null;
+  const n = Number(skillId.slice(LEVEL_PREFIX.length));
+  return buildLevels(indexed).find((l) => l.n === n) || null;
+};
 
 /** Build the questions for this route. */
-const buildQuestions = async (profile, indexed, skillId) => {
+const buildQuestions = async (profile, indexed, skillId, rewards) => {
   const young = indexed.pack.young;
-  if (skillId === MIX_ID) {
+  if (String(skillId).startsWith(LEVEL_PREFIX)) {
+    const level = levelFor(indexed, skillId);
+    if (!level) throw new Error('That level was not found.');
+    if (!isUnlocked(level.n, rewards.levels)) return { locked: level };
+    const skills = level.skillIds.map((id) => indexed.skillById.get(id)).filter(Boolean);
+    return { label: level.boss ? `Boss: ${level.title}` : `Level ${level.n}`, questions: buildMixSet(skills, young, Math.random, level.size), level };
+  }
+  if (skillId === MIX_ID || skillId === CHALLENGE_ID) {
+    const pool = skillId === CHALLENGE_ID ? challengeSkillIds(indexed) : indexed.skillOrder;
+    if (!pool.length) throw new Error('There are no Challenge questions for this grade yet.');
     const mastery = await getMasteryMap(profile.profileId);
-    const ids = pickDailyMix(indexed.skillOrder, mastery, young ? 2 : 4);
-    return { label: t('dailyMix'), questions: buildMixSet(ids.map((id) => indexed.skillById.get(id)), young) };
+    const ids = pickDailyMix(pool, mastery, young ? 2 : 4);
+    const label = skillId === CHALLENGE_ID ? '🚀 Challenge' : t('dailyMix');
+    return { label, questions: buildMixSet(ids.map((id) => indexed.skillById.get(id)), young) };
   }
   const skill = indexed.skillById.get(skillId);
   if (!skill) throw new Error('That skill was not found.');
@@ -67,17 +92,26 @@ const answerInput = (question, onSubmit) => {
 
 export const renderPractice = async (view, skillId) => {
   const { profile, indexed } = getState();
-  const { label, questions } = await buildQuestions(profile, indexed, skillId);
+  const rewards = await getRewards(profile.profileId);
+  const { label, questions, level = null, locked } = await buildQuestions(profile, indexed, skillId, rewards);
+  if (locked) {
+    toast(`Level ${locked.n} is locked. Pass level ${locked.n - 1} first!`, 'info');
+    navigate('levels');
+    return;
+  }
   if (!questions.length) throw new Error('No questions are available for this practice yet.');
 
   const young = indexed.pack.young;
-  const look = lookOf(await getRewards(profile.profileId));
+  const look = lookOf(rewards);
+  const boss = Boolean(level?.boss);
   const answers = [];
   let inARow = 0; // correct answers in a row, for Pip's cheers
   let index = 0;
   let startedAt = 0;
   let saving = false;
-  const exitHref = skillId === MIX_ID ? 'home' : `topic/${encodeURIComponent(indexed.topicBySkill.get(skillId).topicId)}`;
+  const exitHref = level ? 'levels' : skillId === MIX_ID || skillId === CHALLENGE_ID ? 'home' : `topic/${encodeURIComponent(indexed.topicBySkill.get(skillId).topicId)}`;
+  // Challenge sets count for the bonus quest: the Challenge route, any Challenge-zone skill, or a boss.
+  const challenge = boss || skillId === CHALLENGE_ID || Boolean(indexed.topicBySkill.get(skillId)?.challenge);
 
   const stage = h('section.practice-card');
   const progressHost = h('div.practice-progress');
@@ -106,8 +140,17 @@ export const renderPractice = async (view, skillId) => {
         answers,
         topicSkills: topicSkillsFor(indexed, skillIds),
         young: Boolean(young),
+        challenge,
       }), 'Saving…');
-      setLastResult({ ...result, label, answers, skillIds, retry: skillId });
+      let levelResult = null;
+      if (level) {
+        const correct = answers.filter((a) => a.correct).length;
+        const stars = levelStars(level, correct, answers.length);
+        const saved = await recordLevel(profile.profileId, level.n, stars, Boolean(young));
+        levelResult = { ...level, stars, needed: Math.ceil(level.pass * answers.length), ...saved };
+        result.newBadges = [...result.newBadges, ...saved.newBadges];
+      }
+      setLastResult({ ...result, label, answers, skillIds, retry: skillId, level: levelResult });
       navigate('results');
     } catch (error) {
       saving = false;
@@ -188,7 +231,7 @@ export const renderPractice = async (view, skillId) => {
           type: 'button',
           onclick: (e) => { e.currentTarget.replaceWith(methodPlayer(methodFor(question), { compact: true })); },
         }, '🧭 Show me how'),
-        question.hint && h('button.btn.btn-ghost', {
+        question.hint && !boss && h('button.btn.btn-ghost', {
           type: 'button',
           onclick: (e) => { hintBox.hidden = false; e.currentTarget.remove(); if (young || profile.readAloud) speak(question.hint); },
         }, '💡 ', t('hint'))),
@@ -199,6 +242,15 @@ export const renderPractice = async (view, skillId) => {
   };
 
   view.classList.toggle('young', Boolean(young));
+  view.classList.toggle('boss-mode', boss);
+  if (boss) {
+    const need = Math.ceil(level.pass * questions.length);
+    const bossInfo = WORLDS[level.world - 1].boss;
+    const line = `Boss level! Beat ${bossInfo.name}: get ${need} of ${questions.length} right. No hints. You can do it!`;
+    view.append(h('div.boss-banner', null,
+      h('span.boss-icon', { 'aria-hidden': 'true' }, bossInfo.icon),
+      mascotSays(line, { mood: 'think', look, size: 'sm' })));
+  }
   view.append(
     h('header.practice-bar', null,
       h('button.icon-btn', { type: 'button', 'aria-label': 'Stop practice', onclick: quit }, '✕'),

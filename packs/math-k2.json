@@ -1,6 +1,6 @@
 {
   "packId": "math-k2",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "subject": "math",
   "title": "Math · Kinder 2",
   "topics": [
@@ -686,6 +686,62 @@
           },
           "generator": {
             "type": "takeAwayPictures",
+            "max": 10
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "k2-challenge",
+      "title": "Challenge zone",
+      "icon": "⭐",
+      "challenge": true,
+      "summary": "Ready for more? These go a step beyond Kinder: bonds to 10, sums to 20 and numbers to 100.",
+      "skills": [
+        {
+          "skillId": "k2-ch-bonds",
+          "title": "Number bonds to 10",
+          "generator": {
+            "type": "numberBond",
+            "minWhole": 5,
+            "maxWhole": 10
+          }
+        },
+        {
+          "skillId": "k2-ch-add-20",
+          "title": "Add to 20",
+          "generator": {
+            "type": "addition",
+            "min": 2,
+            "max": 10,
+            "maxSum": 20
+          }
+        },
+        {
+          "skillId": "k2-ch-sub-20",
+          "title": "Take away within 20",
+          "generator": {
+            "type": "subtraction",
+            "min": 0,
+            "max": 20
+          }
+        },
+        {
+          "skillId": "k2-ch-numbers-100",
+          "title": "Numbers to 100",
+          "generator": {
+            "type": "numberOrder",
+            "max": 100
+          }
+        },
+        {
+          "skillId": "k2-ch-story",
+          "title": "Story sums",
+          "generator": {
+            "type": "wordProblem",
+            "kinds": [
+              "partWhole"
+            ],
             "max": 10
           }
         }

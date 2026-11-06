@@ -2,6 +2,10 @@
  * Daily quest: three small goals a day ("Finish 2 practice sets", "Play a
  * game"…). Finishing all three unlocks a chest of bonus stars.
  *
+ * Quests come in tiers. Opening a chest unlocks the next, harder tier the
+ * same day: 1 Today's quest -> 2 Bonus quest (Challenge sets, a perfect set)
+ * -> 3 Champion quest. Targets are smaller for Kinder.
+ *
  * The quest for a day is chosen from the day itself, so it is the same all
  * day on every device, needs no network and no stored schedule.
  * Pure and DOM-free.
@@ -14,12 +18,32 @@ const TASKS = {
   games: { icon: '🎮', need: [1, 1], text: () => 'Play a game' },
   correct: { icon: '✅', need: [5, 15], text: (n) => `Get ${n} answers right` },
   stars: { icon: '⭐', need: [10, 20], text: (n) => `Earn ${n} stars` },
+  challenge: { icon: '🚀', need: [1, 1], text: (n) => `Finish ${n} Challenge set${n === 1 ? '' : 's'}` },
+  perfect: { icon: '💯', need: [1, 1], text: (n) => (n === 1 ? 'Get every answer right in a set' : `Get every answer right in ${n} sets`) },
+};
+
+export const MAX_TIER = 3;
+
+/** Names shown on the card, by tier. */
+export const TIER_NAMES = { 1: 'Today’s quest', 2: 'Bonus quest', 3: 'Champion quest' };
+
+/** Harder tiers: [type, need] for [young, older]. */
+const TIER_TASKS = {
+  2: {
+    young: [['challenge', 1], ['perfect', 1], ['games', 2]],
+    older: [['challenge', 1], ['perfect', 1], ['games', 2]],
+  },
+  3: {
+    young: [['challenge', 2], ['correct', 20], ['games', 3]],
+    older: [['challenge', 2], ['perfect', 2], ['correct', 40]],
+  },
 };
 
 /** Optional tasks; "sets" is always in the quest so practice stays central. */
 const OPTIONAL = ['lessons', 'games', 'correct', 'stars'];
 
-export const CHEST_STARS = { young: 10, older: 15 };
+/** Chest size by tier: bigger chests for harder quests. */
+export const CHEST_STARS = { young: [10, 20, 30], older: [15, 30, 45] };
 
 /** Small stable number from a day key (YYYY-MM-DD). */
 const daySeed = (day) => [...day].reduce((n, ch) => (n * 31 + ch.charCodeAt(0)) >>> 0, 7);
@@ -29,13 +53,26 @@ const daySeed = (day) => [...day].reduce((n, ch) => (n * 31 + ch.charCodeAt(0)) 
  * @param {string} day Day key.
  * @param {boolean} young Kinder packs get smaller targets.
  */
-export const newQuest = (day, young) => {
+export const newQuest = (day, young, tier = 1) => {
+  if (tier > 1) {
+    const tasks = TIER_TASKS[tier][young ? 'young' : 'older'].map(([type, need]) => ({ type, need, have: 0 }));
+    return { day, young: Boolean(young), tier, tasks, claimed: false };
+  }
   const seed = daySeed(day);
   const first = OPTIONAL[seed % OPTIONAL.length];
   const rest = OPTIONAL.filter((t) => t !== first);
   const second = rest[Math.floor(seed / 7) % rest.length];
   const tasks = ['sets', first, second].map((type) => ({ type, need: TASKS[type].need[young ? 0 : 1], have: 0 }));
-  return { day, young: Boolean(young), tasks, claimed: false };
+  return { day, young: Boolean(young), tier: 1, tasks, claimed: false };
+};
+
+/**
+ * After a chest is opened: the next tier's quest, or the same quest marked
+ * claimed when the last tier is done for the day.
+ */
+export const afterClaim = (quest) => {
+  const tier = quest.tier || 1;
+  return tier < MAX_TIER ? newQuest(quest.day, quest.young, tier + 1) : { ...quest, claimed: true };
 };
 
 /** The rewards record with a quest for `day` (a new one if the stored one is old). */
@@ -54,6 +91,8 @@ export const progressQuest = (quest, event) => {
     games: event.kind === 'game' ? 1 : 0,
     correct: event.correct || 0,
     stars: event.stars || 0,
+    challenge: event.kind === 'set' && event.challenge ? 1 : 0,
+    perfect: event.kind === 'set' && event.perfect ? 1 : 0,
   };
   return { ...quest, tasks: quest.tasks.map((t) => ({ ...t, have: Math.min(t.need, t.have + (add[t.type] || 0)) })) };
 };
@@ -63,4 +102,4 @@ export const questComplete = (quest) => Boolean(quest) && quest.tasks.every((t) 
 /** Wording and icon for a task, for the screen. */
 export const describeTask = (task) => ({ icon: TASKS[task.type].icon, text: TASKS[task.type].text(task.need) });
 
-export const chestStarsFor = (young) => (young ? CHEST_STARS.young : CHEST_STARS.older);
+export const chestStarsFor = (young, tier = 1) => (young ? CHEST_STARS.young : CHEST_STARS.older)[Math.min(MAX_TIER, tier) - 1];

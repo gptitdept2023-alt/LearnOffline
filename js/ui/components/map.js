@@ -54,12 +54,13 @@ export const learningMap = (topics, mastery, look) => {
     const p = point(i);
     const pr = progress[i];
     const state = pr.done ? 'done' : i === current ? 'current' : i < current ? 'open' : 'ahead';
-    return h(`li.map-level.map-${state}`, { style: { '--x': `${p.x}%`, '--y': `${p.y}px` } },
+    const bonus = topic.challenge ? '.map-bonus' : '';
+    return h(`li.map-level.map-${state}${bonus}`, { style: { '--x': `${p.x}%`, '--y': `${p.y}px` } },
       h('a.map-node', { href: `#/topic/${encodeURIComponent(topic.topicId)}`, 'aria-label': `Level ${i + 1}: ${topic.title}. ${pr.mastered} of ${pr.total} skills mastered.` },
         h('span.map-ring', { style: { '--pct': `${pr.total ? Math.round((pr.mastered / pr.total) * 100) : 0}%` } },
           h('span.map-icon', { 'aria-hidden': 'true' }, pr.done ? '🏆' : topic.icon || i + 1))),
       h('span.map-stars', { 'aria-hidden': 'true' }, [0, 1, 2].map((k) => h(`span${k < pr.stars ? '.on' : ''}`, null, '★'))),
-      h('span.map-label', null, h('small', null, `Level ${i + 1}`), h('strong', null, topic.title)),
+      h('span.map-label', null, h('small', null, topic.challenge ? 'Bonus level' : `Level ${i + 1}`), h('strong', null, topic.title)),
       i === current && h(`span.map-pip${p.x > 50 ? '.map-pip-left' : ''}`, null, mascot({ mood: 'happy', look, size: 'sm' })));
   });
 

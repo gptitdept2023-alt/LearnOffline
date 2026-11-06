@@ -66,6 +66,10 @@ export const statusOf = (record) => {
  *  1. skills due for review (oldest due first)
  *  2. skills being learned, weakest first
  *  3. the next skills not started yet, in course order
+ *  4. mastered skills not due yet, soonest review first ("keep sharp").
+ *     Without this, a child who has mastered everything that was started
+ *     got an empty mix ("No questions are available").
+ * Always returns skills when `skillIds` is not empty.
  * @param {string[]} skillIds All skills in course order.
  * @param {Map<string, Object>} masteryBySkill
  * @param {number} [limit] How many distinct skills to return.
@@ -75,15 +79,18 @@ export const pickDailyMix = (skillIds, masteryBySkill, limit = 4, now = Date.now
   const due = [];
   const learning = [];
   const fresh = [];
+  const keepSharp = [];
   for (const id of skillIds) {
     const rec = masteryBySkill.get(id);
     const status = statusOf(rec);
     if (status === 'notStarted') fresh.push(id);
     else if (rec.nextReviewAt && rec.nextReviewAt <= now) due.push(rec);
     else if (status === 'learning') learning.push(rec);
+    else keepSharp.push(rec);
   }
   due.sort((a, b) => a.nextReviewAt - b.nextReviewAt);
   learning.sort((a, b) => a.score - b.score);
-  const ordered = [...due.map((r) => r.skillId), ...learning.map((r) => r.skillId), ...fresh];
+  keepSharp.sort((a, b) => (a.nextReviewAt || 0) - (b.nextReviewAt || 0));
+  const ordered = [...due.map((r) => r.skillId), ...learning.map((r) => r.skillId), ...fresh, ...keepSharp.map((r) => r.skillId)];
   return [...new Set(ordered)].slice(0, limit);
 };

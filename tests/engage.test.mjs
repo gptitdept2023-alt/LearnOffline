@@ -1,4 +1,5 @@
 import { test } from 'node:test';
+import { readFileSync } from 'node:fs';
 import assert from 'node:assert/strict';
 import { newQuest, ensureQuest, progressQuest, questComplete, describeTask } from '../js/engine/quests.js';
 import { buy, equip, lookOf, ITEMS, itemById } from '../js/engine/shop.js';
@@ -80,4 +81,90 @@ test('games: questions are right and balloons hold the answer once', () => {
   }
   assert.equal(gameStars('speed', 100), 15);
   assert.equal(gameStars('pop', 7), 7);
+});
+
+test('quest tiers: opening a chest unlocks a harder quest, up to the champion quest', async () => {
+  const { afterClaim, chestStarsFor, MAX_TIER } = await import('../js/engine/quests.js');
+  let q = newQuest('2026-11-06', true);
+  assert.equal(q.tier, 1);
+  q = afterClaim(q);
+  assert.equal(q.tier, 2);
+  assert.ok(q.tasks.some((t) => t.type === 'challenge'), 'bonus quest asks for a Challenge set');
+  assert.ok(!questComplete(q));
+  // Plain sets do not count as Challenge sets.
+  q = progressQuest(q, { kind: 'set', correct: 6, perfect: false });
+  assert.equal(q.tasks.find((t) => t.type === 'challenge').have, 0);
+  q = progressQuest(q, { kind: 'set', correct: 6, perfect: true, challenge: true });
+  q = progressQuest(q, { kind: 'game' });
+  q = progressQuest(q, { kind: 'game' });
+  assert.ok(questComplete(q));
+  q = afterClaim(afterClaim(q));
+  assert.equal(q.tier, MAX_TIER);
+  assert.ok(q.claimed, 'the last tier stays claimed for the day');
+  assert.ok(chestStarsFor(true, 3) > chestStarsFor(true, 1));
+  assert.ok(chestStarsFor(false, 2) > chestStarsFor(true, 2));
+});
+
+test('more games: memory, bond bubbles and number line rounds are fair', async () => {
+  const { memoryPairs, memoryScore, bondRound, lineRound, linePoints } = await import('../js/engine/games.js');
+  const rng = seededRng(7);
+  for (let i = 0; i < 200; i += 1) {
+    for (const young of [true, false]) {
+      const pairs = memoryPairs(young, rng);
+      assert.equal(pairs.length, young ? 4 : 6);
+      assert.equal(new Set(pairs.map((p) => p.answer)).size, pairs.length, 'each answer card matches one question');
+      for (const p of pairs) {
+        if (p.picture) assert.equal(String(p.picture.count), p.answer);
+        else assert.equal(String(Function(`return ${p.question.replace('×', '*').replace('÷', '/')}`)()), p.answer, p.question);
+      }
+      const b = bondRound(young, rng);
+      assert.equal(b.bubbles.length, 6);
+      const values = b.bubbles.map((x) => x.value).sort((x, y) => x - y);
+      for (let k = 0; k < 3; k += 1) assert.equal(values[k] + values[5 - k], b.target, 'bubbles pair up to the target');
+      const l = lineRound(young, rng);
+      assert.ok(l.target >= l.min && l.target <= l.max);
+      assert.equal(linePoints(l, l.target), 3);
+      assert.equal(linePoints(l, l.target - l.min > l.max - l.target ? l.min : l.max), 0);
+    }
+  }
+  assert.equal(memoryScore(6, 6), 10);
+  assert.equal(memoryScore(6, 30), 2);
+});
+
+test('100 levels: built from every pack, a boss every 10th level, ramping up', async () => {
+  const { buildLevels, levelStars, applyLevel, currentLevel, isUnlocked, LEVEL_COUNT } = await import('../js/engine/levels.js');
+  const loadPackForTest = (file, young) => {
+    const pack = JSON.parse(readFileSync(new URL(`../packs/${file}`, import.meta.url), 'utf8'));
+    return { pack: { ...pack, young }, skillById: new Map(pack.topics.flatMap((t) => t.skills.map((s) => [s.skillId, s]))) };
+  };
+  const { questionsForSkill } = await import('../js/engine/practice.js');
+  for (const [file, young] of [['math-k2.json', true], ['math-g4.json', false]]) {
+    const indexed = loadPackForTest(file, young);
+    const levels = buildLevels(indexed);
+    assert.equal(levels.length, LEVEL_COUNT);
+    const allSkills = new Set();
+    for (const l of levels) {
+      assert.equal(l.boss, l.n % 10 === 0, `level ${l.n} boss flag`);
+      assert.ok(l.skillIds.length >= 1 && l.skillIds.every((id) => indexed.skillById.has(id)), `level ${l.n} skills exist`);
+      l.skillIds.forEach((id) => allSkills.add(id));
+      if (l.boss) assert.ok(l.size > levels[l.n - 2].size && l.pass >= 0.7, `boss ${l.n} is harder`);
+      // Every skill can fill its share of the set.
+      for (const id of l.skillIds) assert.ok(questionsForSkill(indexed.skillById.get(id), Math.ceil(l.size / l.skillIds.length)).length > 0);
+    }
+    assert.equal(allSkills.size, indexed.skillById.size, `${file}: every skill appears in some level`);
+    assert.ok(levels[95].size >= levels[0].size, 'sets do not get shorter');
+    assert.ok(levels[95].skillIds.length > levels[0].skillIds.length, 'later levels mix in review');
+  }
+  const boss = { n: 10, pass: 0.7 };
+  assert.equal(levelStars(boss, 6, 10), 0, 'a boss needs 70%');
+  assert.equal(levelStars({ n: 3, pass: 0.5 }, 5, 10), 1);
+  assert.equal(levelStars({ n: 3, pass: 0.5 }, 9, 10), 3);
+  let r = { ...emptyRewards('p') };
+  ({ rewards: r } = applyLevel(r, 1, 2, true));
+  assert.ok(isUnlocked(2, r.levels) && !isUnlocked(3, r.levels));
+  assert.equal(currentLevel(r.levels), 2);
+  const first = applyLevel({ ...r, levels: { ...r.levels, 9: 1 } }, 10, 3, true);
+  assert.ok(first.firstClear && first.bonus >= 20 && first.rewards.bossesBeaten === 1);
+  const again = applyLevel(first.rewards, 10, 3, true);
+  assert.equal(again.bonus, 0, 'bonus only the first time');
 });

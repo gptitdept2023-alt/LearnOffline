@@ -212,3 +212,15 @@ test('spoken maths keeps separate clauses separate', async () => {
   const { toSpokenText } = await import('../js/core/speech.js');
   assert.equal(toSpokenText('3 = 3, 8 = 8, then 4 > 1.'), '3 equals 3, 8 equals 8, then 4 is greater than 1.');
 });
+
+test('daily mix is never empty, even when every skill is mastered and not due', async () => {
+  const { pickDailyMix } = await import('../js/engine/mastery.js');
+  const now = Date.now();
+  const ids = ['a', 'b', 'c'];
+  const mastered = (skillId, inDays) => ({ skillId, score: 95, attempts: 12, correct: 11, level: 3, nextReviewAt: now + inDays * 86_400_000 });
+  const mastery = new Map([['a', mastered('a', 5)], ['b', mastered('b', 2)], ['c', mastered('c', 9)]]);
+  assert.deepEqual(pickDailyMix(ids, mastery, 2, now), ['b', 'a'], 'soonest review first');
+  // Mixed: learning skills still come before mastered ones.
+  mastery.set('c', { skillId: 'c', score: 40, attempts: 3, correct: 1, level: 0, nextReviewAt: now + 86_400_000 });
+  assert.equal(pickDailyMix(ids, mastery, 2, now)[0], 'c');
+});
