@@ -149,3 +149,32 @@ test('column subtraction renames across zeros correctly', async () => {
   const add = methodFor({ method: { kind: 'columnAdd', a: 9876, b: 4567 } });
   assert.equal(add.steps.at(-2).visual.result, 9876 + 4567);
 });
+
+test('generated questions are never ambiguous', () => {
+  const rng = seededRng(2026);
+  for (let i = 0; i < 5000; i += 1) {
+    // Place value: the asked digit appears exactly once and is not zero.
+    const pv = generate({ type: 'placeValue', digits: 5 }, rng);
+    const m = /In ([\d,]+), the digit (\d) stands/.exec(pv.prompt);
+    if (m) {
+      const digitsInNumber = m[1].replace(/,/g, '').split('');
+      assert.equal(digitsInNumber.filter((d) => d === m[2]).length, 1, pv.prompt);
+      assert.notEqual(m[2], '0', pv.prompt);
+    }
+    // Shapes: a square and a rectangle never appear in the same question.
+    const sh = generate({ type: 'shapes' }, rng);
+    const shown = new Set([...sh.choices, sh.visual?.shape].filter(Boolean));
+    assert.ok(!(shown.has('square') && shown.has('rectangle')), JSON.stringify(sh));
+    // Choice questions: exactly one choice is correct.
+    for (const type of ['compare', 'factorsMultiples', 'fractionOfShape', 'moreOrFewer', 'patterns', 'countPictures', 'numberOrder']) {
+      const q = generate({ type }, rng);
+      assert.equal(q.choices.filter((c) => isCorrect(q, c)).length, 1, `${type}: ${q.prompt} ${q.choices}`);
+    }
+  }
+  // Fraction choices must not include a second fraction equal to the answer (e.g. 1/2 and 2/4).
+  for (let i = 0; i < 3000; i += 1) {
+    const q = generate({ type: 'fractionOfShape', denominators: [2, 3, 4, 6, 8] }, rng);
+    const val = (f) => { const [n, d] = f.split('/').map(Number); return n / d; };
+    assert.equal(q.choices.filter((c) => Math.abs(val(c) - val(q.answer)) < 1e-9).length, 1, `${q.answer} ${q.choices}`);
+  }
+});

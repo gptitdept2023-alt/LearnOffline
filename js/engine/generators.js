@@ -132,14 +132,29 @@ const placeValue = ({ digits = 3 }, rng) => {
       hint: `Count places from the right: ones, tens, hundreds${digits > 3 ? ', thousands' : ''}.`,
     };
   }
-  const value = ds[pos] * 10 ** pos;
+  // "What does the digit 9 stand for?" is only fair if 9 appears once and is not 0.
+  // Pick such a digit; if the number has none (e.g. 55,055), ask about a place instead.
+  const uniquePositions = ds
+    .map((d, i) => i)
+    .filter((i) => ds[i] !== 0 && ds.filter((d) => d === ds[i]).length === 1);
+  if (!uniquePositions.length) {
+    return {
+      answerType: 'numeric',
+      prompt: `What digit is in the ${places[pos]} place in ${fmt(n)}?`,
+      answer: ds[pos],
+      visual: digits <= 3 ? { kind: 'blocks', value: n } : undefined,
+      hint: `Count places from the right: ones, tens, hundreds${digits > 3 ? ', thousands' : ''}.`,
+    };
+  }
+  const at = pick(uniquePositions, rng);
+  const value = ds[at] * 10 ** at;
   return {
     answerType: 'numeric',
-    prompt: `In ${fmt(n)}, the digit ${ds[pos]} stands for what value?`,
+    prompt: `In ${fmt(n)}, the digit ${ds[at]} stands for what value?`,
     answer: value,
     visual: digits <= 3 ? { kind: 'blocks', value: n } : undefined,
-    hint: `The digit is in the ${places[pos]} place, so multiply it by ${fmt(10 ** pos)}.`,
-    explain: `${ds[pos]} ${places[pos]} = ${fmt(value)}`,
+    hint: `The digit is in the ${places[at]} place, so multiply it by ${fmt(10 ** at)}.`,
+    explain: `${ds[at]} ${places[at]} = ${fmt(value)}`,
   };
 };
 
@@ -610,14 +625,25 @@ const moreOrFewer = ({ max = 10 }, rng) => {
 };
 
 /** Name or find a shape. */
+/**
+ * A square is also a rectangle, so asking "Tap the rectangle" with a square on
+ * screen (or naming a square when "rectangle" is a choice) has two right answers.
+ * Never show those two together.
+ */
+const OVERLAPPING_SHAPES = { square: 'rectangle', rectangle: 'square' };
+
 const shapes = ({ set = SHAPES }, rng) => {
   const answer = pick(set, rng);
+  // A square is also a rectangle, so never offer both: drop the overlapping
+  // partner of the answer, or (if the answer is neither) one of the pair.
+  const excluded = OVERLAPPING_SHAPES[answer] || (rng() < 0.5 ? 'square' : 'rectangle');
+  const distractors = set.filter((s) => s !== excluded);
   if (rng() < 0.5) {
     return {
       answerType: 'choice',
       prompt: `Tap the ${answer}.`,
       answer,
-      choices: choicesWith(answer, set, rng, 3),
+      choices: choicesWith(answer, distractors, rng, 3),
       choiceKind: 'shape',
       hint: 'Look at the sides and corners.',
       young: true,
@@ -627,7 +653,7 @@ const shapes = ({ set = SHAPES }, rng) => {
     answerType: 'choice',
     prompt: 'What shape is this?',
     answer,
-    choices: choicesWith(answer, set, rng, 3),
+    choices: choicesWith(answer, distractors, rng, 3),
     visual: { kind: 'shape', shape: answer },
     hint: 'Count the sides. A circle has no corners.',
     young: true,
