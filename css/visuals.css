@@ -1,0 +1,356 @@
+/* Lesson and question pictures: ten frames, blocks, bonds, bar models, shapes. */
+
+.visual {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+}
+.visual svg { display: block; width: 100%; height: auto; }
+
+/* Pictures (emoji) */
+.pic-group { display: flex; flex-wrap: wrap; justify-content: center; column-gap: 14px; row-gap: 6px; }
+.pic { font-size: min(2.2rem, calc((100vw - 140px) / 6.5)); line-height: 1.1; } /* five in a row always fit, even inside a method panel */
+.pic-five { display: inline-flex; flex-wrap: nowrap; gap: 4px; } /* a five never splits across lines */
+.pic-crossed { position: relative; opacity: 0.35; }
+.pic-crossed::after {
+  content: "";
+  position: absolute;
+  left: -2px;
+  right: -2px;
+  top: 50%;
+  border-top: 4px solid var(--bad);
+  transform: rotate(-30deg);
+}
+.visual-picture-rows { flex-direction: column; align-items: flex-start; }
+.pic-row { display: flex; }
+.visual-picture-rows .pic-group { flex-wrap: nowrap; justify-content: flex-start; column-gap: 4px; }
+/* 10 pictures plus gaps fit a 320 px phone: the width left after page and card padding, shared by 12.5. */
+.visual-picture-rows .pic { font-size: min(1.6rem, calc((100vw - 96px) / 12.5)); width: 1.15em; text-align: center; }
+.young .visual-picture-rows .pic { font-size: min(1.6rem, calc((100vw - 96px) / 12.5)); }
+.op-sign { font-size: 2rem; font-weight: 800; color: var(--muted); }
+
+.visual-sequence { gap: 6px; flex-wrap: nowrap; }
+/* Up to 8 pictures and the ? box share one row on a 360 px phone. */
+.seq-item { font-size: min(2.3rem, calc((100vw - 170px) / 8)); }
+.seq-unknown {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: min(56px, 11vw);
+  height: min(56px, 11vw);
+  border: 3px dashed var(--primary);
+  border-radius: var(--radius-sm);
+  color: var(--primary);
+  font-weight: 800;
+  font-size: 1.8rem;
+}
+
+/* Shapes */
+.shape { width: 110px; height: 110px; fill: var(--accent); stroke: var(--text); stroke-width: 3; }
+.visual-shape .shape { width: 140px; height: 140px; }
+
+/* Ten frames */
+.ten-frame {
+  display: grid;
+  grid-template-columns: repeat(5, 30px);
+  gap: 4px;
+  padding: 6px;
+  border: 3px solid var(--text);
+  border-radius: 8px;
+  background: var(--surface);
+}
+.ten-frame .cell { width: 30px; height: 30px; border-radius: 50%; border: 2px dashed var(--border); }
+.ten-frame .filled { border: 0; background: var(--primary); }
+.ten-frame .filled-extra { border: 0; background: var(--extra); }
+
+/* Number bond */
+.visual-bond svg { max-width: 260px; }
+.bond-line { stroke: var(--text); stroke-width: 3; }
+.bond-circle { fill: var(--surface); stroke: var(--primary); stroke-width: 3; }
+.bond-whole { fill: var(--primary-soft); }
+.bond-unknown { stroke: var(--accent); stroke-dasharray: 6 4; }
+.bond-text { text-anchor: middle; font-weight: 800; font-size: 22px; fill: var(--text); }
+
+/* Base-ten blocks */
+.visual-blocks { align-items: flex-end; }
+.block-col { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.block-set { display: flex; flex-wrap: wrap; gap: 3px; max-width: 220px; justify-content: center; align-items: flex-end; }
+.block-flat { width: 50px; height: 50px; background: var(--primary); border: 2px solid var(--primary-soft); border-radius: 3px; }
+.block-rod { width: 10px; height: 50px; background: var(--good); border-radius: 2px; }
+.block-cube { width: 10px; height: 10px; background: var(--accent); border-radius: 2px; }
+
+/* Equal groups */
+.visual-groups { gap: 10px; }
+.group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  max-width: 84px;
+  padding: 8px;
+  border: 2px solid var(--primary);
+  border-radius: 50%;
+  justify-content: center;
+}
+.dot { width: 14px; height: 14px; border-radius: 50%; background: var(--primary); }
+
+/* Number line */
+.visual-number-line svg { max-width: 420px; }
+.nl-axis, .nl-tick { stroke: var(--text); stroke-width: 2.5; }
+.nl-label { text-anchor: middle; font-size: 15px; fill: var(--text); }
+.nl-mark { font-weight: 800; fill: var(--primary); font-size: 18px; }
+.nl-dot { fill: var(--primary); }
+
+/* Fractions */
+.visual-fraction svg { max-width: 260px; }
+.frac-on { fill: var(--primary); stroke: var(--surface); stroke-width: 2; }
+.frac-off { fill: var(--surface); stroke: var(--text); stroke-width: 2; }
+
+/* Bar model */
+.visual-bar-model { background: var(--surface); border: 2px dashed var(--border); }
+.visual-bar-model svg { max-width: 520px; }
+.bm-seg { fill: var(--primary-soft); stroke: var(--primary); stroke-width: 2; }
+.bm-unknown { fill: var(--accent-soft); stroke: var(--accent); }
+.bm-seg-text, .bm-brace-text { font-size: 15px; font-weight: 700; fill: var(--text); text-anchor: middle; }
+.bm-brace-text { font-size: 18px; font-weight: 800; fill: var(--primary); }
+.bm-left { text-anchor: start; }
+.bm-label { font-size: 15px; font-weight: 700; fill: var(--text); text-anchor: end; }
+.bm-brace { fill: none; stroke: var(--primary); stroke-width: 2; }
+
+/* Parent chart */
+.chart { margin: 0; }
+.chart svg { width: 100%; height: auto; }
+.chart-bar { fill: var(--primary); }
+.chart-axis { stroke: var(--border); stroke-width: 1; }
+.chart-label { font-size: 8px; fill: var(--muted); text-anchor: middle; }
+
+/* Several pictures together ------------------------------------------ */
+.visual-stack { display: flex; flex-wrap: wrap; gap: 10px; align-items: stretch; }
+.visual-stack > .visual { flex: 1 1 220px; min-width: 0; }
+.visual-stack-column { flex-direction: column; }
+.visual-stack-column > .visual { flex: none; }
+.visual-caption { margin: 0; width: 100%; text-align: center; font-weight: 800; }
+
+/* Place-value discs ---------------------------------------------------- */
+.disc {
+  display: inline-grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 0, 0, 0.18);
+  color: #fff;
+  font-size: 0.62rem;
+  font-weight: 800;
+  line-height: 1;
+  flex: none;
+  animation: pop-in 0.3s cubic-bezier(0.3, 1.6, 0.5, 1) both;
+  animation-delay: calc(var(--i, 0) * 45ms);
+}
+.disc-1 { background: #1f9d55; }
+.disc-10 { background: #2f6fde; }
+.disc-100 { background: #e07a10; }
+.disc-1000 { background: #8a3fd1; font-size: 0.5rem; }
+.disc-10000 { background: #c2185b; font-size: 0.42rem; }
+.disc-pile { display: inline-flex; flex-wrap: wrap; gap: 3px; max-width: 170px; justify-content: center; }
+.disc-pile-big { flex-direction: column; max-width: none; }
+.disc-bundle { display: flex; gap: 2px; padding: 2px; border: 2px dashed var(--border); border-radius: 999px; }
+.disc-bundle .disc { width: 20px; height: 20px; font-size: 0.5rem; border-width: 1px; }
+.disc-chip { display: inline-flex; align-items: center; gap: 3px; font-weight: 800; font-size: 0.9rem; white-space: nowrap; }
+.disc-chip .disc { width: 24px; height: 24px; font-size: 0.5rem; }
+
+/* Place-value chart */
+.visual-place-chart { background: var(--surface); }
+.pv-grid { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); width: 100%; max-width: 440px; border: 2px solid var(--text); border-radius: 10px; overflow: hidden; }
+.pv-head { padding: 4px 2px; text-align: center; font-size: 0.72rem; hyphens: auto; overflow-wrap: break-word; font-weight: 800; text-transform: capitalize; background: var(--surface-2); border-bottom: 2px solid var(--text); }
+.pv-head + .pv-head, .pv-cell + .pv-cell, .pv-label + .pv-cell { border-left: 2px solid var(--border); }
+.pv-label { display: grid; place-items: center; font-weight: 800; font-size: 1.3rem; color: var(--muted); }
+.pv-cell { display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 4px; padding: 6px 2px; min-height: 64px; }
+.pv-cell, .pv-label { border-top: 1px solid var(--border); }
+.pv-discs { display: grid; grid-template-columns: repeat(3, auto); gap: 2px; justify-content: center; }
+.pv-discs .disc { width: 20px; height: 20px; font-size: 0.42rem; border-width: 1px; }
+.pv-labelled { grid-template-columns: 28px repeat(var(--cols), minmax(0, 1fr)); }
+.pv-digit { font-size: 1.2rem; }
+
+/* Trading (renaming) */
+.visual-trade { flex-direction: column; background: var(--surface); }
+.trade-row { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; }
+.trade-arrow { font-size: 1.8rem; font-weight: 800; color: var(--extra); }
+
+/* Sharing into equal groups */
+.visual-share { flex-direction: column; align-items: stretch; background: var(--surface); }
+.share-groups { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.share-group {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-width: 64px;
+  max-width: 118px;
+  min-height: 56px;
+  padding: 14px 8px 8px;
+  border: 2px solid var(--primary);
+  border-radius: 16px;
+  background: var(--primary-soft);
+  animation: slide-up 0.3s ease both;
+  animation-delay: calc(var(--i, 0) * 60ms);
+}
+.share-num { position: absolute; top: -10px; left: 8px; padding: 0 6px; border-radius: 999px; background: var(--primary); color: var(--primary-ink); font-size: 0.7rem; font-weight: 800; }
+.share-place { display: flex; flex-wrap: wrap; gap: 3px; justify-content: center; }
+.share-place .disc { width: 24px; height: 24px; font-size: 0.5rem; }
+.share-zero { color: var(--muted); font-weight: 800; }
+.share-left { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; padding: 6px; border: 2px dashed var(--extra); border-radius: 12px; }
+.share-left-title, .share-left-note { font-weight: 800; color: var(--extra); }
+
+/* Long division layout */
+.visual-long-division { background: var(--surface); }
+.ld-grid { display: grid; grid-template-columns: repeat(var(--cols), 34px); font-variant-numeric: tabular-nums; }
+.ld-cell { display: grid; place-items: center; height: 38px; font-size: 1.45rem; font-weight: 800; border-radius: 6px; }
+.ld-quotient { color: var(--primary); animation: pop-in 0.3s both; }
+.ld-divisor { color: var(--muted); }
+.ld-dividend { border-top: 3px solid var(--text); border-radius: 0; }
+.ld-first { border-left: 3px solid var(--text); border-top-left-radius: 12px; }
+.ld-minus { color: var(--muted); }
+.ld-rule { border-top: 2px solid var(--text); border-radius: 0; }
+.ld-down { color: var(--extra); animation: slide-up 0.35s both; }
+.ld-hot { background: var(--accent-soft); box-shadow: inset 0 0 0 2px var(--accent); }
+
+/* Area model */
+.visual-area { background: var(--surface); }
+.area-grid { display: grid; grid-template-columns: auto repeat(var(--cols), minmax(56px, 1fr)); width: 100%; max-width: 440px; gap: 3px; }
+.area-corner, .area-head { display: grid; place-items: center; padding: 4px; font-weight: 800; color: var(--muted); }
+.area-cell { display: grid; place-items: center; min-height: 52px; padding: 4px; border: 2px solid var(--primary); border-radius: 6px; background: var(--surface); font-weight: 800; font-size: 1.05rem; }
+.area-done { background: var(--primary-soft); animation: pop-in 0.3s both; }
+.area-hot { border-color: var(--accent); background: var(--accent-soft); }
+
+/* Fraction extras */
+.frac-figure { margin: 0; width: 100%; max-width: 260px; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.frac-label { font-weight: 800; }
+.frac-extra { fill: var(--extra); stroke: var(--surface); stroke-width: 2; }
+.frac-cross { stroke: var(--bad); stroke-width: 3; stroke-linecap: round; }
+
+/* Multiply by 10: digits shift one place left */
+.visual-shift { flex-direction: column; }
+.shift-cell { min-height: 44px; justify-content: center; }
+.visual-shift .pv-labelled { grid-template-columns: 40px repeat(var(--cols), minmax(0, 1fr)); }
+.visual-shift .pv-label { font-size: 1rem; }
+.visual-shift .pv-head { font-size: 0.85rem; }
+.shift-new { background: var(--warn-soft, #fff1c9); }
+.shift-new .pv-digit { color: var(--extra); }
+
+/* ------------------------------------------------------------------ */
+/* Grade 4 topics: clock, day line, angles, area grid, symmetry, graphs */
+/* ------------------------------------------------------------------ */
+
+/* Clock face */
+.visual-clock svg { max-width: 220px; }
+.clk-face { fill: var(--surface); stroke: var(--text); stroke-width: 4; }
+.clk-tick { stroke: var(--muted); stroke-width: 1; }
+.clk-tick-big { stroke: var(--text); stroke-width: 2.5; }
+.clk-num { font-size: 19px; font-weight: 800; fill: var(--text); text-anchor: middle; }
+.clk-hour, .clk-minute { stroke: var(--text); stroke-linecap: round; }
+.clk-hour { stroke-width: 7; stroke: var(--primary); }
+.clk-minute { stroke-width: 4; }
+.clk-hot { stroke: var(--extra); }
+.clk-pin { fill: var(--text); }
+
+/* 24-hour day line */
+.visual-dayline svg { max-width: 420px; }
+.day-am { fill: var(--accent-soft); stroke: var(--border); }
+.day-pm { fill: var(--primary-soft); stroke: var(--border); }
+.day-half { font-size: 11px; font-weight: 800; fill: var(--muted); text-anchor: middle; }
+.day-label { font-size: 11px; fill: var(--text); text-anchor: middle; }
+.day-24 { font-weight: 800; fill: var(--primary); }
+.day-marker { fill: var(--extra); }
+.day-marker-line { stroke: var(--extra); stroke-width: 3; }
+.day-now { font-size: 14px; font-weight: 800; fill: var(--extra); text-anchor: middle; }
+
+/* Angles and turns */
+.visual-angle svg { max-width: 240px; max-height: 220px; }
+.ang-arm { stroke: var(--text); stroke-width: 4; stroke-linecap: round; }
+.ang-mark { fill: none; stroke: var(--primary); stroke-width: 3; }
+.ang-turn { fill: none; stroke: var(--extra); stroke-width: 3; stroke-linecap: round; }
+.ang-ref { fill: none; stroke: var(--good); stroke-width: 2.5; stroke-dasharray: 6 4; }
+.ang-card { fill: var(--good-soft); stroke: var(--good); stroke-width: 2; stroke-dasharray: 6 4; }
+.ang-extra { fill: var(--extra); fill-opacity: 0.35; stroke: var(--extra); stroke-width: 1.5; }
+.ang-gap { fill: var(--accent); fill-opacity: 0.45; stroke: var(--accent); stroke-width: 1.5; }
+.ang-label { font-size: 15px; font-weight: 800; fill: var(--primary); text-anchor: middle; }
+.ang-guide { fill: none; stroke: var(--border); stroke-width: 1.5; stroke-dasharray: 3 4; }
+
+/* Area and perimeter grid */
+.rg-cell { fill: var(--primary-soft); stroke: var(--primary); stroke-width: 1; }
+.rg-alt { fill: var(--accent-soft); }
+.rg-fill { fill: var(--primary-soft); }
+.rg-outline { fill: none; stroke: var(--text); stroke-width: 2; }
+.rg-thick { stroke: var(--extra); stroke-width: 4; }
+.rg-label { font-size: 13px; font-weight: 800; fill: var(--text); text-anchor: middle; }
+.rg-left { text-anchor: end; }
+.rg-right { text-anchor: start; }
+.rg-area { font-size: 16px; font-weight: 800; fill: var(--text); text-anchor: middle; paint-order: stroke; stroke: var(--surface); stroke-width: 4px; }
+
+/* Symmetry */
+.visual-symmetry svg { max-width: 200px; overflow: visible; }
+.sym-shape { fill: var(--primary-soft); stroke: var(--primary); stroke-width: 2.5; stroke-linejoin: round; }
+.sym-flip { fill: var(--extra); fill-opacity: 0.25; stroke: var(--extra); stroke-width: 1.5; stroke-dasharray: 3 2; }
+.sym-line { stroke: var(--text); stroke-width: 2; stroke-dasharray: 5 4; }
+.sym-true { stroke: var(--good); stroke-width: 2; }
+
+/* Bar graph */
+.visual-bar-graph svg { max-width: 460px; }
+.bg-title { font-size: 13px; font-weight: 800; fill: var(--text); text-anchor: middle; }
+.bg-grid { stroke: var(--border); stroke-width: 1; }
+.bg-axis { stroke: var(--text); stroke-width: 2; }
+.bg-scale { font-size: 11px; fill: var(--muted); text-anchor: end; }
+.bg-unit { font-size: 11px; fill: var(--muted); text-anchor: middle; }
+.bg-bar { fill: var(--primary); opacity: 0.85; }
+.bg-hot { fill: var(--extra); opacity: 1; }
+.bg-label { font-size: 12px; font-weight: 700; fill: var(--text); text-anchor: middle; }
+.bg-guide { stroke: var(--extra); stroke-width: 2; stroke-dasharray: 5 4; }
+.bg-value { font-size: 13px; font-weight: 800; fill: var(--extra); text-anchor: middle; }
+
+/* Data table */
+.data-table { border-collapse: collapse; min-width: 220px; background: var(--surface); }
+.data-table caption { font-weight: 800; padding-bottom: 6px; }
+.data-table th, .data-table td { padding: 6px 14px; border: 1px solid var(--border); text-align: left; }
+.data-table thead th { background: var(--surface-2); font-size: 0.85rem; }
+.data-table td { text-align: right; font-weight: 800; }
+.data-table .dt-hot th, .data-table .dt-hot td { background: var(--accent-soft); }
+
+/* Very narrow phones (320-380 px): smaller discs so 5 place columns fit. */
+@media (max-width: 380px) {
+  .pv-head { font-size: 0.62rem; }
+  .pv-discs .disc { width: 15px; height: 15px; font-size: 0.34rem; }
+  .pv-cell { padding: 4px 1px; }
+}
+
+/* English: a word's picture, letter tiles and a sentence to read. */
+.visual-letters { flex-direction: column; align-items: center; gap: 10px; }
+.word-pic { font-size: min(5rem, 22vw); line-height: 1.1; }
+.letter-tiles { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+/* A short word never breaks over two lines, even in the narrow "Show me how" panel. */
+.letter-tiles-short { flex-wrap: nowrap; }
+.letter-tile {
+  display: grid; place-items: center;
+  min-width: 1.5em; height: 1.6em; padding: 0 0.15em;
+  border: 3px solid var(--border); border-radius: 12px; background: var(--surface);
+  font-size: min(2.6rem, 11vw); font-weight: 800; line-height: 1;
+}
+.method .letter-tile, .guided .letter-tile { font-size: min(2rem, 8vw); border-radius: 10px; }
+.method .word-pic, .guided .word-pic { font-size: min(3.6rem, 16vw); }
+.letter-tiles-one .letter-tile { font-size: min(5rem, 24vw); min-width: 1.4em; }
+.letter-blank { border-style: dashed; border-color: var(--primary); color: var(--primary); }
+.letter-hot { border-color: var(--primary); background: var(--primary-soft); }
+.read-text { margin: 0; font-size: min(2rem, 8vw); font-weight: 800; text-align: center; line-height: 1.3; }
+
+/* Letter and word answers: large and clear for early readers. Three letters or pictures sit in one row. */
+.choices.choices-letters, .choices.choices-pics { grid-template-columns: repeat(3, 1fr); }
+.choices-pics .choice { font-size: min(2.8rem, 11vw); }
+.choices-letters .choice { font-size: 2.6rem; }
+.young .choices-letters .choice { font-size: 3rem; }
+.choices-words .choice { font-size: 1.9rem; }

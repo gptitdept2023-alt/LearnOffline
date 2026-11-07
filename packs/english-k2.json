@@ -1,0 +1,861 @@
+{
+  "packId": "english-k2",
+  "version": "1.0.0",
+  "subject": "english",
+  "title": "English · Kinder 2",
+  "topics": [
+    {
+      "topicId": "en-letters",
+      "title": "ABC letters",
+      "icon": "🔤",
+      "summary": "Know every letter, big and small.",
+      "skills": [
+        {
+          "skillId": "en-big-letters",
+          "title": "Big letters",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Letters make words. This is the letter A. Apple starts with A!",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🍎",
+                  "tiles": [
+                    "A"
+                  ],
+                  "label": "A, apple"
+                }
+              },
+              {
+                "stage": "pictorial",
+                "text": "This is the letter B. Ball starts with B!",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "⚽",
+                  "tiles": [
+                    "B"
+                  ],
+                  "label": "B, ball"
+                }
+              },
+              {
+                "stage": "pictorial",
+                "text": "And this is the letter C. Cat starts with C!",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🐱",
+                  "tiles": [
+                    "C"
+                  ],
+                  "label": "C, cat"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn! Tap the letter B.",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Tap the letter B.",
+                  "choices": [
+                    "A",
+                    "B",
+                    "C"
+                  ],
+                  "answer": "B",
+                  "explain": "That is B, as in ball."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "letterFind"
+          }
+        },
+        {
+          "skillId": "en-small-letters",
+          "title": "Small letters",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Every letter has a big shape and a small shape. This is big A, and this is small a.",
+                "visual": {
+                  "kind": "letters",
+                  "tiles": [
+                    "A",
+                    "a"
+                  ],
+                  "label": "big A, small a"
+                }
+              },
+              {
+                "stage": "pictorial",
+                "text": "Big B and small b. Small b has a tall line with a round belly.",
+                "visual": {
+                  "kind": "letters",
+                  "tiles": [
+                    "B",
+                    "b"
+                  ],
+                  "label": "big B, small b"
+                }
+              },
+              {
+                "stage": "pictorial",
+                "text": "Be careful! Small b and small d look alike. Small b has its belly on the right. Small d has its belly on the left.",
+                "visual": {
+                  "kind": "letters",
+                  "tiles": [
+                    "b",
+                    "d"
+                  ],
+                  "label": "small b, small d"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn! Tap the small letter d.",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Tap the small letter d.",
+                  "choices": [
+                    "b",
+                    "d",
+                    "p"
+                  ],
+                  "answer": "d",
+                  "explain": "Small d has its belly on the left."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "letterFind",
+            "small": true
+          }
+        },
+        {
+          "skillId": "en-match-letters",
+          "title": "Big and small",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Some big and small letters look the same, only smaller. Big C and small c. Big O and small o.",
+                "visual": {
+                  "kind": "letters",
+                  "tiles": [
+                    "C",
+                    "c",
+                    "O",
+                    "o"
+                  ],
+                  "label": "big C, small c, big O, small o"
+                }
+              },
+              {
+                "stage": "pictorial",
+                "text": "Some look different. Big G and small g. Big R and small r.",
+                "visual": {
+                  "kind": "letters",
+                  "tiles": [
+                    "G",
+                    "g",
+                    "R",
+                    "r"
+                  ],
+                  "label": "big G, small g, big R, small r"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Which small letter goes with big E?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which small letter goes with big E?",
+                  "visual": {
+                    "kind": "letters",
+                    "tiles": [
+                      "E"
+                    ],
+                    "label": "big E"
+                  },
+                  "choices": [
+                    "a",
+                    "e",
+                    "o"
+                  ],
+                  "answer": "e",
+                  "explain": "Big E and small e."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "mixed",
+            "of": [
+              {
+                "type": "letterMatch",
+                "toSmall": true
+              },
+              {
+                "type": "letterMatch",
+                "toSmall": false
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "en-sounds",
+      "title": "First sounds",
+      "icon": "👂",
+      "summary": "Hear the first sound of a word and find its letter.",
+      "skills": [
+        {
+          "skillId": "en-first-letter",
+          "title": "Which letter starts it?",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Say sun. Listen to the very first sound. Sun starts with the letter s.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "☀️",
+                  "tiles": [
+                    "s",
+                    "u",
+                    "n"
+                  ],
+                  "highlight": [
+                    0
+                  ],
+                  "label": "sun"
+                }
+              },
+              {
+                "stage": "pictorial",
+                "text": "Sock and snake start with s too. Listen: sun, sock, snake.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "☀️ 🧦 🐍",
+                  "label": "sun, sock, snake"
+                }
+              },
+              {
+                "stage": "pictorial",
+                "text": "Now say map. Map starts with the letter m.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🗺️",
+                  "tiles": [
+                    "m",
+                    "a",
+                    "p"
+                  ],
+                  "highlight": [
+                    0
+                  ],
+                  "label": "map"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Fish. Which letter does fish start with?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which letter does fish start with?",
+                  "visual": {
+                    "kind": "letters",
+                    "emoji": "🐟",
+                    "label": "fish"
+                  },
+                  "choices": [
+                    "f",
+                    "s",
+                    "m"
+                  ],
+                  "answer": "f",
+                  "explain": "Fish starts with f."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "firstLetter"
+          }
+        },
+        {
+          "skillId": "en-same-sound",
+          "title": "Same first sound",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Bat and bear start with the same sound. Listen: bat, bear.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🦇 🐻",
+                  "label": "bat, bear"
+                }
+              },
+              {
+                "stage": "pictorial",
+                "text": "Dog and sun do not. Dog starts with d. Sun starts with s.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🐶 ☀️",
+                  "label": "dog, sun"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Which one starts like pig? Pen, cat or sun?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which one starts like pig?",
+                  "visual": {
+                    "kind": "letters",
+                    "emoji": "🐷",
+                    "label": "pig"
+                  },
+                  "choices": [
+                    "🖊️",
+                    "🐱",
+                    "☀️"
+                  ],
+                  "answer": "🖊️",
+                  "explain": "Pig and pen both start with p."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sameSound"
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "en-cvc",
+      "title": "Short words",
+      "icon": "🐱",
+      "summary": "Read and spell three-letter words like cat, bed, pig, dog and sun.",
+      "skills": [
+        {
+          "skillId": "en-cvc-missing",
+          "title": "Missing middle letter",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Cat has three letters: c, a, and t. Say it slowly: cat.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🐱",
+                  "tiles": [
+                    "c",
+                    "a",
+                    "t"
+                  ],
+                  "label": "cat"
+                }
+              },
+              {
+                "stage": "pictorial",
+                "text": "The letter in the middle is a. You hear it in cat, hat and map.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🐱 🎩 🗺️",
+                  "tiles": [
+                    "c",
+                    "a",
+                    "t"
+                  ],
+                  "highlight": [
+                    1
+                  ],
+                  "label": "cat, hat, map"
+                }
+              },
+              {
+                "stage": "pictorial",
+                "text": "Five letters can sit in the middle: a, e, i, o and u. Cat, bed, pig, dog, sun.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🐱 🛏️ 🐷 🐶 ☀️",
+                  "tiles": [
+                    "a",
+                    "e",
+                    "i",
+                    "o",
+                    "u"
+                  ],
+                  "label": "a, e, i, o, u"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Bed. Which letter is missing in bed?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which letter is missing in bed?",
+                  "visual": {
+                    "kind": "letters",
+                    "emoji": "🛏️",
+                    "tiles": [
+                      "b",
+                      null,
+                      "d"
+                    ],
+                    "label": "bed"
+                  },
+                  "choices": [
+                    "a",
+                    "e",
+                    "u"
+                  ],
+                  "answer": "e",
+                  "explain": "Bed has e in the middle."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "missingVowel"
+          }
+        },
+        {
+          "skillId": "en-cvc-read",
+          "title": "Read a word",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Let's read! Point to each letter and say its sound. Then say the sounds fast.",
+                "visual": {
+                  "kind": "letters",
+                  "tiles": [
+                    "s",
+                    "u",
+                    "n"
+                  ],
+                  "highlight": [
+                    0
+                  ],
+                  "label": "sun"
+                }
+              },
+              {
+                "stage": "pictorial",
+                "text": "Put the sounds together, and you read the word sun!",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "☀️",
+                  "tiles": [
+                    "s",
+                    "u",
+                    "n"
+                  ],
+                  "label": "sun"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Read this word. Then tap its picture.",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which picture is this word?",
+                  "visual": {
+                    "kind": "letters",
+                    "tiles": [
+                      "d",
+                      "o",
+                      "g"
+                    ],
+                    "label": "dog"
+                  },
+                  "choices": [
+                    "🐶",
+                    "☀️",
+                    "🐷"
+                  ],
+                  "answer": "🐶",
+                  "explain": "The word says dog."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "readWord"
+          }
+        },
+        {
+          "skillId": "en-cvc-pick",
+          "title": "Word for a picture",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Look at the picture. Say its name slowly: pig.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🐷",
+                  "label": "pig"
+                }
+              },
+              {
+                "stage": "pictorial",
+                "text": "Find the word that starts with p and ends with g. That word is pig!",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🐷",
+                  "tiles": [
+                    "p",
+                    "i",
+                    "g"
+                  ],
+                  "highlight": [
+                    0,
+                    2
+                  ],
+                  "label": "pig"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn! Tap the word for this picture.",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Tap the word for this picture.",
+                  "visual": {
+                    "kind": "letters",
+                    "emoji": "🦊",
+                    "label": "fox"
+                  },
+                  "choices": [
+                    "box",
+                    "fox",
+                    "fun"
+                  ],
+                  "answer": "fox",
+                  "explain": "Fox starts with f."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "pictureWord"
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "en-rhymes",
+      "title": "Rhymes",
+      "icon": "🎵",
+      "summary": "Hear words that end with the same sound.",
+      "skills": [
+        {
+          "skillId": "en-rhyme",
+          "title": "Rhyming pictures",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Words that rhyme end with the same sound. Cat, hat. They rhyme!",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🐱 🎩",
+                  "label": "cat, hat"
+                }
+              },
+              {
+                "stage": "pictorial",
+                "text": "Bee and tree rhyme too. Bee, tree.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🐝 🌳",
+                  "label": "bee, tree"
+                }
+              },
+              {
+                "stage": "pictorial",
+                "text": "Cat and dog do not rhyme. They end with different sounds.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🐱 🐶",
+                  "label": "cat, dog"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Which one rhymes with frog?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which one rhymes with frog?",
+                  "visual": {
+                    "kind": "letters",
+                    "emoji": "🐸",
+                    "label": "frog"
+                  },
+                  "choices": [
+                    "🐶",
+                    "🐱",
+                    "☀️"
+                  ],
+                  "answer": "🐶",
+                  "explain": "Frog, dog. They rhyme!"
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "rhyme"
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "en-sight",
+      "title": "Sight words",
+      "icon": "👀",
+      "summary": "Words we read so often that we know them at a glance.",
+      "skills": [
+        {
+          "skillId": "en-sight-1",
+          "title": "Sight words 1",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Some words are in almost every story. We learn to know them at a glance. This word is the.",
+                "visual": {
+                  "kind": "letters",
+                  "text": "the",
+                  "label": "the"
+                }
+              },
+              {
+                "stage": "pictorial",
+                "text": "This word is and. Read it with me: I see a cat and a dog.",
+                "visual": {
+                  "kind": "letters",
+                  "text": "I see a cat and a dog.",
+                  "label": "I see a cat and a dog."
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn! Tap the word: see.",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Tap the word: see.",
+                  "choices": [
+                    "the",
+                    "see",
+                    "and"
+                  ],
+                  "answer": "see",
+                  "explain": "That word is see."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sightWord",
+            "words": [
+              "the",
+              "and",
+              "is",
+              "I",
+              "see",
+              "can",
+              "my",
+              "we",
+              "go",
+              "to"
+            ]
+          }
+        },
+        {
+          "skillId": "en-sight-2",
+          "title": "Sight words 2",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Here are more words to know: you, like and look.",
+                "visual": {
+                  "kind": "letters",
+                  "text": "you   like   look",
+                  "label": "you, like, look"
+                }
+              },
+              {
+                "stage": "pictorial",
+                "text": "Read it with me: I like you.",
+                "visual": {
+                  "kind": "letters",
+                  "text": "I like you.",
+                  "label": "I like you."
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn! Tap the word: look.",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Tap the word: look.",
+                  "choices": [
+                    "like",
+                    "you",
+                    "look"
+                  ],
+                  "answer": "look",
+                  "explain": "Look has two o letters in the middle."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sightWord",
+            "words": [
+              "it",
+              "in",
+              "you",
+              "like",
+              "look",
+              "up",
+              "me",
+              "he",
+              "she"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "en-challenge",
+      "title": "Challenge zone",
+      "icon": "⭐",
+      "challenge": true,
+      "summary": "Ready for more? Put letters in ABC order and read whole sentences.",
+      "skills": [
+        {
+          "skillId": "en-ch-abc-order",
+          "title": "ABC order",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "The letters always go in the same order: A, B, C, D, E, and on to Z. We call it the alphabet.",
+                "visual": {
+                  "kind": "letters",
+                  "tiles": [
+                    "A",
+                    "B",
+                    "C",
+                    "D",
+                    "E"
+                  ],
+                  "label": "A, B, C, D, E"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "A, B, C. Which letter comes next?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which letter comes next?",
+                  "visual": {
+                    "kind": "letters",
+                    "tiles": [
+                      "A",
+                      "B",
+                      "C",
+                      null
+                    ],
+                    "label": "A, B, C, then what?"
+                  },
+                  "choices": [
+                    "D",
+                    "E",
+                    "F"
+                  ],
+                  "answer": "D",
+                  "explain": "A, B, C, D!"
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "mixed",
+            "of": [
+              {
+                "type": "letterNext"
+              },
+              {
+                "type": "letterNext",
+                "small": true
+              }
+            ]
+          }
+        },
+        {
+          "skillId": "en-ch-sentence",
+          "title": "Read a sentence",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "A sentence is a group of words. Read each word, from left to right.",
+                "visual": {
+                  "kind": "letters",
+                  "text": "I see a dog.",
+                  "label": "I see a dog."
+                }
+              },
+              {
+                "stage": "pictorial",
+                "text": "I see a dog. The dog is the thing in the sentence!",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🐶",
+                  "text": "I see a dog.",
+                  "label": "I see a dog."
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Read it. Then tap the picture.",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which picture is in this sentence?",
+                  "visual": {
+                    "kind": "letters",
+                    "text": "The cat is big.",
+                    "label": "The cat is big."
+                  },
+                  "choices": [
+                    "🐶",
+                    "🐱",
+                    "☀️"
+                  ],
+                  "answer": "🐱",
+                  "explain": "The cat is big."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "readSentence"
+          }
+        }
+      ]
+    }
+  ]
+}

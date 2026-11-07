@@ -1,0 +1,172 @@
+/**
+ * Money: totals and change in pesos and centavos (100¢ = ₱1). Amounts are
+ * kept in centavos internally so there is never a floating-point surprise
+ * (0.1 + 0.2). Prices move in 25-centavo steps, like real coins.
+ *
+ * Techniques: add the pesos, then the centavos (trade 100¢ for ₱1); give
+ * change by counting up from the price in friendly jumps: to the next peso,
+ * the next ₱10, the next ₱100, then the bill.
+ * Pure and DOM-free.
+ */
+
+import { randInt, pick } from '../../core/random.js';
+import { NAMES, ask, money, pesos, withArticle } from './shared.js';
+
+const SHOP = ['pen', 'ruler', 'notebook', 'eraser', 'sandwich', 'juice box', 'storybook', 'water bottle', 'pencil case', 'ball', 'umbrella', 'lunch box'];
+/** Peso bills, in centavos. */
+const BILLS = [2000, 5000, 10000, 20000, 50000, 100000];
+
+/** "75¢" under a peso, "₱2.00" otherwise. */
+const amount = (c) => (c < 100 ? `${c}¢` : money(c));
+
+/** "₱100" for a bill (no centavos). */
+const bill = (c) => money(c).replace('.00', '');
+
+/** Whole-peso problems (Grades 1-2) are written "₱14", not "₱14.00". */
+const dropCentavos = (text) => String(text).replace(/(₱[\d,]+)\.00\b/g, '$1');
+
+/** Every string in a visual spec, without ".00"; peso hops are labelled in whole pesos. */
+const wholeVisual = (v) => {
+  if (Array.isArray(v)) return v.map(wholeVisual);
+  if (typeof v === 'string') return dropCentavos(v);
+  if (!v || typeof v !== 'object') return v;
+  const out = Object.fromEntries(Object.entries(v).map(([k, x]) => [k, wholeVisual(x)]));
+  if (out.kind === 'hops' && out.format === 'money') out.format = 'pesos';
+  return out;
+};
+
+/** A worked method in whole pesos (spec.whole): same steps, written without centavos. */
+const inWholePesos = (method, whole) => (!whole ? method : {
+  ...method,
+  steps: method.steps.map((s) => ({ ...s, text: dropCentavos(s.text), visual: wholeVisual(s.visual) })),
+  guided: method.guided.map((g) => ({ ...g, prompt: dropCentavos(g.prompt), visual: wholeVisual(g.visual) })),
+});
+
+/**
+ * @param {{forms?: ('total'|'change')[], max?: number, whole?: boolean}} spec
+ *   max = highest price in pesos; whole = whole pesos only (Grades 1-2), from ₱1.
+ */
+const moneyProblem = ({ forms = ['total', 'change'], max = 300, whole = false }, rng) => {
+  const price = whole
+    ? () => 100 * randInt(1, max - 1, rng) // ₱1 .. just under max
+    : () => 25 * randInt(41, max * 4 - 1, rng); // ₱10.25 .. just under max
+  const name = pick(NAMES, rng);
+  const q = pick(forms, rng) === 'total' ? totalQuestion(name, price, rng) : changeQuestion(name, price, rng);
+  if (!whole) return q;
+  return {
+    ...q,
+    prompt: dropCentavos(q.prompt),
+    display: dropCentavos(q.display),
+    explain: dropCentavos(q.explain),
+    hint: q.method.kind === 'moneyTotal' ? 'Add the tens, then the ones.' : 'Count up from the price to the bill.',
+    method: { ...q.method, whole: true },
+  };
+};
+
+/** "Ana buys a pen for ₱12.50 and a ruler for ₱8.75…": add two prices. */
+const totalQuestion = (name, price, rng) => {
+  const [itemA, itemB] = [pick(SHOP, rng), pick(SHOP, rng)];
+  const [a, b] = [price(), price()];
+  const second = itemA === itemB ? `another ${itemB}` : withArticle(itemB);
+  return {
+    answerType: 'numeric',
+    prompt: `${name} buys ${withArticle(itemA)} for ${money(a)} and ${second} for ${money(b)}. How much does ${name} pay altogether, in pesos?`,
+    answer: pesos(a + b),
+    display: money(a + b),
+    hint: 'Add the pesos, then add the centavos. 100 centavos make ₱1.',
+    explain: `${money(a)} + ${money(b)} = ${money(a + b)}`,
+    method: { kind: 'moneyTotal', a, b },
+  };
+};
+
+/** Pay with the smallest bill that covers the price; how much change? */
+const changeQuestion = (name, price, rng) => {
+  const cost = price();
+  const paid = BILLS.find((n) => n > cost);
+  const item = pick(SHOP, rng);
+  return {
+    answerType: 'numeric',
+    prompt: `${name} buys ${withArticle(item)} for ${money(cost)} and pays with a ${bill(paid)} bill. How much change does ${name} get, in pesos?`,
+    answer: pesos(paid - cost),
+    display: money(paid - cost),
+    hint: 'Count up from the price: to the next peso, then to friendly numbers, then to the bill.',
+    explain: `${money(paid)} − ${money(cost)} = ${money(paid - cost)}`,
+    method: { kind: 'moneyChange', cost, paid },
+  };
+};
+
+const priceBar = (a, b, total) => ({
+  kind: 'bar',
+  rows: [{ label: '', segments: [{ units: a, text: money(a) }, { units: b, text: money(b) }] }],
+  braces: [{ row: 0, from: 0, to: 2, side: 'above', text: total }],
+});
+
+const moneyTotalMethod = ({ a, b }) => {
+  const [pa, pb] = [Math.floor(a / 100), Math.floor(b / 100)];
+  const [ca, cb] = [a % 100, b % 100];
+  const centavos = ca + cb;
+  const total = a + b;
+  const peso = (n) => `₱${n.toLocaleString('en-US')}`;
+  const steps = [
+    { text: `Draw the two prices as a bar. We want the whole: ${money(a)} + ${money(b)}.`, visual: priceBar(a, b, '?') },
+    { text: `Add the pesos: ${peso(pa)} + ${peso(pb)} = ${peso(pa + pb)}.`, visual: priceBar(a, b, '?') },
+  ];
+  const guided = [ask(`${peso(pa)} + ${peso(pb)} = ₱?`, pa + pb, priceBar(a, b, '?'))];
+  if (centavos && (!ca || !cb)) {
+    // Only one price has centavos: no "0¢ + 50¢".
+    steps.push({ text: `Only ${money(ca ? a : b)} has centavos: ${centavos}¢.`, visual: priceBar(a, b, '?') });
+  } else if (centavos) {
+    steps.push({
+      text: centavos >= 100
+        ? `Add the centavos: ${ca}¢ + ${cb}¢ = ${centavos}¢. 100 centavos make ₱1, so ${centavos}¢ = ${money(centavos)}.`
+        : `Add the centavos: ${ca}¢ + ${cb}¢ = ${centavos}¢.`,
+      visual: priceBar(a, b, '?'),
+    });
+    guided.push(ask(`${ca}¢ + ${cb}¢ = ?¢`, centavos, priceBar(a, b, '?')));
+  }
+  steps.push({
+    text: centavos ? `Put them together: ${peso(pa + pb)} + ${amount(centavos)} = ${money(total)}.` : `So the total is ${money(total)}.`,
+    visual: priceBar(a, b, money(total)),
+  });
+  guided.push(ask(`So how much altogether, in pesos? (${money(a)} + ${money(b)})`, pesos(total), priceBar(a, b, '?')));
+  return { name: 'Pesos, then centavos', steps, guided };
+};
+
+/** Friendly jumps from the price up to the bill: next peso, next ₱10, next ₱100, the bill. Never a 0 jump. */
+export const changeJumps = (cost, paid) => {
+  const jumps = [];
+  let at = cost;
+  for (const step of [100, 1000, 10000]) {
+    const next = Math.ceil(at / step) * step;
+    if (next > at && next < paid) { jumps.push(next - at); at = next; }
+  }
+  if (paid > at) jumps.push(paid - at);
+  return jumps;
+};
+
+const moneyChangeMethod = ({ cost, paid }) => {
+  const moves = changeJumps(cost, paid);
+  const hops = (m) => ({ kind: 'hops', start: cost, moves: m, format: 'money' });
+  const steps = [{ text: `Change is what is left: ${money(paid)} − ${money(cost)}. Count up from the price to ${money(paid)}.`, visual: hops([]) }];
+  const guided = [];
+  let at = cost;
+  moves.forEach((m, k) => {
+    steps.push({ text: `${money(at)} + ${amount(m)} = ${money(at + m)}.`, visual: hops(moves.slice(0, k + 1)) });
+    // A single jump is the whole answer, so it is asked in pesos like the question.
+    const inCentavos = m < 100 && moves.length > 1;
+    guided.push(ask(`From ${money(at)} to ${money(at + m)}: how much, in ${inCentavos ? 'centavos' : 'pesos'}?`, inCentavos ? m : pesos(m), hops(moves.slice(0, k))));
+    at += m;
+  });
+  steps.push({
+    text: moves.length > 1 ? `Add the jumps: ${moves.map(amount).join(' + ')} = ${money(paid - cost)}. That is the change.` : `So the change is ${money(paid - cost)}.`,
+    visual: hops(moves),
+  });
+  if (moves.length > 1) guided.push(ask(`So the change is how much, in pesos? (${moves.map(amount).join(' + ')})`, pesos(paid - cost), hops(moves)));
+  return { name: 'Count up to give change', steps, guided };
+};
+
+export const generators = { moneyProblem };
+export const methods = {
+  moneyTotal: (spec) => inWholePesos(moneyTotalMethod(spec), spec.whole),
+  moneyChange: (spec) => inWholePesos(moneyChangeMethod(spec), spec.whole),
+};

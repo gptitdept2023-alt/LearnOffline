@@ -1,0 +1,1052 @@
+{
+  "packId": "math-g2",
+  "version": "1.0.0",
+  "subject": "math",
+  "title": "Math · Grade 2",
+  "topics": [
+    {
+      "topicId": "g2-numbers",
+      "title": "Numbers to 1,000",
+      "icon": "🔢",
+      "summary": "Hundreds, tens and ones.",
+      "skills": [
+        {
+          "skillId": "g2-place-value",
+          "title": "Hundreds, tens and ones",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "A flat is 100, a rod is 10 and a cube is 1. This shows 2 hundreds, 4 tens and 3 ones: 243.",
+                "visual": {
+                  "kind": "blocks",
+                  "value": 243
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: What digit is in the hundreds place in 472?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "What digit is in the hundreds place in 472?",
+                  "visual": {
+                    "kind": "blocks",
+                    "value": 472
+                  },
+                  "choices": [
+                    "3",
+                    "4",
+                    "5"
+                  ],
+                  "answer": "4",
+                  "explain": "The answer is 4."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "placeValue",
+            "digits": 3
+          }
+        },
+        {
+          "skillId": "g2-compare",
+          "title": "Compare numbers",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "Compare the hundreds first. If they are the same, compare the tens, then the ones.",
+                "visual": {
+                  "kind": "stack",
+                  "items": [
+                    {
+                      "kind": "blocks",
+                      "value": 352
+                    },
+                    {
+                      "kind": "blocks",
+                      "value": 325
+                    }
+                  ]
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: Which number is greater?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which number is greater?",
+                  "choices": [
+                    "237",
+                    "675"
+                  ],
+                  "answer": "675",
+                  "explain": "The answer is 675."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "compare",
+            "min": 100,
+            "max": 999
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g2-add-sub",
+      "title": "Add and subtract to 1,000",
+      "icon": "➕",
+      "summary": "Column addition and subtraction, with renaming.",
+      "skills": [
+        {
+          "skillId": "g2-add",
+          "title": "Add 3-digit numbers",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "Line up ones under ones, tens under tens. Add from the ones. 10 ones make 1 ten: carry it."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: 509 + 153 = ?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "columnAdd",
+                    "a": 509,
+                    "b": 153
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 250 + 477 = ?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "columnAdd",
+                    "a": 250,
+                    "b": 477,
+                    "answer": 727
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "addition",
+            "min": 100,
+            "max": 899,
+            "maxSum": 999,
+            "regroup": true
+          }
+        },
+        {
+          "skillId": "g2-sub",
+          "title": "Subtract 3-digit numbers",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "Subtract from the ones. If the top digit is too small, rename 1 ten as 10 ones."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: 401 − 244 = ?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "columnSub",
+                    "a": 401,
+                    "b": 244
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 958 − 282 = ?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "columnSub",
+                    "a": 958,
+                    "b": 282,
+                    "answer": 676
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "subtraction",
+            "min": 100,
+            "max": 999,
+            "regroup": true
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g2-times",
+      "title": "Multiply and divide",
+      "icon": "✖️",
+      "summary": "Tables of 2, 3, 4, 5 and 10.",
+      "skills": [
+        {
+          "skillId": "g2-times-tables",
+          "title": "Times tables 2, 3, 4, 5, 10",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "4 groups of 3 is 3 + 3 + 3 + 3 = 12. We write 4 × 3 = 12.",
+                "visual": {
+                  "kind": "groups",
+                  "groups": 4,
+                  "each": 3
+                }
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: 3 × 10 = ?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "skipCount",
+                    "groups": 3,
+                    "each": 10
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 5 × 5 = ?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "skipCount",
+                    "groups": 5,
+                    "each": 5,
+                    "answer": 25
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "multiplication",
+            "tables": [
+              2,
+              3,
+              4,
+              5,
+              10
+            ],
+            "maxFactor": 10
+          }
+        },
+        {
+          "skillId": "g2-divide",
+          "title": "Share equally",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Share 12 sweets equally among 3 children. Each child gets 4. We write 12 ÷ 3 = 4.",
+                "visual": {
+                  "kind": "groups",
+                  "groups": 3,
+                  "each": 4
+                }
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: 12 ÷ 2 = ?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "divideByFact",
+                    "dividend": 12,
+                    "divisor": 2
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 100 ÷ 10 = ?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "divideByFact",
+                    "dividend": 100,
+                    "divisor": 10,
+                    "answer": 10
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "division",
+            "tables": [
+              2,
+              3,
+              4,
+              5,
+              10
+            ],
+            "maxFactor": 10
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g2-fractions",
+      "title": "Fractions",
+      "icon": "🍕",
+      "summary": "Halves, thirds and quarters.",
+      "skills": [
+        {
+          "skillId": "g2-fraction-shape",
+          "title": "Name the fraction",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "This bar is cut into 4 equal parts. 1 part is shaded: that is 1/4, one quarter.",
+                "visual": {
+                  "kind": "fraction",
+                  "numerator": 1,
+                  "denominator": 4,
+                  "shape": "bar"
+                }
+              },
+              {
+                "stage": "pictorial",
+                "text": "The bottom number is how many equal parts. The top number is how many are shaded.",
+                "visual": {
+                  "kind": "fraction",
+                  "numerator": 2,
+                  "denominator": 3,
+                  "shape": "circle"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: What fraction of the shape is shaded?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "What fraction of the shape is shaded?",
+                  "visual": {
+                    "kind": "fraction",
+                    "numerator": 2,
+                    "denominator": 4,
+                    "shape": "bar"
+                  },
+                  "choices": [
+                    "4/2",
+                    "3/4",
+                    "2/4",
+                    "2/5"
+                  ],
+                  "answer": "2/4",
+                  "explain": "The answer is 2/4."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "fractionOfShape",
+            "denominators": [
+              2,
+              3,
+              4
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g2-time",
+      "title": "Time",
+      "icon": "🕒",
+      "summary": "Read the clock to 5 minutes.",
+      "skills": [
+        {
+          "skillId": "g2-time-clock",
+          "title": "Read the clock",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "The long hand moves 5 minutes from one number to the next. Count in 5s: at 4 it is 20 minutes past.",
+                "visual": {
+                  "kind": "clock",
+                  "h": 2,
+                  "m": 20
+                }
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: What time does the clock show?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "readClock",
+                    "h": 4,
+                    "m": 5,
+                    "choices": [
+                      "3:05",
+                      "4:05",
+                      "4:00",
+                      "1:20"
+                    ]
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: What time does the clock show?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "readClock",
+                    "h": 9,
+                    "m": 40,
+                    "choices": [
+                      "8:45",
+                      "9:40",
+                      "9:35",
+                      "8:40"
+                    ],
+                    "answer": "9:40"
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "readClock",
+            "step": 5
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g2-money",
+      "title": "Money",
+      "icon": "🪙",
+      "summary": "Totals and change up to ₱100.",
+      "skills": [
+        {
+          "skillId": "g2-money-total",
+          "title": "How much altogether?",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Add the prices. ₱35 + ₱48: add the tens, then the ones: ₱70 + ₱13 = ₱83."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: Siti buys a storybook for ₱70 and a notebook for ₱51. How much does Siti pay altogether, in pesos?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "moneyTotal",
+                    "a": 7000,
+                    "b": 5100,
+                    "whole": true
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: Jun buys a lunch box for ₱86 and a storybook for ₱42. How much does Jun pay altogether, in pesos?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "moneyTotal",
+                    "a": 8600,
+                    "b": 4200,
+                    "whole": true,
+                    "answer": 128
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "moneyProblem",
+            "forms": [
+              "total"
+            ],
+            "max": 100,
+            "whole": true
+          }
+        },
+        {
+          "skillId": "g2-money-change",
+          "title": "Give change",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Count up from the price to the money paid. ₱64 to ₱70 is ₱6, and ₱70 to ₱100 is ₱30. Change: ₱36."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: Siti buys a notebook for ₱50 and pays with a ₱100 bill. How much change does Siti get, in pesos?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "moneyChange",
+                    "cost": 5000,
+                    "paid": 10000,
+                    "whole": true
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: Jun buys a storybook for ₱95 and pays with a ₱100 bill. How much change does Jun get, in pesos?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "moneyChange",
+                    "cost": 9500,
+                    "paid": 10000,
+                    "whole": true,
+                    "answer": 5
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "moneyProblem",
+            "forms": [
+              "change"
+            ],
+            "max": 100,
+            "whole": true
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g2-graphs",
+      "title": "Graphs",
+      "icon": "📊",
+      "summary": "Read and compare bars.",
+      "skills": [
+        {
+          "skillId": "g2-graphs-read",
+          "title": "Read a bar graph",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "Read the scale on the side. Go across from the top of a bar to read its number."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: How many pears were sold?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "readGraph",
+                    "title": "Fruit sold at a stall",
+                    "unit": "fruits",
+                    "labels": [
+                      "pears",
+                      "bananas",
+                      "apples",
+                      "oranges"
+                    ],
+                    "values": [
+                      25,
+                      15,
+                      35,
+                      20
+                    ],
+                    "scale": 5,
+                    "form": "read",
+                    "i": 0,
+                    "j": 1,
+                    "asTable": false
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: Which fruit sold the fewest?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "readGraph",
+                    "title": "Fruit sold at a stall",
+                    "unit": "fruits",
+                    "labels": [
+                      "pears",
+                      "mangoes",
+                      "bananas",
+                      "oranges"
+                    ],
+                    "values": [
+                      20,
+                      10,
+                      90,
+                      30
+                    ],
+                    "scale": 10,
+                    "form": "least",
+                    "i": 0,
+                    "j": 1,
+                    "asTable": true,
+                    "answer": "mangoes"
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "readGraph",
+            "forms": [
+              "read",
+              "most",
+              "least",
+              "difference"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g2-word-problems",
+      "title": "Word problems",
+      "icon": "📝",
+      "summary": "Bar models for adding, subtracting and groups.",
+      "skills": [
+        {
+          "skillId": "g2-wp-part-whole",
+          "title": "Part and whole",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "Draw a bar for the whole. Split it into the parts you know."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: Aisha has 222 marbles. Lea has 126 marbles. How many marbles do they have altogether?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "barModel",
+                    "model": {
+                      "rows": [
+                        {
+                          "label": "",
+                          "segments": [
+                            {
+                              "units": 222,
+                              "text": "Aisha: 222"
+                            },
+                            {
+                              "units": 126,
+                              "text": "Lea: 126"
+                            }
+                          ]
+                        }
+                      ],
+                      "braces": [
+                        {
+                          "row": 0,
+                          "from": 0,
+                          "to": 2,
+                          "side": "above",
+                          "text": "?"
+                        }
+                      ]
+                    },
+                    "op": "+",
+                    "a": 222,
+                    "b": 126,
+                    "answer": 348
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: Lito has 174 eggs. Ben has 131 eggs. How many eggs do they have altogether?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "barModel",
+                    "model": {
+                      "rows": [
+                        {
+                          "label": "",
+                          "segments": [
+                            {
+                              "units": 174,
+                              "text": "Lito: 174"
+                            },
+                            {
+                              "units": 131,
+                              "text": "Ben: 131"
+                            }
+                          ]
+                        }
+                      ],
+                      "braces": [
+                        {
+                          "row": 0,
+                          "from": 0,
+                          "to": 2,
+                          "side": "above",
+                          "text": "?"
+                        }
+                      ]
+                    },
+                    "op": "+",
+                    "a": 174,
+                    "b": 131,
+                    "answer": 305
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "wordProblem",
+            "kinds": [
+              "partWhole"
+            ],
+            "max": 500
+          }
+        },
+        {
+          "skillId": "g2-wp-compare",
+          "title": "More than, fewer than",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "Draw two bars, one under the other. The difference is the part that sticks out."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: Lea has 111 marbles. Aisha has 176 more marbles than Lea. How many marbles does Aisha have?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "barModel",
+                    "model": {
+                      "rows": [
+                        {
+                          "label": "Aisha",
+                          "segments": [
+                            {
+                              "units": 111,
+                              "text": ""
+                            },
+                            {
+                              "units": 176,
+                              "text": "176",
+                              "dashed": false
+                            }
+                          ]
+                        },
+                        {
+                          "label": "Lea",
+                          "segments": [
+                            {
+                              "units": 111,
+                              "text": ""
+                            }
+                          ]
+                        }
+                      ],
+                      "braces": [
+                        {
+                          "row": 0,
+                          "from": 0,
+                          "to": 2,
+                          "side": "above",
+                          "text": "?"
+                        },
+                        {
+                          "row": 1,
+                          "from": 0,
+                          "to": 1,
+                          "side": "below",
+                          "text": "111"
+                        }
+                      ]
+                    },
+                    "op": "+",
+                    "a": 111,
+                    "b": 176,
+                    "answer": 287
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: Ben has 87 eggs. Lito has 166 more eggs than Ben. How many eggs does Lito have?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "barModel",
+                    "model": {
+                      "rows": [
+                        {
+                          "label": "Lito",
+                          "segments": [
+                            {
+                              "units": 87,
+                              "text": ""
+                            },
+                            {
+                              "units": 166,
+                              "text": "166",
+                              "dashed": false
+                            }
+                          ]
+                        },
+                        {
+                          "label": "Ben",
+                          "segments": [
+                            {
+                              "units": 87,
+                              "text": ""
+                            }
+                          ]
+                        }
+                      ],
+                      "braces": [
+                        {
+                          "row": 0,
+                          "from": 0,
+                          "to": 2,
+                          "side": "above",
+                          "text": "?"
+                        },
+                        {
+                          "row": 1,
+                          "from": 0,
+                          "to": 1,
+                          "side": "below",
+                          "text": "87"
+                        }
+                      ]
+                    },
+                    "op": "+",
+                    "a": 87,
+                    "b": 166,
+                    "answer": 253
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "wordProblem",
+            "kinds": [
+              "compare"
+            ],
+            "max": 500
+          }
+        },
+        {
+          "skillId": "g2-wp-multiply",
+          "title": "Groups and times",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "When one has 3 times as many, draw 3 equal units for it and 1 unit for the other."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: Lea has 5 marbles. Aisha has 3 times as many marbles as Lea. How many marbles do they have altogether?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "barModel",
+                    "model": {
+                      "rows": [
+                        {
+                          "label": "Aisha",
+                          "segments": [
+                            {
+                              "units": 5,
+                              "text": ""
+                            },
+                            {
+                              "units": 5,
+                              "text": ""
+                            },
+                            {
+                              "units": 5,
+                              "text": ""
+                            }
+                          ]
+                        },
+                        {
+                          "label": "Lea",
+                          "segments": [
+                            {
+                              "units": 5,
+                              "text": "5"
+                            }
+                          ]
+                        }
+                      ],
+                      "braces": [
+                        {
+                          "rows": [
+                            0,
+                            1
+                          ],
+                          "side": "right",
+                          "text": "?"
+                        }
+                      ]
+                    },
+                    "op": "×",
+                    "a": 4,
+                    "b": 5,
+                    "answer": 20,
+                    "timesAltogether": 3
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: Ben has 5 eggs. Lito has 3 times as many eggs as Ben. How many eggs do they have altogether?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "barModel",
+                    "model": {
+                      "rows": [
+                        {
+                          "label": "Lito",
+                          "segments": [
+                            {
+                              "units": 5,
+                              "text": ""
+                            },
+                            {
+                              "units": 5,
+                              "text": ""
+                            },
+                            {
+                              "units": 5,
+                              "text": ""
+                            }
+                          ]
+                        },
+                        {
+                          "label": "Ben",
+                          "segments": [
+                            {
+                              "units": 5,
+                              "text": "5"
+                            }
+                          ]
+                        }
+                      ],
+                      "braces": [
+                        {
+                          "rows": [
+                            0,
+                            1
+                          ],
+                          "side": "right",
+                          "text": "?"
+                        }
+                      ]
+                    },
+                    "op": "×",
+                    "a": 4,
+                    "b": 5,
+                    "answer": 20,
+                    "timesAltogether": 3
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "wordProblem",
+            "kinds": [
+              "multiply"
+            ],
+            "max": 50,
+            "maxTimes": 5
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g2-challenge",
+      "title": "Challenge zone",
+      "icon": "⭐",
+      "summary": "Ready for more? These go a step beyond this grade.",
+      "challenge": true,
+      "skills": [
+        {
+          "skillId": "g2-ch-numbers",
+          "title": "Numbers to 10,000",
+          "generator": {
+            "type": "placeValue",
+            "digits": 4
+          }
+        },
+        {
+          "skillId": "g2-ch-add-sub",
+          "title": "Add and subtract 4-digit numbers",
+          "generator": {
+            "type": "mixed",
+            "of": [
+              {
+                "type": "addition",
+                "min": 1000,
+                "max": 4999,
+                "regroup": true
+              },
+              {
+                "type": "subtraction",
+                "min": 1000,
+                "max": 9999,
+                "regroup": true
+              }
+            ]
+          }
+        },
+        {
+          "skillId": "g2-ch-tables",
+          "title": "Times tables 6 to 9",
+          "generator": {
+            "type": "multiplication",
+            "tables": [
+              6,
+              7,
+              8,
+              9
+            ],
+            "maxFactor": 10
+          }
+        }
+      ]
+    }
+  ]
+}

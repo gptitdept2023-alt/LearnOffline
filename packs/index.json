@@ -1,0 +1,10 @@
+{
+  "packs": [
+    { "packId": "math-k2", "subject": "math", "subjectName": "Math", "icon": "🔢", "level": "K2", "levelName": "Kinder 2", "title": "Math · Kinder 2", "file": "math-k2.json", "young": true },
+    { "packId": "english-k2", "subject": "english", "subjectName": "English", "icon": "🔤", "level": "K2", "levelName": "Kinder 2", "title": "English · Kinder 2", "file": "english-k2.json", "young": true },
+    { "packId": "math-g1", "subject": "math", "subjectName": "Math", "icon": "🔢", "level": "G1", "levelName": "Grade 1", "title": "Math · Grade 1", "file": "math-g1.json", "young": false, "readAloud": true },
+    { "packId": "math-g2", "subject": "math", "subjectName": "Math", "icon": "🔢", "level": "G2", "levelName": "Grade 2", "title": "Math · Grade 2", "file": "math-g2.json", "young": false, "readAloud": true },
+    { "packId": "math-g3", "subject": "math", "subjectName": "Math", "icon": "🔢", "level": "G3", "levelName": "Grade 3", "title": "Math · Grade 3", "file": "math-g3.json", "young": false },
+    { "packId": "math-g4", "subject": "math", "subjectName": "Math", "icon": "🔢", "level": "G4", "levelName": "Grade 4", "title": "Math · Grade 4", "file": "math-g4.json", "young": false }
+  ]
+}

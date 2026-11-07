@@ -1,0 +1,1754 @@
+{
+  "packId": "math-g4",
+  "version": "1.3.1",
+  "subject": "math",
+  "title": "Math · Grade 4",
+  "topics": [
+    {
+      "topicId": "g4-whole-numbers",
+      "title": "Whole numbers to 100,000",
+      "icon": "🔢",
+      "summary": "Place value, reading and comparing large numbers.",
+      "skills": [
+        {
+          "skillId": "g4-place-value",
+          "title": "Place value to ten thousands",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Base-ten blocks: a flat is 100, a rod is 10, a cube is 1. This shows 243.",
+                "visual": {
+                  "kind": "blocks",
+                  "value": 243
+                }
+              },
+              {
+                "stage": "pictorial",
+                "text": "Each place is 10 times the place on its right:\nones → tens → hundreds → thousands → ten thousands."
+              },
+              {
+                "stage": "abstract",
+                "text": "In 47,352 the 4 is in the ten thousands place, so it stands for 40,000.",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "In 47,352, what value does the 7 stand for?",
+                  "choices": [
+                    "7",
+                    "70",
+                    "700",
+                    "7,000"
+                  ],
+                  "answer": "7,000",
+                  "explain": "The 7 is in the thousands place: 7,000."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "placeValue",
+            "digits": 5
+          }
+        },
+        {
+          "skillId": "g4-compare",
+          "title": "Compare numbers",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "Line the numbers up by place value:\n38,415\n38,154"
+              },
+              {
+                "stage": "abstract",
+                "text": "Start from the left. 3 = 3, 8 = 8, then 4 > 1. The first place that differs decides.",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which number is greater?",
+                  "choices": [
+                    "38,415",
+                    "38,154"
+                  ],
+                  "answer": "38,415",
+                  "explain": "In the hundreds, 4 is greater than 1."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "compare",
+            "min": 10000,
+            "max": 99999
+          }
+        },
+        {
+          "skillId": "g4-add-sub",
+          "title": "Add and subtract 4-digit numbers",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "technique",
+                "text": "Column addition: add each place, starting from the ones. Carry when a place makes 10 or more.",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "columnAdd",
+                    "a": 4568,
+                    "b": 2775
+                  }
+                }
+              },
+              {
+                "stage": "technique",
+                "text": "Column subtraction: when the top digit is too small, rename 1 from the next place.",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "columnSub",
+                    "a": 6302,
+                    "b": 2748
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 3,456 + 1,879.",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "columnAdd",
+                    "a": 3456,
+                    "b": 1879
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "mixed",
+            "of": [
+              {
+                "type": "addition",
+                "min": 1000,
+                "max": 4999,
+                "regroup": true
+              },
+              {
+                "type": "subtraction",
+                "min": 1000,
+                "max": 9999,
+                "regroup": true
+              }
+            ]
+          },
+          "questions": [
+            {
+              "id": "g4-as-1",
+              "type": "numeric",
+              "prompt": "6,302 − 2,748 = ?",
+              "answer": 3554,
+              "hint": "Rename across the zero: 6,302 = 62 hundreds + 2 ones = 61 hundreds + 10 tens + 2 ones. Take it one place at a time.",
+              "explain": "6,302 − 2,748 = 3,554",
+              "method": {
+                "kind": "columnSub",
+                "a": 6302,
+                "b": 2748
+              }
+            },
+            {
+              "id": "g4-as-2",
+              "type": "numeric",
+              "prompt": "9,000 − 4,567 = ?",
+              "answer": 4433,
+              "hint": "Think 8,999 + 1. Subtract from 8,999 first, then add 1.",
+              "explain": "8,999 − 4,567 = 4,432, plus 1 = 4,433",
+              "method": {
+                "kind": "columnSub",
+                "a": 9000,
+                "b": 4567
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topicId": "g4-factors",
+      "title": "Factors and multiples",
+      "icon": "🧮",
+      "summary": "Find factors and multiples of whole numbers.",
+      "skills": [
+        {
+          "skillId": "g4-factors-multiples",
+          "title": "Factors and multiples",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Arrange 12 counters in equal rows. 3 rows of 4 works, so 3 and 4 are factors of 12.",
+                "visual": {
+                  "kind": "groups",
+                  "groups": 3,
+                  "each": 4
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Factors of 12: 1, 2, 3, 4, 6, 12.\nMultiples of 4: 4, 8, 12, 16, 20, …",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which number is a factor of 12?",
+                  "choices": [
+                    "5",
+                    "6",
+                    "7",
+                    "8"
+                  ],
+                  "answer": "6",
+                  "explain": "12 ÷ 6 = 2 exactly, so 6 is a factor."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "factorsMultiples",
+            "max": 72
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g4-multiply-divide",
+      "title": "Multiplication and division",
+      "icon": "✖️",
+      "summary": "Multiply and divide larger numbers.",
+      "skills": [
+        {
+          "skillId": "g4-times-tables",
+          "title": "Times tables 6 to 9",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "technique",
+                "text": "Skip counting turns a times table into jumps on a number line.",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "skipCount",
+                    "groups": 4,
+                    "each": 7
+                  }
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Use facts you know: 7 × 8 = 7 × 4 × 2 = 28 × 2 = 56."
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 6 × 8.",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "skipCount",
+                    "groups": 6,
+                    "each": 8
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "multiplication",
+            "tables": [
+              6,
+              7,
+              8,
+              9
+            ],
+            "maxFactor": 10
+          }
+        },
+        {
+          "skillId": "g4-multiply-by-1digit",
+          "title": "Multiply by a 1-digit number",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Think of 243 × 3 as 3 groups of 243 blocks. Split by place value and multiply each part.",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "splitMultiply",
+                    "a": 243,
+                    "b": 3
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 125 × 4.",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "splitMultiply",
+                    "a": 125,
+                    "b": 4
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "multiplyLong",
+            "digits": 3,
+            "byDigits": 1
+          }
+        },
+        {
+          "skillId": "g4-multiply-by-2digit",
+          "title": "Multiply by a 2-digit number",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "technique",
+                "text": "Split the 2-digit number into tens and ones, multiply each, then add.",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "splitMultiply",
+                    "a": 34,
+                    "b": 26
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 52 × 13.",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "splitMultiply",
+                    "a": 52,
+                    "b": 13
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "multiplyLong",
+            "digits": 2,
+            "byDigits": 2
+          }
+        },
+        {
+          "skillId": "g4-divide",
+          "title": "Divide by a 1-digit number",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Share 84 counters into 4 equal groups. Share the tens first, then the ones.",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "longDivide",
+                    "dividend": 84,
+                    "divisor": 4
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 96 ÷ 3.",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "longDivide",
+                    "dividend": 96,
+                    "divisor": 3
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "divideLong",
+            "digits": 3,
+            "remainder": false
+          }
+        },
+        {
+          "skillId": "g4-divide-remainder",
+          "title": "Division with remainder",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Share 17 sweets among 5 children. Each gets 3, and 2 are left over. The 2 sweets on their own are the remainder.",
+                "visual": {
+                  "kind": "stack",
+                  "items": [
+                    {
+                      "kind": "groups",
+                      "groups": 5,
+                      "each": 3
+                    },
+                    {
+                      "kind": "pictures",
+                      "emoji": "🍬",
+                      "count": 2
+                    }
+                  ]
+                }
+              },
+              {
+                "stage": "technique",
+                "text": "The remainder is what is left after sharing equally.",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "longDivide",
+                    "dividend": 17,
+                    "divisor": 5
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 47 ÷ 6.",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "longDivide",
+                    "dividend": 47,
+                    "divisor": 6
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "divideLong",
+            "digits": 3,
+            "remainder": true
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g4-fractions",
+      "title": "Fractions",
+      "icon": "🍕",
+      "summary": "Equivalent fractions, and adding and subtracting fractions.",
+      "skills": [
+        {
+          "skillId": "g4-equivalent-fractions",
+          "title": "Equivalent fractions",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Fold a strip of paper in half and shade one half.",
+                "visual": {
+                  "kind": "fraction",
+                  "numerator": 1,
+                  "denominator": 2,
+                  "shape": "bar"
+                }
+              },
+              {
+                "stage": "technique",
+                "text": "Cut each part into smaller equal parts. The shaded amount stays the same.",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "equivalentFraction",
+                    "num": 1,
+                    "den": 2,
+                    "factor": 4
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 2/3 = ?/9.",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "equivalentFraction",
+                    "num": 2,
+                    "den": 3,
+                    "factor": 3
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "equivalentFraction",
+            "maxDen": 12
+          }
+        },
+        {
+          "skillId": "g4-fraction-add-sub",
+          "title": "Add and subtract like fractions",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "technique",
+                "text": "When the parts are the same size, add or subtract the tops and keep the bottom.",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "sameDenominator",
+                    "x": 2,
+                    "y": 3,
+                    "den": 8,
+                    "op": "+"
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 5/9 − 2/9.",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "sameDenominator",
+                    "x": 5,
+                    "y": 2,
+                    "den": 9,
+                    "op": "−"
+                  }
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "In practice, type the top and bottom numbers in the two boxes."
+              }
+            ]
+          },
+          "generator": {
+            "type": "fractionSameDen",
+            "maxDen": 12
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g4-decimals",
+      "title": "Decimals",
+      "icon": "🔟",
+      "summary": "Tenths, and adding and subtracting decimals.",
+      "skills": [
+        {
+          "skillId": "g4-decimals-tenths",
+          "title": "Tenths",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "Cut a whole into 10 equal parts. Each part is one tenth, 0.1. Three parts are 0.3.",
+                "visual": {
+                  "kind": "fraction",
+                  "numerator": 3,
+                  "denominator": 10,
+                  "shape": "bar"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "2 and 4 tenths is written 2.4. Line up the decimal points to add: 2.4 + 1.5 = 3.9.",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which decimal is 4 tenths?",
+                  "visual": {
+                    "kind": "fraction",
+                    "numerator": 4,
+                    "denominator": 10,
+                    "shape": "bar"
+                  },
+                  "choices": [
+                    "0.4",
+                    "4.0",
+                    "0.04"
+                  ],
+                  "answer": "0.4",
+                  "explain": "Tenths are the first place after the point."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "decimals",
+            "max": 10
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g4-measurement",
+      "title": "Length, mass and volume",
+      "icon": "📏",
+      "summary": "Change between km and m, m and cm, kg and g, ℓ and ml, and add measures.",
+      "skills": [
+        {
+          "skillId": "g4-measure-convert",
+          "title": "Change units",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "A metre stick is 100 cm long. So 1 m = 100 cm. In the same way, 1 km = 1,000 m, 1 kg = 1,000 g and 1 ℓ = 1,000 ml.",
+                "visual": {
+                  "kind": "bar",
+                  "rows": [
+                    {
+                      "label": "",
+                      "segments": [
+                        {
+                          "units": 100,
+                          "text": "100 cm"
+                        }
+                      ]
+                    }
+                  ],
+                  "braces": [
+                    {
+                      "row": 0,
+                      "from": 0,
+                      "to": 1,
+                      "side": "above",
+                      "text": "1 m"
+                    }
+                  ]
+                }
+              },
+              {
+                "stage": "pictorial",
+                "text": "2 m 35 cm is 2 metre sticks and 35 cm more: 200 + 35 = 235 cm.",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "convertUnits",
+                    "form": "toSmall",
+                    "factor": 100,
+                    "big": "m",
+                    "small": "cm",
+                    "parts": [
+                      [
+                        2,
+                        35
+                      ]
+                    ]
+                  }
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "To go the other way, take out the whole units first: 3,450 g = 3 kg 450 g.",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "convertUnits",
+                    "form": "toBig",
+                    "factor": 1000,
+                    "big": "kg",
+                    "small": "g",
+                    "parts": [
+                      [
+                        3,
+                        450
+                      ]
+                    ]
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 4 ℓ 250 ml = ? ml.",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "convertUnits",
+                    "form": "toSmall",
+                    "factor": 1000,
+                    "big": "ℓ",
+                    "small": "ml",
+                    "parts": [
+                      [
+                        4,
+                        250
+                      ]
+                    ],
+                    "answer": 4250
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "convertUnits",
+            "forms": [
+              "toSmall",
+              "toBig",
+              "whole"
+            ]
+          }
+        },
+        {
+          "skillId": "g4-measure-add",
+          "title": "Add measures",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "technique",
+                "text": "To add 1 kg 600 g and 2 kg 750 g, change both into grams first, then add.",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "convertUnits",
+                    "form": "add",
+                    "factor": 1000,
+                    "big": "kg",
+                    "small": "g",
+                    "parts": [
+                      [
+                        1,
+                        600
+                      ],
+                      [
+                        2,
+                        750
+                      ]
+                    ]
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 3 m 40 cm + 1 m 85 cm = ? cm.",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "convertUnits",
+                    "form": "add",
+                    "factor": 100,
+                    "big": "m",
+                    "small": "cm",
+                    "parts": [
+                      [
+                        3,
+                        40
+                      ],
+                      [
+                        1,
+                        85
+                      ]
+                    ],
+                    "answer": 525
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "convertUnits",
+            "forms": [
+              "add"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g4-money",
+      "title": "Money",
+      "icon": "💵",
+      "summary": "Add prices and give change in pesos and centavos.",
+      "skills": [
+        {
+          "skillId": "g4-money-total",
+          "title": "How much altogether?",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "100 centavos make 1 peso. ₱45.75 is 45 pesos and 75 centavos.",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "How many centavos make ₱1?",
+                  "choices": [
+                    "10",
+                    "100",
+                    "1,000"
+                  ],
+                  "answer": "100",
+                  "explain": "100 centavos = ₱1."
+                }
+              },
+              {
+                "stage": "technique",
+                "text": "Add the pesos, then the centavos. Change 100 centavos into ₱1 when you can.",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "moneyTotal",
+                    "a": 4575,
+                    "b": 2850
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: ₱36.50 + ₱25.75.",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "moneyTotal",
+                    "a": 3650,
+                    "b": 2575,
+                    "answer": 62.25
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "moneyProblem",
+            "forms": [
+              "total"
+            ],
+            "max": 300
+          }
+        },
+        {
+          "skillId": "g4-money-change",
+          "title": "Give change",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "technique",
+                "text": "Storekeepers count up to give change: to the next peso, then to friendly numbers, then to the bill.",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "moneyChange",
+                    "cost": 3775,
+                    "paid": 10000
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: a book costs ₱124.50. You pay with a ₱200 bill.",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "moneyChange",
+                    "cost": 12450,
+                    "paid": 20000,
+                    "answer": 75.5
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "moneyProblem",
+            "forms": [
+              "change"
+            ],
+            "max": 300
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g4-time",
+      "title": "Time",
+      "icon": "⏰",
+      "summary": "Read clocks, use the 24-hour clock, and work out how long things take.",
+      "skills": [
+        {
+          "skillId": "g4-time-clock",
+          "title": "Read the clock",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "The short hand shows the hour. The long hand shows the minutes. Each number on the clock is 5 minutes for the long hand.",
+                "visual": {
+                  "kind": "clock",
+                  "h": 4,
+                  "m": 20
+                }
+              },
+              {
+                "stage": "technique",
+                "text": "Read the hour hand first, then count the minutes in 5s.",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "readClock",
+                    "h": 4,
+                    "m": 20,
+                    "choices": [
+                      "4:20",
+                      "5:20",
+                      "4:04",
+                      "20:04"
+                    ]
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn.",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "readClock",
+                    "h": 7,
+                    "m": 45,
+                    "choices": [
+                      "7:45",
+                      "8:45",
+                      "9:35",
+                      "7:09"
+                    ],
+                    "answer": "7:45"
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "readClock"
+          }
+        },
+        {
+          "skillId": "g4-time-24h",
+          "title": "24-hour clock",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "A day has 24 hours. The 24-hour clock does not start again at noon: 1 p.m. is 13:00, 6 p.m. is 18:00. Midnight is 00:00.",
+                "visual": {
+                  "kind": "dayline",
+                  "mins": 1080
+                }
+              },
+              {
+                "stage": "technique",
+                "text": "For p.m. times, take 12 away from the hour.",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "clock24h",
+                    "t": 940,
+                    "form": "to12",
+                    "choices": [
+                      "3:40 p.m.",
+                      "3:40 a.m.",
+                      "5:40 p.m.",
+                      "1:40 p.m."
+                    ]
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 7:15 p.m. in 24-hour time.",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "clock24h",
+                    "t": 1155,
+                    "form": "to24",
+                    "choices": [
+                      "19:15",
+                      "07:15",
+                      "17:15",
+                      "21:15"
+                    ],
+                    "answer": "19:15"
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "clock24h"
+          }
+        },
+        {
+          "skillId": "g4-time-duration",
+          "title": "How long does it take?",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "technique",
+                "text": "Draw a timeline. Jump to the next o'clock, then whole hours, then the minutes left. Add the jumps.",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "timeDuration",
+                    "start": 585,
+                    "end": 680,
+                    "form": "howLong"
+                  }
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "To find an end time, add the hours first, then the minutes.",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "timeDuration",
+                    "start": 875,
+                    "end": 975,
+                    "form": "endTime",
+                    "choices": [
+                      "4:15 p.m.",
+                      "3:15 p.m.",
+                      "4:05 p.m.",
+                      "5:15 p.m."
+                    ]
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: from 8:50 a.m. to 10:15 a.m.",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "timeDuration",
+                    "start": 530,
+                    "end": 615,
+                    "form": "howLong",
+                    "answer": 85
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "timeDuration"
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g4-geometry",
+      "title": "Angles, area and symmetry",
+      "icon": "📐",
+      "summary": "Kinds of angles and turns, perimeter and area of rectangles, and lines of symmetry.",
+      "skills": [
+        {
+          "skillId": "g4-angles",
+          "title": "Angles and turns",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Fold a paper twice to make a square corner. That is a right angle, 90°.",
+                "visual": {
+                  "kind": "angle",
+                  "deg": 90,
+                  "rotate": 0
+                }
+              },
+              {
+                "stage": "technique",
+                "text": "Put your square corner on an angle. Smaller is acute. Bigger is obtuse.",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "angleType",
+                    "deg": 130,
+                    "rotate": 10
+                  }
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Each 1/4 turn is a right angle. A full turn is 4 right angles, 360°.",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "turns",
+                    "quarters": 3,
+                    "inDegrees": true
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: what kind of angle is this?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "angleType",
+                    "deg": 50,
+                    "rotate": 20,
+                    "answer": "acute angle"
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "angles"
+          }
+        },
+        {
+          "skillId": "g4-area-perimeter",
+          "title": "Perimeter and area",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Walk around the edge of a shape: that distance is the perimeter. Cover it with 1 cm squares: the number of squares is the area.",
+                "visual": {
+                  "kind": "rectGrid",
+                  "w": 6,
+                  "h": 4,
+                  "mode": "area"
+                }
+              },
+              {
+                "stage": "technique",
+                "text": "Perimeter: add all the sides.",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "areaPerimeter",
+                    "w": 7,
+                    "h": 4,
+                    "form": "perimeter"
+                  }
+                }
+              },
+              {
+                "stage": "technique",
+                "text": "Area: rows × squares in each row.",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "areaPerimeter",
+                    "w": 7,
+                    "h": 4,
+                    "form": "area"
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: the area of a 9 cm by 5 cm rectangle.",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "areaPerimeter",
+                    "w": 9,
+                    "h": 5,
+                    "form": "area",
+                    "answer": 45
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "areaPerimeter"
+          }
+        },
+        {
+          "skillId": "g4-symmetry",
+          "title": "Lines of symmetry",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Fold a paper heart down the middle. The two halves match exactly, so the fold is a line of symmetry.",
+                "visual": {
+                  "kind": "symmetry",
+                  "shape": "heart",
+                  "line": [
+                    50,
+                    4,
+                    50,
+                    96
+                  ]
+                }
+              },
+              {
+                "stage": "technique",
+                "text": "A rectangle's diagonal is NOT a line of symmetry. Fold it and see.",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "symmetry",
+                    "shape": "rectangle",
+                    "form": "isLine",
+                    "line": [
+                      6,
+                      24,
+                      94,
+                      76
+                    ],
+                    "yes": false
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: how many lines of symmetry does a square have?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "symmetry",
+                    "shape": "square",
+                    "form": "count",
+                    "answer": 4
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "symmetry"
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g4-graphs",
+      "title": "Tables and graphs",
+      "icon": "📈",
+      "summary": "Read bar graphs and tables, and compare and add what they show.",
+      "skills": [
+        {
+          "skillId": "g4-graphs-read",
+          "title": "Read bar graphs and tables",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "Check the scale first. Then go across from the top of a bar to the scale to read it.",
+                "visual": {
+                  "kind": "barGraph",
+                  "title": "Books read last month",
+                  "unit": "books",
+                  "labels": [
+                    "Ana",
+                    "Ben",
+                    "Mei",
+                    "Raj"
+                  ],
+                  "values": [
+                    12,
+                    8,
+                    16,
+                    6
+                  ],
+                  "scale": 2,
+                  "focus": [
+                    2
+                  ]
+                }
+              },
+              {
+                "stage": "technique",
+                "text": "To compare, read both bars, then subtract.",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "readGraph",
+                    "title": "Books read last month",
+                    "unit": "books",
+                    "labels": [
+                      "Ana",
+                      "Ben",
+                      "Mei",
+                      "Raj"
+                    ],
+                    "values": [
+                      12,
+                      8,
+                      16,
+                      6
+                    ],
+                    "scale": 2,
+                    "form": "difference",
+                    "i": 2,
+                    "j": 1,
+                    "asTable": false
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: how many books altogether?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "readGraph",
+                    "title": "Books read last month",
+                    "unit": "books",
+                    "labels": [
+                      "Ana",
+                      "Ben",
+                      "Mei",
+                      "Raj"
+                    ],
+                    "values": [
+                      12,
+                      8,
+                      16,
+                      6
+                    ],
+                    "scale": 2,
+                    "form": "total",
+                    "i": 0,
+                    "j": 1,
+                    "asTable": true,
+                    "answer": 42
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "readGraph"
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g4-word-problems",
+      "title": "Word problems with bar models",
+      "icon": "📊",
+      "summary": "Draw a bar model, then solve.",
+      "skills": [
+        {
+          "skillId": "g4-wp-part-whole",
+          "title": "Part and whole",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "technique",
+                "text": "Ana has 1,250 stickers. Ben has 860. How many altogether? Watch how to draw it.",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "barModel",
+                    "model": {
+                      "rows": [
+                        {
+                          "label": "",
+                          "segments": [
+                            {
+                              "units": 1250,
+                              "text": "Ana: 1,250"
+                            },
+                            {
+                              "units": 860,
+                              "text": "Ben: 860"
+                            }
+                          ]
+                        }
+                      ],
+                      "braces": [
+                        {
+                          "row": 0,
+                          "from": 0,
+                          "to": 2,
+                          "side": "above",
+                          "text": "?"
+                        }
+                      ]
+                    },
+                    "op": "+",
+                    "a": 1250,
+                    "b": 860,
+                    "answer": 2110
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: Ana and Ben have 3,000 stickers altogether. Ana has 1,800. How many does Ben have?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "barModel",
+                    "model": {
+                      "rows": [
+                        {
+                          "label": "",
+                          "segments": [
+                            {
+                              "units": 1800,
+                              "text": "Ana: 1,800"
+                            },
+                            {
+                              "units": 1200,
+                              "text": "Ben: ?"
+                            }
+                          ]
+                        }
+                      ],
+                      "braces": [
+                        {
+                          "row": 0,
+                          "from": 0,
+                          "to": 2,
+                          "side": "above",
+                          "text": "3,000"
+                        }
+                      ]
+                    },
+                    "op": "−",
+                    "a": 3000,
+                    "b": 1800,
+                    "answer": 1200
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "wordProblem",
+            "kinds": [
+              "partWhole"
+            ],
+            "max": 9000
+          }
+        },
+        {
+          "skillId": "g4-wp-compare",
+          "title": "Comparing (more than, fewer than)",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "technique",
+                "text": "Raj has 340 cards. Mei has 125 more than Raj. How many does Mei have? Watch the two bars.",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "barModel",
+                    "model": {
+                      "rows": [
+                        {
+                          "label": "Mei",
+                          "segments": [
+                            {
+                              "units": 340,
+                              "text": ""
+                            },
+                            {
+                              "units": 125,
+                              "text": "125"
+                            }
+                          ]
+                        },
+                        {
+                          "label": "Raj",
+                          "segments": [
+                            {
+                              "units": 340,
+                              "text": ""
+                            }
+                          ]
+                        }
+                      ],
+                      "braces": [
+                        {
+                          "row": 0,
+                          "from": 0,
+                          "to": 2,
+                          "side": "above",
+                          "text": "?"
+                        },
+                        {
+                          "row": 1,
+                          "from": 0,
+                          "to": 1,
+                          "side": "below",
+                          "text": "340"
+                        }
+                      ]
+                    },
+                    "op": "+",
+                    "a": 340,
+                    "b": 125,
+                    "answer": 465
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: Mei has 820 cards. Raj has 560. How many more does Mei have?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "barModel",
+                    "model": {
+                      "rows": [
+                        {
+                          "label": "Mei",
+                          "segments": [
+                            {
+                              "units": 560,
+                              "text": ""
+                            },
+                            {
+                              "units": 260,
+                              "text": "?"
+                            }
+                          ]
+                        },
+                        {
+                          "label": "Raj",
+                          "segments": [
+                            {
+                              "units": 560,
+                              "text": ""
+                            }
+                          ]
+                        }
+                      ],
+                      "braces": [
+                        {
+                          "row": 0,
+                          "from": 0,
+                          "to": 2,
+                          "side": "above",
+                          "text": "820"
+                        },
+                        {
+                          "row": 1,
+                          "from": 0,
+                          "to": 1,
+                          "side": "below",
+                          "text": "560"
+                        }
+                      ]
+                    },
+                    "op": "−",
+                    "a": 820,
+                    "b": 560,
+                    "answer": 260
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "wordProblem",
+            "kinds": [
+              "compare"
+            ],
+            "max": 5000
+          }
+        },
+        {
+          "skillId": "g4-wp-multiply",
+          "title": "Times as many (units)",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "technique",
+                "text": "Lea has 3 times as many shells as Jun. Jun has 24. How many do they have altogether? Draw units!",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "barModel",
+                    "model": {
+                      "rows": [
+                        {
+                          "label": "Lea",
+                          "segments": [
+                            {
+                              "units": 24,
+                              "text": ""
+                            },
+                            {
+                              "units": 24,
+                              "text": ""
+                            },
+                            {
+                              "units": 24,
+                              "text": ""
+                            }
+                          ]
+                        },
+                        {
+                          "label": "Jun",
+                          "segments": [
+                            {
+                              "units": 24,
+                              "text": "24"
+                            }
+                          ]
+                        }
+                      ],
+                      "braces": [
+                        {
+                          "rows": [
+                            0,
+                            1
+                          ],
+                          "side": "right",
+                          "text": "?"
+                        }
+                      ]
+                    },
+                    "op": "×",
+                    "a": 4,
+                    "b": 24,
+                    "answer": 96,
+                    "timesAltogether": 3
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: Siti has 5 times as many marbles as Tomas. Tomas has 15. How many does Siti have?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "barModel",
+                    "model": {
+                      "rows": [
+                        {
+                          "label": "Siti",
+                          "segments": [
+                            {
+                              "units": 15,
+                              "text": ""
+                            },
+                            {
+                              "units": 15,
+                              "text": ""
+                            },
+                            {
+                              "units": 15,
+                              "text": ""
+                            },
+                            {
+                              "units": 15,
+                              "text": ""
+                            },
+                            {
+                              "units": 15,
+                              "text": ""
+                            }
+                          ]
+                        },
+                        {
+                          "label": "Tomas",
+                          "segments": [
+                            {
+                              "units": 15,
+                              "text": "15"
+                            }
+                          ]
+                        }
+                      ],
+                      "braces": [
+                        {
+                          "row": 0,
+                          "from": 0,
+                          "to": 5,
+                          "side": "above",
+                          "text": "?"
+                        }
+                      ]
+                    },
+                    "op": "×",
+                    "a": 5,
+                    "b": 15,
+                    "answer": 75
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "wordProblem",
+            "kinds": [
+              "multiply"
+            ],
+            "max": 900,
+            "maxTimes": 9
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g4-challenge",
+      "title": "Challenge zone",
+      "icon": "⭐",
+      "challenge": true,
+      "summary": "Ready for more? Bigger numbers and harder problems, a step towards Grade 5.",
+      "skills": [
+        {
+          "skillId": "g4-ch-big-numbers",
+          "title": "Numbers to 1,000,000",
+          "generator": {
+            "type": "placeValue",
+            "digits": 6
+          }
+        },
+        {
+          "skillId": "g4-ch-multiply",
+          "title": "3-digit × 2-digit",
+          "generator": {
+            "type": "multiplyLong",
+            "digits": 3,
+            "byDigits": 2
+          }
+        },
+        {
+          "skillId": "g4-ch-divide",
+          "title": "Divide 4-digit numbers",
+          "generator": {
+            "type": "divideLong",
+            "digits": 4,
+            "remainder": true
+          }
+        },
+        {
+          "skillId": "g4-ch-factors",
+          "title": "Factors and multiples to 144",
+          "generator": {
+            "type": "factorsMultiples",
+            "max": 144
+          }
+        },
+        {
+          "skillId": "g4-ch-word",
+          "title": "Mixed word problems",
+          "generator": {
+            "type": "wordProblem",
+            "kinds": [
+              "partWhole",
+              "compare",
+              "multiply"
+            ],
+            "max": 9000,
+            "maxTimes": 9
+          }
+        }
+      ]
+    }
+  ]
+}
