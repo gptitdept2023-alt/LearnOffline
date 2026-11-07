@@ -4,15 +4,24 @@
  * but strict about the value.
  */
 
-/** Parse a typed number: "1,250" -> 1250, " 0.5 " -> 0.5. Returns NaN if not a number. */
+/** Parse a typed number: "1,250" -> 1250, " 0.5 " -> 0.5, "75%" -> 75. Returns NaN if not a number. */
 export const parseNumber = (raw) => {
-  const cleaned = String(raw ?? '').trim().replace(/[,\s]/g, '').replace(/^[₱$]/, '').replace(/^−/, '-');
+  const cleaned = String(raw ?? '').trim().replace(/[,\s]/g, '').replace(/^[₱$]/, '').replace(/%$/, '').replace(/^−/, '-');
   if (!/^-?(\d+(\.\d*)?|\.\d+)$/.test(cleaned)) return Number.NaN;
   return Number(cleaned);
 };
 
-/** Parse "3/4" -> { n: 3, d: 4 }. Whole numbers are allowed ("2" -> 2/1). Returns null if invalid. */
+/**
+ * Parse "3/4" -> { n: 3, d: 4 }. Whole numbers are allowed ("2" -> 2/1), and
+ * so are mixed numbers ("1 3/4" -> 7/4). Returns null if invalid.
+ */
 export const parseFraction = (raw) => {
+  // A mixed number keeps its space: "1 1/2" is 3/2, never "11/2".
+  const mixed = /^\s*(\d+)\s+(\d+)\s*\/\s*(\d+)\s*$/.exec(String(raw ?? ''));
+  if (mixed) {
+    const [w, n, d] = mixed.slice(1).map(Number);
+    return d === 0 ? null : { n: w * d + n, d };
+  }
   const cleaned = String(raw ?? '').replace(/\s/g, '');
   const match = /^(-?\d+)(?:\/(\d+))?$/.exec(cleaned);
   if (!match) return null;

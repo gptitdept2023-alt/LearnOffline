@@ -78,6 +78,10 @@
 .method-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
 .method-body p { margin: 0; font-weight: 600; }
 .method-body .visual { background: var(--surface); }
+/* On phones a bar model uses the space under the step number too, so its labels stay readable. */
+@media (max-width: 480px) {
+  .method-body > .visual-bar-model { margin-left: -40px; }
+}
 .method-actions { display: flex; gap: 8px; flex-wrap: wrap; }
 .feedback .method { margin: 6px 0; }
 

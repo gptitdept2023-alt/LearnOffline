@@ -121,7 +121,7 @@ const compare = ({ min = 0, max = 100, ask = 'either' }, rng) => {
 const placeValue = ({ digits = 3 }, rng) => {
   const min = 10 ** (digits - 1);
   const n = randInt(min, 10 ** digits - 1, rng);
-  const places = ['ones', 'tens', 'hundreds', 'thousands', 'ten thousands', 'hundred thousands'];
+  const places = ['ones', 'tens', 'hundreds', 'thousands', 'ten thousands', 'hundred thousands', 'millions'];
   const placeHint = `Count places from the right: ${places.slice(0, Math.max(3, digits)).join(', ')}.`;
   const ds = digitsOf(n);
   const pos = randInt(0, digits - 1, rng);

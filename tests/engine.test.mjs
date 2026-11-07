@@ -21,6 +21,13 @@ const PARAMS = {
   mixed: { of: [{ type: 'addition', min: 1000, max: 4999, regroup: true }, { type: 'subtraction', min: 1000, max: 9999, regroup: true }] },
   letterFind: {}, letterMatch: {}, letterNext: { small: true }, firstLetter: {}, sameSound: {}, missingVowel: {},
   readWord: {}, pictureWord: {}, rhyme: {}, sightWord: {}, readSentence: {},
+  fractionUnlike: {}, mixedNumbers: {}, fractionOf: {}, fractionMultiply: {}, fractionDivide: {},
+  decimalOps: { forms: ['add', 'sub', 'mulWhole', 'divWhole', 'mulDec', 'divDec', 'round'] }, powersOfTen: {},
+  percentage: { forms: ['toPercent', 'whatPercent', 'ofQuantity', 'discount', 'increase', 'findWhole'] },
+  ratio: { forms: ['simplify', 'share', 'findPart', 'total', 'difference'] }, average: { forms: ['mean', 'missing'] },
+  orderOps: { templates: ['basic', 'more'] }, algebra: {}, speed: {},
+  triangleArea: { forms: ['area', 'height'] }, triangleAngles: { forms: ['two', 'right', 'isosceles'] },
+  volume: { forms: ['cuboid', 'cube', 'missing', 'litres'] }, circle: {},
 };
 
 test('every generator produces 500 well-formed, self-consistent questions', () => {

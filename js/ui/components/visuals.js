@@ -9,6 +9,7 @@ import { h, svg } from '../../core/dom.js';
 import { longDivisionSteps } from '../../engine/longDivision.js';
 import { TOPIC_RENDERERS } from './visualsTopics.js';
 import { WORD_RENDERERS } from './visualsWords.js';
+import { SOLID_RENDERERS } from './visualsSolids.js';
 
 /* ------------------------------------------------------------------ */
 /* Pictures (Kinder)                                                   */
@@ -627,6 +628,8 @@ const RENDERERS = {
   ...TOPIC_RENDERERS,
   // English: picture of a word, letter tiles, a sentence to read.
   ...WORD_RENDERERS,
+  // Grade 5–6 geometry: triangle, cuboid, circle.
+  ...SOLID_RENDERERS,
 };
 
 /**

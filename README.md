@@ -5,12 +5,20 @@ short lessons, auto-graded practice, stars and badges, and a parent
 dashboard. It installs from the browser and then runs with no internet on a
 PC or an Android phone.
 
-Math covers **Kinder 2** (picture-based, read aloud) and **Grades 1 to 4**, taught the Singapore way: Concrete → Pictorial → Abstract
+Math covers **Kinder 2** (picture-based, read aloud) and **Grades 1 to 6**, taught the Singapore way: Concrete → Pictorial → Abstract
 lessons and bar models for word problems. Grade 4 covers whole numbers,
 factors, multiplication and division, fractions, decimals, length, mass and
 volume, money, time (clock, 24-hour clock, durations), angles, perimeter and
-area, symmetry, tables and bar graphs, and word problems. All lessons and questions are
-original.
+area, symmetry, tables and bar graphs, and word problems. Grades 5 and 6 add
+unlike fractions, mixed numbers, multiplying and dividing fractions and decimals,
+percentages (discounts, increases, finding the whole), ratio with unit bar models,
+average, order of operations, simple algebra, speed, area and angles of triangles,
+volume and litres, and circles (π = 3.14). Fraction answers can be typed as mixed
+numbers ("1 3/4"). All lessons and questions are original.
+
+The Grade 1–3 and 5–6 packs are generated: `node tools/build-math-g1-g3.mjs` and
+`node tools/build-math-g5-g6.mjs` write the lessons (hand-written intro steps plus a
+worked example and a "your turn" from each skill's own question maker).
 
 **English for Kinder 2** sits next to Math: a learner switches subject with
 the Math / English tabs on their home screen (the grade is set in the parent
@@ -55,7 +63,7 @@ Techniques (`js/engine/techniques.js`): count on, make ten, number bonds, column
 
 ## Voice
 
-The app ships a **recorded voice pack** (`audio/voice/`, about 30 MB, cached for offline use): every lesson sentence, every Kinder question and hint (including the small Challenge sums), game and results lines, praise and nudges were recorded with the open-source [Piper](https://github.com/rhasspy/piper) engine using the *Kathleen* voice (CC0). Sentences that are not recorded (for example a random Grade 4 sum) use the device's best offline voice, read a little slower and higher. Parents can change voice, speed and pitch under **Parents → Voice**.
+The app ships a **recorded voice pack** (`audio/voice/`, about 38 MB, cached for offline use): every lesson sentence, every Kinder question and hint (including the small Challenge sums), game and results lines, praise and nudges were recorded with the open-source [Piper](https://github.com/rhasspy/piper) engine using the *Kathleen* voice (CC0). Sentences that are not recorded (for example a random Grade 4 sum) use the device's best offline voice, read a little slower and higher. Parents can change voice, speed and pitch under **Parents → Voice**.
 
 After changing lesson text or Kinder generators, re-record the new sentences (existing clips are kept):
 
@@ -150,6 +158,6 @@ sets, bigger buttons and read-aloud on by default.
 
 1. **Phase 1 (this):** app engine, Kinder 2 and Grade 4 math
 2. **Phase 2:** English reading/phonics for Kinder 2 (done), then Grade 1–2; Grade 4 English and Science; Google Sheet → pack exporter (Apps Script)
-3. **Phase 3:** Math Grades 1–3 (done), 5–6; Science Grades 3–6
+3. **Phase 3:** Math Grades 1–3 and 5–6 (done); Science Grades 3–6
 4. **Phase 4:** Junior high (Grades 7–10)
 5. **Phase 5:** Senior high core subjects, optional sync, printable worksheets

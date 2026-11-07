@@ -1,6 +1,7 @@
 /**
  * Topics beyond number work: measurement, time, money, geometry and graphs
- * (Grade 4), and English for early readers. Each module exports `generators`
+ * (Grade 4), English for early readers, and the Grade 5–6 topics (fractions,
+ * decimals and percentages, ratio and algebra, triangles, volume and circles). Each module exports `generators`
  * (question makers) and `methods` (worked solutions); this index merges them so generators.js and
  * techniques.js can register them without knowing every module.
  */
@@ -11,8 +12,12 @@ import * as money from './money.js';
 import * as geometry from './geometry.js';
 import * as graphs from './graphs.js';
 import * as english from './english.js';
+import * as fractionsPlus from './fractionsPlus.js';
+import * as decimalsPercent from './decimalsPercent.js';
+import * as ratioAlgebra from './ratioAlgebra.js';
+import * as solids from './solids.js';
 
-const MODULES = [measurement, time, money, geometry, graphs, english];
+const MODULES = [measurement, time, money, geometry, graphs, english, fractionsPlus, decimalsPercent, ratioAlgebra, solids];
 
 export const TOPIC_GENERATORS = Object.assign({}, ...MODULES.map((m) => m.generators));
 export const TOPIC_METHODS = Object.assign({}, ...MODULES.map((m) => m.methods));
