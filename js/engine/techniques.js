@@ -333,7 +333,7 @@ const splitMultiply = ({ a, b }) => {
         { text: `${b} groups of ${placeCount(p.d, p.i)} = ${placeCount(p.d * b, p.i)} = ${fmt(a * b)}.`, visual: stack(p.i < 4 && { kind: 'share', groups: b, each: [{ place: 10 ** p.i, n: p.d }], focus: 10 ** p.i }, area(1, 0)) },
       ],
       guided: [
-        ask(`${b} groups of ${p.d} ${PLACE[p.i]} make how many ${PLACE[p.i]}?`, p.d * b, area(0, 0)),
+        ask(`${b} groups of ${placeCount(p.d, p.i)} make how many ${PLACE[p.i]}?`, p.d * b, area(0, 0)),
         ask(`So ${fmt(a)} × ${b} = ?`, a * b, area(1)),
       ],
     };

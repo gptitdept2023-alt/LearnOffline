@@ -14,7 +14,7 @@
 
 /* Pictures (emoji) */
 .pic-group { display: flex; flex-wrap: wrap; justify-content: center; column-gap: 14px; row-gap: 6px; }
-.pic { font-size: 2.2rem; line-height: 1.1; }
+.pic { font-size: min(2.2rem, calc((100vw - 140px) / 6.5)); line-height: 1.1; } /* five in a row always fit, even inside a method panel */
 .pic-five { display: inline-flex; flex-wrap: nowrap; gap: 4px; } /* a five never splits across lines */
 .pic-crossed { position: relative; opacity: 0.35; }
 .pic-crossed::after {
@@ -35,12 +35,14 @@
 .op-sign { font-size: 2rem; font-weight: 800; color: var(--muted); }
 
 .visual-sequence { gap: 6px; flex-wrap: nowrap; }
-.seq-item { font-size: min(2.3rem, calc((100vw - 120px) / 10)); }
+/* Up to 8 pictures and the ? box share one row on a 360 px phone. */
+.seq-item { font-size: min(2.3rem, calc((100vw - 170px) / 8)); }
 .seq-unknown {
   display: inline-grid;
   place-items: center;
-  width: 56px;
-  height: 56px;
+  flex-shrink: 0;
+  width: min(56px, 11vw);
+  height: min(56px, 11vw);
   border: 3px dashed var(--primary);
   border-radius: var(--radius-sm);
   color: var(--primary);
