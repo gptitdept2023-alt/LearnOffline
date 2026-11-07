@@ -66,10 +66,11 @@ export const renderLesson = async (view, skillId) => {
     stopSpeaking();
     const step = steps[index];
     const last = index === steps.length - 1;
-    if (last && !counted) {
+    const countLesson = () => {
+      if (counted) return;
       counted = true;
       recordActivity(profile.profileId, { kind: 'lesson' }, Boolean(indexed.pack.young)).catch((e) => console.error(e));
-    }
+    };
     const nextBtn = last
       ? h('a.btn.btn-primary', { href: afterLesson.href }, afterLesson.label, ' ▶')
       : h('button.btn.btn-primary', { type: 'button', onclick: () => { index += 1; show(); } }, t('next'), ' ▶');
@@ -80,6 +81,7 @@ export const renderLesson = async (view, skillId) => {
       nextBtn.setAttribute('aria-disabled', 'true');
       if (nextBtn.tagName === 'BUTTON') nextBtn.disabled = true;
       const unlock = () => {
+        if (last) countLesson();
         nextBtn.classList.remove('is-locked');
         nextBtn.removeAttribute('aria-disabled');
         nextBtn.disabled = false;
@@ -87,6 +89,8 @@ export const renderLesson = async (view, skillId) => {
       };
       interaction = buildInteraction(step.interact, unlock);
       if (!interaction) unlock();
+    } else if (last) {
+      countLesson(); // a last step with nothing to do is done once it is shown
     }
 
     mount(card,

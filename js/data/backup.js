@@ -8,6 +8,8 @@ import { STORES, tx, promisify } from './db.js';
 const FORMAT = 'learnoffline-backup';
 const FORMAT_VERSION = 1;
 const ALL_STORES = Object.values(STORES);
+/** Settings key of the parent PIN (see js/ui/screens/parent.js). */
+const PIN_KEY = 'parentPin';
 
 /** The key each row must carry, per store (matches the keyPaths in db.js). */
 const ROW_KEYS = {
@@ -79,11 +81,17 @@ export const validateBackup = (backup) => {
 export const restoreAll = async (backup) => {
   const error = validateBackup(backup);
   if (error) throw new Error(error);
-  await tx(ALL_STORES, 'readwrite', (s) => {
+  await tx(ALL_STORES, 'readwrite', async (s) => {
+    // The parent PIN belongs to this device, not to the backup: keep ours (or none).
+    const ownPin = await promisify(s[STORES.settings].get(PIN_KEY));
     for (const name of ALL_STORES) {
       s[name].clear();
-      for (const row of backup.data[name]) s[name].put(row);
+      for (const row of backup.data[name]) {
+        if (name === STORES.settings && row.key === PIN_KEY) continue;
+        s[name].put(row);
+      }
     }
+    if (ownPin) s[STORES.settings].put(ownPin);
   });
   return backup.data.profiles.length;
 };

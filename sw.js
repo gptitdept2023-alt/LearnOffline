@@ -4,7 +4,7 @@
  *
  * To ship an update: change files, bump CACHE_VERSION. Browsers download the
  * new version in the background and the app offers a "Reload" button.
- * tests/precache.test.mjs fails if a file is missing from PRECACHE.
+ * tests/packs.test.mjs fails if a file is missing from PRECACHE.
  */
 
 const CACHE_VERSION = 'v15';

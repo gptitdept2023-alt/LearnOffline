@@ -241,7 +241,7 @@ const backupPanel = () => {
       if (problem) throw new Error(problem);
       const ok = await confirmDialog({
         title: 'Restore this backup?',
-        message: `This replaces ALL learners and progress on this device with the backup from ${String(backup.exportedAt).slice(0, 10)} (${backup.data.profiles.length} learners).`,
+        message: `This replaces ALL learners, progress and sound settings on this device with the backup from ${String(backup.exportedAt).slice(0, 10)} (${backup.data.profiles.length} learner${backup.data.profiles.length === 1 ? '' : 's'}). This device keeps its own parent PIN.`,
         confirmText: 'Replace and restore',
         danger: true,
       });

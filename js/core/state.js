@@ -37,6 +37,9 @@ export const activateProfile = async (profileId) => {
   return profile;
 };
 
+/** Keep the active learner in step with the database (after an edit in the parent area). */
+export const refreshProfile = (profile) => { state.profile = profile; };
+
 export const clearProfile = () => {
   state.profile = null;
   state.indexed = null;

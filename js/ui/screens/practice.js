@@ -77,7 +77,14 @@ const answerInput = (question, onSubmit) => {
   if (question.answerType === 'fraction') {
     const num = h('input.frac-input', { inputmode: 'numeric', 'aria-label': 'Top number', autocomplete: 'off' });
     const den = h('input.frac-input', { inputmode: 'numeric', 'aria-label': 'Bottom number', autocomplete: 'off' });
-    const form = h('form.answer-form', { onsubmit: (e) => { e.preventDefault(); onSubmit(`${num.value.trim()}/${den.value.trim()}`); } },
+    const form = h('form.answer-form', {
+      onsubmit: (e) => {
+        e.preventDefault();
+        if (num.value.trim() && !den.value.trim()) { toast('Fill in the bottom number too.', 'error'); den.focus(); return; }
+        if (!num.value.trim() && den.value.trim()) { toast('Fill in the top number too.', 'error'); num.focus(); return; }
+        onSubmit(`${num.value.trim()}/${den.value.trim()}`);
+      },
+    },
       h('div.frac-entry', null, num, h('span.frac-bar'), den),
       h('button.btn.btn-primary.btn-lg', { type: 'submit' }, t('check')));
     return { el: form, read: () => `${num.value}/${den.value}`, focus: () => num.focus() };
@@ -87,6 +94,12 @@ const answerInput = (question, onSubmit) => {
   const form = h('form.answer-form', { onsubmit: (e) => { e.preventDefault(); onSubmit(input.value); } },
     input, h('button.btn.btn-primary.btn-lg', { type: 'submit' }, t('check')));
   return { el: form, read: () => input.value, focus: () => input.focus() };
+};
+
+/** "The answer is 9:45 a.m." (one full stop, even when the answer ends with one). */
+const answerLine = (question) => {
+  const shown = question.display || (typeof question.answer === 'number' ? question.answer.toLocaleString('en-US') : String(question.answer));
+  return h('p', null, `${t('answerWas')} `, h('strong', null, shown), shown.endsWith('.') ? '' : '.');
 };
 
 export const renderPractice = async (view, skillId) => {
@@ -171,10 +184,11 @@ export const renderPractice = async (view, skillId) => {
         h('div', null,
           h('strong.feedback-title', null, correct ? `✓ ${t('correct')}` : t('notQuite')),
           h('small.feedback-line', null, pipLine))),
-      !correct && h('p', null, `${t('answerWas')} `, h('strong', null, question.display || (typeof question.answer === 'number' ? question.answer.toLocaleString('en-US') : String(question.answer))), '.'),
+      !correct && answerLine(question),
       !correct && question.explain && !methodFor(question) && h('p.muted', null, question.explain),
       h('button.btn.btn-primary.btn-lg', { type: 'button', autofocus: true, onclick: next }, last ? t('done') : t('continue'), ' ▶'));
     mount(stage.querySelector('.answer-area'), feedback);
+    stage.querySelector('.helper-actions')?.remove(); // the method is shown below; no second copy
     // After a wrong answer, show the technique step by step (Singapore method made visible).
     const method = !correct && methodFor(question);
     if (method && !stage.querySelector('.method')) {

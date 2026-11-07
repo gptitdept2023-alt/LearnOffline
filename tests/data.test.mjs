@@ -52,6 +52,17 @@ test('a bad restore leaves the device exactly as it was; a good one replaces it'
   const count = await restoreAll(backupWith({ profiles: [ben], settings: [{ key: 'voice', value: {} }] }));
   assert.equal(count, 1);
   assert.deepEqual((await listProfiles()).map((p) => p.profileId), ['ben']);
-  assert.equal(await getSetting('parentPin'), null, 'the backup had no PIN');
+  assert.deepEqual(await getSetting('parentPin'), { salt: 'a', hash: 'b' }, 'this device keeps its own PIN');
   assert.ok(ana.profileId);
+});
+
+test('a restore keeps this device\'s own parent PIN', async () => {
+  await setSetting('parentPin', { salt: 'mine', hash: 'mine' });
+  const other = backupWith({ profiles: [ben], settings: [{ key: 'parentPin', value: { salt: 'theirs', hash: 'theirs' } }, { key: 'voice', value: { rate: 1 } }] });
+  await restoreAll(other);
+  assert.deepEqual(await getSetting('parentPin'), { salt: 'mine', hash: 'mine' });
+  assert.deepEqual(await getSetting('voice'), { rate: 1 }, 'other settings come from the backup');
+  await setSetting('parentPin', null);
+  await restoreAll(other);
+  assert.equal(await getSetting('parentPin'), null, 'no PIN here stays no PIN');
 });

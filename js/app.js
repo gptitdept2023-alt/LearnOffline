@@ -6,7 +6,7 @@
 import { h, mount, toast } from './core/dom.js';
 import { setLanguage, t } from './core/i18n.js';
 import { route, setNotFound, setBeforeEach, startRouter } from './core/router.js';
-import { getState, activateProfile, rememberedProfileId, setParentUnlocked } from './core/state.js';
+import { getState, activateProfile, rememberedProfileId, setParentUnlocked, refreshProfile, clearProfile } from './core/state.js';
 import { openDb } from './data/db.js';
 import { renderStart } from './ui/screens/start.js';
 import { renderHome } from './ui/screens/home.js';
@@ -22,7 +22,7 @@ import { renderGames, renderGame } from './ui/screens/games.js';
 import { renderLevels } from './ui/screens/levels.js';
 import { setSfxEnabled } from './core/sfx.js';
 import { setVoiceSettings, loadRecordedVoice } from './core/speech.js';
-import { getSetting } from './data/repo.js';
+import { getSetting, getProfile } from './data/repo.js';
 
 /** Screens that need an active learner. */
 const LEARNER_SCREENS = new Set(['home', 'topic', 'lesson', 'guided', 'practice', 'results', 'badges', 'shop', 'games', 'game', 'levels']);
@@ -46,7 +46,16 @@ const registerRoutes = () => {
   setBeforeEach(async (name) => {
     // Back button, ⇄ or a typed link all leave the parent area: lock it again.
     if (name !== 'parent') setParentUnlocked(false);
-    if (!LEARNER_SCREENS.has(name) || getState().profile) return null;
+    if (!LEARNER_SCREENS.has(name)) return null;
+    const active = getState().profile;
+    if (active) {
+      // The learner may have been deleted, edited or replaced by a restore in the parent area.
+      const fresh = await getProfile(active.profileId);
+      if (!fresh) { clearProfile(); return ''; }
+      if (fresh.packId !== active.packId) await activateProfile(fresh.profileId);
+      else refreshProfile(fresh);
+      return null;
+    }
     // After a reload, resume the last learner on this device if they still exist.
     const remembered = rememberedProfileId();
     if (remembered) {
