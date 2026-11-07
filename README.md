@@ -27,6 +27,13 @@ words (cat, bed, pig, dog, sun), rhymes, sight words and short sentences, all
 read aloud, with "Show me how" phonics steps. The 100-level map is Math only
 for now; the parent report shows every subject at the learner's grade.
 
+**English for Grades 1 to 3** (`node tools/build-english-g1-g3.mjs`):
+- Grade 1: sh/ch/th/wh, blends, magic e, sight words, naming and action words, plurals, opposites, capital letters and end marks, short stories.
+- Grade 2: vowel teams, vowels with r, compound words, special plurals, past tense, short forms, same-meaning words, pronouns, describing words, capitals for names, longer stories.
+- Grade 3: prefixes, suffixes, syllables, sound-alike words, a or an, comparing words, tenses, is/are agreement, adverbs, joining words, stories with main idea and word meaning, sayings.
+
+Every question comes from hand-checked word lists and original Filipino-setting stories in `js/engine/topics/englishData.js`. Grades 1 and 2 are read aloud.
+
 ## Install on a device
 
 1. Publish the app once (see *Deploy* below) and open its link in Chrome.
@@ -158,7 +165,7 @@ sets, bigger buttons and read-aloud on by default.
 ## Roadmap
 
 1. **Phase 1 (this):** app engine, Kinder 2 and Grade 4 math
-2. **Phase 2:** English reading/phonics for Kinder 2 (done), then Grade 1–2; Grade 4 English and Science; Google Sheet → pack exporter (Apps Script)
+2. **Phase 2:** English reading/phonics for Kinder 2 and Grades 1–3 (done); Grade 4 English and Science; Google Sheet → pack exporter (Apps Script)
 3. **Phase 3:** Math Grades 1–3 and 5–6 (done); Science Grades 3–6
 4. **Phase 4:** Junior high (Grades 7–10)
 5. **Phase 5:** Senior high core subjects, optional sync, printable worksheets

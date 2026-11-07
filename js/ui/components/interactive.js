@@ -141,7 +141,8 @@ export const pickAnswer = ({ prompt, choices, answer, explain, visual }, onDone)
   return h('div.quick-check', null,
     h('p.check-prompt', null, prompt),
     renderVisual(visual),
-    h('div.choices', null, buttons),
+    // Long answers (a phrase or sentence) go one per row at reading size.
+    h(`div.choices${choices.some((c) => String(c).length > 14) ? '.choices-sentences' : ''}`, null, buttons),
     feedback);
 };
 

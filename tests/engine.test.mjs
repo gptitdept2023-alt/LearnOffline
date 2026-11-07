@@ -28,6 +28,10 @@ const PARAMS = {
   orderOps: { templates: ['basic', 'more'] }, algebra: {}, speed: {},
   triangleArea: { forms: ['area', 'height'] }, triangleAngles: { forms: ['two', 'right', 'isosceles'] },
   volume: { forms: ['cuboid', 'cube', 'missing', 'litres'] }, circle: {},
+  digraphStart: {}, blendStart: {}, magicE: {}, vowelTeam: {}, rControlled: {}, plural: { irregular: true }, wordType: { kind: 'verb' },
+  pairWord: { kind: 'synonym' }, compound: {}, contraction: {}, affix: { kind: 'suffix' }, syllables: {}, article: {}, rhymeWord: {},
+  abcOrder: { sameFirst: true }, fillBlank: { bank: 'homophone' }, wordInSentence: { bank: 'adverb' }, capitalStop: {}, endMark: {},
+  properNoun: {}, sentenceOrder: {}, idiom: {}, story: { grade: 3 },
 };
 
 test('every generator produces 500 well-formed, self-consistent questions', () => {
