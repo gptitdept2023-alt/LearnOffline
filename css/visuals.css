@@ -328,3 +328,29 @@
   .pv-discs .disc { width: 15px; height: 15px; font-size: 0.34rem; }
   .pv-cell { padding: 4px 1px; }
 }
+
+/* English: a word's picture, letter tiles and a sentence to read. */
+.visual-letters { flex-direction: column; align-items: center; gap: 10px; }
+.word-pic { font-size: min(5rem, 22vw); line-height: 1.1; }
+.letter-tiles { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+/* A short word never breaks over two lines, even in the narrow "Show me how" panel. */
+.letter-tiles-short { flex-wrap: nowrap; }
+.letter-tile {
+  display: grid; place-items: center;
+  min-width: 1.5em; height: 1.6em; padding: 0 0.15em;
+  border: 3px solid var(--border); border-radius: 12px; background: var(--surface);
+  font-size: min(2.6rem, 11vw); font-weight: 800; line-height: 1;
+}
+.method .letter-tile, .guided .letter-tile { font-size: min(2rem, 8vw); border-radius: 10px; }
+.method .word-pic, .guided .word-pic { font-size: min(3.6rem, 16vw); }
+.letter-tiles-one .letter-tile { font-size: min(5rem, 24vw); min-width: 1.4em; }
+.letter-blank { border-style: dashed; border-color: var(--primary); color: var(--primary); }
+.letter-hot { border-color: var(--primary); background: var(--primary-soft); }
+.read-text { margin: 0; font-size: min(2rem, 8vw); font-weight: 800; text-align: center; line-height: 1.3; }
+
+/* Letter and word answers: large and clear for early readers. Three letters or pictures sit in one row. */
+.choices.choices-letters, .choices.choices-pics { grid-template-columns: repeat(3, 1fr); }
+.choices-pics .choice { font-size: min(2.8rem, 11vw); }
+.choices-letters .choice { font-size: 2.6rem; }
+.young .choices-letters .choice { font-size: 3rem; }
+.choices-words .choice { font-size: 1.9rem; }

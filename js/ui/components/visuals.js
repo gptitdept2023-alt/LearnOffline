@@ -8,6 +8,7 @@
 import { h, svg } from '../../core/dom.js';
 import { longDivisionSteps } from '../../engine/longDivision.js';
 import { TOPIC_RENDERERS } from './visualsTopics.js';
+import { WORD_RENDERERS } from './visualsWords.js';
 
 /* ------------------------------------------------------------------ */
 /* Pictures (Kinder)                                                   */
@@ -620,6 +621,8 @@ const RENDERERS = {
   stack: renderStack,
   // Clock, day line, angle, area grid, symmetry, bar graph, table.
   ...TOPIC_RENDERERS,
+  // English: picture of a word, letter tiles, a sentence to read.
+  ...WORD_RENDERERS,
 };
 
 /**

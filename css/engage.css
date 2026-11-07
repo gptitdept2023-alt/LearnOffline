@@ -393,3 +393,16 @@
 .level-stars .on:nth-child(2) { animation-delay: 0.2s; }
 .level-stars .on:nth-child(3) { animation-delay: 0.4s; }
 .lv-pip-left { left: auto; right: calc(100% + 4px); }
+
+/* Subject tabs (Math / English) on the learner home. */
+.subject-tabs { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 6px; padding: 5px; border-radius: 999px; background: var(--surface); box-shadow: var(--shadow); }
+.subject-tab {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 48px; padding: 6px 12px; border: 0; border-radius: 999px;
+  background: transparent; color: var(--text); font: inherit; font-size: 1.1rem; font-weight: 800; cursor: pointer;
+}
+.subject-tab-icon { font-size: 1.4rem; }
+@media (hover: hover) {
+  .subject-tab:hover:not(.active) { background: var(--primary-soft); }
+}
+.subject-tab.active { background: var(--primary); color: var(--primary-ink); }

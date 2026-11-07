@@ -18,8 +18,16 @@ import { speak } from '../../core/speech.js';
 import { isCorrect, isBlank } from '../../engine/answers.js';
 import { renderVisual } from './visuals.js';
 
-/** Shown after two misses: the answer, and how to enter it (tap a button or type). */
-export const revealText = (step) => `It is ${step.answer}${String(step.answer).endsWith('.') ? '' : '.'} ${step.answerType === 'choice' ? 'Tap' : 'Type'} ${step.answer} to go on.`;
+const isLetter = (answer) => /^[A-Za-z]$/.test(String(answer));
+
+/**
+ * Shown after two misses: the answer, and how to enter it (tap a button or
+ * type): "It is 12. Type 12 to go on." A single letter is named and
+ * ends its sentence ("It is the letter a."), so the voice says "ay", not the word "a".
+ */
+export const revealText = (step) => (isLetter(step.answer)
+  ? `It is the letter ${step.answer}. Tap it to go on.`
+  : `It is ${step.answer}${String(step.answer).endsWith('.') ? '' : '.'} ${step.answerType === 'choice' ? 'Tap' : 'Type'} ${step.answer} to go on.`);
 
 /* ------------------------------------------------------------------ */
 /* Tap to count                                                        */

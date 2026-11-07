@@ -7,7 +7,7 @@
 import { h } from '../../core/dom.js';
 import { getState } from '../../core/state.js';
 import { getRewards } from '../../data/repo.js';
-import { buildLevels, WORLDS, WORLD_SIZE, currentLevel } from '../../engine/levels.js';
+import { buildLevels, WORLDS, WORLD_SIZE, currentLevel, levelsEnabled } from '../../engine/levels.js';
 import { lookOf } from '../../engine/shop.js';
 import { learnerBar } from '../components/common.js';
 import { mascot } from '../components/mascot.js';
@@ -31,6 +31,7 @@ const levelNode = (level, stars, state, look) => {
 
 export const renderLevels = async (view) => {
   const { profile, indexed } = getState();
+  if (!levelsEnabled(indexed)) throw new Error('Levels are in Math. Switch to Math on the home screen.');
   const rewards = await getRewards(profile.profileId);
   const stars = rewards.levels || {};
   const levels = buildLevels(indexed);

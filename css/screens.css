@@ -134,7 +134,11 @@
   cursor: pointer;
   box-shadow: var(--shadow);
 }
-.choice:hover { border-color: var(--primary); }
+/* Only on devices with a real pointer: on a phone, a tap leaves "hover" on the spot that was
+   tapped, so the next question's choice in that spot would look already picked. */
+@media (hover: hover) {
+  .choice:hover { border-color: var(--primary); }
+}
 .choices-pictures .choice { display: grid; place-items: center; }
 .choices-pictures .shape { width: 80px; height: 80px; }
 

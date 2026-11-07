@@ -100,13 +100,13 @@ export const renderLesson = async (view, skillId) => {
       renderVisual(step.visual),
       interaction,
       h('div.lesson-actions', null,
-        canSpeak() && step.text && h('button.icon-btn', { type: 'button', 'aria-label': t('listen'), title: t('listen'), onclick: () => speak(step.text) }, '🔊'),
+        canSpeak() && step.text && h('button.icon-btn', { type: 'button', 'aria-label': t('listen'), title: t('listen'), onclick: () => speak(step.say || step.text) }, '🔊'),
         h('span.spacer'),
         index > 0 && h('button.btn.btn-secondary', { type: 'button', onclick: () => { index -= 1; show(); } }, t('back')),
         nextBtn),
     );
     // Narrate the step (interactive pieces narrate themselves).
-    if (step.text && (profile.readAloud || indexed.pack.young) && step.interact?.kind !== 'worked' && step.interact?.kind !== 'tryIt') speak(step.text);
+    if (step.text && (profile.readAloud || indexed.pack.young) && step.interact?.kind !== 'worked' && step.interact?.kind !== 'tryIt') speak(step.say || step.text);
   };
 
   view.append(

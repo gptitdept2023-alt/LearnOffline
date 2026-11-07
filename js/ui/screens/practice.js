@@ -10,7 +10,7 @@ import { navigate } from '../../core/router.js';
 import { getState, setLastResult } from '../../core/state.js';
 import { speak, canSpeak, stopSpeaking } from '../../core/speech.js';
 import { getMasteryMap, saveSetResult, recordLevel } from '../../data/repo.js';
-import { buildLevels, levelStars, WORLDS } from '../../engine/levels.js';
+import { buildLevels, levelStars, WORLDS, levelsEnabled } from '../../engine/levels.js';
 import { topicSkillsFor } from '../../data/packs.js';
 import { isCorrect, isBlank } from '../../engine/answers.js';
 import { pickDailyMix } from '../../engine/mastery.js';
@@ -35,7 +35,7 @@ const LEVEL_PREFIX = 'level-';
 
 /** The level for a "level-12" route, or null. */
 const levelFor = (indexed, skillId) => {
-  if (!String(skillId).startsWith(LEVEL_PREFIX)) return null;
+  if (!String(skillId).startsWith(LEVEL_PREFIX) || !levelsEnabled(indexed)) return null;
   const n = Number(skillId.slice(LEVEL_PREFIX.length));
   return buildLevels(indexed).find((l) => l.n === n) || null;
 };
@@ -45,7 +45,7 @@ const buildQuestions = async (profile, indexed, skillId) => {
   const young = indexed.pack.young;
   if (String(skillId).startsWith(LEVEL_PREFIX)) {
     const level = levelFor(indexed, skillId);
-    if (!level) throw new Error('That level was not found.');
+    if (!level) throw new Error(levelsEnabled(indexed) ? 'That level was not found.' : 'Levels are in Math. Switch to Math on the home screen.');
     const skills = level.skillIds.map((id) => indexed.skillById.get(id)).filter(Boolean);
     return { label: level.boss ? `Boss: ${level.title}` : `Level ${level.n}`, questions: buildMixSet(skills, young, Math.random, level.size), level };
   }
@@ -65,10 +65,12 @@ const buildQuestions = async (profile, indexed, skillId) => {
 /** Input controls for one question. Returns { el, read(), focus() }. */
 const answerInput = (question, onSubmit) => {
   if (question.answerType === 'choice') {
-    const el = h(`div.choices${question.choiceKind === 'shape' ? '.choices-pictures' : ''}`, null,
+    const kindClass = { shape: '.choices-pictures', letter: '.choices-letters', word: '.choices-words', picture: '.choices-pics' }[question.choiceKind] || '';
+    const el = h(`div.choices${kindClass}`, null,
       question.choices.map((c) => h('button.choice', {
         type: 'button',
-        'aria-label': c,
+        // Picture choices are named for screen readers ("sock", not "🧦").
+        'aria-label': question.choiceLabels?.[c] || c,
         onclick: () => onSubmit(c),
       }, question.choiceKind === 'shape' ? shapeSvg(c) : c)));
     return { el, read: () => '', focus: () => el.querySelector('button')?.focus() };
@@ -95,6 +97,15 @@ const answerInput = (question, onSubmit) => {
     input, h('button.btn.btn-primary.btn-lg', { type: 'submit' }, t('check')));
   return { el: form, read: () => input.value, focus: () => input.focus() };
 };
+
+/** What is read aloud for a question: `say` when the spoken form differs from the text shown. */
+const spokenPrompt = (question) => question.say || question.prompt;
+
+/**
+ * The text shown. A listening question ("Tap the word you hear.") shows its
+ * spoken form instead when this device cannot speak, so it can still be answered.
+ */
+const shownPrompt = (question) => (question.listen && question.say && !canSpeak() ? question.say : question.prompt);
 
 /** "The answer is 9:45 a.m." (one full stop, even when the answer ends with one). */
 const answerLine = (question) => {
@@ -228,8 +239,8 @@ export const renderPractice = async (view, skillId) => {
 
     mount(stage,
       h('div.question-head', null,
-        h('p.prompt', { class: young ? 'prompt-young' : '' }, question.prompt),
-        canSpeak() && h('button.icon-btn.icon-btn-lg', { type: 'button', 'aria-label': t('listen'), onclick: () => speak(question.prompt) }, '🔊')),
+        h('p.prompt', { class: young ? 'prompt-young' : '' }, shownPrompt(question)),
+        canSpeak() && h('button.icon-btn.icon-btn-lg', { type: 'button', 'aria-label': t('listen'), onclick: () => speak(spokenPrompt(question)) }, '🔊')),
       renderVisual(question.visual),
       modelBox,
       hintBox,
@@ -249,7 +260,7 @@ export const renderPractice = async (view, skillId) => {
       h('div.answer-area', null, input.el),
     );
     input.focus();
-    if (profile.readAloud || question.young) speak(question.prompt);
+    if (profile.readAloud || question.young) speak(spokenPrompt(question));
   };
 
   view.classList.toggle('young', Boolean(young));

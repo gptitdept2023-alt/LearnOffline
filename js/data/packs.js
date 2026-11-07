@@ -24,6 +24,27 @@ export const loadPackIndex = () => {
   return indexPromise;
 };
 
+/**
+ * Subjects (packs) at the same level as `packId`, in index order: Math and
+ * English for Kinder 2, and so on. A learner has one level and switches subject.
+ * @returns {Promise<Object[]>}
+ */
+export const subjectsAtLevel = async (packId) => {
+  const index = await loadPackIndex();
+  const own = index.find((p) => p.packId === packId);
+  return own ? index.filter((p) => p.level === own.level) : [];
+};
+
+/** One entry per level for the grade picker: [{ level, levelName, packs }], in index order. */
+export const levelsOf = (index) => {
+  const byLevel = new Map();
+  for (const p of index) {
+    if (!byLevel.has(p.level)) byLevel.set(p.level, { level: p.level, levelName: p.levelName || p.title, packs: [] });
+    byLevel.get(p.level).packs.push(p);
+  }
+  return [...byLevel.values()];
+};
+
 /** Throw a clear error if a pack is malformed, instead of failing deep in a screen. */
 const validatePack = (pack) => {
   if (!pack?.packId || !Array.isArray(pack.topics)) throw new Error('Content pack is missing its topics.');

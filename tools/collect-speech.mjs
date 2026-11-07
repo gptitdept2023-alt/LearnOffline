@@ -74,7 +74,7 @@ for (const entry of index.packs) {
   for (const topic of pack.topics) {
     for (const skill of topic.skills) {
       for (const step of skill.lesson?.steps || []) {
-        add(step.text);
+        add(step.say || step.text);
         const it = step.interact;
         if (!it) continue;
         if (it.kind === 'check') { add(it.prompt); add(`Yes! ${it.explain || ''}`.trim()); }
@@ -91,14 +91,16 @@ for (const entry of index.packs) {
       // skills (numbers to 100, story sums…) have too many sentences to record,
       // so they use the device voice.
       // The Challenge zone's small sums (bonds, within 20) are finite, so they are recorded too.
-      const finite = ['numberBond', 'addition'].includes(skill.generator?.type) && (skill.generator.max ?? 20) <= 20;
+      // English word lists are small and fixed, so all of English is recorded too.
+      const finite = entry.subject === 'english'
+        || (['numberBond', 'addition'].includes(skill.generator?.type) && (skill.generator.max ?? 20) <= 20);
       if (entry.young && skill.generator && (!topic.challenge || finite)) {
         const rng = seededRng(skill.skillId.length * 7919);
         let quiet = 0;
         while (quiet < 3000) {
           const before = texts.size;
           const q = generate(skill.generator, rng);
-          add(q.prompt);
+          add(q.say || q.prompt);
           add(q.hint);
           add(`The answer is ${q.spoken || q.display || q.answer}`);
           addMethod(methodFor(q));

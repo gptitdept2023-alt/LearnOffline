@@ -13,6 +13,13 @@ volume, money, time (clock, 24-hour clock, durations), angles, perimeter and
 area, symmetry, tables and bar graphs, and word problems. All lessons and questions are
 original.
 
+**English for Kinder 2** sits next to Math: a learner switches subject with
+the Math / English tabs on their home screen (the grade is set in the parent
+area). It covers big and small letters, ABC order, first sounds, short-vowel
+words (cat, bed, pig, dog, sun), rhymes, sight words and short sentences, all
+read aloud, with "Show me how" phonics steps. The 100-level map is Math only
+for now; the parent report shows every subject at the learner's grade.
+
 ## Install on a device
 
 1. Publish the app once (see *Deploy* below) and open its link in Chrome.
@@ -49,7 +56,7 @@ Techniques (`js/engine/techniques.js`): count on, make ten, number bonds, column
 
 ## Voice
 
-The app ships a **recorded voice pack** (`audio/voice/`, about 17 MB, cached for offline use): every lesson sentence, every Kinder question and hint (including the small Challenge sums), game and results lines, praise and nudges were recorded with the open-source [Piper](https://github.com/rhasspy/piper) engine using the *Kathleen* voice (CC0). Sentences that are not recorded (for example a random Grade 4 sum) use the device's best offline voice, read a little slower and higher. Parents can change voice, speed and pitch under **Parents → Voice**.
+The app ships a **recorded voice pack** (`audio/voice/`, about 24 MB, cached for offline use): every lesson sentence, every Kinder question and hint (including the small Challenge sums), game and results lines, praise and nudges were recorded with the open-source [Piper](https://github.com/rhasspy/piper) engine using the *Kathleen* voice (CC0). Sentences that are not recorded (for example a random Grade 4 sum) use the device's best offline voice, read a little slower and higher. Parents can change voice, speed and pitch under **Parents → Voice**.
 
 After changing lesson text or Kinder generators, re-record the new sentences (existing clips are kept):
 
@@ -131,7 +138,10 @@ Generators: `count`, `compare`, `placeValue`, `numberBond`, `addition`,
 `factorsMultiples`, `fractionOfShape`, `equivalentFraction`,
 `fractionSameDen`, `decimals`, `wordProblem`, and the Kinder set
 `countPictures`, `numberOrder`, `moreOrFewer`, `shapes`, `patterns`,
-`addPictures`, `takeAwayPictures`. Fixed question types: `numeric`,
+`addPictures`, `takeAwayPictures`, and English (`js/engine/topics/english.js`)
+`letterFind`, `letterMatch`, `letterNext`, `firstLetter`, `sameSound`,
+`missingVowel`, `readWord`, `pictureWord`, `rhyme`, `sightWord`,
+`readSentence`. Fixed question types: `numeric`,
 `multiple-choice`, `true-false`, `fraction`.
 
 Set `"young": true` on a pack in `packs/index.json` for pre-readers: shorter
@@ -140,7 +150,7 @@ sets, bigger buttons and read-aloud on by default.
 ## Roadmap
 
 1. **Phase 1 (this):** app engine, Kinder 2 and Grade 4 math
-2. **Phase 2:** English reading/phonics for Kinder–Grade 2; Grade 4 English and Science; Google Sheet → pack exporter (Apps Script)
+2. **Phase 2:** English reading/phonics for Kinder 2 (done), then Grade 1–2; Grade 4 English and Science; Google Sheet → pack exporter (Apps Script)
 3. **Phase 3:** Math Grades 1–6; Science Grades 3–6
 4. **Phase 4:** Junior high (Grades 7–10)
 5. **Phase 5:** Senior high core subjects, optional sync, printable worksheets

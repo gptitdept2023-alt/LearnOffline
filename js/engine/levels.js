@@ -35,6 +35,9 @@ export const BOSS_PASS = 0.7;
 /** Bonus stars the first time a level is passed. */
 export const LEVEL_BONUS = { regular: 2, boss: { young: 20, older: 30 } };
 
+/** The 100-level map is a Math feature for now; other subjects show their topics only. */
+export const levelsEnabled = (indexed) => (indexed?.entry?.subject || 'math') === 'math';
+
 export const worldOf = (n) => Math.ceil(n / WORLD_SIZE);
 export const isBoss = (n) => n % WORLD_SIZE === 0;
 

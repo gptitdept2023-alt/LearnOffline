@@ -6,7 +6,7 @@ import { h, openDialog } from '../../core/dom.js';
 import { t } from '../../core/i18n.js';
 import { currentStreak, walletOf } from '../../engine/rewards.js';
 import { saveProfile } from '../../data/repo.js';
-import { loadPackIndex } from '../../data/packs.js';
+import { loadPackIndex, levelsOf } from '../../data/packs.js';
 
 export const AVATARS = ['🦊', '🐼', '🐯', '🐸', '🐵', '🦁', '🐨', '🐙', '🦄', '🐢', '🐧', '🦉'];
 
@@ -45,6 +45,13 @@ export const toggle = (name, label, checked) =>
  */
 export const openProfileEditor = async (existing = null) => {
   const packs = await loadPackIndex();
+  const levels = levelsOf(packs);
+  const currentLevel = packs.find((p) => p.packId === existing?.packId)?.level;
+  /** The pack to save for a level: keep the learner's subject there, else that level's first subject. */
+  const packForLevel = (level) => {
+    const at = levels.find((l) => l.level === level)?.packs || [];
+    return (at.find((p) => p.packId === existing?.packId) || at[0])?.packId || '';
+  };
   return openDialog((close) => {
     let avatar = existing?.avatar || AVATARS[0];
     const error = h('p.form-error', { role: 'alert' });
@@ -63,14 +70,15 @@ export const openProfileEditor = async (existing = null) => {
       },
     }, a));
 
-    const gradeSelect = h('select', { name: 'packId', required: true },
-      packs.map((p) => h('option', { value: p.packId, selected: p.packId === existing?.packId }, p.title)));
+    // One choice per grade; subjects (Math, English) are switched on the home screen.
+    const gradeSelect = h('select', { name: 'level', required: true },
+      levels.map((l) => h('option', { value: l.level, selected: l.level === currentLevel }, l.levelName)));
 
     const readAloud = toggle('readAloud', 'Read questions aloud automatically', existing ? existing.readAloud : false);
     // Pre-readers get read-aloud on by default when a young pack is chosen.
     gradeSelect.addEventListener('change', () => {
       if (existing) return;
-      const pack = packs.find((p) => p.packId === gradeSelect.value);
+      const pack = packs.find((p) => p.packId === packForLevel(gradeSelect.value));
       readAloud.querySelector('input').checked = Boolean(pack?.young);
     });
     gradeSelect.dispatchEvent(new Event('change'));
@@ -86,7 +94,7 @@ export const openProfileEditor = async (existing = null) => {
             profileId: existing?.profileId,
             name: data.get('name'),
             avatar,
-            packId: data.get('packId'),
+            packId: packForLevel(data.get('level')),
             readAloud: data.get('readAloud') === 'on',
           });
           close(saved);

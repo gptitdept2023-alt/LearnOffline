@@ -19,6 +19,8 @@ const PARAMS = {
   convertUnits: { forms: ['toSmall', 'toBig', 'whole', 'add'] }, readClock: {}, clock24h: {}, timeDuration: {},
   moneyProblem: {}, angles: {}, areaPerimeter: {}, symmetry: {}, readGraph: {},
   mixed: { of: [{ type: 'addition', min: 1000, max: 4999, regroup: true }, { type: 'subtraction', min: 1000, max: 9999, regroup: true }] },
+  letterFind: {}, letterMatch: {}, letterNext: { small: true }, firstLetter: {}, sameSound: {}, missingVowel: {},
+  readWord: {}, pictureWord: {}, rhyme: {}, sightWord: {}, readSentence: {},
 };
 
 test('every generator produces 500 well-formed, self-consistent questions', () => {
@@ -136,7 +138,9 @@ test('every technique leads to the question answer', async () => {
       // The last guided step answers the whole question (except remainders and kinder taps, which equal it too).
       const last = m.guided[m.guided.length - 1];
       if (q.method.kind !== 'longDivide' && q.method.kind !== 'equivalentFraction' && q.method.kind !== 'sameDenominator') {
-        assert.equal(String(last.answer), String(q.answer), `${type}/${q.method.kind}: ${q.prompt}`);
+        // A picture answer (🐶) is reached by its name ("dog") in the guided step.
+        const expected = q.choiceLabels ? q.choiceLabels[q.answer] : q.answer;
+        assert.equal(String(last.answer), String(expected), `${type}/${q.method.kind}: ${q.prompt}`);
       }
       checked += 1;
     }

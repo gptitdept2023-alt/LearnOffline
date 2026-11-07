@@ -13,7 +13,7 @@ import {
 } from '../../data/repo.js';
 import { normaliseGoal } from '../../engine/goals.js';
 import { setSfxEnabled, sfxEnabled, playSfx } from '../../core/sfx.js';
-import { loadPack } from '../../data/packs.js';
+import { loadPack, subjectsAtLevel } from '../../data/packs.js';
 import { downloadBackup, readBackupFile, restoreAll, validateBackup } from '../../data/backup.js';
 import { statusOf } from '../../engine/mastery.js';
 import { dayKey, currentStreak } from '../../engine/rewards.js';
@@ -123,16 +123,32 @@ const topicRows = (indexed, mastery) => indexed.pack.topics.map((topic) => {
   return { topic, attempts, accuracy: attempts ? Math.round((correct / attempts) * 100) : null, mastered };
 });
 
+/** One topics table per subject at the child's level (Math, English…). */
+const topicsTable = (indexed, mastery, withSubject) => [
+  h('h3', null, withSubject ? `${indexed.entry.subjectName || indexed.pack.title} topics` : 'Topics'),
+  h('div.table-wrap', null, h('table.data-table', null,
+    h('thead', null, h('tr', null, h('th', null, 'Topic'), h('th', null, 'Mastered'), h('th', null, 'Accuracy'), h('th', null, 'Answered'))),
+    h('tbody', null, topicRows(indexed, mastery).map((r) => h('tr', null,
+      h('td', null, r.topic.title),
+      h('td', null, `${r.mastered} / ${r.topic.skills.length}`),
+      h('td', null, r.accuracy === null ? '–' : `${r.accuracy}%`),
+      h('td', null, r.attempts)))))),
+];
+
 const childReport = async (profile) => {
-  const [indexed, mastery, rewards, sessions] = await Promise.all([
-    loadPack(profile.packId),
+  const [subjects, mastery, rewards, sessions] = await Promise.all([
+    subjectsAtLevel(profile.packId),
     getMasteryMap(profile.profileId),
     getRewards(profile.profileId),
     getSessionsSince(profile.profileId, Date.now() - ACTIVITY_DAYS * DAY_MS),
   ]);
-  const rows = topicRows(indexed, mastery);
+  // Every subject at this level; the learner's current one first. A pack that fails to load is skipped.
+  const ordered = [...subjects].sort((a, b) => (b.packId === profile.packId) - (a.packId === profile.packId));
+  const packs = (await Promise.all(ordered.map((p) => loadPack(p.packId).catch(() => null)))).filter(Boolean);
+  if (!packs.length) packs.push(await loadPack(profile.packId));
+  const skillTitle = (id) => packs.find((p) => p.skillById.has(id))?.skillById.get(id).title;
   const weak = [...mastery.values()]
-    .filter((r) => statusOf(r) === 'learning' && indexed.skillById.has(r.skillId))
+    .filter((r) => statusOf(r) === 'learning' && skillTitle(r.skillId))
     .sort((a, b) => a.score - b.score)
     .slice(0, 5);
   const weekAgo = Date.now() - 7 * DAY_MS;
@@ -144,25 +160,18 @@ const childReport = async (profile) => {
   return h('section.report', null,
     h('div.report-head', null,
       h('span.avatar.avatar-md', { 'aria-hidden': 'true' }, profile.avatar),
-      h('div', null, h('h2', null, profile.name), h('small.muted', null, indexed.pack.title))),
+      h('div', null, h('h2', null, profile.name), h('small.muted', null, packs[0].entry.levelName || packs[0].pack.title))),
     h('div.stat-row', null,
       h('div.stat', null, h('strong', null, weekQuestions), h('small', null, 'Questions this week')),
       h('div.stat', null, h('strong', null, weekQuestions ? `${Math.round((weekCorrect / weekQuestions) * 100)}%` : '–'), h('small', null, 'Accuracy this week')),
       h('div.stat', null, h('strong', null, weekMinutes), h('small', null, 'Minutes this week')),
       h('div.stat', null, h('strong', null, currentStreak(rewards)), h('small', null, t('streak')))),
     activityChart(sessions),
-    h('h3', null, 'Topics'),
-    h('div.table-wrap', null, h('table.data-table', null,
-      h('thead', null, h('tr', null, h('th', null, 'Topic'), h('th', null, 'Mastered'), h('th', null, 'Accuracy'), h('th', null, 'Answered'))),
-      h('tbody', null, rows.map((r) => h('tr', null,
-        h('td', null, r.topic.title),
-        h('td', null, `${r.mastered} / ${r.topic.skills.length}`),
-        h('td', null, r.accuracy === null ? '–' : `${r.accuracy}%`),
-        h('td', null, r.attempts)))))),
+    ...packs.flatMap((indexed) => topicsTable(indexed, mastery, packs.length > 1)),
     h('h3', null, 'Needs practice'),
     weak.length
       ? h('ul.weak-list', null, weak.map((r) => h('li', null,
-        h('span', null, indexed.skillById.get(r.skillId).title), statusPill('learning'), h('small.muted', null, `score ${Math.round(r.score)}`))))
+        h('span', null, skillTitle(r.skillId)), statusPill('learning'), h('small.muted', null, `score ${Math.round(r.score)}`))))
       : h('p.muted', null, 'Nothing flagged yet. Skills appear here when the score is low.'),
   );
 };
