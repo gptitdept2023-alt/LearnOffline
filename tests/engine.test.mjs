@@ -213,6 +213,41 @@ test('multiplication methods never split off a zero part', async () => {
   assert.ok(tens.guided.some((g) => g.prompt === '2,980 × 10 = ?' && g.answer === 29800));
 });
 
+test('faster-way tricks agree with the answer and come after the main method', async () => {
+  const { methodFor } = await import('../js/engine/techniques.js');
+  const fmt = (n) => n.toLocaleString('en-US');
+  const cases = [];
+  for (let a = 10; a <= 9999; a += 37) {
+    for (const b of [2, 4, 5, 7, 8, 9, 19, 25, 29, 98, 199, 298]) {
+      cases.push({ kind: 'columnAdd', a, b, answer: a + b });
+      if (a > b) cases.push({ kind: 'columnSub', a, b, answer: a - b });
+      cases.push({ kind: 'splitMultiply', a, b, answer: a * b });
+      if (b < 10) cases.push({ kind: 'longDivide', dividend: a * b, divisor: b, answer: a });
+    }
+  }
+  for (const a of [6002, 4005, 700, 503]) cases.push({ kind: 'columnSub', a, b: 248, answer: a - 248 });
+  let tricks = 0;
+  for (const { answer, ...method } of cases) {
+    const m = methodFor({ method });
+    assert.ok(m.steps.length >= 2, 'the main method is always there');
+    if (!m.faster) continue;
+    tricks += 1;
+    const label = JSON.stringify(method);
+    assert.equal(m.faster.answer, answer, label);
+    assert.ok(m.faster.steps.length >= 1 && m.faster.why, label);
+    for (const st of m.faster.steps) assert.ok(!/undefined|NaN|Infinity/.test(st.text), `${label}: ${st.text}`);
+    assert.ok(m.faster.steps.at(-1).text.includes(fmt(answer)), `${label} ends on the answer: ${m.faster.steps.at(-1).text}`);
+  }
+  assert.ok(tricks > 1000, `tricks found: ${tricks}`);
+  const named = (method) => methodFor({ method }).faster?.name;
+  assert.equal(named({ kind: 'longDivide', dividend: 795, divisor: 5 }), 'Use a friendly number');
+  assert.equal(named({ kind: 'columnAdd', a: 456, b: 298 }), 'Round and adjust');
+  assert.equal(named({ kind: 'columnSub', a: 532, b: 198 }), 'Round and adjust');
+  assert.equal(named({ kind: 'columnSub', a: 6002, b: 2743 }), 'Same difference');
+  assert.equal(named({ kind: 'splitMultiply', a: 745, b: 9 }), 'One group too many');
+  assert.equal(named({ kind: 'splitMultiply', a: 745, b: 40 }), undefined, '× tens is already the quick way');
+});
+
 test('spoken maths reads naturally, with pauses in chains', async () => {
   const { toSpokenText } = await import('../js/core/speech.js');
   assert.equal(toSpokenText('Use facts you know: 7 × 8 = 7 × 4 × 2 = 28 × 2 = 56.'),

@@ -222,6 +222,38 @@ const renderJumps = ({ from = 0, step = 1, count = 1, hideEnd = false }) => {
     svg('svg', { viewBox: '0 0 340 106', role: 'img', 'aria-label': `${count} jumps of ${step} from ${from}` }, nodes));
 };
 
+/**
+ * Hops of any size along a number line, for mental-maths tricks:
+ * 456 → +300 → 756 → −2 → 754. Points are spaced by order, not to scale,
+ * so a small "−2" hop stays visible next to a big "+300" one.
+ * Forward hops arc above the line, backward hops below.
+ * @param {{start: number, moves: number[]}} spec
+ */
+const renderHops = ({ start, moves }) => {
+  const points = moves.reduce((acc, m) => [...acc, acc[acc.length - 1] + m], [start]);
+  const order = [...new Set(points)].sort((p, q) => p - q);
+  const x = (n) => 34 + (order.indexOf(n) / Math.max(1, order.length - 1)) * 272;
+  const f = (n) => n.toLocaleString('en-US');
+  const AXIS = 66;
+  const nodes = [svg('line', { x1: 10, y1: AXIS, x2: 330, y2: AXIS, class: 'nl-axis' })];
+  order.forEach((n) => {
+    nodes.push(svg('line', { x1: x(n), y1: AXIS - 6, x2: x(n), y2: AXIS + 6, class: 'nl-tick' }));
+    nodes.push(svg('text', { x: x(n), y: AXIS + 24, class: `nl-label${n === points[points.length - 1] ? ' nl-mark' : ''}` }, f(n)));
+  });
+  moves.forEach((m, i) => {
+    const x0 = x(points[i]);
+    const x1 = x(points[i + 1]);
+    const mid = (x0 + x1) / 2;
+    const up = m >= 0;
+    const lift = Math.min(24, 10 + Math.abs(x1 - x0) * 0.12); // arc height; labels stay inside the box
+    const y0 = up ? AXIS - 8 : AXIS + 30;                       // backward hops go under the number labels
+    nodes.push(svg('path', { d: `M${x0} ${y0} Q${mid} ${up ? y0 - lift * 2 : y0 + lift * 2} ${x1} ${y0}`, class: `jump-arc${up ? '' : ' jump-back'}`, style: `--i:${i + 1}` }));
+    nodes.push(svg('text', { x: mid, y: up ? y0 - lift - 6 : y0 + lift + 18, class: 'jump-label' }, `${up ? '+' : '−'}${f(Math.abs(m))}`));
+  });
+  const label = `${f(start)} ${moves.map((m) => `${m >= 0 ? 'plus' : 'minus'} ${f(Math.abs(m))}`).join(' ')} is ${f(points[points.length - 1])}`;
+  return h('div.visual.visual-jumps.visual-hops', null, svg('svg', { viewBox: '0 0 340 150', role: 'img', 'aria-label': label }, nodes));
+};
+
 /* ------------------------------------------------------------------ */
 /* Place-value discs: chart, trading, sharing into groups              */
 /* ------------------------------------------------------------------ */
@@ -529,6 +561,7 @@ const RENDERERS = {
   bar: renderBarModel,
   column: renderColumn,
   jumps: renderJumps,
+  hops: renderHops,
   placeChart: renderPlaceChart,
   shift: renderShift,
   trade: renderTrade,

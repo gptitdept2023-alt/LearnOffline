@@ -28,7 +28,7 @@ Each skill follows the same path, shown on the topic screen:
 
 1. **Learn (watch and do):** an interactive lesson that moves Concrete → Pictorial → Abstract. Children tap to count, fill ten frames, answer quick checks, and watch animated worked examples of the technique.
 2. **Try with help:** a few questions solved step by step with the technique (for example *make ten*: "8 needs ? to make 10", "split 5 into 2 and ?", "10 + 3 = ?"). Mistakes here get a nudge, not a mark.
-3. **Practise on my own:** graded practice. **Show me how** plays the technique for that exact question, and a wrong answer shows the worked steps automatically.
+3. **Practise on my own:** graded practice. **Show me how** plays the technique for that exact question, and a wrong answer shows the worked steps automatically. After the main method, a **⚡ Faster way** button may offer a mental-maths trick for those numbers (round and adjust, make the next ten, same difference, double-double, a friendly number for division). It only appears once the main method is finished, so the fundamentals always come first (`js/engine/shortcuts.js`).
 
 Techniques (`js/engine/techniques.js`): count on, make ten, number bonds, column addition and subtraction with renaming, skip counting, split by place value, long division, equivalent fractions, same-denominator fractions, the bar model (draw → label → choose the operation → calculate), and Kinder touch-and-count.
 

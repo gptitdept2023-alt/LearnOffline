@@ -143,6 +143,18 @@ export const pickAnswer = ({ prompt, choices, answer, explain, visual }, onDone)
  * @param {{name: string, steps: {text: string, visual?: Object}[]}} method
  * @param {{autoSpeak?: boolean, onDone?: () => void, compact?: boolean}} [options]
  */
+/**
+ * The optional "Faster way" panel: a quicker trick for these numbers, shown
+ * only after the main method so the fundamentals always come first.
+ * @param {{name: string, why: string, steps: {text: string, visual?: Object}[]}} faster
+ */
+const fasterPanel = (faster) => h('section.method-faster', null,
+  h('div.method-head', null, h('span.method-tag.method-tag-faster', null, '⚡ Faster way'), h('strong', null, faster.name)),
+  h('p.method-why', null, `${faster.why} Same answer, fewer steps. Check it with the method above.`),
+  h('ol.method-steps', null, faster.steps.map((st, i) => h('li.method-step', null,
+    h('span.method-num.method-num-faster', { 'aria-hidden': 'true' }, i + 1),
+    h('div.method-body', null, h('p', null, st.text), renderVisual(st.visual))))));
+
 export const methodPlayer = (method, { autoSpeak = true, onDone, compact = false } = {}) => {
   let index = 0;
   const list = h('ol.method-steps');
@@ -173,29 +185,43 @@ export const methodPlayer = (method, { autoSpeak = true, onDone, compact = false
     return step;
   };
 
+  const actions = h('div.method-actions', null, next, showAll);
+
+  /** Main method finished: offer the optional faster trick, never before. */
+  const finish = () => {
+    next.remove();
+    showAll.remove();
+    if (method.faster) {
+      actions.append(h('button.btn.btn-ghost.btn-sm.method-faster-btn', {
+        type: 'button',
+        onclick: (e) => {
+          const panel = fasterPanel(method.faster);
+          e.currentTarget.replaceWith(panel);
+          panel.scrollIntoView?.({ block: 'nearest', behavior: 'smooth' });
+          if (autoSpeak) speak([method.faster.why, ...method.faster.steps.map((st) => st.text)].join(' '));
+        },
+      }, `⚡ Faster way: ${method.faster.name}`));
+    }
+    onDone?.();
+  };
+
   const advance = () => {
     const step = renderStep(index);
     index += 1;
     if (autoSpeak) speak(step.text);
-    if (index >= method.steps.length) {
-      next.remove();
-      showAll.remove();
-      onDone?.();
-    }
+    if (index >= method.steps.length) finish();
   };
 
   next.addEventListener('click', advance);
   showAll.addEventListener('click', () => {
     while (index < method.steps.length) { renderStep(index); index += 1; }
-    next.remove();
-    showAll.remove();
-    onDone?.();
+    finish();
   });
 
   const el = h(`section.method${compact ? '.method-compact' : ''}`, null,
     h('div.method-head', null, h('span.method-tag', null, 'Technique'), h('strong', null, method.name)),
     list,
-    h('div.method-actions', null, next, showAll));
+    actions);
   advance();
   return el;
 };

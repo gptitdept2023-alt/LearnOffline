@@ -12,6 +12,7 @@
  */
 
 import { longDivisionSteps } from './longDivision.js';
+import { addShortcut, subShortcut, mulShortcut, divShortcut } from './shortcuts.js';
 
 const fmt = (n) => Number(n).toLocaleString('en-US');
 const digits = (n) => String(n).split('').reverse().map(Number); // ones first
@@ -495,13 +496,24 @@ const METHODS = {
   longDivide, equivalentFraction, sameDenominator, barModel, tapCount, countAll, takeAwayCount,
 };
 
+/** Optional faster tricks, shown only after the main method (see shortcuts.js). */
+const SHORTCUTS = {
+  columnAdd: addShortcut,
+  columnSub: subShortcut,
+  splitMultiply: mulShortcut,
+  longDivide: divShortcut,
+};
+
 /**
  * Work out the technique for a question.
- * @returns {{name: string, steps: Object[], guided: Object[]}|null}
+ * @returns {{name: string, steps: Object[], guided: Object[], faster: Object|null}|null}
+ *   `faster` is an optional quicker trick for these numbers, or null.
  */
 export const methodFor = (question) => {
   const fn = question?.method && METHODS[question.method.kind];
-  return fn ? fn(question.method) : null;
+  if (!fn) return null;
+  const shortcut = SHORTCUTS[question.method.kind];
+  return { ...fn(question.method), faster: shortcut ? shortcut(question.method) : null };
 };
 
 export const METHOD_KINDS = Object.keys(METHODS);
