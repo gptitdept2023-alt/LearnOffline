@@ -13,9 +13,9 @@
 .visual svg { display: block; width: 100%; height: auto; }
 
 /* Pictures (emoji) */
-.pic-group { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; }
+.pic-group { display: flex; flex-wrap: wrap; justify-content: center; column-gap: 14px; row-gap: 6px; }
 .pic { font-size: 2.2rem; line-height: 1.1; }
-.pic-gap { width: 14px; }
+.pic-five { display: inline-flex; flex-wrap: nowrap; gap: 4px; } /* a five never splits across lines */
 .pic-crossed { position: relative; opacity: 0.35; }
 .pic-crossed::after {
   content: "";
@@ -28,6 +28,9 @@
 }
 .visual-picture-rows { flex-direction: column; align-items: flex-start; }
 .pic-row { display: flex; }
+.visual-picture-rows .pic-group { flex-wrap: nowrap; justify-content: flex-start; column-gap: 4px; }
+.visual-picture-rows .pic { font-size: min(1.6rem, 6.4vw); width: 1.15em; text-align: center; }
+.young .visual-picture-rows .pic { font-size: min(1.6rem, 6.4vw); }
 .op-sign { font-size: 2rem; font-weight: 800; color: var(--muted); }
 
 .visual-sequence { gap: 8px; }
@@ -232,6 +235,9 @@
 /* Multiply by 10: digits shift one place left */
 .visual-shift { flex-direction: column; }
 .shift-cell { min-height: 44px; justify-content: center; }
+.visual-shift .pv-labelled { grid-template-columns: 40px repeat(var(--cols), minmax(0, 1fr)); }
+.visual-shift .pv-label { font-size: 1rem; }
+.visual-shift .pv-head { font-size: 0.85rem; }
 .shift-new { background: var(--warn-soft, #fff1c9); }
 .shift-new .pv-digit { color: var(--extra); }
 
@@ -263,7 +269,7 @@
 .day-now { font-size: 14px; font-weight: 800; fill: var(--extra); text-anchor: middle; }
 
 /* Angles and turns */
-.visual-angle svg { max-width: 240px; }
+.visual-angle svg { max-width: 240px; max-height: 220px; }
 .ang-arm { stroke: var(--text); stroke-width: 4; stroke-linecap: round; }
 .ang-mark { fill: none; stroke: var(--primary); stroke-width: 3; }
 .ang-turn { fill: none; stroke: var(--extra); stroke-width: 3; stroke-linecap: round; }
@@ -306,7 +312,7 @@
 .bg-value { font-size: 13px; font-weight: 800; fill: var(--extra); text-anchor: middle; }
 
 /* Data table */
-.data-table { border-collapse: collapse; min-width: 220px; background: var(--surface); border-radius: var(--radius-sm); overflow: hidden; }
+.data-table { border-collapse: collapse; min-width: 220px; background: var(--surface); }
 .data-table caption { font-weight: 800; padding-bottom: 6px; }
 .data-table th, .data-table td { padding: 6px 14px; border: 1px solid var(--border); text-align: left; }
 .data-table thead th { background: var(--surface-2); font-size: 0.85rem; }

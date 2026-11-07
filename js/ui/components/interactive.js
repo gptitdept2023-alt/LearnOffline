@@ -18,6 +18,9 @@ import { speak } from '../../core/speech.js';
 import { isCorrect, isBlank } from '../../engine/answers.js';
 import { renderVisual } from './visuals.js';
 
+/** Shown after two misses: the answer, and how to enter it (tap a button or type). */
+export const revealText = (step) => `It is ${step.answer}. ${step.answerType === 'choice' ? 'Tap' : 'Type'} ${step.answer} to go on.`;
+
 /* ------------------------------------------------------------------ */
 /* Tap to count                                                        */
 /* ------------------------------------------------------------------ */
@@ -273,7 +276,7 @@ export const guidedRunner = (method, onDone, { speakPrompts = true } = {}) => {
         return;
       }
       misses += 1;
-      feedback.textContent = misses >= 2 ? `It is ${step.answer}. Type ${step.answer} to go on.` : 'Not yet. Look at the picture and try again.';
+      feedback.textContent = misses >= 2 ? revealText(step) : 'Not yet. Look at the picture and try again.';
       speak(feedback.textContent);
       host.querySelector('.guided-input')?.classList.add('shake');
       setTimeout(() => host.querySelector('.guided-input')?.classList.remove('shake'), 400);

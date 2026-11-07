@@ -262,14 +262,17 @@ test('long division shows divide, multiply, subtract, bring down and a check at 
     const m = methodFor({ method: { kind: 'longDivide', dividend, divisor } });
     const text = m.steps.map((st) => st.text);
     const worked = plan.filter((p) => !p.lead);
-    worked.forEach((p, w) => {
+    // A place with nothing in it (2,400 ÷ 8: the tens) is one short step: write 0 on top.
+    const empty = worked.filter((p, w) => w > 0 && p.cur === 0);
+    for (const p of empty) assert.ok(text.some((t) => t.includes('bring down the 0. There are no')), `${label}: empty place`);
+    worked.filter((p, w) => !(w > 0 && p.cur === 0)).forEach((p, w) => {
       assert.ok(text.some((t) => t.startsWith(`Multiply: ${p.q} × ${divisor} = ${fmt(p.product)}.`) && t.includes(`Subtract: ${fmt(p.cur)} − ${fmt(p.product)} = ${fmt(p.rem)}.`)),
         `${label}: multiply and subtract for ${p.cur}`);
       if (w > 0) assert.ok(text.some((t) => t.includes(`bring down the ${p.digit}`)), `${label}: bring down ${p.digit}`);
       assert.ok(text.some((t) => t.includes(`Write ${p.q} on top`)), `${label}: write ${p.q} on top`);
     });
     // Two steps per worked place, one per leading place, plus intro and check.
-    assert.equal(m.steps.length, 2 + worked.length * 2 + (plan.length - worked.length), label);
+    assert.equal(m.steps.length, 2 + worked.length * 2 - empty.length + (plan.length - worked.length), label);
     const q = Math.floor(dividend / divisor);
     const r = dividend % divisor;
     assert.ok(text.at(-1).includes(`${fmt(q)} × ${divisor} = ${fmt(q * divisor)}`) && text.at(-1).includes('It matches'), `${label}: check`);

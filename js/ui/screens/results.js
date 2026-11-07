@@ -3,6 +3,7 @@
  */
 
 import { h } from '../../core/dom.js';
+import { cheer } from './resultsText.js';
 import { t } from '../../core/i18n.js';
 import { getState } from '../../core/state.js';
 import { speak } from '../../core/speech.js';
@@ -34,7 +35,6 @@ const levelBlock = (lv) => {
       h('a.btn.btn-ghost', { href: '#/levels' }, '🗺️ All levels')));
 };
 
-const cheer = (pct) => (pct === 100 ? 'Perfect!' : pct >= 80 ? 'Great work!' : pct >= 50 ? 'Good effort!' : 'Keep practising!');
 
 export const renderResults = async (view) => {
   const { lastResult, indexed, profile } = getState();

@@ -44,8 +44,8 @@ const renderClock = ({ h: hour, m, focus }) => {
     const a = rad(deg - 90);
     return svg('line', { x1: c, y1: c, x2: c + len * Math.cos(a), y2: c + len * Math.sin(a), class: cls });
   };
-  nodes.push(hand(((hour % 12) + m / 60) * 30, 46, `clk-hour${focus === 'hour' ? ' clk-hot' : ''}`));
   nodes.push(hand(m * 6, 74, `clk-minute${focus === 'minute' ? ' clk-hot' : ''}`));
+  nodes.push(hand(((hour % 12) + m / 60) * 30, 46, `clk-hour${focus === 'hour' ? ' clk-hot' : ''}`)); // drawn last: short hand on top
   nodes.push(svg('circle', { cx: c, cy: c, r: 5, class: 'clk-pin' }));
   return h('div.visual.visual-clock', null,
     svg('svg', { viewBox: '0 0 200 200', role: 'img', 'aria-label': `A clock showing ${hour}:${String(m).padStart(2, '0')}` }, nodes));
@@ -71,11 +71,11 @@ const renderDayline = ({ mins }) => {
   }
   const hh = Math.floor(mins / 60);
   const label24 = `${String(hh).padStart(2, '0')}:${String(mins % 60).padStart(2, '0')}`;
-  nodes.push(svg('path', { d: `M${x(mins)} 40 l-7 -12 h14 Z`, class: 'day-marker' }));
-  nodes.push(svg('line', { x1: x(mins), y1: 40, x2: x(mins), y2: 66, class: 'day-marker-line' }));
-  nodes.push(svg('text', { x: Math.min(300, Math.max(40, x(mins))), y: 102, class: 'day-now' }, label24));
+  nodes.push(svg('line', { x1: x(mins), y1: 40, x2: x(mins), y2: 88, class: 'day-marker-line' }));
+  nodes.push(svg('path', { d: `M${x(mins)} 88 l-7 10 h14 Z`, class: 'day-marker' }));
+  nodes.push(svg('text', { x: Math.min(300, Math.max(40, x(mins))), y: 114, class: 'day-now' }, label24));
   return h('div.visual.visual-dayline', null,
-    svg('svg', { viewBox: '0 0 340 110', role: 'img', 'aria-label': `${label24} on a 24-hour day line` }, nodes));
+    svg('svg', { viewBox: '0 0 340 120', role: 'img', 'aria-label': `${label24} on a 24-hour day line` }, nodes));
 };
 
 /* ------------------------------------------------------------------ */
@@ -242,7 +242,7 @@ const renderSymmetry = ({ shape, line, fold = false, showAll = false }) => {
  * @param {{title: string, unit: string, labels: string[], values: number[], scale: number, focus?: number[]}} spec
  */
 const renderBarGraph = ({ title, unit, labels, values, scale, focus = [] }) => {
-  const top = Math.ceil(Math.max(...values) / scale) * scale;
+  const top = Math.ceil(Math.max(...values) / scale) * scale + scale; // one step of headroom for value labels
   const ticks = top / scale;
   const ox = 44;
   const oy = 30;

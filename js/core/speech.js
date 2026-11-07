@@ -143,18 +143,40 @@ const sayMoney = (whole, centavos = '00') => {
   return parts.join(' ') || '0 pesos';
 };
 
-/** Money, units and degrees as words, before the rest of the maths rules run. */
+/** A peso amount: "1,250" or "45", never swallowing a comma that ends a clause ("₱1, so"). */
+const PESO_RE = '₱(\\d{1,3}(?:,\\d{3})+|\\d+)';
+
+/**
+ * "4:20" -> "4 20", "1:05" -> "1 oh 5", "10:00 a.m." -> "10 a.m.", "4:00" -> "4 o'clock",
+ * and 24-hour times the way people say them: "13:00" -> "13 hundred", "07:15" -> "oh 7 15".
+ */
+const sayClock = (hours, mins, after) => {
+  const twelveHour = /^\s*[ap]\.m\./.test(after);
+  const is24 = !twelveHour && (hours.length === 2 && (hours[0] === '0' || Number(hours) >= 13));
+  const h = hours === '00' ? 'zero zero' : hours[0] === '0' && hours.length === 2 ? `oh ${hours[1]}` : hours;
+  if (mins === '00') return is24 ? `${h} hundred` : twelveHour ? h : `${h} o'clock`;
+  return `${h} ${mins[0] === '0' ? `oh ${mins[1]}` : mins}`;
+};
+
+/** Money, units, clock times and degrees as words, before the rest of the maths rules run. */
 const sayMeasures = (text) => text
-  .replace(/₱([\d,]+) bill/g, (_, d) => `${d.replace(/,/g, '')} peso bill`)
+  .replace(/=\s*₱\?/g, 'equals how many pesos?')
+  .replace(/=\s*\?¢/g, 'equals how many centavos?')
+  .replace(new RegExp(`${PESO_RE} bill`, 'g'), (_, d) => `${d.replace(/,/g, '')} peso bill`)
   .replace(/\b1\/2 turn/g, 'half turn')
-  .replace(/\b(\d)\/4 turn/g, (_, n) => (n === '1' ? 'quarter turn' : `${n} quarter turn`))
-  .replace(/₱([\d,]+)(?:\.(\d{2}))?/g, (_, p, c) => sayMoney(p, c))
+  .replace(/\b(\d)\/4 turn/g, (_, n) => ({ 1: 'quarter turn', 3: 'three-quarter turn' }[n] || `${n} quarter turn`))
+  .replace(/\b(\d{1,2}):(\d{2})\b/g, (match, hh, mm, offset, whole) => sayClock(hh, mm, whole.slice(offset + match.length)))
+  .replace(new RegExp(`${PESO_RE}(?:\\.(\\d{2}))?`, 'g'), (_, p, c) => sayMoney(p, c))
   .replace(/(\d+)¢/g, (_, c) => `${c} ${c === '1' ? 'centavo' : 'centavos'}`)
   .replace(/(\d+)°/g, (_, n) => `${n} degrees`)
   .replace(new RegExp(`=\\s*\\?\\s*${UNIT_RE}`, 'g'), (_, u) => `equals how many ${UNIT_WORDS[u][1]}?`)
+  // "25 min + ? min": the operator is read later ("plus how many minutes?").
+  .replace(new RegExp(`([+−×÷])\\s*\\?\\s*${UNIT_RE}`, 'g'), (_, op, u) => `${op} how many ${UNIT_WORDS[u][1]}?`)
+  // "3 m ? cm": a second, unknown part of the same measure.
   .replace(new RegExp(`\\?\\s*${UNIT_RE}`, 'g'), (_, u) => `and how many ${UNIT_WORDS[u][1]}?`)
   .replace(new RegExp(`(\\d[\\d,]*)\\s?${UNIT_RE}`, 'g'), (_, n, u) => `${n} ${UNIT_WORDS[u][n === '1' ? 0 : 1]}`)
-  .replace(new RegExp(`\\bin ${UNIT_RE}`, 'g'), (_, u) => `in ${UNIT_WORDS[u][1]}`);
+  // A unit with no number before it: "in cm", "Add the g", "into ml", "the whole kg".
+  .replace(new RegExp(`\\b(in|the|into|whole) ${UNIT_RE}`, 'g'), (_, w, u) => `${w} ${UNIT_WORDS[u][1]}`);
 
 /**
  * Put a short pause before each "equals" after the first in one sentence, so
@@ -166,6 +188,7 @@ const pauseChains = (text) => text
   // Each sentence or clause on its own: "3 = 3, 8 = 8" is not a chain.
   // (Split after the punctuation without a lookbehind, which iOS 15 cannot parse.)
   .replace(/([.!?,])\s+/g, '$1\n')
+  .replace(/\s+and\s+/g, '\nand ')
   .split('\n')
   .map((clause) => {
     let seen = 0;
@@ -187,18 +210,27 @@ export const toSpokenText = (text) => pauseChains(sayMeasures(String(text))
   .replace(/(\d+)\/(\d+)/g, (_, num, den) => sayFraction(num, den))
   .replace(/\b(\d+)ths\b/g, (match, den) => FRACTION_NAMES[Number(den)]?.[1] || match)
   .replace(/\s*\+\s*/g, ' plus ')
-  .replace(/\s*[−-]\s+/g, ' minus ')
+  .replace(/\s*−\s*/g, ' minus ') // U+2212 is always the minus sign
+  .replace(/\s*-\s+/g, ' minus ')
   .replace(/\s*×\s*/g, ' times ')
   .replace(/\s*÷\s*/g, ' divided by ')
   .replace(/\s+>\s+/g, ' is greater than ')
   .replace(/\s+<\s+/g, ' is less than ')
+  .replace(/\s*=\s*\?\s*remainder (\d+)/g, ' equals what, remainder $1?')
+  .replace(/\bremainder \?/g, 'remainder what?')
   .replace(/\s*=\s*\?/g, ' equals what?')
   .replace(/\s*=\s*/g, ' equals ')
   .replace(/\?\s*(plus|minus|times|divided by|equals)/g, 'what $1')
   .replace(/\s*→\s*/g, ', ')
   // A colon introduces the working ("Use facts you know: 7 × 8 ..."): pause like a full stop.
   .replace(/:\s+/g, '. ')
+  // A "?" standing alone is the symbol itself: "put ? on what you must find".
+  .replace(/\b(the|a) \?(?=\s|$|[.,])/g, '$1 question mark')
+  .replace(/(^|\s)\?(?=\s|$|[.,])/g, '$1a question mark')
   .replace(/\s+/g, ' ')
+  .replace(/ ([.,!?])/g, '$1')
+  .replace(/\.\.+/g, '.')
+  .replace(/\?\./g, '?')
   .trim());
 
 /**

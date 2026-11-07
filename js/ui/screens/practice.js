@@ -181,7 +181,7 @@ export const renderPractice = async (view, skillId) => {
       feedback.insertBefore(methodPlayer(method, { autoSpeak: false, compact: true }), feedback.lastChild);
     }
     feedback.querySelector('button').focus();
-    if (profile.readAloud || young) speak(correct ? t('correct') : `${t('answerWas')} ${question.display || question.answer}`);
+    if (profile.readAloud || young) speak(correct ? t('correct') : `${t('answerWas')} ${question.spoken || question.display || question.answer}`);
   };
 
   const submit = (question, raw) => {

@@ -219,7 +219,8 @@ const timeDurationMethod = ({ start, end, form, choices }) => {
     guided.push(ask(`From ${clock12(t)} to ${clock12(to)}: how many minutes?`, j, hops(jumps.slice(0, k))));
     t = to;
   });
-  steps.push({ text: `Add the jumps: ${jumps.join(' + ')} = ${length} min${length >= 60 ? ` (${duration(length)})` : ''}.`, visual: hops(jumps) });
+  const total = `${length} min${length >= 60 ? ` (${duration(length)})` : ''}`;
+  steps.push({ text: jumps.length > 1 ? `Add the jumps: ${jumps.join(' + ')} = ${total}.` : `So it is ${total}.`, visual: hops(jumps) });
   if (jumps.length > 1) guided.push(ask(`${jumps.join(' + ')} = ?`, length, hops(jumps)));
   return { name: 'Timeline jumps', steps, guided };
 };

@@ -140,7 +140,7 @@ const areaPerimeterMethod = ({ w, h, form }) => {
       name: 'Add all the sides',
       steps: [
         { text: 'Perimeter is the distance all the way round the shape.', visual: grid('perimeter') },
-        { text: `Opposite sides are equal, so the 4 sides are ${w}, ${h}, ${w} and ${h} cm.`, visual: grid('perimeter', { all: true }) },
+        { text: w === h ? `All 4 sides of a square are equal: ${w}, ${w}, ${w} and ${w} cm.` : `Opposite sides are equal, so the 4 sides are ${w}, ${h}, ${w} and ${h} cm.`, visual: grid('perimeter', { all: true }) },
         { text: `Add them: ${w} + ${h} + ${w} + ${h} = ${2 * (w + h)} cm. (Or 2 × (${w} + ${h}) = ${2 * (w + h)} cm.)`, visual: grid('perimeter', { all: true }) },
       ],
       guided: [ask(`${w} + ${h} = ?`, w + h, grid('perimeter')), ask(`Double it: 2 × ${w + h} = ?`, 2 * (w + h), grid('perimeter', { all: true }))],

@@ -21,6 +21,7 @@
 
 import { randInt, pick, shuffle } from '../core/random.js';
 import { TOPIC_GENERATORS } from './topics/index.js';
+import { withArticle } from './topics/shared.js';
 
 /* ------------------------------------------------------------------ */
 /* Shared helpers                                                      */
@@ -203,6 +204,7 @@ const addition = ({ min = 0, max = 10, maxSum, regroup }, rng) => {
 const additionMethod = (a, b) => {
   if (a + b <= 10) return { kind: 'countOn', a, b };
   if (a <= 9 && b <= 9) return { kind: 'makeTen', a, b };
+  if (a + b <= 20) return { kind: 'countOn', a, b }; // 10 + 5, 12 + 6: count on from the bigger
   return { kind: 'columnAdd', a, b };
 };
 
@@ -214,7 +216,7 @@ const subtraction = ({ min = 0, max = 10, regroup }, rng) => {
       const y = randInt(min, max, rng);
       return x >= y ? [x, y] : [y, x];
     },
-    ([x, y]) => regroup === undefined || needsBorrow(x, y) === regroup,
+    ([x, y]) => (regroup === undefined || needsBorrow(x, y) === regroup) && !(x === y && max <= 20 && min > 0),
   );
   return {
     answerType: 'numeric',
@@ -299,7 +301,7 @@ const divideLong = ({ digits = 2, remainder = false }, rng) => {
     answer: askRemainder ? r : q,
     hint: 'Divide the biggest place first. Bring down the next digit and divide again.',
     explain: `${fmt(dividend)} ÷ ${divisor} = ${fmt(q)}${r ? ` remainder ${r}` : ''}`,
-    method: { kind: 'longDivide', dividend, divisor },
+    method: { kind: 'longDivide', dividend, divisor, asks: askRemainder ? 'remainder' : 'quotient' },
   };
 };
 
@@ -542,14 +544,15 @@ const wordProblemBase = ({ kinds = ['partWhole'], max = 20, maxTimes = 5 }, rng)
       ? `${times + 1} units × ${unit} = ${unit * (times + 1)}`
       : `${times} units × ${unit} = ${unit * times}`,
     calc: findTotal ? [times + 1, '×', unit] : [times, '×', unit],
+    timesAltogether: findTotal ? times : undefined,
   };
 };
 
 /** Word problem tagged with the bar-model technique (draw, label, choose operation, calculate). */
 const wordProblem = (params, rng) => {
-  const { calc, ...q } = wordProblemBase(params, rng);
+  const { calc, timesAltogether, ...q } = wordProblemBase(params, rng);
   const [a, op, b] = calc;
-  return { ...q, method: { kind: 'barModel', model: q.model, op, a, b, answer: q.answer } };
+  return { ...q, method: { kind: 'barModel', model: q.model, op, a, b, answer: q.answer, timesAltogether } };
 };
 
 /* ------------------------------------------------------------------ */
@@ -622,6 +625,7 @@ const moreOrFewer = ({ max = 10 }, rng) => {
     answerType: 'choice',
     prompt: `Are there ${more ? 'more' : 'fewer'} ${picA.many} or ${picB.many}?`,
     answer: answerEmoji,
+    spoken: answerEmoji === picA.emoji ? picA.many : picB.many,
     choices: [picA.emoji, picB.emoji],
     visual: { kind: 'pictureRows', rows: [{ emoji: picA.emoji, count: a }, { emoji: picB.emoji, count: b }] },
     hint: 'Match them one to one. The row with some left over has more.',
@@ -669,7 +673,8 @@ const shapes = ({ set = SHAPES }, rng) => {
 const patterns = ({ kinds = ['AB', 'AAB', 'ABB', 'ABC'] }, rng) => {
   const kind = pick(kinds, rng);
   const letters = [...new Set(kind.split(''))];
-  const pics = shuffle(PICTURES, rng).slice(0, letters.length).map((p) => p.emoji);
+  const chosen = shuffle(PICTURES, rng).slice(0, letters.length);
+  const pics = chosen.map((p) => p.emoji);
   const map = Object.fromEntries(letters.map((l, i) => [l, pics[i]]));
   const length = kind.length * 2 + randInt(0, kind.length - 1, rng);
   const seq = Array.from({ length: length + 1 }, (_, i) => map[kind[i % kind.length]]);
@@ -678,6 +683,7 @@ const patterns = ({ kinds = ['AB', 'AAB', 'ABB', 'ABC'] }, rng) => {
     answerType: 'choice',
     prompt: 'What comes next?',
     answer,
+    spoken: withArticle(chosen.find((p) => p.emoji === answer).one),
     choices: shuffle(pics.length >= 2 ? pics : [...pics, pick(PICTURES, rng).emoji], rng),
     visual: { kind: 'sequence', items: [...seq, '?'] },
     hint: 'Say the pattern out loud. What repeats?',

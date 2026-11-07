@@ -38,9 +38,10 @@ const doublingBars = (a, times) => ({
  * just below it. Returns null when n is not close to one.
  * @returns {{round: number, gap: number}|null}
  */
-const roundUp = (n) => {
+const roundUp = (n, tensBelow = 1000) => {
   if (n >= 100 && n % 100 >= 95) return { round: n + (100 - (n % 100)), gap: 100 - (n % 100) };
-  if (n >= 17 && n % 10 >= 7) return { round: n + (10 - (n % 10)), gap: 10 - (n % 10) };
+  // Rounding 2,617 to 2,620 is no easier, so big numbers only round to a hundred.
+  if (n >= 17 && n < tensBelow && n % 10 >= 7) return { round: n + (10 - (n % 10)), gap: 10 - (n % 10) };
   return null;
 };
 
@@ -106,7 +107,7 @@ export const subShortcut = ({ a, b }) => {
   const k = String(a).length - 1;
   const low = a % 10 ** k;
   const needsRenaming = String(b).padStart(String(a).length, '0').split('').some((d, i) => Number(d) > Number(String(a)[i]));
-  if (k >= 2 && low <= 9 && b > low && needsRenaming) {
+  if (k >= 2 && low <= 9 && b > low + 1 && needsRenaming) { // b > d, so we never get "999 − 0"
     const d = low + 1;
     return {
       name: 'Same difference',
@@ -134,7 +135,7 @@ export const mulShortcut = ({ a, b }) => {
       why: '5 is half of 10, so × 5 is the same as × 10 then half.',
       answer: ans,
       steps: [
-        { text: `× 10 first: ${fmt(a)} × 10 = ${fmt(a * 10)}.`, visual: { kind: 'shift', value: a } },
+        { text: `Multiply by 10 first: ${fmt(a)} × 10 = ${fmt(a * 10)}.`, visual: { kind: 'shift', value: a } },
         { text: `5 is half of 10, so halve it: ${fmt(a * 10)} ÷ 2 = ${fmt(ans)}.`, visual: equalBar(a * 10, 2, ans) },
       ],
     };
@@ -145,7 +146,7 @@ export const mulShortcut = ({ a, b }) => {
       why: '25 is a quarter of 100.',
       answer: ans,
       steps: [
-        { text: `× 100 first: ${fmt(a)} × 100 = ${fmt(a * 100)}.` },
+        { text: `Multiply by 100 first: ${fmt(a)} × 100 = ${fmt(a * 100)}.` },
         { text: `25 is a quarter of 100, so share into 4: ${fmt(a * 100)} ÷ 4 = ${fmt(ans)}.`, visual: equalBar(a * 100, 4, ans) },
       ],
     };
@@ -174,7 +175,7 @@ export const mulShortcut = ({ a, b }) => {
       steps,
     };
   }
-  const r = a >= 18 ? roundUp(a) : null;
+  const r = a >= 18 ? roundUp(a, 100) : null; // 837 × 6 as 840 × 6 is barely easier
   if (r && b < 10) {
     return {
       name: 'Round and adjust',
@@ -201,7 +202,8 @@ export const divShortcut = ({ dividend, divisor }) => {
   for (const unit of [100, 10]) {
     const round = Math.ceil(dividend / unit) * unit;
     const gap = round - dividend;
-    if (gap > 0 && round % divisor === 0 && gap % divisor === 0 && gap / divisor <= 2 && round / divisor >= 10) {
+    // The friendly share must be a known fact: 800 ÷ 8 = 100, 840 ÷ 7 = 120 (not 470 ÷ 2 = 235).
+    if (gap > 0 && round % divisor === 0 && gap % divisor === 0 && gap / divisor <= 2 && round / divisor >= 10 && (round / divisor) % 10 === 0) {
       const less = gap / divisor;
       return {
         name: 'Use a friendly number',

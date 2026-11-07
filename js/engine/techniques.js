@@ -143,11 +143,13 @@ const columnSub = ({ a, b }) => {
   for (let i = 0; i < da.length; i += 1) {
     const y = db[i] || 0;
     let note = '';
+    let renameFrom = i + 1;
     if (top[i] < y) {
       // Rename 1 from the next place that has something to give.
       let j = i + 1;
       while (top[j] === 0) j += 1;
       top[j] -= 1;
+      renameFrom = j; // the picture shows the first trade (e.g. 1 thousand into hundreds)
       for (let k = j - 1; k > i; k -= 1) top[k] = 9;
       top[i] += 10;
       const one = (k) => PLACE[k].replace(/s$/, '');
@@ -162,18 +164,55 @@ const columnSub = ({ a, b }) => {
     const columnView = { kind: 'column', a, b, op: '−', shown: i + 1, focus: i, top: top.slice(), result: resultSoFar };
     const renamedHere = renamed[renamed.length - 1] === i;
     steps.push({
-      text: `${note}${PLACE[i][0].toUpperCase() + PLACE[i].slice(1)}: ${top[i]} − ${y} = ${diff}.`,
-      visual: renamedHere && discsFit(a) ? stack({ kind: 'trade', from: 10 ** (i + 1), count: 1 }, columnView) : columnView,
+      text: i >= db.length && !note
+        ? (top[i] === 0 && i === da.length - 1
+          ? `${PLACE[i][0].toUpperCase() + PLACE[i].slice(1)}: the ${PLACE[i].replace(/s$/, '')} was renamed, so there are none left.`
+          : `${PLACE[i][0].toUpperCase() + PLACE[i].slice(1)}: nothing to take away, so write ${top[i]}.`)
+        : `${note}${PLACE[i][0].toUpperCase() + PLACE[i].slice(1)}: ${top[i]} − ${y} = ${diff}.`,
+      visual: renamedHere && discsFit(a) ? stack({ kind: 'trade', from: 10 ** renameFrom, count: 1 }, columnView) : columnView,
     });
-    guided.push(ask(`${note}${PLACE[i][0].toUpperCase() + PLACE[i].slice(1)}: ${top[i]} − ${y} = ?`, diff, { kind: 'column', a, b, op: '−', shown: i, focus: i, top: top.slice(), result: i ? Number(resultDigits.slice(0, i).reverse().join('')) : undefined }));
+    const onlyTop = i >= db.length && !note;
+    if (onlyTop && top[i] === 0 && i === da.length - 1) continue; // nothing left in the last place: no question
+    guided.push(ask(onlyTop
+      ? `${PLACE[i][0].toUpperCase() + PLACE[i].slice(1)}: nothing to take away. What do you write?`
+      : `${note}${PLACE[i][0].toUpperCase() + PLACE[i].slice(1)}: ${top[i]} − ${y} = ?`, diff, { kind: 'column', a, b, op: '−', shown: i, focus: i, top: top.slice(), result: i ? Number(resultDigits.slice(0, i).reverse().join('')) : undefined }));
   }
   steps.push({ text: `${fmt(a)} − ${fmt(b)} = ${fmt(a - b)}.` });
   guided.push(ask(`So ${fmt(a)} − ${fmt(b)} = ?`, a - b));
   return { name: renamed.length ? 'Column method with renaming' : 'Column method', steps, guided };
 };
 
-/** Small subtraction: think of the part-whole bond. */
-const subtractBond = ({ a, b }) => ({
+/** Small subtraction: count back a few, or think of the part-whole bond. */
+const subtractBond = ({ a, b }) => {
+  if (b === 0) {
+    return {
+      name: 'Take away nothing',
+      steps: [
+        { text: `Take away 0 means take nothing away.`, visual: { kind: 'bond', whole: a, parts: [0, '?'] } },
+        { text: `${a} − 0 = ${a}. The number stays the same.` },
+      ],
+      guided: [ask(`${a} − 0 = ?`, a)],
+    };
+  }
+  if (b <= 3 || b < a - b) {
+    // 20 − 2: two hops back is quicker than counting on 18.
+    const counts = Array.from({ length: b }, (_, i) => a - i - 1);
+    const back = (shown) => ({ kind: 'hops', start: a, moves: Array.from({ length: shown }, () => -1) });
+    return {
+      name: 'Count back',
+      steps: [
+        { text: `Start at ${a}. Take away ${b} by counting back ${b}.`, visual: back(0) },
+        { text: `Count back: ${counts.join(', ')}.`, visual: back(b) },
+        { text: `${a} − ${b} = ${a - b}.`, visual: back(b) },
+      ],
+      guided: [ask(`Start at ${a}. Count back ${b}. Where do you land?`, a - b, back(0))],
+    };
+  }
+  return subtractByBond({ a, b });
+};
+
+/** Think: b + ? = a, and count on (when the part taken away is big). */
+const subtractByBond = ({ a, b }) => ({
   name: 'Number bond',
   steps: [
     { text: `${a} is the whole. ${b} is one part.`, visual: { kind: 'bond', whole: a, parts: [b, '?'] } },
@@ -192,6 +231,16 @@ const subtractBond = ({ a, b }) => ({
 /** Skip counting for times tables. */
 const skipCount = ({ groups, each }) => {
   const counts = Array.from({ length: groups }, (_, i) => each * (i + 1));
+  if (groups === 1) {
+    return {
+      name: 'One group',
+      steps: [
+        { text: `1 × ${each} means 1 group of ${each}.`, visual: { kind: 'groups', groups: 1, each } },
+        { text: `One group of ${each} is just ${each}. So 1 × ${each} = ${each}.` },
+      ],
+      guided: [ask(`1 group of ${each} is how many?`, each, { kind: 'groups', groups: 1, each })],
+    };
+  }
   return {
     name: 'Skip counting',
     steps: [
@@ -253,6 +302,20 @@ const splitMultiply = ({ a, b }) => {
     .reverse(); // biggest place first
   const cols = parts.map((p) => p.value);
   const area = (filled, focus) => ({ kind: 'area', cols, rows: [b], filled, focus });
+  if (parts.length === 1) {
+    const [p] = parts;
+    return {
+      name: 'Multiply the place',
+      steps: [
+        { text: `${fmt(a)} is ${placeCount(p.d, p.i)}. Multiply the ${PLACE[p.i]} by ${b}.`, visual: stack(discsFit(a) && { kind: 'placeChart', rows: [{ value: a }] }, area(0)) },
+        { text: `${b} groups of ${placeCount(p.d, p.i)} = ${placeCount(p.d * b, p.i)} = ${fmt(a * b)}.`, visual: stack(p.i < 4 && { kind: 'share', groups: b, each: [{ place: 10 ** p.i, n: p.d }], focus: 10 ** p.i }, area(1, 0)) },
+      ],
+      guided: [
+        ask(`${p.d} × ${b} = ? (${PLACE[p.i]})`, p.d * b, area(0, 0)),
+        ask(`So ${fmt(a)} × ${b} = ?`, a * b, area(1)),
+      ],
+    };
+  }
   return {
     name: 'Split by place value',
     steps: [
@@ -308,7 +371,7 @@ const multiplyByTens = ({ a, b }) => {
  * Each step shows the discs AND the written layout at that exact moment,
  * so the child sees why each number goes where it does.
  */
-const longDivide = ({ dividend, divisor }) => {
+const longDivide = ({ dividend, divisor, asks }) => {
   const plan = longDivisionSteps(dividend, divisor);
   const n = plan.length;
   const q = Math.floor(dividend / divisor);
@@ -351,8 +414,21 @@ const longDivide = ({ dividend, divisor }) => {
     const carriedIn = prev ? prev.rem * 10 : 0;
     let lookAt;
     if (!prev) lookAt = `${name}: share ${placeCount(s.cur, idx)}`;
-    else if (prev.lead) lookAt = `${name}: ${placeCount(carriedIn, idx)} + ${placeCount(s.digit, idx)} = ${placeCount(s.cur, idx)}. On paper, use the first ${k + 1} digits: ${fmt(s.cur)}. Share them`;
-    else if (carriedIn) lookAt = `${name}: bring down the ${s.digit} next to the ${prev.rem}. Now there are ${fmt(carriedIn)} + ${s.digit} = ${placeCount(s.cur, idx)}. Share them`;
+    else if (prev.lead) {
+      const sum = s.digit ? `${placeCount(carriedIn, idx)} + ${placeCount(s.digit, idx)} = ${placeCount(s.cur, idx)}` : `that makes ${placeCount(s.cur, idx)}`;
+      lookAt = `${name}: ${sum}. On paper, use the first ${k + 1} digits: ${fmt(s.cur)}. Share them`;
+    } else if (carriedIn) {
+      const now = s.digit ? `${fmt(carriedIn)} + ${s.digit} = ${placeCount(s.cur, idx)}` : placeCount(s.cur, idx);
+      lookAt = `${name}: bring down the ${s.digit} next to the ${prev.rem}. Now there are ${now}. Share them`;
+    } else if (s.cur === 0) {
+      // Nothing at all in this place: write 0 and move on (no 0 × d = 0).
+      steps.push({
+        text: `${name}: bring down the 0. There are no ${PLACE[idx]} to share, so write 0 on top.${last ? ' Nothing is left over.' : ''}`,
+        visual: layout(k + 1, k),
+      });
+      guided.push(ask(`${name}: bring down the 0. There are no ${PLACE[idx]} to share. How many ${PLACE[idx]} in each group?`, 0, layout(k, k)));
+      return;
+    }
     else lookAt = `${name}: bring down the ${s.digit}. Now there ${s.cur === 1 ? 'is' : 'are'} ${placeCount(s.cur, idx)}. Share ${s.cur === 1 ? 'it' : 'them'}`;
     const divideText = s.q === 0
       ? `${lookAt.replace(/\. Share (them|it)$/, '.').replace(/: share (.*)$/, ': $1.')} That is not enough to give each of the ${divisor} groups one. Write 0 on top.`
@@ -402,7 +478,8 @@ const longDivide = ({ dividend, divisor }) => {
     visual: stack(bar, layout(n)),
   });
   guided.push(ask(`So ${fmt(dividend)} ÷ ${divisor} = ?${r ? ' (the number on top)' : ''}`, q, layout(n)));
-  if (r) guided.push(ask('What is left over? (the remainder)', r, layout(n)));
+  // "= ? remainder 4" already gives the remainder, so it is not asked again.
+  if (r && asks !== 'quotient') guided.push(ask('What is left over? (the remainder)', r, layout(n)));
   return { name: 'Long division', steps, guided };
 };
 
@@ -429,6 +506,10 @@ const equivalentFraction = ({ num, den, factor }) => {
   };
 };
 
+const FRACTION_PLURALS = { 2: 'halves', 3: 'thirds', 4: 'fourths', 5: 'fifths', 6: 'sixths', 7: 'sevenths', 8: 'eighths', 9: 'ninths', 10: 'tenths', 11: 'elevenths', 12: 'twelfths' };
+const fractionName = (den) => FRACTION_PLURALS[den] || `${den}ths`;
+const partsOf = (n) => `${n} ${n === 1 ? 'part' : 'parts'}`;
+
 const sameDenominator = ({ x, y, den, op }) => {
   const add = op === '+';
   const num = add ? x + y : x - y;
@@ -446,11 +527,11 @@ const sameDenominator = ({ x, y, den, op }) => {
       },
       {
         text: add
-          ? `Put the parts together: ${x} + ${y} = ${num} parts. The size of the parts stays ${den}ths.`
-          : `Take away ${y} parts: ${x} − ${y} = ${num} parts. The size of the parts stays ${den}ths.`,
+          ? `Put the parts together: ${x} + ${y} = ${partsOf(num)}. The parts are still ${fractionName(den)}.`
+          : `Take away ${partsOf(y)}: ${x} − ${y} = ${partsOf(num)}. The parts are still ${fractionName(den)}.`,
         visual: result,
       },
-      { text: `The answer is ${num}/${den}.`, visual: fractionBar(num, den) },
+      { text: num === den ? `The answer is ${num}/${den}. That is 1 whole.` : `The answer is ${num}/${den}.`, visual: fractionBar(num, den) },
     ],
     guided: [ask(`${x} ${add ? '+' : '−'} ${y} = ? (the top number)`, num, { ...result, label: `? / ${den}` })],
   };
@@ -467,7 +548,7 @@ const OPS = ['+', '−', '×', '÷'];
  * 3) choose the operation, 4) calculate.
  * method: { model, op, a, b, answer, sentence }
  */
-const barModel = ({ model, op, a, b, answer }) => {
+const barModel = ({ model, op, a, b, answer, timesAltogether }) => {
   const known = { rows: model.rows.map((r) => ({ ...r })), braces: [] };
   const opWord = { '+': 'add', '−': 'subtract', '×': 'multiply', '÷': 'divide' }[op];
   return {
@@ -475,10 +556,12 @@ const barModel = ({ model, op, a, b, answer }) => {
     steps: [
       { text: 'Read the problem. Draw a bar for each person or thing.', visual: { kind: 'bar', ...known } },
       { text: 'Label what you know, and put ? on what you must find.', visual: { kind: 'bar', ...model } },
+      ...(timesAltogether ? [{ text: `Count the equal units: 1 unit and ${timesAltogether} units make 1 + ${timesAltogether} = ${timesAltogether + 1} units.`, visual: { kind: 'bar', ...model } }] : []),
       { text: `The model shows we must ${opWord}: ${fmt(a)} ${op} ${fmt(b)}.` },
       { text: `${fmt(a)} ${op} ${fmt(b)} = ${fmt(answer)}.` },
     ],
     guided: [
+      ...(timesAltogether ? [ask(`1 + ${timesAltogether} = ? units`, timesAltogether + 1, { kind: 'bar', ...model })] : []),
       { prompt: 'Look at the bar model. Which operation finds the ?', answer: op, answerType: 'choice', choices: OPS, visual: { kind: 'bar', ...model } },
       ask(`${fmt(a)} ${op} ${fmt(b)} = ?`, answer, { kind: 'bar', ...model }),
     ],
@@ -494,7 +577,7 @@ const tapCount = ({ emoji, count }) => ({
   name: 'Touch and count',
   steps: [
     { text: 'Touch each one and say a number. The last number you say is how many.', visual: { kind: 'pictures', emoji, count } },
-    { text: `There are ${count}.` },
+    { text: count === 1 ? 'There is 1.' : `There are ${count}.` },
   ],
   guided: [{ prompt: 'Tap each one to count it.', answer: count, answerType: 'tapCount', emoji, count }],
 });
@@ -513,7 +596,7 @@ const takeAwayCount = ({ emoji, a, b }) => ({
   name: 'Take away and count',
   steps: [
     { text: `Start with ${a}. Cross out ${b}.`, visual: { kind: 'pictureTakeAway', emoji, a, b } },
-    { text: `Count the ones left: there are ${a - b}.`, visual: { kind: 'pictures', emoji, count: a - b } },
+    { text: `Count the ones left: there ${a - b === 1 ? 'is' : 'are'} ${a - b}.`, visual: { kind: 'pictures', emoji, count: a - b } },
   ],
   guided: [{ prompt: 'Tap the ones that are left to count them.', answer: a - b, answerType: 'tapCount', emoji, count: a - b }],
 });

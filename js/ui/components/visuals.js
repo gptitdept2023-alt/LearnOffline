@@ -15,13 +15,16 @@ import { TOPIC_RENDERERS } from './visualsTopics.js';
 
 /** A row of emoji pictures, grouped in fives so they are easy to count. */
 const pictureGroup = (emoji, count, { crossed = 0 } = {}) => {
-  const items = [];
-  for (let i = 0; i < count; i += 1) {
-    const isCrossed = i >= count - crossed;
-    items.push(h(`span.pic${isCrossed ? '.pic-crossed' : ''}`, { 'aria-hidden': 'true', style: { '--i': i } }, emoji));
-    if ((i + 1) % 5 === 0 && i + 1 < count) items.push(h('span.pic-gap'));
+  const fives = [];
+  for (let start = 0; start < count; start += 5) {
+    const pics = [];
+    for (let i = start; i < Math.min(count, start + 5); i += 1) {
+      const isCrossed = i >= count - crossed;
+      pics.push(h(`span.pic${isCrossed ? '.pic-crossed' : ''}`, { 'aria-hidden': 'true', style: { '--i': i } }, emoji));
+    }
+    fives.push(h('span.pic-five', null, pics));
   }
-  return h('div.pic-group', null, items);
+  return h('div.pic-group', null, fives);
 };
 
 const renderPictures = ({ emoji, count }) =>
@@ -251,10 +254,12 @@ const renderHops = ({ start, moves, format }) => {
   const fmtValue = HOP_FORMATS[format]?.value || ((n) => n.toLocaleString('en-US'));
   const fmtMove = HOP_FORMATS[format]?.move || ((n) => n.toLocaleString('en-US'));
   const AXIS = 66;
+  const crowded = order.length >= 5; // labels like "₱300.00" would touch: use two rows
   const nodes = [svg('line', { x1: 10, y1: AXIS, x2: 330, y2: AXIS, class: 'nl-axis' })];
-  order.forEach((n) => {
-    nodes.push(svg('line', { x1: x(n), y1: AXIS - 6, x2: x(n), y2: AXIS + 6, class: 'nl-tick' }));
-    nodes.push(svg('text', { x: x(n), y: AXIS + 24, class: `nl-label${n === points[points.length - 1] ? ' nl-mark' : ''}` }, fmtValue(n)));
+  order.forEach((n, k) => {
+    const low = crowded && k % 2 === 1;
+    nodes.push(svg('line', { x1: x(n), y1: AXIS - 6, x2: x(n), y2: AXIS + (low ? 24 : 6), class: 'nl-tick' }));
+    nodes.push(svg('text', { x: x(n), y: AXIS + (low ? 42 : 24), class: `nl-label${n === points[points.length - 1] ? ' nl-mark' : ''}` }, fmtValue(n)));
   });
   moves.forEach((m, i) => {
     const x0 = x(points[i]);
@@ -262,9 +267,10 @@ const renderHops = ({ start, moves, format }) => {
     const mid = (x0 + x1) / 2;
     const up = m >= 0;
     const lift = Math.min(24, 10 + Math.abs(x1 - x0) * 0.12); // arc height; labels stay inside the box
-    const y0 = up ? AXIS - 8 : AXIS + 30;                       // backward hops go under the number labels
+    const y0 = up ? AXIS - 8 : AXIS + (crowded ? 48 : 30);      // backward hops go under the number labels
+    const raise = crowded && up && i % 2 === 1 ? 14 : 0;           // neighbouring hop labels on two heights
     nodes.push(svg('path', { d: `M${x0} ${y0} Q${mid} ${up ? y0 - lift * 2 : y0 + lift * 2} ${x1} ${y0}`, class: `jump-arc${up ? '' : ' jump-back'}`, style: `--i:${i + 1}` }));
-    nodes.push(svg('text', { x: mid, y: up ? y0 - lift - 6 : y0 + lift + 18, class: 'jump-label' }, `${up ? '+' : '−'}${fmtMove(Math.abs(m))}`));
+    nodes.push(svg('text', { x: mid, y: up ? y0 - lift - 6 - raise : Math.min(146, y0 + lift + 18), class: 'jump-label' }, `${up ? '+' : '−'}${fmtMove(Math.abs(m))}`));
   });
   const label = `${fmtValue(start)} ${moves.map((m) => `${m >= 0 ? 'plus' : 'minus'} ${fmtMove(Math.abs(m))}`).join(' ')} is ${fmtValue(points[points.length - 1])}`;
   return h('div.visual.visual-jumps.visual-hops', null, svg('svg', { viewBox: '0 0 340 150', role: 'img', 'aria-label': label }, nodes));
@@ -313,7 +319,7 @@ const renderPlaceChart = ({ rows }) => {
       labelled && h('span.pv-label', null, r.label || ''),
       places.map((p, k) => {
         const n = Number(ds[k]) || 0;
-        return h('span.pv-cell', null, h('span.pv-discs', null, Array.from({ length: n }, (_, i) => disc(p, i))), h('b.pv-digit', null, n));
+        return h('span.pv-cell', null, h('span.pv-discs', null, Array.from({ length: n }, (_, i) => disc(p, i))), h('b.pv-digit', null, ds[k] === ' ' ? '' : n));
       }),
     ];
   });
@@ -328,6 +334,9 @@ const renderPlaceChart = ({ rows }) => {
  * @param {{value: number, hideResult?: boolean}} spec The number before multiplying by 10.
  *   hideResult shows "?" in the answer row (used when the child is asked for it).
  */
+/** Short column heads for narrow charts. */
+const SHORT_PLACE = { 1: 'O', 10: 'T', 100: 'H', 1000: 'Th', 10000: 'TTh', 100000: 'HTh' };
+
 const renderShift = ({ value, hideResult = false }) => {
   const result = value * 10;
   const places = placesOf(result);
@@ -339,11 +348,12 @@ const renderShift = ({ value, hideResult = false }) => {
         h('b.pv-digit', null, isResult && hideResult ? '?' : ds[k].trim()))),
     ];
   };
-  const caption = '× 10: each digit moves one place to the left, and a 0 goes in the ones place.';
+  const key = places.slice().reverse().map((p) => `${SHORT_PLACE[p]} = ${PLACE_NAMES[p]?.[1] || p}`).join(', ');
+  const caption = `× 10: each digit moves one place to the left, and a 0 goes in the ones place. (${key})`;
   const label = hideResult ? `${value} times 10` : `${value} times 10 is ${result}`;
   return h('div.visual.visual-place-chart.visual-shift', { role: 'img', 'aria-label': label },
     h('div.pv-grid.pv-labelled', { style: { '--cols': places.length } },
-      h('span.pv-head'), places.map((p) => h(`span.pv-head.pv-head-${p}`, null, PLACE_NAMES[p]?.[1] || p)),
+      h('span.pv-head'), places.map((p) => h(`span.pv-head.pv-head-${p}`, { title: PLACE_NAMES[p]?.[1] || '' }, SHORT_PLACE[p] || p)),
       row(value, ''), row(result, '×10', true)),
     h('p.visual-caption', null, caption));
 };
@@ -515,19 +525,32 @@ export const renderBarModel = (model) => {
   });
 
   const nodes = [];
+  const textW = (t) => t.length * 8.5; // approximate width of 15px bold text
+  const rightEdge = labelW + barMaxW + 8;
   model.rows.forEach((r, i) => {
     const y = rowY(i);
     if (r.label) nodes.push(svg('text', { x: labelW - 10, y: y + rowH / 2 + 5, class: 'bm-label' }, r.label));
+    const underEnds = [-Infinity, -Infinity]; // where each line of under-bar labels ends so far
     r.segments.forEach((g, j) => {
       const x0 = edges[i][j];
       const x1 = edges[i][j + 1];
       nodes.push(svg('rect', { x: x0, y, width: Math.max(2, x1 - x0), height: rowH, style: `--i:${i * 3 + j}`, class: `bm-seg${g.text === '?' || g.text?.endsWith(': ?') ? ' bm-unknown' : ''}` }));
-      if (g.text) {
-        // Text too wide for a short segment goes under the bar instead of overflowing it.
-        const fits = g.text.length * 8.5 <= x1 - x0;
-        nodes.push(fits
-          ? svg('text', { x: (x0 + x1) / 2, y: y + rowH / 2 + 5, class: 'bm-seg-text' }, g.text)
-          : svg('text', { x: x0, y: y + rowH + 20, class: 'bm-seg-text bm-left' }, g.text));
+      // Five pieces of "1,000 g" in a row are labelled once, on the first piece.
+      const repeat = j > 0 && r.segments[j - 1].text === g.text;
+      let run = 1;
+      while (r.segments[j + run]?.text === g.text) run += 1;
+      if (g.text && !repeat) {
+        const text = run > 1 && !/^\d+ × /.test(g.text) ? `${run} × ${g.text}` : g.text;
+        const fits = run === 1 && textW(text) <= x1 - x0;
+        if (fits) {
+          nodes.push(svg('text', { x: (x0 + x1) / 2, y: y + rowH / 2 + 5, class: 'bm-seg-text' }, text));
+        } else {
+          // Too wide for its segment: under the bar, kept inside the picture, on a second line if it would touch the last one.
+          const x = Math.max(0, Math.min(x0, rightEdge - textW(text)));
+          const line = x >= underEnds[0] + 6 ? 0 : 1;
+          underEnds[line] = x + textW(text);
+          nodes.push(svg('text', { x, y: y + rowH + (line ? 38 : 20), class: 'bm-seg-text bm-left' }, text));
+        }
       }
     });
   });

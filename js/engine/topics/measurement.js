@@ -105,7 +105,7 @@ const convertMethod = ({ form, factor, big, small, parts }) => {
     ];
     const guided = [ask(`${b} × ${fmt(factor)} = ?`, whole, unitBar(b, 0, pair, `${b} ${big}`))];
     if (s) {
-      steps.push({ text: `Add the ${small}: ${fmt(whole)} + ${fmt(s)} = ${fmt(whole + s)} ${small}.`, visual: unitBar(b, s, pair, `${compound(b, s, pair)} = ${fmt(whole + s)} ${small}`) });
+      steps.push({ text: `Add the ${fmt(s)} ${small}: ${fmt(whole)} + ${fmt(s)} = ${fmt(whole + s)} ${small}.`, visual: unitBar(b, s, pair, `${compound(b, s, pair)} = ${fmt(whole + s)} ${small}`) });
       guided.push(ask(`${fmt(whole)} + ${fmt(s)} = ?`, whole + s, unitBar(b, s, pair, '?')));
     }
     return { steps, guided };
@@ -147,7 +147,7 @@ const convertMethod = ({ form, factor, big, small, parts }) => {
   const { steps, guided } = toSmall(parts[0]);
   return {
     name: 'Change to the smaller unit',
-    steps: [{ text: `Draw ${b} ${big} as ${b} long piece${b === 1 ? '' : 's'}. Each piece is 1 ${big}, which is ${fmt(factor)} ${small}.`, visual: unitBar(b, sm, pair, compound(b, sm, pair)) }, ...steps],
+    steps: [{ text: b <= 6 ? `Draw ${b} ${big} as ${b} long piece${b === 1 ? '' : 's'}. Each piece is 1 ${big}, which is ${fmt(factor)} ${small}.` : `Draw ${b} ${big} as one long bar: ${b} × ${fmt(factor)} ${small}. Each 1 ${big} is ${fmt(factor)} ${small}.`, visual: unitBar(b, sm, pair, compound(b, sm, pair)) }, ...steps],
     guided,
   };
 };

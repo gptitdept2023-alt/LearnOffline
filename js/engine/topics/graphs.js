@@ -80,7 +80,7 @@ const readGraphMethod = ({ title, unit, labels, values, scale, form, i, j, asTab
         { text: asTable ? `Look down the numbers for the ${form === 'most' ? 'biggest' : 'smallest'} one.` : `Look for the ${form === 'most' ? 'tallest' : 'shortest'} bar.`, visual: pic([]) },
         { text: `It is ${labels[best]}, with ${values[best]}.`, visual: pic([best]) },
       ],
-      guided: [askChoice(form === 'most' ? 'Which is the biggest?' : 'Which is the smallest?', labels[best], labels, pic([]))],
+      guided: [askChoice(form === 'most' ? 'Which has the most?' : 'Which has the fewest?', labels[best], labels, pic([]))],
     };
   }
   if (form === 'difference') {
