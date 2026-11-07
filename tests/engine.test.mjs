@@ -248,6 +248,39 @@ test('faster-way tricks agree with the answer and come after the main method', a
   assert.equal(named({ kind: 'splitMultiply', a: 745, b: 40 }), undefined, '× tens is already the quick way');
 });
 
+test('long division shows divide, multiply, subtract, bring down and a check at every place', async () => {
+  const { longDivisionSteps } = await import('../js/engine/longDivision.js');
+  const { methodFor } = await import('../js/engine/techniques.js');
+  const fmt = (n) => n.toLocaleString('en-US');
+  const cases = [[795, 5], [305, 5], [612, 6], [847, 4], [1000, 8], [100, 7], [9876, 9], [4005, 5], [1024, 12], [9999, 25], [17, 3]];
+  for (const [dividend, divisor] of cases) {
+    const label = `${dividend} ÷ ${divisor}`;
+    const plan = longDivisionSteps(dividend, divisor);
+    const m = methodFor({ method: { kind: 'longDivide', dividend, divisor } });
+    const text = m.steps.map((st) => st.text);
+    const worked = plan.filter((p) => !p.lead);
+    worked.forEach((p, w) => {
+      assert.ok(text.some((t) => t.startsWith(`Multiply: ${p.q} × ${divisor} = ${fmt(p.product)}.`) && t.includes(`Subtract: ${fmt(p.cur)} − ${fmt(p.product)} = ${fmt(p.rem)}.`)),
+        `${label}: multiply and subtract for ${p.cur}`);
+      if (w > 0) assert.ok(text.some((t) => t.includes(`bring down the ${p.digit}`)), `${label}: bring down ${p.digit}`);
+      assert.ok(text.some((t) => t.includes(`Write ${p.q} on top`)), `${label}: write ${p.q} on top`);
+    });
+    // Two steps per worked place, one per leading place, plus intro and check.
+    assert.equal(m.steps.length, 2 + worked.length * 2 + (plan.length - worked.length), label);
+    const q = Math.floor(dividend / divisor);
+    const r = dividend % divisor;
+    assert.ok(text.at(-1).includes(`${fmt(q)} × ${divisor} = ${fmt(q * divisor)}`) && text.at(-1).includes('It matches'), `${label}: check`);
+    if (r) assert.ok(text.at(-1).includes(`+ ${r} = ${fmt(dividend)}`), `${label}: check adds the remainder`);
+    for (const t of text) assert.ok(!/undefined|NaN/.test(t), `${label}: ${t}`);
+    for (const g of m.guided) {
+      const mul = g.prompt.match(/^Multiply: (\d+) × (\d+) = \?$/);
+      if (mul) assert.equal(g.answer, Number(mul[1]) * Number(mul[2]), g.prompt);
+      const sub = g.prompt.match(/^Subtract: ([\d,]+) − ([\d,]+) = \?$/);
+      if (sub) assert.equal(g.answer, Number(sub[1].replace(/,/g, '')) - Number(sub[2].replace(/,/g, '')), g.prompt);
+    }
+  }
+});
+
 test('spoken maths reads naturally, with pauses in chains', async () => {
   const { toSpokenText } = await import('../js/core/speech.js');
   assert.equal(toSpokenText('Use facts you know: 7 × 8 = 7 × 4 × 2 = 28 × 2 = 56.'),

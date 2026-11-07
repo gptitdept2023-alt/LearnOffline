@@ -298,19 +298,30 @@ const multiplyByTens = ({ a, b }) => {
 
 /**
  * Long division by sharing place-value discs, biggest place first.
- * Each step shows the discs being shared AND the written layout growing,
- * so the child sees why each digit goes where it does.
+ *
+ * Every place follows the full written routine, in two steps:
+ *   1. Divide:   (bring down the next digit,) share, write the digit on top.
+ *   2. Multiply and subtract: digit × divisor, write it under, subtract to
+ *      find what is left, and change what is left into the next place.
+ * Then a final check: quotient × divisor (+ remainder) = dividend.
+ * Each step shows the discs AND the written layout at that exact moment,
+ * so the child sees why each number goes where it does.
  */
 const longDivide = ({ dividend, divisor }) => {
   const plan = longDivisionSteps(dividend, divisor);
   const n = plan.length;
   const q = Math.floor(dividend / divisor);
   const r = dividend % divisor;
-  const pictures = discsFit(dividend);
-  const layout = (upto, focus) => ({ kind: 'longDivision', dividend, divisor, upto, focus });
+  const digitsText = String(dividend);
+  // Discs only while the picture stays readable (up to 9 groups, 4-digit numbers).
+  const pictures = discsFit(dividend) && divisor <= 9;
+  /** Written layout: places before `upto` are done; `phase: 'divide'` hides the focus place's subtraction. */
+  const layout = (upto, focus, phase) => ({ kind: 'longDivision', dividend, divisor, upto, focus, phase });
   const each = []; // what one group has so far, by place
   const steps = [{
-    text: `Show ${fmt(dividend)} with place-value discs. Share them into ${divisor} equal groups. Start with the biggest place.`,
+    text: pictures
+      ? `Show ${fmt(dividend)} with place-value discs. Share them into ${divisor} equal groups. Start with the biggest place.`
+      : `Write ${fmt(dividend)} ÷ ${divisor} as long division. Share into ${divisor} equal groups, one place at a time. Start with the biggest place.`,
     visual: stack(pictures && { kind: 'placeChart', rows: [{ value: dividend }] }, layout(0)),
   }];
   const guided = [];
@@ -321,42 +332,62 @@ const longDivide = ({ dividend, divisor }) => {
     const last = s.i === n - 1;
     const name = capitalise(PLACE[idx]);
     const prev = plan[k - 1];
-    const carriedIn = prev && prev.rem ? prev.rem * 10 : 0;
-    const now = carriedIn
-      ? `now there are ${s.digit ? `${fmt(carriedIn)} + ${s.digit} = ` : ''}${placeCount(s.cur, idx)}. `
+    const lower = PLACE[idx - 1];
+    const changeText = s.rem && !last
+      ? ` Change ${s.rem === 1 ? 'it' : 'them'} into ${lower}: ${placeCount(s.rem, idx)} = ${placeCount(s.rem * 10, idx - 1)}.`
       : '';
-    const change = s.rem && !last
-      ? ` Change ${s.rem === 1 ? 'it' : 'them'} into ${PLACE[idx - 1]}: ${placeCount(s.rem, idx)} = ${placeCount(s.rem * 10, idx - 1)}.`
-      : '';
-    const remainderNote = s.rem && last ? ` The ${s.rem} left over is the remainder.` : '';
-    const view = layout(k + 1, k);
 
-    if (s.q === 0) {
-      const few = s.cur === 0
-        ? `${name}: there are no ${PLACE[idx]} to share.`
-        : `${name}: ${now}${placeCount(s.cur, idx)} ${s.cur === 1 ? 'is' : 'are'} not enough to give each of the ${divisor} groups one.`;
-      const writeZero = s.lead ? '' : ' Write 0 on top.';
-      const picture = !pictures || s.cur === 0 ? null
-        : last ? { kind: 'share', groups: divisor, each: each.slice(), focus: place, left: { place, count: s.rem } }
-          : { kind: 'trade', from: place, count: s.cur };
-      steps.push({ text: `${few}${writeZero}${change}${remainderNote}`, visual: stack(picture, view) });
-    } else {
-      each.push({ place, n: s.q });
-      const leftOver = s.rem ? `, and ${s.rem} ${s.rem === 1 ? 'is' : 'are'} left over` : '';
+    // A leading place too small to share: nothing is written; it joins the next place.
+    if (s.lead) {
       steps.push({
-        text: `${name}: ${now}${now ? 'Share' : 'share'} ${placeCount(s.cur, idx)} into ${divisor} groups. Each group gets ${s.q}${leftOver}. Write ${s.q} on top.${change}${remainderNote}`,
-        visual: stack(
-          pictures && { kind: 'share', groups: divisor, each: each.slice(), focus: place, left: s.rem ? { place, count: s.rem, into: last ? undefined : place / 10 } : undefined },
-          view,
-        ),
+        text: `${name}: ${placeCount(s.cur, idx)} ${s.cur === 1 ? 'is' : 'are'} not enough to give each of the ${divisor} groups one, so nothing goes on top yet.${changeText}`,
+        visual: stack(pictures && s.cur > 0 && { kind: 'trade', from: place, count: s.cur }, layout(k, undefined)),
       });
+      return;
     }
-    if (!s.lead) {
-      guided.push(ask(`${name}: share ${placeCount(s.cur, idx)} into ${divisor} groups. How many ${PLACE[idx]} in each group?`, s.q, layout(k, k)));
+
+    // 1. Divide (after bringing down this digit, unless it is the first place worked).
+    const carriedIn = prev ? prev.rem * 10 : 0;
+    let lookAt;
+    if (!prev) lookAt = `${name}: share ${placeCount(s.cur, idx)}`;
+    else if (prev.lead) lookAt = `${name}: ${placeCount(carriedIn, idx)} + ${placeCount(s.digit, idx)} = ${placeCount(s.cur, idx)}. On paper, use the first ${k + 1} digits: ${fmt(s.cur)}. Share them`;
+    else if (carriedIn) lookAt = `${name}: bring down the ${s.digit} next to the ${prev.rem}. Now there are ${fmt(carriedIn)} + ${s.digit} = ${placeCount(s.cur, idx)}. Share them`;
+    else lookAt = `${name}: bring down the ${s.digit}. Now there ${s.cur === 1 ? 'is' : 'are'} ${placeCount(s.cur, idx)}. Share ${s.cur === 1 ? 'it' : 'them'}`;
+    const divideText = s.q === 0
+      ? `${lookAt.replace(/\. Share (them|it)$/, '.').replace(/: share (.*)$/, ': $1.')} That is not enough to give each of the ${divisor} groups one. Write 0 on top.`
+      : `${lookAt} into ${divisor} groups. Each group gets ${s.q}. Write ${s.q} on top.`;
+    if (s.q) each.push({ place, n: s.q });
+    steps.push({
+      text: divideText,
+      visual: stack(pictures && s.q > 0 && { kind: 'share', groups: divisor, each: each.slice(), focus: place }, layout(k + 1, k, 'divide')),
+    });
+
+    // 2. Multiply and subtract.
+    const leftText = last
+      ? (s.rem ? ` There are no more digits to bring down, so ${s.rem} is the remainder.` : ' Nothing is left over.')
+      : (s.rem ? ` ${placeCount(s.rem, idx)} ${s.rem === 1 ? 'is' : 'are'} left over.${changeText}` : ` No ${PLACE[idx]} are left over.`);
+    const picture = !pictures ? null
+      : s.rem && !last ? { kind: 'trade', from: place, count: s.rem }
+        : s.rem && last ? { kind: 'share', groups: divisor, each: each.slice(), focus: place, left: { place, count: s.rem } }
+          : null;
+    steps.push({
+      text: `Multiply: ${s.q} × ${divisor} = ${fmt(s.product)}. Write ${fmt(s.product)} under ${fmt(s.cur)}. Subtract: ${fmt(s.cur)} − ${fmt(s.product)} = ${fmt(s.rem)}.${leftText}`,
+      visual: stack(picture, layout(k + 1, k)),
+    });
+
+    // Guided: the same routine, one small question at a time.
+    const bring = prev && !prev.lead ? `Bring down the ${s.digit}: ${placeCount(s.cur, idx)}. ` : '';
+    guided.push(ask(`${bring}${name}: share ${placeCount(s.cur, idx)} into ${divisor} groups. How many ${PLACE[idx]} in each group?`, s.q, layout(k, k)));
+    if (s.q) {
+      guided.push(ask(`Multiply: ${s.q} × ${divisor} = ?`, s.product, layout(k + 1, k, 'divide')));
+      guided.push(ask(`Subtract: ${fmt(s.cur)} − ${fmt(s.product)} = ?`, s.rem, layout(k + 1, k, 'divide')));
     }
   });
 
-  const check = `Check: ${fmt(q)} × ${divisor}${r ? ` + ${r}` : ''} = ${fmt(dividend)}.`;
+  const back = q * divisor;
+  const check = r
+    ? `Check by multiplying back: ${fmt(q)} × ${divisor} = ${fmt(back)}, and ${fmt(back)} + ${r} = ${fmt(dividend)}. It matches!`
+    : `Check by multiplying back: ${fmt(q)} × ${divisor} = ${fmt(dividend)}. It matches!`;
   const bar = !r && divisor <= 9 && {
     kind: 'bar',
     rows: [{ segments: Array.from({ length: divisor }, () => ({ units: 1, text: '' })) }],
@@ -370,10 +401,9 @@ const longDivide = ({ dividend, divisor }) => {
     visual: stack(bar, layout(n)),
   });
   guided.push(ask(`So ${fmt(dividend)} ÷ ${divisor} = ?${r ? ' (the number on top)' : ''}`, q, layout(n)));
-  if (r) guided.push(ask(`What is left over? (the remainder)`, r, layout(n)));
+  if (r) guided.push(ask('What is left over? (the remainder)', r, layout(n)));
   return { name: 'Long division', steps, guided };
 };
-
 
 /* ------------------------------------------------------------------ */
 /* Fractions                                                           */

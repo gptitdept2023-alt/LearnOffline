@@ -375,9 +375,10 @@ const renderShare = ({ groups, each, focus, left }) => {
  * The written long-division layout (divisor, bracket, quotient on top,
  * subtract and bring down), drawn up to step `upto` (exclusive). The step
  * being worked on (`focus`) and the number it shares are highlighted.
- * @param {{dividend: number, divisor: number, upto?: number, focus?: number}} spec
+ * @param {{dividend: number, divisor: number, upto?: number, focus?: number, phase?: 'divide'}} spec
+ *   phase 'divide' shows the focus place's digit on top but not its multiply/subtract rows yet.
  */
-const renderLongDivision = ({ dividend, divisor, upto, focus }) => {
+const renderLongDivision = ({ dividend, divisor, upto, focus, phase }) => {
   const steps = longDivisionSteps(dividend, divisor);
   const digitsText = String(dividend);
   const shown = upto ?? steps.length;
@@ -418,6 +419,8 @@ const renderLongDivision = ({ dividend, divisor, upto, focus }) => {
   // Subtract, then the remainder with the next digit brought down.
   steps.forEach((s, k) => {
     if (s.lead || k >= shown) return;
+    // Divide phase: the digit on top is written, but not yet multiplied and subtracted.
+    if (phase === 'divide' && k === focus) return;
     const end = s.i + 1;
     const used = digitsAt(s.product, end, hot(k));
     used.set(end - String(s.product).length, { text: '−', cls: `.ld-minus${hot(k)}` });
