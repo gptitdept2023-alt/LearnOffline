@@ -103,7 +103,10 @@ const convertMethod = ({ form, factor, big, small, parts }) => {
     const steps = [
       { text: b === 1 ? `${label}${fact}` : `${label}${fact} So ${b} ${big} = ${b} × ${fmt(factor)} = ${fmt(whole)} ${small}.`, visual: unitBar(b, 0, pair, `${b} ${big}`) },
     ];
-    const guided = [ask(`${b} × ${fmt(factor)} = ?`, whole, unitBar(b, 0, pair, `${b} ${big}`))];
+    // One big unit is just the fact itself: ask it, not "1 × 1,000".
+    const guided = [b === 1
+      ? ask(`1 ${big} = how many ${small}?`, factor, unitBar(b, 0, pair, `1 ${big}`))
+      : ask(`${b} × ${fmt(factor)} = ?`, whole, unitBar(b, 0, pair, `${b} ${big}`))];
     if (s) {
       steps.push({ text: `Add the ${fmt(s)} ${small}: ${fmt(whole)} + ${fmt(s)} = ${fmt(whole + s)} ${small}.`, visual: unitBar(b, s, pair, `${compound(b, s, pair)} = ${fmt(whole + s)} ${small}`) });
       guided.push(ask(`${fmt(whole)} + ${fmt(s)} = ?`, whole + s, unitBar(b, s, pair, '?')));
@@ -117,11 +120,13 @@ const convertMethod = ({ form, factor, big, small, parts }) => {
     return {
       name: 'Take out the whole units',
       steps: [
-        { text: `${fact} So ${b} ${big} = ${fmt(b * factor)} ${small}.`, visual: unitBar(b, s, pair, `${fmt(total)} ${small}`) },
+        { text: b === 1 ? fact : `${fact} So ${b} ${big} = ${fmt(b * factor)} ${small}.`, visual: unitBar(b, s, pair, `${fmt(total)} ${small}`) },
         { text: `Take the ${b} ${big} away: ${fmt(total)} − ${fmt(b * factor)} = ${fmt(s)}. So ${fmt(total)} ${small} = ${compound(b, s, pair)}.`, visual: unitBar(b, s, pair, compound(b, s, pair)) },
       ],
       guided: [
-        ask(`${b} × ${fmt(factor)} = ?`, b * factor, unitBar(b, s, pair, `${fmt(total)} ${small}`)),
+        b === 1
+          ? ask(`1 ${big} = how many ${small}?`, factor, unitBar(b, s, pair, `${fmt(total)} ${small}`))
+          : ask(`${b} × ${fmt(factor)} = ?`, b * factor, unitBar(b, s, pair, `${fmt(total)} ${small}`)),
         ask(`${fmt(total)} − ${fmt(b * factor)} = ?`, s, unitBar(b, s, pair, `${fmt(total)} ${small}`)),
       ],
     };

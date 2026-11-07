@@ -156,8 +156,8 @@ const placeValue = ({ digits = 3 }, rng) => {
     prompt: `In ${fmt(n)}, the digit ${ds[at]} stands for what value?`,
     answer: value,
     visual: digits <= 3 ? { kind: 'blocks', value: n } : undefined,
-    hint: `The digit is in the ${places[at]} place, so multiply it by ${fmt(10 ** at)}.`,
-    explain: `${ds[at]} ${places[at]} = ${fmt(value)}`,
+    hint: at === 0 ? 'The digit is in the ones place, so it stands for itself.' : `The digit is in the ${places[at]} place, so multiply it by ${fmt(10 ** at)}.`,
+    explain: `${ds[at]} ${ds[at] === 1 ? places[at].replace(/s$/, '') : places[at]} = ${fmt(value)}`,
   };
 };
 
@@ -172,7 +172,7 @@ const numberBond = ({ maxWhole = 10, minWhole = 5 }, rng) => {
     visual: { kind: 'bond', whole, parts: [part, '?'] },
     hint: `Start at ${part} and count on until you reach ${whole}.`,
     explain: `${part} + ${whole - part} = ${whole}`,
-    method: { kind: 'subtractBond', a: whole, b: part },
+    method: { kind: 'bondPart', a: whole, b: part },
   };
 };
 
@@ -491,7 +491,7 @@ const wordProblemBase = ({ kinds = ['partWhole'], max = 20, maxTimes = 5 }, rng)
       m.rows[0].segments[0].text = '';
       return {
         answerType: 'numeric',
-        prompt: `${q} has ${fmt(small)} ${small === 1 ? item.one : item.many}. ${p} has ${fmt(diff)} more ${item.many} than ${q}. How many ${item.many} does ${p} have?`,
+        prompt: `${q} has ${fmt(small)} ${small === 1 ? item.one : item.many}. ${p} has ${fmt(diff)} more ${diff === 1 ? item.one : item.many} than ${q}. How many ${item.many} does ${p} have?`,
         answer: big,
         model: m,
         hint: `${p}'s bar is as long as ${q}'s bar plus ${fmt(diff)} more.`,
@@ -504,7 +504,7 @@ const wordProblemBase = ({ kinds = ['partWhole'], max = 20, maxTimes = 5 }, rng)
       m.rows[0].segments[0].text = '';
       return {
         answerType: 'numeric',
-        prompt: `${p} has ${fmt(big)} ${big === 1 ? item.one : item.many}. ${q} has ${fmt(diff)} fewer ${item.many} than ${p}. How many ${item.many} does ${q} have?`,
+        prompt: `${p} has ${fmt(big)} ${big === 1 ? item.one : item.many}. ${q} has ${fmt(diff)} fewer ${diff === 1 ? item.one : item.many} than ${p}. How many ${item.many} does ${q} have?`,
         answer: small,
         model: m,
         hint: `${q}'s bar is ${p}'s bar with ${fmt(diff)} taken away.`,
@@ -533,8 +533,8 @@ const wordProblemBase = ({ kinds = ['partWhole'], max = 20, maxTimes = 5 }, rng)
   return {
     answerType: 'numeric',
     prompt: findTotal
-      ? `${q} has ${unit} ${item.many}. ${p} has ${times} times as many ${item.many} as ${q}. How many ${item.many} do they have altogether?`
-      : `${q} has ${unit} ${item.many}. ${p} has ${times} times as many ${item.many} as ${q}. How many ${item.many} does ${p} have?`,
+      ? `${q} has ${fmt(unit)} ${item.many}. ${p} has ${times} times as many ${item.many} as ${q}. How many ${item.many} do they have altogether?`
+      : `${q} has ${fmt(unit)} ${item.many}. ${p} has ${times} times as many ${item.many} as ${q}. How many ${item.many} does ${p} have?`,
     answer: findTotal ? unit * (times + 1) : unit * times,
     model: {
       rows: [
@@ -545,7 +545,7 @@ const wordProblemBase = ({ kinds = ['partWhole'], max = 20, maxTimes = 5 }, rng)
         ? [{ rows: [0, 1], side: 'right', text: '?' }]
         : [{ row: 0, from: 0, to: times, side: 'above', text: '?' }],
     },
-    hint: `Draw 1 unit for ${q} and ${times} equal units for ${p}. Each unit is ${unit}.`,
+    hint: `Draw 1 unit for ${q} and ${times} equal units for ${p}. Each unit is ${fmt(unit)}.`,
     explain: findTotal
       ? `${times + 1} units × ${unit} = ${unit * (times + 1)}`
       : `${times} units × ${unit} = ${unit * times}`,

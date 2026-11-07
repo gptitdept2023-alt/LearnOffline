@@ -266,7 +266,10 @@ test('long division shows divide, multiply, subtract, bring down and a check at 
     const empty = worked.filter((p, w) => w > 0 && p.cur === 0);
     for (const p of empty) assert.ok(text.some((t) => t.includes('bring down the 0. There are no')), `${label}: empty place`);
     worked.filter((p, w) => !(w > 0 && p.cur === 0)).forEach((p, w) => {
-      assert.ok(text.some((t) => t.startsWith(`Multiply: ${p.q} × ${divisor} = ${fmt(p.product)}.`) && t.includes(`Subtract: ${fmt(p.cur)} − ${fmt(p.product)} = ${fmt(p.rem)}.`)),
+      // Nothing shared (q = 0): no "Multiply: 0 × d"; the step says nothing is taken away.
+      assert.ok(p.q === 0
+        ? text.some((t) => t.startsWith(`0 × ${divisor} = 0, so nothing is taken away`))
+        : text.some((t) => t.startsWith(`Multiply: ${p.q} × ${divisor} = ${fmt(p.product)}.`) && t.includes(`Subtract: ${fmt(p.cur)} − ${fmt(p.product)} = ${fmt(p.rem)}.`)),
         `${label}: multiply and subtract for ${p.cur}`);
       if (w > 0) assert.ok(text.some((t) => t.includes(`bring down the ${p.digit}`)), `${label}: bring down ${p.digit}`);
       assert.ok(text.some((t) => t.includes(`Write ${p.q} on top`)), `${label}: write ${p.q} on top`);

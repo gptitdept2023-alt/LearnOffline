@@ -151,7 +151,8 @@ export const mulShortcut = ({ a, b }) => {
       ],
     };
   }
-  if (b % 10 === 9 && b < 100) {
+  const oneDigitPart = String(a).replace(/0/g, '').length === 1; // 300 × 9 is just 27 hundreds
+  if (b % 10 === 9 && b < 100 && !oneDigitPart && (b === 9 || b === 99 || a < 100)) {
     const up = b + 1;
     return {
       name: 'One group too many',

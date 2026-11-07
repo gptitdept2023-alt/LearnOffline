@@ -387,11 +387,21 @@
             "steps": [
               {
                 "stage": "concrete",
-                "text": "Share 17 sweets among 5 children. Each gets 3, and 2 are left over.",
+                "text": "Share 17 sweets among 5 children. Each gets 3, and 2 are left over The 2 sweets on their own are the remainder.",
                 "visual": {
-                  "kind": "groups",
-                  "groups": 5,
-                  "each": 3
+                  "kind": "stack",
+                  "items": [
+                    {
+                      "kind": "groups",
+                      "groups": 5,
+                      "each": 3
+                    },
+                    {
+                      "kind": "pictures",
+                      "emoji": "🍬",
+                      "count": 2
+                    }
+                  ]
                 }
               },
               {
@@ -1604,7 +1614,8 @@
                     "op": "×",
                     "a": 4,
                     "b": 24,
-                    "answer": 96
+                    "answer": 96,
+                    "timesAltogether": 3
                   }
                 }
               },

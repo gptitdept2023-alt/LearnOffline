@@ -78,10 +78,11 @@ const turnsMethod = ({ quarters, inDegrees }) => {
     steps: [
       { text: 'A full turn is 360°. A 1/4 turn is one right angle, 90°.', visual: { kind: 'angle', deg: 90, turn: true } },
       { text: `A ${TURNS[quarters]} is ${quarters} right angle${quarters === 1 ? '' : 's'}.`, visual: pic },
-      ...(inDegrees ? [{ text: `${quarters} × 90° = ${quarters * 90}°.`, visual: pic }] : []),
+      ...(inDegrees ? [{ text: quarters === 1 ? 'One right angle is 90°.' : `${quarters} × 90° = ${quarters * 90}°.`, visual: pic }] : []),
     ],
-    guided: inDegrees
+    guided: inDegrees && quarters > 1
       ? [ask(`How many right angles make a ${TURNS[quarters]}?`, quarters, pic), ask(`${quarters} × 90 = ?`, quarters * 90, pic)]
+      : inDegrees ? [ask(`A ${TURNS[quarters]} is how many degrees?`, 90, pic)]
       : [ask(`How many right angles make a ${TURNS[quarters]}?`, quarters, pic)],
   };
 };
@@ -141,9 +142,16 @@ const areaPerimeterMethod = ({ w, h, form }) => {
       steps: [
         { text: 'Perimeter is the distance all the way round the shape.', visual: grid('perimeter') },
         { text: w === h ? `All 4 sides of a square are equal: ${w}, ${w}, ${w} and ${w} cm.` : `Opposite sides are equal, so the 4 sides are ${w}, ${h}, ${w} and ${h} cm.`, visual: grid('perimeter', { all: true }) },
-        { text: `Add them: ${w} + ${h} + ${w} + ${h} = ${2 * (w + h)} cm. (Or 2 × (${w} + ${h}) = ${2 * (w + h)} cm.)`, visual: grid('perimeter', { all: true }) },
+        {
+          text: w === h
+            ? `Add them: ${w} + ${w} + ${w} + ${w} = ${4 * w} cm. (Or 4 × ${w} = ${4 * w} cm.)`
+            : `Add them: ${w} + ${h} + ${w} + ${h} = ${2 * (w + h)} cm. (Or 2 × (${w} + ${h}) = ${2 * (w + h)} cm.)`,
+          visual: grid('perimeter', { all: true }),
+        },
       ],
-      guided: [ask(`${w} + ${h} = ?`, w + h, grid('perimeter')), ask(`Double it: 2 × ${w + h} = ?`, 2 * (w + h), grid('perimeter', { all: true }))],
+      guided: w === h
+        ? [ask(`4 sides of ${w} cm: 4 × ${w} = ?`, 4 * w, grid('perimeter', { all: true }))]
+        : [ask(`${w} + ${h} = ?`, w + h, grid('perimeter')), ask(`Double it: 2 × ${w + h} = ?`, 2 * (w + h), grid('perimeter', { all: true }))],
     };
   }
   if (form === 'area') {

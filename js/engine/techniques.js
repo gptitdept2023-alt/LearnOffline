@@ -241,6 +241,16 @@ const subtractByBond = ({ a, b }) => ({
 /** Skip counting for times tables. */
 const skipCount = ({ groups, each }) => {
   const counts = Array.from({ length: groups }, (_, i) => each * (i + 1));
+  if (each === 1 && groups > 1) {
+    return {
+      name: 'Groups of one',
+      steps: [
+        { text: `${groups} × 1 means ${groups} groups of 1.`, visual: groups <= 40 ? { kind: 'groups', groups, each: 1 } : undefined },
+        { text: `${groups} ones make ${groups}. So ${groups} × 1 = ${groups}.` },
+      ],
+      guided: [ask(`${groups} groups of 1 make how many?`, groups, { kind: 'groups', groups, each: 1 })],
+    };
+  }
   if (groups === 1) {
     return {
       name: 'One group',
@@ -458,7 +468,9 @@ const longDivide = ({ dividend, divisor, asks }) => {
         : s.rem && last ? { kind: 'share', groups: divisor, each: each.slice(), focus: place, left: { place, count: s.rem } }
           : null;
     steps.push({
-      text: `Multiply: ${s.q} × ${divisor} = ${fmt(s.product)}. Write ${fmt(s.product)} under ${fmt(s.cur)}. Subtract: ${fmt(s.cur)} − ${fmt(s.product)} = ${fmt(s.rem)}.${leftText}`,
+      text: s.q === 0
+        ? `0 × ${divisor} = 0, so nothing is taken away: ${placeCount(s.cur, idx)} ${s.cur === 1 ? 'is' : 'are'} still there.${last ? ` There are no more digits to bring down, so ${s.rem} is the remainder.` : changeText}`
+        : `Multiply: ${s.q} × ${divisor} = ${fmt(s.product)}. Write ${fmt(s.product)} under ${fmt(s.cur)}. Subtract: ${fmt(s.cur)} − ${fmt(s.product)} = ${fmt(s.rem)}.${leftText}`,
       visual: stack(picture, layout(k + 1, k)),
     });
 
@@ -487,7 +499,7 @@ const longDivide = ({ dividend, divisor, asks }) => {
     text: `Each group gets ${fmt(q)}. So ${fmt(dividend)} ÷ ${divisor} = ${fmt(q)}${r ? ` remainder ${r}` : ''}. ${check}`,
     visual: stack(bar, layout(n)),
   });
-  guided.push(ask(`So ${fmt(dividend)} ÷ ${divisor} = ?${r ? ' (the number on top)' : ''}`, q, layout(n)));
+  if (asks !== 'remainder') guided.push(ask(`So ${fmt(dividend)} ÷ ${divisor} = ?${r ? ' (the number on top)' : ''}`, q, layout(n)));
   // "= ? remainder 4" already gives the remainder, so it is not asked again.
   if (r && asks !== 'quotient') guided.push(ask('What is left over? (the remainder)', r, layout(n)));
   return { name: 'Long division', steps, guided };
@@ -559,6 +571,8 @@ const OPS = ['+', '−', '×', '÷'];
  * method: { model, op, a, b, answer, sentence }
  */
 const barModel = ({ model, op, a, b, answer, timesAltogether }) => {
+  // Small + and − stories (Kinder) offer only + and −; × and ÷ come later.
+  const small = (op === '+' || op === '−') && Math.max(a, b, answer) <= 20;
   const known = { rows: model.rows.map((r) => ({ ...r })), braces: [] };
   const opWord = { '+': 'add', '−': 'subtract', '×': 'multiply', '÷': 'divide' }[op];
   return {
@@ -572,7 +586,7 @@ const barModel = ({ model, op, a, b, answer, timesAltogether }) => {
     ],
     guided: [
       ...(timesAltogether ? [ask(`1 + ${timesAltogether} = ? units`, timesAltogether + 1, { kind: 'bar', ...model })] : []),
-      { prompt: 'Look at the bar model. Which operation finds the ?', answer: op, answerType: 'choice', choices: OPS, visual: { kind: 'bar', ...model } },
+      { prompt: 'Look at the bar model. Which operation finds the ?', answer: op, answerType: 'choice', choices: small ? ['+', '−'] : OPS, visual: { kind: 'bar', ...model } },
       ask(`${fmt(a)} ${op} ${fmt(b)} = ?`, answer, { kind: 'bar', ...model }),
     ],
   };
@@ -616,7 +630,7 @@ const takeAwayCount = ({ emoji, a, b }) => ({
 /* ------------------------------------------------------------------ */
 
 const METHODS = {
-  makeTen, countOn, columnAdd, columnSub, subtractBond, skipCount, divideByFact, splitMultiply,
+  makeTen, countOn, columnAdd, columnSub, subtractBond, bondPart: subtractByBond, skipCount, divideByFact, splitMultiply,
   longDivide, equivalentFraction, sameDenominator, barModel, tapCount, countAll, takeAwayCount,
   // Measurement, time, money, geometry and graphs (js/engine/topics/).
   ...TOPIC_METHODS,

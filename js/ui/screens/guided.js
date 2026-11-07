@@ -64,7 +64,7 @@ export const renderGuided = async (view, skillId) => {
       const last = index === questions.length - 1;
       mount(nextArea,
         h('div.feedback.feedback-good', null,
-          h('strong.feedback-title', null, `✓ Answer: ${typeof q.answer === 'number' ? q.answer.toLocaleString('en-US') : q.answer}`),
+          h('strong.feedback-title', null, `✓ Answer: ${q.display || (typeof q.answer === 'number' ? q.answer.toLocaleString('en-US') : q.answer)}`),
           h('button.btn.btn-primary.btn-lg', { type: 'button', onclick: () => { if (last) finish(); else { index += 1; show(); } } },
             last ? 'Done' : 'Next example', ' ▶')));
       nextArea.querySelector('button').focus();

@@ -12,7 +12,7 @@ import { methodFor } from '../js/engine/techniques.js';
 const root = new URL('..', import.meta.url).pathname;
 const read = (p) => readFileSync(join(root, p), 'utf8');
 const index = JSON.parse(read('packs/index.json'));
-const VISUALS = new Set(['pictures', 'pictureRows', 'pictureAdd', 'pictureTakeAway', 'sequence', 'shape', 'tenFrames', 'bond', 'blocks', 'groups', 'numberLine', 'fraction', 'bar', 'column', 'jumps',
+const VISUALS = new Set(['stack', 'pictures', 'pictureRows', 'pictureAdd', 'pictureTakeAway', 'sequence', 'shape', 'tenFrames', 'bond', 'blocks', 'groups', 'numberLine', 'fraction', 'bar', 'column', 'jumps',
   'clock', 'dayline', 'angle', 'rectGrid', 'symmetry', 'barGraph', 'table']);
 const INTERACT = new Set(['tapCount', 'fillFrame', 'check', 'worked', 'tryIt']);
 

@@ -14,24 +14,28 @@ const CONTEXTS = [
     read: (l) => `How many books did ${l} read?`,
     more: (a, b) => `How many more books did ${a} read than ${b}?`,
     best: (most) => `Who read the ${most ? 'most' : 'fewest'} books?`,
+    total: 'How many books were read altogether?',
   },
   {
     title: 'Fruit sold at a stall', unit: 'fruits', labels: ['apples', 'mangoes', 'pears', 'bananas', 'oranges'],
     read: (l) => `How many ${l} were sold?`,
     more: (a, b) => `How many more ${a} than ${b} were sold?`,
     best: (most) => `Which fruit sold the ${most ? 'most' : 'fewest'}?`,
+    total: 'How many fruits were sold altogether?',
   },
   {
     title: 'Favourite sport in our class', unit: 'children', labels: ['football', 'badminton', 'swimming', 'basketball', 'running'],
     read: (l) => `How many children chose ${l}?`,
     more: (a, b) => `How many more children chose ${a} than ${b}?`,
     best: (most) => `Which sport did the ${most ? 'most' : 'fewest'} children choose?`,
+    total: 'How many children chose a sport altogether?',
   },
   {
     title: 'Cars that passed the school', unit: 'cars', labels: ['red', 'blue', 'white', 'black', 'silver'],
     read: (l) => `How many ${l} cars passed?`,
     more: (a, b) => `How many more ${a} cars than ${b} cars passed?`,
     best: (most) => `Which colour had the ${most ? 'most' : 'fewest'} cars?`,
+    total: 'How many cars passed altogether?',
   },
 ];
 
@@ -61,7 +65,7 @@ const readGraph = ({ forms = ['read', 'most', 'least', 'difference', 'total'] },
   }
   if (form === 'total') {
     const total = values.reduce((a, b) => a + b, 0);
-    return { ...base, answerType: 'numeric', prompt: `How many ${ctx.unit} are there altogether?`, answer: total, hint: `${hint} Then add all ${count} numbers.` };
+    return { ...base, answerType: 'numeric', prompt: ctx.total, answer: total, hint: `${hint} Then add all ${count} numbers.` };
   }
   return { ...base, answerType: 'numeric', prompt: ctx.read(labels[i]), answer: values[i], hint };
 };
