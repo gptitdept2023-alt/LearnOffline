@@ -120,7 +120,8 @@ const compare = ({ min = 0, max = 100, ask = 'either' }, rng) => {
 const placeValue = ({ digits = 3 }, rng) => {
   const min = 10 ** (digits - 1);
   const n = randInt(min, 10 ** digits - 1, rng);
-  const places = ['ones', 'tens', 'hundreds', 'thousands', 'ten thousands'];
+  const places = ['ones', 'tens', 'hundreds', 'thousands', 'ten thousands', 'hundred thousands'];
+  const placeHint = `Count places from the right: ${places.slice(0, Math.max(3, digits)).join(', ')}.`;
   const ds = digitsOf(n);
   const pos = randInt(0, digits - 1, rng);
   const variant = rng() < 0.5 ? 'value' : 'digit';
@@ -130,7 +131,7 @@ const placeValue = ({ digits = 3 }, rng) => {
       prompt: `What digit is in the ${places[pos]} place in ${fmt(n)}?`,
       answer: ds[pos],
       visual: digits <= 3 ? { kind: 'blocks', value: n } : undefined,
-      hint: `Count places from the right: ones, tens, hundreds${digits > 3 ? ', thousands' : ''}.`,
+      hint: placeHint,
     };
   }
   // "What does the digit 9 stand for?" is only fair if 9 appears once and is not 0.
@@ -144,7 +145,7 @@ const placeValue = ({ digits = 3 }, rng) => {
       prompt: `What digit is in the ${places[pos]} place in ${fmt(n)}?`,
       answer: ds[pos],
       visual: digits <= 3 ? { kind: 'blocks', value: n } : undefined,
-      hint: `Count places from the right: ones, tens, hundreds${digits > 3 ? ', thousands' : ''}.`,
+      hint: placeHint,
     };
   }
   const at = pick(uniquePositions, rng);
@@ -162,7 +163,7 @@ const placeValue = ({ digits = 3 }, rng) => {
 /** Number bonds: whole and one part known, find the other part. */
 const numberBond = ({ maxWhole = 10, minWhole = 5 }, rng) => {
   const whole = randInt(minWhole, maxWhole, rng);
-  const part = randInt(0, whole, rng);
+  const part = randInt(1, whole - 1, rng);
   return {
     answerType: 'numeric',
     prompt: `${whole} is made of ${part} and what number?`,
@@ -240,7 +241,7 @@ const multiplication = ({ tables = [2, 5, 10], maxFactor = 10 }, rng) => {
     prompt: `${x} × ${y} = ?`,
     answer: a * b,
     visual: a * b <= 40 ? { kind: 'groups', groups: x, each: y } : undefined,
-    hint: `Think of ${x} groups of ${y}. Skip-count by ${y}.`,
+    hint: `Think of ${x} ${x === 1 ? 'group' : 'groups'} of ${y}. Skip-count by ${y}.`,
     explain: `${x} × ${y} = ${a * b}`,
     method: { kind: 'skipCount', groups: x, each: y },
   };
@@ -401,8 +402,9 @@ const decimals = ({ max = 10 }, rng) => {
     };
   }
   const a = randInt(1, max * 10, rng) / 10;
-  const b = randInt(1, max * 10, rng) / 10;
+  let b = randInt(1, max * 10, rng) / 10;
   const add = rng() < 0.5;
+  if (!add && a === b) b = a > 0.1 ? Number((a - 0.1).toFixed(1)) : 0.2; // never 2.3 − 2.3
   const [x, y] = add ? [a, b] : [Math.max(a, b), Math.min(a, b)];
   const result = Number((add ? x + y : x - y).toFixed(1));
   return {
@@ -436,7 +438,7 @@ const wordProblemBase = ({ kinds = ['partWhole'], max = 20, maxTimes = 5 }, rng)
     if (findTotal) {
       return {
         answerType: 'numeric',
-        prompt: `${p} has ${fmt(a)} ${item.many}. ${q} has ${fmt(b)} ${item.many}. How many ${item.many} do they have altogether?`,
+        prompt: `${p} has ${fmt(a)} ${a === 1 ? item.one : item.many}. ${q} has ${fmt(b)} ${b === 1 ? item.one : item.many}. How many ${item.many} do they have altogether?`,
         answer: a + b,
         model: {
           rows: [{ label: '', segments: [{ units: a, text: `${p}: ${fmt(a)}` }, { units: b, text: `${q}: ${fmt(b)}` }] }],
@@ -481,7 +483,7 @@ const wordProblemBase = ({ kinds = ['partWhole'], max = 20, maxTimes = 5 }, rng)
       m.rows[0].segments[0].text = '';
       return {
         answerType: 'numeric',
-        prompt: `${q} has ${fmt(small)} ${item.many}. ${p} has ${fmt(diff)} more ${item.many} than ${q}. How many ${item.many} does ${p} have?`,
+        prompt: `${q} has ${fmt(small)} ${small === 1 ? item.one : item.many}. ${p} has ${fmt(diff)} more ${item.many} than ${q}. How many ${item.many} does ${p} have?`,
         answer: big,
         model: m,
         hint: `${p}'s bar is as long as ${q}'s bar plus ${fmt(diff)} more.`,
@@ -494,7 +496,7 @@ const wordProblemBase = ({ kinds = ['partWhole'], max = 20, maxTimes = 5 }, rng)
       m.rows[0].segments[0].text = '';
       return {
         answerType: 'numeric',
-        prompt: `${p} has ${fmt(big)} ${item.many}. ${q} has ${fmt(diff)} fewer ${item.many} than ${p}. How many ${item.many} does ${q} have?`,
+        prompt: `${p} has ${fmt(big)} ${big === 1 ? item.one : item.many}. ${q} has ${fmt(diff)} fewer ${item.many} than ${p}. How many ${item.many} does ${q} have?`,
         answer: small,
         model: m,
         hint: `${q}'s bar is ${p}'s bar with ${fmt(diff)} taken away.`,
@@ -506,7 +508,7 @@ const wordProblemBase = ({ kinds = ['partWhole'], max = 20, maxTimes = 5 }, rng)
     m.rows[0].segments[0].text = '';
     return {
       answerType: 'numeric',
-      prompt: `${p} has ${fmt(big)} ${item.many}. ${q} has ${fmt(small)} ${item.many}. How many more ${item.many} does ${p} have than ${q}?`,
+      prompt: `${p} has ${fmt(big)} ${big === 1 ? item.one : item.many}. ${q} has ${fmt(small)} ${small === 1 ? item.one : item.many}. How many more ${item.many} does ${p} have than ${q}?`,
       answer: diff,
       model: m,
       hint: 'Line up the two bars. The extra part of the longer bar is the difference.',
@@ -747,6 +749,11 @@ export const GENERATORS = Object.freeze({
   takeAwayPictures,
   // Measurement, time, money, geometry and graphs (js/engine/topics/).
   ...TOPIC_GENERATORS,
+  // { type: 'mixed', of: [specA, specB] }: each question comes from one of the specs.
+  mixed: ({ of = [] }, rng) => {
+    if (!of.length) throw new Error('A "mixed" generator needs at least one spec in "of".');
+    return generate(pick(of, rng), rng);
+  },
 });
 
 /**

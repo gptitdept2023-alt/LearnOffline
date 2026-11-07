@@ -6,7 +6,7 @@
 import { h, toast } from './core/dom.js';
 import { setLanguage, t } from './core/i18n.js';
 import { route, setNotFound, setBeforeEach, startRouter } from './core/router.js';
-import { getState, activateProfile, rememberedProfileId } from './core/state.js';
+import { getState, activateProfile, rememberedProfileId, setParentUnlocked } from './core/state.js';
 import { openDb } from './data/db.js';
 import { renderStart } from './ui/screens/start.js';
 import { renderHome } from './ui/screens/home.js';
@@ -44,6 +44,8 @@ const registerRoutes = () => {
   setNotFound(renderStart);
 
   setBeforeEach(async (name) => {
+    // Back button, ⇄ or a typed link all leave the parent area: lock it again.
+    if (name !== 'parent') setParentUnlocked(false);
     if (!LEARNER_SCREENS.has(name) || getState().profile) return null;
     // After a reload, resume the last learner on this device if they still exist.
     const remembered = rememberedProfileId();
@@ -65,11 +67,15 @@ const registerServiceWorker = async () => {
     // worker also takes control (clients.claim), and reloading then would
     // interrupt whatever the user is doing.
     const hadController = Boolean(navigator.serviceWorker.controller);
+    let reloadRequested = false;
     const registration = await navigator.serviceWorker.register('./sw.js');
     const offerReload = (worker) => {
       const bar = h('div.update-bar', { role: 'status' },
         h('span', null, t('updateReady')),
-        h('button.btn.btn-primary.btn-sm', { type: 'button', onclick: () => worker.postMessage({ type: 'SKIP_WAITING' }) }, t('reload')));
+        h('button.btn.btn-primary.btn-sm', {
+          type: 'button',
+          onclick: () => { reloadRequested = true; worker.postMessage({ type: 'SKIP_WAITING' }); },
+        }, t('reload')));
       document.body.append(bar);
     };
     if (registration.waiting && navigator.serviceWorker.controller) offerReload(registration.waiting);
@@ -83,7 +89,7 @@ const registerServiceWorker = async () => {
     });
     let reloading = false;
     navigator.serviceWorker.addEventListener('controllerchange', () => {
-      if (reloading || !hadController) return;
+      if (reloading || !(hadController || reloadRequested)) return;
       reloading = true;
       window.location.reload();
     });

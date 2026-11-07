@@ -722,7 +722,7 @@
           "title": "Take away within 20",
           "generator": {
             "type": "subtraction",
-            "min": 0,
+            "min": 1,
             "max": 20
           }
         },

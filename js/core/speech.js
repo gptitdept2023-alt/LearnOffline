@@ -91,10 +91,14 @@ const stopAudio = () => {
   }
 };
 
+/** Bumped on every speak/stop, so a cancelled clip never triggers a fallback. */
+let speechGeneration = 0;
+
 const playRecorded = (key) => new Promise((resolve, reject) => {
   const audio = new Audio(`${VOICE_PACK_URL}${key}.ogg`);
   currentAudio = audio;
   audio.onended = () => resolve();
+  audio.onpause = () => resolve();
   audio.onerror = () => reject(new Error('clip failed'));
   audio.play().catch(reject);
 });
@@ -159,7 +163,10 @@ const sayMeasures = (text) => text
  * split by commas ("3 equals 3, 8 equals 8").
  */
 const pauseChains = (text) => text
-  .split(/(?<=[.!?,])\s+/) // each sentence or clause on its own: "3 = 3, 8 = 8" is not a chain
+  // Each sentence or clause on its own: "3 = 3, 8 = 8" is not a chain.
+  // (Split after the punctuation without a lookbehind, which iOS 15 cannot parse.)
+  .replace(/([.!?,])\s+/g, '$1\n')
+  .split('\n')
   .map((clause) => {
     let seen = 0;
     return clause.replace(/\s+equals\b/g, (match) => {
@@ -201,12 +208,15 @@ export const toSpokenText = (text) => pauseChains(sayMeasures(String(text))
 export const speak = async (text, overrides = {}) => {
   if (!canSpeak() || !text) return;
   stopSpeaking();
+  const generation = speechGeneration;
   const key = speechKey(text);
   if (settings.recorded && recordedKeys.has(key)) {
     try {
       await playRecorded(key);
       return;
     } catch { /* fall back to the device voice below */ }
+    // Stopped or replaced while the clip was loading: say nothing more.
+    if (generation !== speechGeneration) return;
   }
   await speakWithDevice(text, overrides);
 };
@@ -224,6 +234,7 @@ const speakWithDevice = (text, overrides) => new Promise((resolve) => {
 });
 
 export const stopSpeaking = () => {
+  speechGeneration += 1;
   stopAudio();
   if (supported) window.speechSynthesis.cancel();
 };

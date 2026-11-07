@@ -22,11 +22,16 @@ export const navigate = (path) => {
 };
 
 const parse = () => {
-  const parts = window.location.hash.replace(/^#\/?/, '').split('/').filter(Boolean).map(decodeURIComponent);
+  const parts = window.location.hash.replace(/^#\/?/, '').split('/').filter(Boolean).map(safeDecode);
   return { name: parts[0] || '', params: parts.slice(1) };
 };
 
 let renderToken = 0;
+
+/** decodeURIComponent that keeps the raw text instead of throwing on "%E0". */
+function safeDecode(part) {
+  try { return decodeURIComponent(part); } catch { return part; }
+}
 
 /** Render the current route into #app. Stale async renders are discarded. */
 export const render = async () => {

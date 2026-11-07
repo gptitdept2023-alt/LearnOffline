@@ -125,10 +125,21 @@
             ]
           },
           "generator": {
-            "type": "addition",
-            "min": 1000,
-            "max": 4999,
-            "regroup": true
+            "type": "mixed",
+            "of": [
+              {
+                "type": "addition",
+                "min": 1000,
+                "max": 4999,
+                "regroup": true
+              },
+              {
+                "type": "subtraction",
+                "min": 1000,
+                "max": 9999,
+                "regroup": true
+              }
+            ]
           },
           "questions": [
             {
@@ -136,7 +147,7 @@
               "type": "numeric",
               "prompt": "6,302 − 2,748 = ?",
               "answer": 3554,
-              "hint": "You need to rename across the zero: 6,302 = 62 hundreds + 10 tens… take it one place at a time.",
+              "hint": "Rename across the zero: 6,302 = 62 hundreds + 2 ones = 61 hundreds + 10 tens + 2 ones. Take it one place at a time.",
               "explain": "6,302 − 2,748 = 3,554",
               "method": {
                 "kind": "columnSub",
@@ -879,7 +890,7 @@
                       "4:20",
                       "5:20",
                       "4:04",
-                      "20:4"
+                      "20:04"
                     ]
                   }
                 }

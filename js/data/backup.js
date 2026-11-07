@@ -9,6 +9,28 @@ const FORMAT = 'learnoffline-backup';
 const FORMAT_VERSION = 1;
 const ALL_STORES = Object.values(STORES);
 
+/** The key each row must carry, per store (matches the keyPaths in db.js). */
+const ROW_KEYS = {
+  [STORES.profiles]: ['profileId'],
+  [STORES.mastery]: ['profileId', 'skillId'],
+  [STORES.rewards]: ['profileId'],
+  [STORES.sessions]: ['sessionId'],
+  [STORES.settings]: ['key'],
+};
+
+const isRow = (row) => row !== null && typeof row === 'object' && !Array.isArray(row);
+const hasKey = (value) => typeof value === 'string' || (typeof value === 'number' && Number.isFinite(value));
+
+/** True when a row can be stored safely in that store. */
+const validRow = (name, row) => {
+  if (!isRow(row)) return false;
+  if (!(ROW_KEYS[name] || []).every((field) => hasKey(row[field]))) return false;
+  if (name === STORES.rewards) {
+    for (const field of ['badges', 'owned']) if (row[field] !== undefined && !Array.isArray(row[field])) return false;
+  }
+  return true;
+};
+
 /** Read every store into one plain object. */
 export const exportAll = () =>
   tx(ALL_STORES, 'readonly', async (s) => {
@@ -37,12 +59,15 @@ export const downloadBackup = async () => {
  */
 export const validateBackup = (backup) => {
   if (!backup || backup.format !== FORMAT) return 'This file is not a LearnOffline backup.';
+  if (typeof backup.version !== 'number') return 'The backup file is damaged.';
   if (backup.version > FORMAT_VERSION) return 'This backup comes from a newer version. Please update the app first.';
   if (!backup.data || typeof backup.data !== 'object') return 'The backup file is damaged.';
+  // Every store must be present: a missing one would be wiped (e.g. the parent PIN).
   for (const name of ALL_STORES) {
-    if (backup.data[name] !== undefined && !Array.isArray(backup.data[name])) return 'The backup file is damaged.';
+    if (!Array.isArray(backup.data[name])) return 'The backup file is damaged.';
+    if (!backup.data[name].every((row) => validRow(name, row))) return 'The backup file is damaged.';
   }
-  if (!Array.isArray(backup.data.profiles)) return 'The backup has no learners in it.';
+  if (!backup.data.profiles.length) return 'The backup has no learners in it.';
   return null;
 };
 
@@ -56,7 +81,7 @@ export const restoreAll = async (backup) => {
   await tx(ALL_STORES, 'readwrite', (s) => {
     for (const name of ALL_STORES) {
       s[name].clear();
-      for (const row of backup.data[name] || []) s[name].put(row);
+      for (const row of backup.data[name]) s[name].put(row);
     }
   });
   return backup.data.profiles.length;

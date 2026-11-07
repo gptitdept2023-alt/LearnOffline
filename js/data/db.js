@@ -65,7 +65,7 @@ export const openDb = () => {
     request.onsuccess = () => {
       const db = request.result;
       // If another tab upgrades the schema, close so it can proceed.
-      db.onversionchange = () => db.close();
+      db.onversionchange = () => { db.close(); dbPromise = null; };
       resolve(db);
     };
     request.onerror = () => reject(request.error);
@@ -101,7 +101,16 @@ export const tx = async (storeNames, mode, work) => {
     transaction.onerror = () => reject(transaction.error);
     transaction.onabort = () => reject(transaction.error || new Error('Transaction aborted'));
   });
-  const result = await work(stores);
+  // Without the abort, a throw part-way through (e.g. a row with no key)
+  // would still commit everything written before it.
+  done.catch(() => {});
+  let result;
+  try {
+    result = await work(stores);
+  } catch (error) {
+    try { transaction.abort(); } catch { /* already finished */ }
+    throw error;
+  }
   await done;
   return result;
 };

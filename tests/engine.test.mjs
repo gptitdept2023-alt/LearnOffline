@@ -18,6 +18,7 @@ const PARAMS = {
   countPictures: {}, numberOrder: {}, moreOrFewer: {}, shapes: {}, patterns: {}, addPictures: {}, takeAwayPictures: {},
   convertUnits: { forms: ['toSmall', 'toBig', 'whole', 'add'] }, readClock: {}, clock24h: {}, timeDuration: {},
   moneyProblem: {}, angles: {}, areaPerimeter: {}, symmetry: {}, readGraph: {},
+  mixed: { of: [{ type: 'addition', min: 1000, max: 4999, regroup: true }, { type: 'subtraction', min: 1000, max: 9999, regroup: true }] },
 };
 
 test('every generator produces 500 well-formed, self-consistent questions', () => {
@@ -310,4 +311,24 @@ test('daily mix is never empty, even when every skill is mastered and not due', 
   // Mixed: learning skills still come before mastered ones.
   mastery.set('c', { skillId: 'c', score: 40, attempts: 3, correct: 1, level: 0, nextReviewAt: now + 86_400_000 });
   assert.equal(pickDailyMix(ids, mastery, 2, now)[0], 'c');
+});
+
+test('audit regressions: place names, real bond parts, singular counts, no zero answers', () => {
+  const rng = seededRng(77);
+  for (let i = 0; i < 2000; i += 1) {
+    const pv = generate({ type: 'placeValue', digits: 6 }, rng);
+    assert.ok(!/undefined/.test(`${pv.prompt} ${pv.hint}`), pv.prompt);
+    if (/ten thousands place/.test(pv.prompt)) assert.match(pv.hint, /ten thousands/, 'hint lists the place asked');
+    const bond = generate({ type: 'numberBond', minWhole: 5, maxWhole: 10 }, rng);
+    assert.ok(bond.answer > 0 && bond.visual.parts[0] > 0, bond.prompt);
+    const word = generate({ type: 'wordProblem', kinds: ['partWhole', 'compare'], max: 20 }, rng);
+    assert.ok(!/\b1 [a-z]+s\b/.test(word.prompt.replace(/\b1 (glass|bus)es\b/g, '')), word.prompt);
+    const times = generate({ type: 'multiplication', tables: [8], maxFactor: 3 }, rng);
+    assert.ok(!/\b1 groups\b/.test(times.hint), times.hint);
+    const dec = generate({ type: 'decimals', max: 3 }, rng);
+    if (/−/.test(dec.prompt)) assert.ok(dec.answer > 0, dec.prompt);
+  }
+  const mixed = new Set();
+  for (let i = 0; i < 200; i += 1) mixed.add(generate({ type: 'mixed', ...PARAMS.mixed }, rng).prompt.includes('−'));
+  assert.equal(mixed.size, 2, 'a mixed skill gives both addition and subtraction');
 });

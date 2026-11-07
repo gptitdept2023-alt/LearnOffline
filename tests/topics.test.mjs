@@ -76,3 +76,23 @@ test('measures, money and turns are read aloud as words', () => {
   assert.equal(toSpokenText('It lasts 1 h 40 min.'), 'It lasts 1 hour 40 minutes.');
   assert.equal(toSpokenText('Ana has 3 marbles.'), 'Ana has 3 marbles.', 'ordinary words are untouched');
 });
+
+test('symmetry fold lines are exact; "not a line" choices are clearly wrong', () => {
+  /** Largest distance from a reflected corner to the nearest corner. */
+  const mismatch = (pts, [x1, y1, x2, y2]) => {
+    const [dx, dy] = [x2 - x1, y2 - y1];
+    const len2 = dx * dx + dy * dy;
+    return Math.max(...pts.map(([px, py]) => {
+      const t = ((px - x1) * dx + (py - y1) * dy) / len2;
+      const [fx, fy] = [x1 + t * dx, y1 + t * dy];
+      const [rx, ry] = [2 * fx - px, 2 * fy - py];
+      return Math.min(...pts.map(([qx, qy]) => Math.hypot(rx - qx, ry - qy)));
+    }));
+  };
+  for (const [name, shape] of Object.entries(SYMMETRY_SHAPES)) {
+    if (!shape.points) continue; // the heart is a curve, checked by eye
+    const pts = shape.points.split(' ').map((p) => p.split(',').map(Number));
+    for (const line of shape.lines) assert.ok(mismatch(pts, line) < 0.6, `${name}: fold ${line} lands exactly`);
+    for (const line of shape.notLines) assert.ok(mismatch(pts, line) > 10, `${name}: ${line} is clearly not a fold`);
+  }
+});

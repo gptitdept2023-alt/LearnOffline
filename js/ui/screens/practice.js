@@ -122,12 +122,14 @@ export const renderPractice = async (view, skillId) => {
     }
   };
 
+  let savedSet = null;
   const finish = async () => {
     if (saving) return;
     saving = true;
     try {
       const skillIds = [...new Set(answers.map((a) => a.skillId))];
-      const result = await withLoading(() => saveSetResult({
+      // Saved once: if only the level write fails, a retry must not save the set twice.
+      savedSet = savedSet || await withLoading(() => saveSetResult({
         profileId: profile.profileId,
         packId: profile.packId,
         label,
@@ -136,6 +138,7 @@ export const renderPractice = async (view, skillId) => {
         young: Boolean(young),
         challenge,
       }), 'Saving…');
+      const result = { ...savedSet };
       let levelResult = null;
       if (level) {
         const correct = answers.filter((a) => a.correct).length;

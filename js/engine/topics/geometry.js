@@ -179,9 +179,10 @@ const areaPerimeterMethod = ({ w, h, form }) => {
 export const SYMMETRY_SHAPES = {
   square: { points: '20,20 80,20 80,80 20,80', lines: [[50, 8, 50, 92], [8, 50, 92, 50], [12, 12, 88, 88], [88, 12, 12, 88]], notLines: [[30, 8, 70, 92]] },
   rectangle: { points: '10,28 90,28 90,72 10,72', lines: [[50, 16, 50, 84], [2, 50, 98, 50]], notLines: [[6, 24, 94, 76]] },
-  'equilateral triangle': { points: '50,12 90,81 10,81', lines: [[50, 4, 50, 90], [93, 85, 26, 47], [7, 85, 74, 47]], notLines: [[10, 60, 90, 60]] },
+  // A true equilateral triangle (height 80 × √3 / 2); each fold runs from a corner through the middle of the opposite side.
+  'equilateral triangle': { points: '50,11.7 90,81 10,81', lines: [[50, 4, 50, 90], [96, 84.5, 24, 42.9], [4, 84.5, 76, 42.9]], notLines: [[10, 60, 90, 60]] },
   pentagon: { points: Array.from({ length: 5 }, (_, i) => polar(i, 5)).join(' '), lines: Array.from({ length: 5 }, (_, i) => axis(i, 5)), notLines: [[8, 50, 92, 50]] },
-  hexagon: { points: Array.from({ length: 6 }, (_, i) => polar(i, 6)).join(' '), lines: Array.from({ length: 6 }, (_, i) => axis(i, 6)), notLines: [[30, 10, 70, 90]] },
+  hexagon: { points: Array.from({ length: 6 }, (_, i) => polar(i, 6)).join(' '), lines: Array.from({ length: 6 }, (_, i) => axis(i, 6)), notLines: [[8, 61.3, 92, 38.7]] }, // 15°: halfway between two true folds
   kite: { points: '50,8 76,40 50,92 24,40', lines: [[50, 2, 50, 98]], notLines: [[16, 40, 84, 40]] },
   parallelogram: { points: '28,28 92,28 72,72 8,72', lines: [], notLines: [[50, 16, 50, 84], [2, 50, 98, 50]] },
   heart: { path: 'M50 88 C20 66 6 50 6 32 C6 18 17 8 30 8 C40 8 46 14 50 22 C54 14 60 8 70 8 C83 8 94 18 94 32 C94 50 80 66 50 88 Z', lines: [[50, 4, 50, 96]], notLines: [[4, 40, 96, 40]] },

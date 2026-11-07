@@ -42,7 +42,7 @@ export const questCard = (quest, { profileId, young, onChange }) => {
         confetti();
         speak(`Quest complete! You found ${stars} stars!`);
         toast(`Quest complete! +${stars} ⭐${unlockedTier ? ` · ${TIER_NAMES[unlockedTier]} unlocked!` : ''}`, 'success');
-        setTimeout(onChange, 1400);
+        setTimeout(() => { if (btn.isConnected) onChange(); }, 1400);
       } catch (error) {
         toast(error.message, 'error');
         btn.disabled = false;
