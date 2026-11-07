@@ -315,12 +315,12 @@
 .bg-value { font-size: 13px; font-weight: 800; fill: var(--extra); text-anchor: middle; }
 
 /* Data table */
-.data-table { border-collapse: collapse; min-width: 220px; background: var(--surface); }
-.data-table caption { font-weight: 800; padding-bottom: 6px; }
-.data-table th, .data-table td { padding: 6px 14px; border: 1px solid var(--border); text-align: left; }
-.data-table thead th { background: var(--surface-2); font-size: 0.85rem; }
-.data-table td { text-align: right; font-weight: 800; }
-.data-table .dt-hot th, .data-table .dt-hot td { background: var(--accent-soft); }
+.visual-table .data-table { border-collapse: collapse; min-width: 220px; background: var(--surface); }
+.visual-table .data-table caption { font-weight: 800; padding-bottom: 6px; }
+.visual-table .data-table th, .visual-table .data-table td { padding: 6px 14px; border: 1px solid var(--border); text-align: left; }
+.visual-table .data-table thead th { background: var(--surface-2); font-size: 0.85rem; }
+.visual-table .data-table td { text-align: right; font-weight: 800; }
+.visual-table .data-table .dt-hot th, .visual-table .data-table .dt-hot td { background: var(--accent-soft); }
 
 /* Very narrow phones (320-380 px): smaller discs so 5 place columns fit. */
 @media (max-width: 380px) {
