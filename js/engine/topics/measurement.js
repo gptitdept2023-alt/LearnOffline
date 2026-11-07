@@ -43,12 +43,16 @@ const unitBar = (bigCount, smallCount, pair, braceText) => {
 /* ------------------------------------------------------------------ */
 
 /**
- * @param {{kinds?: string[], forms?: string[]}} spec
+ * @param {{kinds?: string[], forms?: string[], bigUnits?: string[]}} spec
  *   forms: 'toSmall' (3 m 45 cm = ? cm), 'toBig' (2,350 g = 2 kg ? g),
  *          'whole' (4 kg = ? g), 'add' (2 kg 450 g + 1 kg 700 g = ? g).
  */
-const convertUnits = ({ kinds = ['length', 'mass', 'volume'], forms = ['toSmall', 'toBig', 'whole'] }, rng) => {
-  const pair = pick(UNIT_PAIRS[pick(kinds, rng)], rng);
+const convertUnits = ({ kinds = ['length', 'mass', 'volume'], forms = ['toSmall', 'toBig', 'whole'], bigUnits }, rng) => {
+  // bigUnits (e.g. ['m', 'kg', 'ℓ'] for Grade 3) leaves out pairs not taught yet (km, mm).
+  const allowed = (k) => UNIT_PAIRS[k].filter((p) => !bigUnits || bigUnits.includes(p.big));
+  const usable = kinds.filter((k) => allowed(k).length);
+  if (!usable.length) throw new Error('convertUnits: no unit pair matches kinds and bigUnits.');
+  const pair = pick(allowed(pick(usable, rng)), rng);
   const form = pick(forms, rng);
   const maxBig = pair.factor === 10 ? 20 : 9;
   const small = () => randInt(1, pair.factor - 1, rng);

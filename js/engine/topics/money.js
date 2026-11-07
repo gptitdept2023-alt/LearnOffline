@@ -22,24 +22,65 @@ const amount = (c) => (c < 100 ? `${c}¢` : money(c));
 /** "₱100" for a bill (no centavos). */
 const bill = (c) => money(c).replace('.00', '');
 
-/** @param {{forms?: ('total'|'change')[], max?: number}} spec max = highest price in pesos. */
-const moneyProblem = ({ forms = ['total', 'change'], max = 300 }, rng) => {
-  const price = () => 25 * randInt(41, max * 4 - 1, rng); // ₱10.25 .. just under max
+/** Whole-peso problems (Grades 1-2) are written "₱14", not "₱14.00". */
+const dropCentavos = (text) => String(text).replace(/(₱[\d,]+)\.00\b/g, '$1');
+
+/** Every string in a visual spec, without ".00"; peso hops are labelled in whole pesos. */
+const wholeVisual = (v) => {
+  if (Array.isArray(v)) return v.map(wholeVisual);
+  if (typeof v === 'string') return dropCentavos(v);
+  if (!v || typeof v !== 'object') return v;
+  const out = Object.fromEntries(Object.entries(v).map(([k, x]) => [k, wholeVisual(x)]));
+  if (out.kind === 'hops' && out.format === 'money') out.format = 'pesos';
+  return out;
+};
+
+/** A worked method in whole pesos (spec.whole): same steps, written without centavos. */
+const inWholePesos = (method, whole) => (!whole ? method : {
+  ...method,
+  steps: method.steps.map((s) => ({ ...s, text: dropCentavos(s.text), visual: wholeVisual(s.visual) })),
+  guided: method.guided.map((g) => ({ ...g, prompt: dropCentavos(g.prompt), visual: wholeVisual(g.visual) })),
+});
+
+/**
+ * @param {{forms?: ('total'|'change')[], max?: number, whole?: boolean}} spec
+ *   max = highest price in pesos; whole = whole pesos only (Grades 1-2), from ₱1.
+ */
+const moneyProblem = ({ forms = ['total', 'change'], max = 300, whole = false }, rng) => {
+  const price = whole
+    ? () => 100 * randInt(1, max - 1, rng) // ₱1 .. just under max
+    : () => 25 * randInt(41, max * 4 - 1, rng); // ₱10.25 .. just under max
   const name = pick(NAMES, rng);
-  if (pick(forms, rng) === 'total') {
-    const [itemA, itemB] = [pick(SHOP, rng), pick(SHOP, rng)];
-    const [a, b] = [price(), price()];
-    const second = itemA === itemB ? `another ${itemB}` : withArticle(itemB);
-    return {
-      answerType: 'numeric',
-      prompt: `${name} buys ${withArticle(itemA)} for ${money(a)} and ${second} for ${money(b)}. How much does ${name} pay altogether, in pesos?`,
-      answer: pesos(a + b),
-      display: money(a + b),
-      hint: 'Add the pesos, then add the centavos. 100 centavos make ₱1.',
-      explain: `${money(a)} + ${money(b)} = ${money(a + b)}`,
-      method: { kind: 'moneyTotal', a, b },
-    };
-  }
+  const q = pick(forms, rng) === 'total' ? totalQuestion(name, price, rng) : changeQuestion(name, price, rng);
+  if (!whole) return q;
+  return {
+    ...q,
+    prompt: dropCentavos(q.prompt),
+    display: dropCentavos(q.display),
+    explain: dropCentavos(q.explain),
+    hint: q.method.kind === 'moneyTotal' ? 'Add the tens, then the ones.' : 'Count up from the price to the bill.',
+    method: { ...q.method, whole: true },
+  };
+};
+
+/** "Ana buys a pen for ₱12.50 and a ruler for ₱8.75…": add two prices. */
+const totalQuestion = (name, price, rng) => {
+  const [itemA, itemB] = [pick(SHOP, rng), pick(SHOP, rng)];
+  const [a, b] = [price(), price()];
+  const second = itemA === itemB ? `another ${itemB}` : withArticle(itemB);
+  return {
+    answerType: 'numeric',
+    prompt: `${name} buys ${withArticle(itemA)} for ${money(a)} and ${second} for ${money(b)}. How much does ${name} pay altogether, in pesos?`,
+    answer: pesos(a + b),
+    display: money(a + b),
+    hint: 'Add the pesos, then add the centavos. 100 centavos make ₱1.',
+    explain: `${money(a)} + ${money(b)} = ${money(a + b)}`,
+    method: { kind: 'moneyTotal', a, b },
+  };
+};
+
+/** Pay with the smallest bill that covers the price; how much change? */
+const changeQuestion = (name, price, rng) => {
   const cost = price();
   const paid = BILLS.find((n) => n > cost);
   const item = pick(SHOP, rng);
@@ -125,4 +166,7 @@ const moneyChangeMethod = ({ cost, paid }) => {
 };
 
 export const generators = { moneyProblem };
-export const methods = { moneyTotal: moneyTotalMethod, moneyChange: moneyChangeMethod };
+export const methods = {
+  moneyTotal: (spec) => inWholePesos(moneyTotalMethod(spec), spec.whole),
+  moneyChange: (spec) => inWholePesos(moneyChangeMethod(spec), spec.whole),
+};

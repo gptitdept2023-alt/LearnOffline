@@ -5,8 +5,7 @@ short lessons, auto-graded practice, stars and badges, and a parent
 dashboard. It installs from the browser and then runs with no internet on a
 PC or an Android phone.
 
-Phase 1 ships **Math for Kinder 2** (picture-based, read aloud) and **Math
-for Grade 4**, taught the Singapore way: Concrete → Pictorial → Abstract
+Math covers **Kinder 2** (picture-based, read aloud) and **Grades 1 to 4**, taught the Singapore way: Concrete → Pictorial → Abstract
 lessons and bar models for word problems. Grade 4 covers whole numbers,
 factors, multiplication and division, fractions, decimals, length, mass and
 volume, money, time (clock, 24-hour clock, durations), angles, perimeter and
@@ -56,7 +55,7 @@ Techniques (`js/engine/techniques.js`): count on, make ten, number bonds, column
 
 ## Voice
 
-The app ships a **recorded voice pack** (`audio/voice/`, about 24 MB, cached for offline use): every lesson sentence, every Kinder question and hint (including the small Challenge sums), game and results lines, praise and nudges were recorded with the open-source [Piper](https://github.com/rhasspy/piper) engine using the *Kathleen* voice (CC0). Sentences that are not recorded (for example a random Grade 4 sum) use the device's best offline voice, read a little slower and higher. Parents can change voice, speed and pitch under **Parents → Voice**.
+The app ships a **recorded voice pack** (`audio/voice/`, about 30 MB, cached for offline use): every lesson sentence, every Kinder question and hint (including the small Challenge sums), game and results lines, praise and nudges were recorded with the open-source [Piper](https://github.com/rhasspy/piper) engine using the *Kathleen* voice (CC0). Sentences that are not recorded (for example a random Grade 4 sum) use the device's best offline voice, read a little slower and higher. Parents can change voice, speed and pitch under **Parents → Voice**.
 
 After changing lesson text or Kinder generators, re-record the new sentences (existing clips are kept):
 
@@ -151,6 +150,6 @@ sets, bigger buttons and read-aloud on by default.
 
 1. **Phase 1 (this):** app engine, Kinder 2 and Grade 4 math
 2. **Phase 2:** English reading/phonics for Kinder 2 (done), then Grade 1–2; Grade 4 English and Science; Google Sheet → pack exporter (Apps Script)
-3. **Phase 3:** Math Grades 1–6; Science Grades 3–6
+3. **Phase 3:** Math Grades 1–3 (done), 5–6; Science Grades 3–6
 4. **Phase 4:** Junior high (Grades 7–10)
 5. **Phase 5:** Senior high core subjects, optional sync, printable worksheets

@@ -18,13 +18,19 @@ const hourAfter = (h) => (h % 12) + 1;
 /* Reading a clock face                                                */
 /* ------------------------------------------------------------------ */
 
-const readClock = (_spec, rng) => {
+/**
+ * @param {{step?: number}} spec Minutes between possible times: 60 (o'clock,
+ *   Grade 1), 30 (and half past), 15 (quarters) or 5 (Grade 2 and up).
+ */
+const readClock = ({ step = 5 }, rng) => {
   const h = randInt(1, 12, rng);
-  const m = 5 * randInt(0, 11, rng);
+  const m = step * randInt(0, 60 / step - 1, rng);
   const answer = faceTime(h, m);
   const swapped = m > 0 && m / 5 !== h ? faceTime(m / 5, (h % 12) * 5) : null; // read the hands the wrong way round
+  // Wrong choices use the same kind of times the child is learning (no "3:05" in an o'clock set).
+  const near = step < 60 ? [faceTime(h, (m + step) % 60), faceTime(h, (m + 60 - step) % 60)] : [faceTime(h === 12 ? 1 : h + 1, 0)];
   const choices = choicesWith(answer, [
-    swapped, faceTime(hourAfter(h), m), faceTime(h, (m + 5) % 60), faceTime(h === 1 ? 12 : h - 1, m), faceTime(h, (m + 55) % 60),
+    step <= 5 && swapped, faceTime(hourAfter(h), m), ...near, faceTime(h === 1 ? 12 : h - 1, m), step === 60 && faceTime(((h + 1) % 12) + 1, 0),
   ].filter(Boolean), rng);
   return {
     answerType: 'choice',

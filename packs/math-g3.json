@@ -1,0 +1,1390 @@
+{
+  "packId": "math-g3",
+  "version": "1.0.0",
+  "subject": "math",
+  "title": "Math · Grade 3",
+  "topics": [
+    {
+      "topicId": "g3-numbers",
+      "title": "Numbers to 10,000",
+      "icon": "🔢",
+      "summary": "Thousands, and adding and subtracting big numbers.",
+      "skills": [
+        {
+          "skillId": "g3-place-value",
+          "title": "Place value to thousands",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "Each place is 10 times the place on its right: ones, tens, hundreds, thousands. In 5,284 the 5 stands for 5,000."
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: What digit is in the thousands place in 4,728?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "What digit is in the thousands place in 4,728?",
+                  "choices": [
+                    "3",
+                    "4",
+                    "5"
+                  ],
+                  "answer": "4",
+                  "explain": "The answer is 4."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "placeValue",
+            "digits": 4
+          }
+        },
+        {
+          "skillId": "g3-compare",
+          "title": "Compare numbers",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "abstract",
+                "text": "Start from the thousands. The first place where the digits differ tells you which is greater."
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: Which number is greater?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which number is greater?",
+                  "choices": [
+                    "2,378",
+                    "6,757"
+                  ],
+                  "answer": "6,757",
+                  "explain": "The answer is 6,757."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "compare",
+            "min": 1000,
+            "max": 9999
+          }
+        },
+        {
+          "skillId": "g3-add-sub",
+          "title": "Add and subtract to 10,000",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "abstract",
+                "text": "Line up the places. Work from the ones. Carry when a place makes 10 or more, rename when the top digit is too small."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: 6,552 − 4,496 = ?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "columnSub",
+                    "a": 6552,
+                    "b": 4496
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 2,096 + 1,581 = ?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "columnAdd",
+                    "a": 2096,
+                    "b": 1581,
+                    "answer": 3677
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "mixed",
+            "of": [
+              {
+                "type": "addition",
+                "min": 1000,
+                "max": 4999,
+                "regroup": true
+              },
+              {
+                "type": "subtraction",
+                "min": 1000,
+                "max": 9999,
+                "regroup": true
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g3-times",
+      "title": "Multiply and divide",
+      "icon": "✖️",
+      "summary": "Tables of 6, 7, 8 and 9, and bigger numbers.",
+      "skills": [
+        {
+          "skillId": "g3-times-tables",
+          "title": "Times tables 6 to 9",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "abstract",
+                "text": "Use facts you know. 6 × 7 is 5 × 7 and 1 more 7: 35 + 7 = 42."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: 6 × 5 = ?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "skipCount",
+                    "groups": 6,
+                    "each": 5
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 5 × 8 = ?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "skipCount",
+                    "groups": 5,
+                    "each": 8,
+                    "answer": 40
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "multiplication",
+            "tables": [
+              6,
+              7,
+              8,
+              9
+            ],
+            "maxFactor": 10
+          }
+        },
+        {
+          "skillId": "g3-divide-facts",
+          "title": "Division facts",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "abstract",
+                "text": "Division undoes multiplication. 56 ÷ 8 asks: 8 times what is 56? 8 × 7 = 56, so the answer is 7."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: 36 ÷ 6 = ?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "divideByFact",
+                    "dividend": 36,
+                    "divisor": 6
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 90 ÷ 9 = ?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "divideByFact",
+                    "dividend": 90,
+                    "divisor": 9,
+                    "answer": 10
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "division",
+            "tables": [
+              6,
+              7,
+              8,
+              9
+            ],
+            "maxFactor": 10
+          }
+        },
+        {
+          "skillId": "g3-multiply",
+          "title": "Multiply by a 1-digit number",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "abstract",
+                "text": "Split the number by place value, multiply each part, then add. 34 × 3 = 30 × 3 + 4 × 3 = 90 + 12 = 102."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: 53 × 5 = ?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "splitMultiply",
+                    "a": 53,
+                    "b": 5
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 92 × 9 = ?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "splitMultiply",
+                    "a": 92,
+                    "b": 9,
+                    "answer": 828
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "multiplyLong",
+            "digits": 2,
+            "byDigits": 1
+          }
+        },
+        {
+          "skillId": "g3-divide",
+          "title": "Divide by a 1-digit number",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "abstract",
+                "text": "Share the tens first, then the ones."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: 81 ÷ 9 = ?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "longDivide",
+                    "dividend": 81,
+                    "divisor": 9,
+                    "asks": "quotient"
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 55 ÷ 5 = ?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "longDivide",
+                    "dividend": 55,
+                    "divisor": 5,
+                    "asks": "quotient",
+                    "answer": 11
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "divideLong",
+            "digits": 2,
+            "remainder": false
+          }
+        },
+        {
+          "skillId": "g3-divide-remainder",
+          "title": "Division with remainder",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Share 17 sweets among 5 children. Each gets 3, and 2 are left over. The 2 left over are the remainder.",
+                "visual": {
+                  "kind": "stack",
+                  "items": [
+                    {
+                      "kind": "groups",
+                      "groups": 5,
+                      "each": 3
+                    },
+                    {
+                      "kind": "pictures",
+                      "emoji": "🍬",
+                      "count": 2
+                    }
+                  ]
+                }
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: 43 ÷ 9 = ? remainder 7",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "longDivide",
+                    "dividend": 43,
+                    "divisor": 9,
+                    "asks": "quotient"
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 72 ÷ 5 = ? remainder 2",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "longDivide",
+                    "dividend": 72,
+                    "divisor": 5,
+                    "asks": "quotient",
+                    "answer": 14
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "divideLong",
+            "digits": 2,
+            "remainder": true
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g3-fractions",
+      "title": "Fractions",
+      "icon": "🍕",
+      "summary": "Equal fractions, and adding like fractions.",
+      "skills": [
+        {
+          "skillId": "g3-equivalent",
+          "title": "Equivalent fractions",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "Cut each part into smaller equal parts: the shaded amount stays the same. 1/2 = 2/4.",
+                "visual": {
+                  "kind": "fraction",
+                  "numerator": 1,
+                  "denominator": 2,
+                  "shape": "bar"
+                }
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: 1/3 = ?/9",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "equivalentFraction",
+                    "num": 1,
+                    "den": 3,
+                    "factor": 3
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 1/2 = ?/4",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "equivalentFraction",
+                    "num": 1,
+                    "den": 2,
+                    "factor": 2,
+                    "answer": 2
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "equivalentFraction",
+            "maxDen": 10
+          }
+        },
+        {
+          "skillId": "g3-fraction-add-sub",
+          "title": "Add and subtract like fractions",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "abstract",
+                "text": "When the parts are the same size, add or subtract the top numbers. The bottom number stays the same."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: 4/9 + 5/9 = ?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "sameDenominator",
+                    "x": 4,
+                    "y": 5,
+                    "den": 9,
+                    "op": "+"
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 1/4 + 1/4 = ?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "sameDenominator",
+                    "x": 1,
+                    "y": 1,
+                    "den": 4,
+                    "op": "+",
+                    "answer": 2
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "fractionSameDen",
+            "maxDen": 10
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g3-measurement",
+      "title": "Length, mass and volume",
+      "icon": "📏",
+      "summary": "Metres and centimetres, kilograms and grams, litres and millilitres.",
+      "skills": [
+        {
+          "skillId": "g3-measure-convert",
+          "title": "Change units",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "abstract",
+                "text": "1 m = 100 cm. 1 kg = 1,000 g. 1 ℓ = 1,000 ml."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: 4 ℓ 864 ml = ? ml",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "convertUnits",
+                    "form": "toSmall",
+                    "factor": 1000,
+                    "big": "ℓ",
+                    "small": "ml",
+                    "parts": [
+                      [
+                        4,
+                        864
+                      ]
+                    ]
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 6,302 g = 6 kg ? g",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "convertUnits",
+                    "form": "toBig",
+                    "factor": 1000,
+                    "big": "kg",
+                    "small": "g",
+                    "parts": [
+                      [
+                        6,
+                        302
+                      ]
+                    ],
+                    "answer": 302
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "convertUnits",
+            "forms": [
+              "toSmall",
+              "toBig",
+              "whole"
+            ],
+            "bigUnits": [
+              "m",
+              "kg",
+              "ℓ"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g3-time",
+      "title": "Time",
+      "icon": "🕒",
+      "summary": "Read the clock and find how long things take.",
+      "skills": [
+        {
+          "skillId": "g3-time-clock",
+          "title": "Read the clock",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "Read the hour hand first, then count the minutes in 5s.",
+                "visual": {
+                  "kind": "clock",
+                  "h": 9,
+                  "m": 35
+                }
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: What time does the clock show?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "readClock",
+                    "h": 4,
+                    "m": 0,
+                    "choices": [
+                      "4:00",
+                      "3:00",
+                      "4:55",
+                      "4:05"
+                    ]
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: What time does the clock show?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "readClock",
+                    "h": 9,
+                    "m": 40,
+                    "choices": [
+                      "8:45",
+                      "9:40",
+                      "9:35",
+                      "8:40"
+                    ],
+                    "answer": "9:40"
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "readClock",
+            "step": 5
+          }
+        },
+        {
+          "skillId": "g3-time-duration",
+          "title": "How long does it take?",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "abstract",
+                "text": "Jump on a timeline: first to the next o'clock, then whole hours, then the minutes left."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: Tomas's movie starts at 7:55 a.m. and ends at 10:30 a.m. How long is it, in minutes?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "timeDuration",
+                    "start": 475,
+                    "end": 630,
+                    "form": "howLong"
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: Aisha's science show starts at 2:30 p.m. and ends at 4:35 p.m. How long is it, in minutes?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "timeDuration",
+                    "start": 870,
+                    "end": 995,
+                    "form": "howLong",
+                    "answer": 125
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "timeDuration",
+            "forms": [
+              "howLong"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g3-money",
+      "title": "Money",
+      "icon": "🪙",
+      "summary": "Pesos and centavos.",
+      "skills": [
+        {
+          "skillId": "g3-money-total",
+          "title": "How much altogether?",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "abstract",
+                "text": "100 centavos make ₱1. Add the pesos, then the centavos."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: Siti buys a storybook for ₱73.25 and a notebook for ₱55.75. How much does Siti pay altogether, in pesos?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "moneyTotal",
+                    "a": 7325,
+                    "b": 5575
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: Jun buys a lunch box for ₱87.75 and a storybook for ₱48.25. How much does Jun pay altogether, in pesos?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "moneyTotal",
+                    "a": 8775,
+                    "b": 4825,
+                    "answer": 136
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "moneyProblem",
+            "forms": [
+              "total"
+            ],
+            "max": 100
+          }
+        },
+        {
+          "skillId": "g3-money-change",
+          "title": "Give change",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "abstract",
+                "text": "Count up from the price: to the next peso, then to friendly numbers, then to the bill."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: Siti buys a notebook for ₱55.25 and pays with a ₱100 bill. How much change does Siti get, in pesos?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "moneyChange",
+                    "cost": 5525,
+                    "paid": 10000
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: Jun buys a storybook for ₱96.00 and pays with a ₱100 bill. How much change does Jun get, in pesos?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "moneyChange",
+                    "cost": 9600,
+                    "paid": 10000,
+                    "answer": 4
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "moneyProblem",
+            "forms": [
+              "change"
+            ],
+            "max": 100
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g3-geometry",
+      "title": "Angles, area and perimeter",
+      "icon": "📐",
+      "summary": "Right angles, perimeter and area of rectangles.",
+      "skills": [
+        {
+          "skillId": "g3-angles",
+          "title": "Right angles",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Fold a paper twice to make a square corner. That is a right angle.",
+                "visual": {
+                  "kind": "angle",
+                  "deg": 90,
+                  "rotate": 0
+                }
+              },
+              {
+                "stage": "pictorial",
+                "text": "Put the square corner on an angle. An angle smaller than a right angle is called acute. A bigger one is called obtuse.",
+                "visual": {
+                  "kind": "angle",
+                  "deg": 130,
+                  "rotate": 10
+                }
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: What kind of angle is this?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "angleType",
+                    "deg": 55,
+                    "rotate": 15
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: What kind of angle is this?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "angleType",
+                    "deg": 90,
+                    "rotate": 45,
+                    "answer": "right angle"
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "angles",
+            "forms": [
+              "classify"
+            ]
+          }
+        },
+        {
+          "skillId": "g3-area-perimeter",
+          "title": "Perimeter and area",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "Perimeter is the distance around the edge. Area is how many squares cover the shape.",
+                "visual": {
+                  "kind": "rectGrid",
+                  "w": 5,
+                  "h": 3,
+                  "mode": "area"
+                }
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: A rectangle is 9 cm long and 7 cm wide. What is its perimeter, in cm?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "areaPerimeter",
+                    "w": 9,
+                    "h": 7,
+                    "form": "perimeter"
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: A rectangle is 5 cm long and 3 cm wide. What is its perimeter, in cm?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "areaPerimeter",
+                    "w": 5,
+                    "h": 3,
+                    "form": "perimeter",
+                    "answer": 16
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "areaPerimeter",
+            "forms": [
+              "perimeter",
+              "area"
+            ],
+            "max": 10
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g3-graphs",
+      "title": "Graphs",
+      "icon": "📊",
+      "summary": "Read bar graphs with a scale.",
+      "skills": [
+        {
+          "skillId": "g3-graphs-read",
+          "title": "Read bar graphs",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "Check the scale first. Then go across from the top of each bar to the scale."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: How many pears were sold?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "readGraph",
+                    "title": "Fruit sold at a stall",
+                    "unit": "fruits",
+                    "labels": [
+                      "pears",
+                      "bananas",
+                      "apples",
+                      "oranges"
+                    ],
+                    "values": [
+                      25,
+                      15,
+                      35,
+                      20
+                    ],
+                    "scale": 5,
+                    "form": "read",
+                    "i": 0,
+                    "j": 1,
+                    "asTable": false
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: How many more pears than mangoes were sold?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "readGraph",
+                    "title": "Fruit sold at a stall",
+                    "unit": "fruits",
+                    "labels": [
+                      "pears",
+                      "mangoes",
+                      "bananas",
+                      "oranges"
+                    ],
+                    "values": [
+                      20,
+                      10,
+                      90,
+                      30
+                    ],
+                    "scale": 10,
+                    "form": "difference",
+                    "i": 0,
+                    "j": 1,
+                    "asTable": true,
+                    "answer": 10
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "readGraph"
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g3-word-problems",
+      "title": "Word problems",
+      "icon": "📝",
+      "summary": "Bar models with bigger numbers.",
+      "skills": [
+        {
+          "skillId": "g3-wp-part-whole",
+          "title": "Part and whole",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "Draw a bar for the whole and split it into the parts."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: Aisha has 2,216 marbles. Lea has 1,255 marbles. How many marbles do they have altogether?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "barModel",
+                    "model": {
+                      "rows": [
+                        {
+                          "label": "",
+                          "segments": [
+                            {
+                              "units": 2216,
+                              "text": "Aisha: 2,216"
+                            },
+                            {
+                              "units": 1255,
+                              "text": "Lea: 1,255"
+                            }
+                          ]
+                        }
+                      ],
+                      "braces": [
+                        {
+                          "row": 0,
+                          "from": 0,
+                          "to": 2,
+                          "side": "above",
+                          "text": "?"
+                        }
+                      ]
+                    },
+                    "op": "+",
+                    "a": 2216,
+                    "b": 1255,
+                    "answer": 3471
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: Lito has 1,735 eggs. Ben has 1,306 eggs. How many eggs do they have altogether?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "barModel",
+                    "model": {
+                      "rows": [
+                        {
+                          "label": "",
+                          "segments": [
+                            {
+                              "units": 1735,
+                              "text": "Lito: 1,735"
+                            },
+                            {
+                              "units": 1306,
+                              "text": "Ben: 1,306"
+                            }
+                          ]
+                        }
+                      ],
+                      "braces": [
+                        {
+                          "row": 0,
+                          "from": 0,
+                          "to": 2,
+                          "side": "above",
+                          "text": "?"
+                        }
+                      ]
+                    },
+                    "op": "+",
+                    "a": 1735,
+                    "b": 1306,
+                    "answer": 3041
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "wordProblem",
+            "kinds": [
+              "partWhole"
+            ],
+            "max": 5000
+          }
+        },
+        {
+          "skillId": "g3-wp-compare",
+          "title": "Comparing",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "Two bars, one under the other. The difference is the part that sticks out."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: Lea has 1,108 marbles. Aisha has 1,755 more marbles than Lea. How many marbles does Aisha have?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "barModel",
+                    "model": {
+                      "rows": [
+                        {
+                          "label": "Aisha",
+                          "segments": [
+                            {
+                              "units": 1108,
+                              "text": ""
+                            },
+                            {
+                              "units": 1755,
+                              "text": "1,755",
+                              "dashed": false
+                            }
+                          ]
+                        },
+                        {
+                          "label": "Lea",
+                          "segments": [
+                            {
+                              "units": 1108,
+                              "text": ""
+                            }
+                          ]
+                        }
+                      ],
+                      "braces": [
+                        {
+                          "row": 0,
+                          "from": 0,
+                          "to": 2,
+                          "side": "above",
+                          "text": "?"
+                        },
+                        {
+                          "row": 1,
+                          "from": 0,
+                          "to": 1,
+                          "side": "below",
+                          "text": "1,108"
+                        }
+                      ]
+                    },
+                    "op": "+",
+                    "a": 1108,
+                    "b": 1755,
+                    "answer": 2863
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: Ben has 868 eggs. Lito has 1,653 more eggs than Ben. How many eggs does Lito have?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "barModel",
+                    "model": {
+                      "rows": [
+                        {
+                          "label": "Lito",
+                          "segments": [
+                            {
+                              "units": 868,
+                              "text": ""
+                            },
+                            {
+                              "units": 1653,
+                              "text": "1,653",
+                              "dashed": false
+                            }
+                          ]
+                        },
+                        {
+                          "label": "Ben",
+                          "segments": [
+                            {
+                              "units": 868,
+                              "text": ""
+                            }
+                          ]
+                        }
+                      ],
+                      "braces": [
+                        {
+                          "row": 0,
+                          "from": 0,
+                          "to": 2,
+                          "side": "above",
+                          "text": "?"
+                        },
+                        {
+                          "row": 1,
+                          "from": 0,
+                          "to": 1,
+                          "side": "below",
+                          "text": "868"
+                        }
+                      ]
+                    },
+                    "op": "+",
+                    "a": 868,
+                    "b": 1653,
+                    "answer": 2521
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "wordProblem",
+            "kinds": [
+              "compare"
+            ],
+            "max": 5000
+          }
+        },
+        {
+          "skillId": "g3-wp-multiply",
+          "title": "Times as many",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "Draw equal units. If one has 4 times as many, it gets 4 units and the other gets 1."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: Lea has 11 marbles. Aisha has 5 times as many marbles as Lea. How many marbles do they have altogether?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "barModel",
+                    "model": {
+                      "rows": [
+                        {
+                          "label": "Aisha",
+                          "segments": [
+                            {
+                              "units": 11,
+                              "text": ""
+                            },
+                            {
+                              "units": 11,
+                              "text": ""
+                            },
+                            {
+                              "units": 11,
+                              "text": ""
+                            },
+                            {
+                              "units": 11,
+                              "text": ""
+                            },
+                            {
+                              "units": 11,
+                              "text": ""
+                            }
+                          ]
+                        },
+                        {
+                          "label": "Lea",
+                          "segments": [
+                            {
+                              "units": 11,
+                              "text": "11"
+                            }
+                          ]
+                        }
+                      ],
+                      "braces": [
+                        {
+                          "rows": [
+                            0,
+                            1
+                          ],
+                          "side": "right",
+                          "text": "?"
+                        }
+                      ]
+                    },
+                    "op": "×",
+                    "a": 6,
+                    "b": 11,
+                    "answer": 66,
+                    "timesAltogether": 5
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: Ben has 9 eggs. Lito has 5 times as many eggs as Ben. How many eggs do they have altogether?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "barModel",
+                    "model": {
+                      "rows": [
+                        {
+                          "label": "Lito",
+                          "segments": [
+                            {
+                              "units": 9,
+                              "text": ""
+                            },
+                            {
+                              "units": 9,
+                              "text": ""
+                            },
+                            {
+                              "units": 9,
+                              "text": ""
+                            },
+                            {
+                              "units": 9,
+                              "text": ""
+                            },
+                            {
+                              "units": 9,
+                              "text": ""
+                            }
+                          ]
+                        },
+                        {
+                          "label": "Ben",
+                          "segments": [
+                            {
+                              "units": 9,
+                              "text": "9"
+                            }
+                          ]
+                        }
+                      ],
+                      "braces": [
+                        {
+                          "rows": [
+                            0,
+                            1
+                          ],
+                          "side": "right",
+                          "text": "?"
+                        }
+                      ]
+                    },
+                    "op": "×",
+                    "a": 6,
+                    "b": 9,
+                    "answer": 54,
+                    "timesAltogether": 5
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "wordProblem",
+            "kinds": [
+              "multiply"
+            ],
+            "max": 200,
+            "maxTimes": 9
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g3-challenge",
+      "title": "Challenge zone",
+      "icon": "⭐",
+      "summary": "Ready for more? These go a step beyond this grade.",
+      "challenge": true,
+      "skills": [
+        {
+          "skillId": "g3-ch-multiply",
+          "title": "3-digit × 1-digit",
+          "generator": {
+            "type": "multiplyLong",
+            "digits": 3,
+            "byDigits": 1
+          }
+        },
+        {
+          "skillId": "g3-ch-divide",
+          "title": "Divide 3-digit numbers",
+          "generator": {
+            "type": "divideLong",
+            "digits": 3,
+            "remainder": true
+          }
+        },
+        {
+          "skillId": "g3-ch-measure-add",
+          "title": "Add measures",
+          "generator": {
+            "type": "convertUnits",
+            "forms": [
+              "add"
+            ],
+            "bigUnits": [
+              "m",
+              "kg",
+              "ℓ"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

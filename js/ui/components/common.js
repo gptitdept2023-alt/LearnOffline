@@ -75,11 +75,11 @@ export const openProfileEditor = async (existing = null) => {
       levels.map((l) => h('option', { value: l.level, selected: l.level === currentLevel }, l.levelName)));
 
     const readAloud = toggle('readAloud', 'Read questions aloud automatically', existing ? existing.readAloud : false);
-    // Pre-readers get read-aloud on by default when a young pack is chosen.
+    // Pre-readers and early readers (packs marked young or readAloud) get read-aloud on by default.
     gradeSelect.addEventListener('change', () => {
       if (existing) return;
       const pack = packs.find((p) => p.packId === packForLevel(gradeSelect.value));
-      readAloud.querySelector('input').checked = Boolean(pack?.young);
+      readAloud.querySelector('input').checked = Boolean(pack?.young || pack?.readAloud);
     });
     gradeSelect.dispatchEvent(new Event('change'));
 

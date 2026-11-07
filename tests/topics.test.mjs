@@ -132,3 +132,25 @@ test('worked-solution audit regressions', () => {
   const div = methodFor({ method: { kind: 'longDivide', dividend: 466, divisor: 2 } }).faster;
   assert.ok(!div || !/470/.test(div.steps.map((s) => s.text).join(' ')), '470 ÷ 2 is not a friendly fact');
 });
+
+test('Grades 1-3 options: clock steps, whole pesos and taught units only', () => {
+  const rng = seededRng(31);
+  for (let i = 0; i < 300; i += 1) {
+    const hour = generate({ type: 'readClock', step: 60 }, rng);
+    assert.match(hour.answer, /:00$/);
+    assert.ok(hour.choices.every((c) => /:00$/.test(c)), `o'clock choices only: ${hour.choices}`);
+    const half = generate({ type: 'readClock', step: 30 }, rng);
+    assert.match(half.answer, /:(00|30)$/);
+    assert.ok(half.choices.every((c) => /:(00|30)$/.test(c)), `half-hour choices only: ${half.choices}`);
+
+    const m = generate({ type: 'moneyProblem', max: 20, whole: true }, rng);
+    assert.ok(Number.isInteger(m.answer) && m.answer > 0, m.prompt);
+    const method = methodFor(m);
+    const texts = [m.prompt, m.display, m.explain, ...method.steps.map((s) => s.text), ...method.guided.map((g) => g.prompt)];
+    for (const t of texts) assert.ok(!/\.\d\d\b|¢|centavo/.test(t), `whole pesos only: ${t}`);
+    assert.equal(String(method.guided.at(-1).answer), String(m.answer));
+
+    const u = generate({ type: 'convertUnits', bigUnits: ['m', 'kg', 'ℓ'] }, rng);
+    assert.ok(!/km|mm/.test(u.prompt), u.prompt);
+  }
+});

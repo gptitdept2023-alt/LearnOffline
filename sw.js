@@ -7,7 +7,7 @@
  * tests/packs.test.mjs fails if a file is missing from PRECACHE.
  */
 
-const CACHE_VERSION = 'v19';
+const CACHE_VERSION = 'v20';
 const VOICE_MANIFEST = './audio/voice/manifest.json';
 const CACHE_NAME = `learnoffline-${CACHE_VERSION}`;
 
@@ -85,6 +85,9 @@ const PRECACHE = [
   './packs/index.json',
   './packs/math-k2.json',
   './packs/english-k2.json',
+  './packs/math-g1.json',
+  './packs/math-g2.json',
+  './packs/math-g3.json',
   './packs/math-g4.json',
 ];
 

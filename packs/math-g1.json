@@ -1,0 +1,1233 @@
+{
+  "packId": "math-g1",
+  "version": "1.0.0",
+  "subject": "math",
+  "title": "Math · Grade 1",
+  "topics": [
+    {
+      "topicId": "g1-numbers",
+      "title": "Numbers to 100",
+      "icon": "🔢",
+      "summary": "Count, read and compare numbers to 100.",
+      "skills": [
+        {
+          "skillId": "g1-count",
+          "title": "Count in tens and ones",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Count big amounts by making groups of ten. A full ten frame is 10.",
+                "visual": {
+                  "kind": "tenFrames",
+                  "value": 34
+                }
+              },
+              {
+                "stage": "pictorial",
+                "text": "3 full frames are 3 tens: 10, 20, 30. Then count on the ones: 31, 32, 33, 34.",
+                "visual": {
+                  "kind": "tenFrames",
+                  "value": 34
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: How many counters are there?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "How many counters are there?",
+                  "visual": {
+                    "kind": "tenFrames",
+                    "value": 19
+                  },
+                  "choices": [
+                    "18",
+                    "19",
+                    "20"
+                  ],
+                  "answer": "19",
+                  "explain": "The answer is 19."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "count",
+            "max": 50
+          }
+        },
+        {
+          "skillId": "g1-place-value",
+          "title": "Tens and ones",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "A rod is 10 cubes joined together. 47 is 4 rods and 7 cubes.",
+                "visual": {
+                  "kind": "blocks",
+                  "value": 47
+                }
+              },
+              {
+                "stage": "pictorial",
+                "text": "In 47, the 4 is in the tens place, so it stands for 40. The 7 is in the ones place.",
+                "visual": {
+                  "kind": "blocks",
+                  "value": 47
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: What digit is in the tens place in 47?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "What digit is in the tens place in 47?",
+                  "visual": {
+                    "kind": "blocks",
+                    "value": 47
+                  },
+                  "choices": [
+                    "3",
+                    "4",
+                    "5"
+                  ],
+                  "answer": "4",
+                  "explain": "The answer is 4."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "placeValue",
+            "digits": 2
+          }
+        },
+        {
+          "skillId": "g1-compare",
+          "title": "Greater or smaller",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "Compare the tens first. 52 has 5 tens and 38 has 3 tens, so 52 is greater.",
+                "visual": {
+                  "kind": "stack",
+                  "items": [
+                    {
+                      "kind": "blocks",
+                      "value": 52
+                    },
+                    {
+                      "kind": "blocks",
+                      "value": 38
+                    }
+                  ]
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "If the tens are the same, compare the ones: 64 is greater than 61."
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: Which number is greater?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which number is greater?",
+                  "choices": [
+                    "16",
+                    "64"
+                  ],
+                  "answer": "64",
+                  "explain": "The answer is 64."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "compare",
+            "min": 1,
+            "max": 100
+          }
+        },
+        {
+          "skillId": "g1-order",
+          "title": "Before and after",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "On a number line, the number after is 1 more. The number before is 1 less.",
+                "visual": {
+                  "kind": "numberLine",
+                  "from": 56,
+                  "to": 62,
+                  "mark": 59
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: What number comes after 69?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "What number comes after 69?",
+                  "visual": {
+                    "kind": "numberLine",
+                    "from": 66,
+                    "to": 72,
+                    "mark": 69
+                  },
+                  "choices": [
+                    "71",
+                    "70",
+                    "72"
+                  ],
+                  "answer": "70",
+                  "explain": "The answer is 70."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "numberOrder",
+            "max": 100
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g1-bonds",
+      "title": "Number bonds",
+      "icon": "🔗",
+      "summary": "Two parts make a whole.",
+      "skills": [
+        {
+          "skillId": "g1-bonds-10",
+          "title": "Number bonds to 10",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "7 counters can be split into 4 and 3. 4 and 3 make 7.",
+                "visual": {
+                  "kind": "tenFrames",
+                  "value": 7
+                }
+              },
+              {
+                "stage": "pictorial",
+                "text": "A number bond shows the whole on top and the two parts below.",
+                "visual": {
+                  "kind": "bond",
+                  "whole": 7,
+                  "parts": [
+                    4,
+                    3
+                  ]
+                }
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: 5 is made of 4 and what number?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "bondPart",
+                    "a": 5,
+                    "b": 4
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 8 is made of 5 and what number?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "bondPart",
+                    "a": 8,
+                    "b": 5,
+                    "answer": 3
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "numberBond",
+            "minWhole": 5,
+            "maxWhole": 10
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g1-adding",
+      "title": "Addition",
+      "icon": "➕",
+      "summary": "Add within 20, then within 100.",
+      "skills": [
+        {
+          "skillId": "g1-add-20",
+          "title": "Add within 20",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "To add 8 + 5, fill the ten frame first: 8 and 2 more make 10. 3 are left: 10 + 3 = 13.",
+                "visual": {
+                  "kind": "tenFrames",
+                  "value": 8,
+                  "extra": 5
+                }
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: 6 + 9 = ?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "makeTen",
+                    "a": 6,
+                    "b": 9
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 3 + 8 = ?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "makeTen",
+                    "a": 3,
+                    "b": 8,
+                    "answer": 11
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "addition",
+            "min": 1,
+            "max": 12,
+            "maxSum": 20
+          }
+        },
+        {
+          "skillId": "g1-add-100",
+          "title": "Add tens and ones",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "Add the ones, then the tens. 32 + 25: 2 + 5 = 7 ones, 3 + 2 = 5 tens. So 57.",
+                "visual": {
+                  "kind": "stack",
+                  "items": [
+                    {
+                      "kind": "blocks",
+                      "value": 32
+                    },
+                    {
+                      "kind": "blocks",
+                      "value": 25
+                    }
+                  ]
+                }
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: 50 + 15 = ?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "columnAdd",
+                    "a": 50,
+                    "b": 15
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 34 + 25 = ?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "columnAdd",
+                    "a": 34,
+                    "b": 25,
+                    "answer": 59
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "addition",
+            "min": 10,
+            "max": 89,
+            "maxSum": 99,
+            "regroup": false
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g1-taking",
+      "title": "Subtraction",
+      "icon": "➖",
+      "summary": "Take away within 20, then within 100.",
+      "skills": [
+        {
+          "skillId": "g1-sub-20",
+          "title": "Subtract within 20",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Take away means some go away. 12 − 4: start with 12, take 4 away, 8 are left.",
+                "visual": {
+                  "kind": "tenFrames",
+                  "value": 12
+                }
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: 16 − 5 = ?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "subtractBond",
+                    "a": 16,
+                    "b": 5
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 12 − 8 = ?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "subtractBond",
+                    "a": 12,
+                    "b": 8,
+                    "answer": 4
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "subtraction",
+            "min": 1,
+            "max": 20
+          }
+        },
+        {
+          "skillId": "g1-sub-100",
+          "title": "Subtract tens and ones",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "Take away the ones, then the tens. 58 − 23: 8 − 3 = 5 ones, 5 − 2 = 3 tens. So 35.",
+                "visual": {
+                  "kind": "blocks",
+                  "value": 58
+                }
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: 79 − 31 = ?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "columnSub",
+                    "a": 79,
+                    "b": 31
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 33 − 12 = ?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "columnSub",
+                    "a": 33,
+                    "b": 12,
+                    "answer": 21
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "subtraction",
+            "min": 10,
+            "max": 99,
+            "regroup": false
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g1-groups",
+      "title": "Equal groups",
+      "icon": "🧺",
+      "summary": "Count equal groups: the start of multiplying.",
+      "skills": [
+        {
+          "skillId": "g1-groups-count",
+          "title": "Equal groups",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "3 plates with 2 cakes on each. Count in twos: 2, 4, 6. That is 3 groups of 2.",
+                "visual": {
+                  "kind": "groups",
+                  "groups": 3,
+                  "each": 2
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "3 groups of 2 is written 3 × 2 = 6."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: 2 × 3 = ?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "skipCount",
+                    "groups": 2,
+                    "each": 3
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 3 × 5 = ?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "skipCount",
+                    "groups": 3,
+                    "each": 5,
+                    "answer": 15
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "multiplication",
+            "tables": [
+              2,
+              5,
+              10
+            ],
+            "maxFactor": 5
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g1-time",
+      "title": "Telling time",
+      "icon": "🕒",
+      "summary": "Read o'clock and half past.",
+      "skills": [
+        {
+          "skillId": "g1-time-hour",
+          "title": "O'clock",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "The short hand shows the hour. When the long hand points straight up at 12, it is o'clock. This clock shows 3 o'clock.",
+                "visual": {
+                  "kind": "clock",
+                  "h": 3,
+                  "m": 0
+                }
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: What time does the clock show?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "readClock",
+                    "h": 4,
+                    "m": 0,
+                    "choices": [
+                      "4:00",
+                      "5:00",
+                      "6:00",
+                      "3:00"
+                    ]
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: What time does the clock show?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "readClock",
+                    "h": 9,
+                    "m": 0,
+                    "choices": [
+                      "10:00",
+                      "8:00",
+                      "9:00",
+                      "11:00"
+                    ],
+                    "answer": "9:00"
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "readClock",
+            "step": 60
+          }
+        },
+        {
+          "skillId": "g1-time-half",
+          "title": "O'clock and half past",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "When the long hand points down at 6, it is half past. The short hand is halfway between two numbers. This is half past 4, written 4:30.",
+                "visual": {
+                  "kind": "clock",
+                  "h": 4,
+                  "m": 30
+                }
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: What time does the clock show?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "readClock",
+                    "h": 10,
+                    "m": 30,
+                    "choices": [
+                      "9:30",
+                      "10:30",
+                      "10:00",
+                      "11:30"
+                    ]
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: What time does the clock show?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "readClock",
+                    "h": 9,
+                    "m": 30,
+                    "choices": [
+                      "10:30",
+                      "9:00",
+                      "9:30",
+                      "8:30"
+                    ],
+                    "answer": "9:30"
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "readClock",
+            "step": 30
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g1-money",
+      "title": "Money",
+      "icon": "🪙",
+      "summary": "Add prices and give change in pesos.",
+      "skills": [
+        {
+          "skillId": "g1-money-total",
+          "title": "How much altogether?",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Coins come as ₱1, ₱5, ₱10 and ₱20. To pay ₱8 and ₱6, add them: ₱8 + ₱6 = ₱14."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: Siti buys a storybook for ₱14 and a notebook for ₱10. How much does Siti pay altogether, in pesos?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "moneyTotal",
+                    "a": 1400,
+                    "b": 1000,
+                    "whole": true
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: Jun buys a lunch box for ₱17 and a storybook for ₱9. How much does Jun pay altogether, in pesos?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "moneyTotal",
+                    "a": 1700,
+                    "b": 900,
+                    "whole": true,
+                    "answer": 26
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "moneyProblem",
+            "forms": [
+              "total"
+            ],
+            "max": 20,
+            "whole": true
+          }
+        },
+        {
+          "skillId": "g1-money-change",
+          "title": "Give change",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Pay ₱20 for a ₱13 snack. Count up from ₱13 to ₱20: that is ₱7 change."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: Siti buys a notebook for ₱10 and pays with a ₱20 bill. How much change does Siti get, in pesos?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "moneyChange",
+                    "cost": 1000,
+                    "paid": 2000,
+                    "whole": true
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: Jun buys a storybook for ₱19 and pays with a ₱20 bill. How much change does Jun get, in pesos?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "moneyChange",
+                    "cost": 1900,
+                    "paid": 2000,
+                    "whole": true,
+                    "answer": 1
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "moneyProblem",
+            "forms": [
+              "change"
+            ],
+            "max": 20,
+            "whole": true
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g1-shapes",
+      "title": "Shapes and patterns",
+      "icon": "🔺",
+      "summary": "Name shapes and finish patterns.",
+      "skills": [
+        {
+          "skillId": "g1-shapes-name",
+          "title": "Name the shape",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "A triangle has 3 sides and 3 corners. A square has 4 equal sides.",
+                "visual": {
+                  "kind": "shape",
+                  "shape": "triangle"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: Tap the triangle.",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Tap the triangle.",
+                  "choices": [
+                    "star",
+                    "rectangle",
+                    "triangle"
+                  ],
+                  "answer": "triangle",
+                  "explain": "The answer is triangle."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "shapes"
+          }
+        },
+        {
+          "skillId": "g1-patterns",
+          "title": "What comes next?",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "A pattern repeats. Find the part that repeats, then say what comes next.",
+                "visual": {
+                  "kind": "sequence",
+                  "items": [
+                    "🔴",
+                    "🔵",
+                    "🔴",
+                    "🔵",
+                    "🔴",
+                    "?"
+                  ]
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: What comes next?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "What comes next?",
+                  "visual": {
+                    "kind": "sequence",
+                    "items": [
+                      "🎈",
+                      "🐟",
+                      "🎈",
+                      "🐟",
+                      "🎈",
+                      "?"
+                    ]
+                  },
+                  "choices": [
+                    "🐟",
+                    "🎈"
+                  ],
+                  "answer": "🐟",
+                  "explain": "The answer is a fish."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "patterns"
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g1-graphs",
+      "title": "Picture graphs",
+      "icon": "📊",
+      "summary": "Read a simple graph.",
+      "skills": [
+        {
+          "skillId": "g1-graphs-read",
+          "title": "Read a graph",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "Each bar shows how many. The tallest bar is the most. The shortest is the fewest."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: How many pears were sold?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "readGraph",
+                    "title": "Fruit sold at a stall",
+                    "unit": "fruits",
+                    "labels": [
+                      "pears",
+                      "bananas",
+                      "apples",
+                      "oranges"
+                    ],
+                    "values": [
+                      25,
+                      15,
+                      35,
+                      20
+                    ],
+                    "scale": 5,
+                    "form": "read",
+                    "i": 0,
+                    "j": 1,
+                    "asTable": false
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: Which fruit sold the most?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "readGraph",
+                    "title": "Fruit sold at a stall",
+                    "unit": "fruits",
+                    "labels": [
+                      "pears",
+                      "mangoes",
+                      "bananas",
+                      "oranges"
+                    ],
+                    "values": [
+                      20,
+                      10,
+                      90,
+                      30
+                    ],
+                    "scale": 10,
+                    "form": "most",
+                    "i": 0,
+                    "j": 1,
+                    "asTable": true,
+                    "answer": "bananas"
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "readGraph",
+            "forms": [
+              "read",
+              "most",
+              "least"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g1-word-problems",
+      "title": "Word problems",
+      "icon": "📝",
+      "summary": "Draw a bar to see what to do.",
+      "skills": [
+        {
+          "skillId": "g1-wp-part-whole",
+          "title": "Part and whole",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "A bar shows the whole. The two parts sit side by side inside it."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: Aisha has 9 marbles. Lea has 5 marbles. How many marbles do they have altogether?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "barModel",
+                    "model": {
+                      "rows": [
+                        {
+                          "label": "",
+                          "segments": [
+                            {
+                              "units": 9,
+                              "text": "Aisha: 9"
+                            },
+                            {
+                              "units": 5,
+                              "text": "Lea: 5"
+                            }
+                          ]
+                        }
+                      ],
+                      "braces": [
+                        {
+                          "row": 0,
+                          "from": 0,
+                          "to": 2,
+                          "side": "above",
+                          "text": "?"
+                        }
+                      ]
+                    },
+                    "op": "+",
+                    "a": 9,
+                    "b": 5,
+                    "answer": 14
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: Lito has 7 eggs. Ben has 6 eggs. How many eggs do they have altogether?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "barModel",
+                    "model": {
+                      "rows": [
+                        {
+                          "label": "",
+                          "segments": [
+                            {
+                              "units": 7,
+                              "text": "Lito: 7"
+                            },
+                            {
+                              "units": 6,
+                              "text": "Ben: 6"
+                            }
+                          ]
+                        }
+                      ],
+                      "braces": [
+                        {
+                          "row": 0,
+                          "from": 0,
+                          "to": 2,
+                          "side": "above",
+                          "text": "?"
+                        }
+                      ]
+                    },
+                    "op": "+",
+                    "a": 7,
+                    "b": 6,
+                    "answer": 13
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "wordProblem",
+            "kinds": [
+              "partWhole"
+            ],
+            "max": 20
+          }
+        },
+        {
+          "skillId": "g1-wp-compare",
+          "title": "How many more?",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "Draw one bar under the other. The part that sticks out is how many more."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: Lea has 5 marbles. Aisha has 7 more marbles than Lea. How many marbles does Aisha have?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "barModel",
+                    "model": {
+                      "rows": [
+                        {
+                          "label": "Aisha",
+                          "segments": [
+                            {
+                              "units": 5,
+                              "text": ""
+                            },
+                            {
+                              "units": 7,
+                              "text": "7",
+                              "dashed": false
+                            }
+                          ]
+                        },
+                        {
+                          "label": "Lea",
+                          "segments": [
+                            {
+                              "units": 5,
+                              "text": ""
+                            }
+                          ]
+                        }
+                      ],
+                      "braces": [
+                        {
+                          "row": 0,
+                          "from": 0,
+                          "to": 2,
+                          "side": "above",
+                          "text": "?"
+                        },
+                        {
+                          "row": 1,
+                          "from": 0,
+                          "to": 1,
+                          "side": "below",
+                          "text": "5"
+                        }
+                      ]
+                    },
+                    "op": "+",
+                    "a": 5,
+                    "b": 7,
+                    "answer": 12
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: Ben has 4 eggs. Lito has 7 more eggs than Ben. How many eggs does Lito have?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "barModel",
+                    "model": {
+                      "rows": [
+                        {
+                          "label": "Lito",
+                          "segments": [
+                            {
+                              "units": 4,
+                              "text": ""
+                            },
+                            {
+                              "units": 7,
+                              "text": "7",
+                              "dashed": false
+                            }
+                          ]
+                        },
+                        {
+                          "label": "Ben",
+                          "segments": [
+                            {
+                              "units": 4,
+                              "text": ""
+                            }
+                          ]
+                        }
+                      ],
+                      "braces": [
+                        {
+                          "row": 0,
+                          "from": 0,
+                          "to": 2,
+                          "side": "above",
+                          "text": "?"
+                        },
+                        {
+                          "row": 1,
+                          "from": 0,
+                          "to": 1,
+                          "side": "below",
+                          "text": "4"
+                        }
+                      ]
+                    },
+                    "op": "+",
+                    "a": 4,
+                    "b": 7,
+                    "answer": 11
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "wordProblem",
+            "kinds": [
+              "compare"
+            ],
+            "max": 20
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g1-challenge",
+      "title": "Challenge zone",
+      "icon": "⭐",
+      "summary": "Ready for more? These go a step beyond this grade.",
+      "challenge": true,
+      "skills": [
+        {
+          "skillId": "g1-ch-add",
+          "title": "Add with renaming",
+          "generator": {
+            "type": "addition",
+            "min": 10,
+            "max": 89,
+            "maxSum": 100,
+            "regroup": true
+          }
+        },
+        {
+          "skillId": "g1-ch-sub",
+          "title": "Subtract with renaming",
+          "generator": {
+            "type": "subtraction",
+            "min": 20,
+            "max": 99,
+            "regroup": true
+          }
+        },
+        {
+          "skillId": "g1-ch-groups",
+          "title": "More equal groups",
+          "generator": {
+            "type": "multiplication",
+            "tables": [
+              2,
+              5,
+              10
+            ],
+            "maxFactor": 10
+          }
+        }
+      ]
+    }
+  ]
+}

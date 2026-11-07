@@ -234,8 +234,8 @@ const renderJumps = ({ from = 0, step = 1, count = 1, hideEnd = false }) => {
  * Forward hops arc above the line, backward hops below.
  * `format` changes the labels: 'time' reads values as minutes after
  * midnight (9:45, "+15 min", "+1 h"); 'money' reads them as cents
- * (₱37.75, "+25¢", "+₱2.00").
- * @param {{start: number, moves: number[], format?: 'time'|'money'}} spec
+ * (₱37.75, "+25¢", "+₱2.00"); 'pesos' is money in whole pesos (₱13, "+₱7").
+ * @param {{start: number, moves: number[], format?: 'time'|'money'|'pesos'}} spec
  */
 const HOP_FORMATS = {
   time: {
@@ -245,6 +245,10 @@ const HOP_FORMATS = {
   money: {
     value: (n) => `₱${(n / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
     move: (m) => (m < 100 ? `${m}¢` : `₱${(m / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`),
+  },
+  pesos: {
+    value: (n) => `₱${(n / 100).toLocaleString('en-US')}`,
+    move: (m) => `₱${(m / 100).toLocaleString('en-US')}`,
   },
 };
 
