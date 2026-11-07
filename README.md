@@ -49,7 +49,7 @@ Techniques (`js/engine/techniques.js`): count on, make ten, number bonds, column
 
 ## Voice
 
-The app ships a **recorded voice pack** (`audio/voice/`, about 14 MB, cached for offline use): every lesson sentence, every Kinder question and hint, praise and nudges were recorded with the open-source [Piper](https://github.com/rhasspy/piper) engine using the *Kathleen* voice (CC0). Sentences that are not recorded (for example a random Grade 4 sum) use the device's best offline voice, read a little slower and higher. Parents can change voice, speed and pitch under **Parents → Voice**.
+The app ships a **recorded voice pack** (`audio/voice/`, about 17 MB, cached for offline use): every lesson sentence, every Kinder question and hint (including the small Challenge sums), game and results lines, praise and nudges were recorded with the open-source [Piper](https://github.com/rhasspy/piper) engine using the *Kathleen* voice (CC0). Sentences that are not recorded (for example a random Grade 4 sum) use the device's best offline voice, read a little slower and higher. Parents can change voice, speed and pitch under **Parents → Voice**.
 
 After changing lesson text or Kinder generators, re-record the new sentences (existing clips are kept):
 
