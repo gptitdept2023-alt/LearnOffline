@@ -174,7 +174,7 @@ export const renderPractice = async (view, skillId) => {
       !correct && h('p', null, `${t('answerWas')} `, h('strong', null, question.display || (typeof question.answer === 'number' ? question.answer.toLocaleString('en-US') : String(question.answer))), '.'),
       !correct && question.explain && !methodFor(question) && h('p.muted', null, question.explain),
       h('button.btn.btn-primary.btn-lg', { type: 'button', autofocus: true, onclick: next }, last ? t('done') : t('continue'), ' ▶'));
-    stage.querySelector('.answer-area').replaceChildren(feedback);
+    mount(stage.querySelector('.answer-area'), feedback);
     // After a wrong answer, show the technique step by step (Singapore method made visible).
     const method = !correct && methodFor(question);
     if (method && !stage.querySelector('.method')) {

@@ -40,12 +40,25 @@ const askPin = (title, help) => openDialog((close) => {
       h('button.btn.btn-primary', { type: 'submit' }, 'OK')));
 });
 
+/**
+ * Run a parent action and show a clear message if it fails (e.g. storage is
+ * full, or the browser has no secure crypto because the app is on plain http).
+ */
+const safely = (action) => async (...args) => {
+  try {
+    await action(...args);
+  } catch (error) {
+    console.error(error);
+    toast(`That did not work: ${error.message || error}`, 'error');
+  }
+};
+
 const checkPin = async (pin) => {
   const stored = await getSetting(PIN_KEY);
   return Boolean(stored) && (await hashPin(pin, stored.salt)) === stored.hash;
 };
 
-const setPinFlow = async () => {
+const setPinFlow = safely(async () => {
   const pin = await askPin('Set a parent PIN', '4 to 6 digits. Children will need it to open this area.');
   if (pin === null) return;
   if (!isValidPin(pin)) { toast('The PIN must be 4 to 6 digits.', 'error'); return; }
@@ -55,14 +68,14 @@ const setPinFlow = async () => {
   await setSetting(PIN_KEY, { salt, hash: await hashPin(pin, salt) });
   toast('Parent PIN saved.', 'success');
   render();
-};
+});
 
-const removePinFlow = async () => {
+const removePinFlow = safely(async () => {
   if (!await confirmDialog({ title: 'Remove the PIN?', message: 'Anyone will be able to open the parent area.', confirmText: 'Remove', danger: true })) return;
   await setSetting(PIN_KEY, null);
   toast('PIN removed.', 'success');
   render();
-};
+});
 
 /* ------------------------------------------------------------------ */
 /* Dashboard pieces                                                    */
@@ -165,7 +178,7 @@ const learnersPanel = (profiles) => h('section.panel', null,
     h('button.btn.btn-secondary.btn-sm', { type: 'button', onclick: async () => { if (await openProfileEditor(p)) render(); } }, 'Edit'),
     h('button.btn.btn-danger.btn-sm', {
       type: 'button',
-      onclick: async () => {
+      onclick: safely(async () => {
         const ok = await confirmDialog({
           title: `Delete ${p.name}?`,
           message: `All of ${p.name}'s progress, stars and badges on this device will be deleted. This cannot be undone. Make a backup first if you may need it.`,
@@ -176,7 +189,7 @@ const learnersPanel = (profiles) => h('section.panel', null,
         await withLoading(() => deleteProfile(p.profileId), 'Deleting…');
         toast(`${p.name} was deleted.`, 'success');
         render();
-      },
+      }),
     }, t('delete'))))),
   h('button.btn.btn-primary', { type: 'button', onclick: async () => { if (await openProfileEditor()) render(); } }, '+ ', t('addLearner')));
 
@@ -330,11 +343,11 @@ export const renderParent = async (view) => {
         h('button.btn.btn-primary.btn-lg', {
           type: 'button',
           autofocus: true,
-          onclick: async () => {
+          onclick: safely(async () => {
             const pin = await askPin('Enter parent PIN');
             if (pin === null) return;
             if (await checkPin(pin)) { setParentUnlocked(true); render(); } else toast('Wrong PIN.', 'error');
-          },
+          }),
         }, 'Enter PIN')),
     );
     return;

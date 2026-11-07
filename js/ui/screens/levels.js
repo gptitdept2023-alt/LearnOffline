@@ -45,7 +45,7 @@ export const renderLevels = async (view) => {
     return h(`section.lv-world.lv-world-${w + 1}`, null,
       h('header.lv-world-head', null,
         h('span.lv-world-icon', { 'aria-hidden': 'true' }, world.icon),
-        h('span', null, h('strong', null, `World ${w + 1}: ${world.name}`), h('small', null, `Levels ${inWorld[0].n}–${inWorld.at(-1).n} · ${worldStars}/${inWorld.length * 3} ★`))),
+        h('span', null, h('strong', null, `World ${w + 1}: ${world.name}`), h('small', null, `Levels ${inWorld[0].n}–${inWorld[inWorld.length - 1].n} · ${worldStars}/${inWorld.length * 3} ★`))),
       h('ol.lv-path', null, inWorld.map((l) => {
         const state = l.n === now && !(stars[l.n] > 0) ? 'current' : stars[l.n] > 0 ? 'done' : 'open';
         return h('li', null, levelNode(l, stars[l.n] || 0, state, look));

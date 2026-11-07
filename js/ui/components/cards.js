@@ -36,7 +36,7 @@ export const questCard = (quest, { profileId, young, onChange }) => {
       const btn = event.currentTarget;
       btn.disabled = true;
       try {
-        const { stars, unlockedTier } = await claimQuestChest(profileId, young);
+        const { stars, unlockedTier } = await claimQuestChest(profileId, young, quest.day);
         btn.classList.add('chest-opening');
         playSfx('chest');
         confetti();

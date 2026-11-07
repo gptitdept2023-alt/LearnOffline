@@ -231,8 +231,9 @@ export const recordActivity = (profileId, event, young) => updateRewards(profile
 });
 
 /** Open today's quest chest. Resolves with the stars inside; throws if not ready. */
-export const claimQuestChest = (profileId, young) => updateRewards(profileId, (current) => {
-  const r = ensureQuest(current, dayKey(), young);
+/** `day` is the day of the quest on screen, so a chest finished before midnight can still be opened after it. */
+export const claimQuestChest = (profileId, young, day = dayKey()) => updateRewards(profileId, (current) => {
+  const r = ensureQuest(current, day, young);
   if (!questComplete(r.quest)) throw new Error('Finish all three quest goals first.');
   if (r.quest.claimed) throw new Error('You already opened today’s chest.');
   const tier = r.quest.tier || 1;

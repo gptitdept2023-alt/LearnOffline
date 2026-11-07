@@ -3,7 +3,7 @@
  * the service worker that makes the app work offline.
  */
 
-import { h, toast } from './core/dom.js';
+import { h, mount, toast } from './core/dom.js';
 import { setLanguage, t } from './core/i18n.js';
 import { route, setNotFound, setBeforeEach, startRouter } from './core/router.js';
 import { getState, activateProfile, rememberedProfileId, setParentUnlocked } from './core/state.js';
@@ -103,7 +103,7 @@ const start = async () => {
   try {
     await openDb();
   } catch (error) {
-    document.getElementById('app').replaceChildren(
+    mount(document.getElementById('app'),
       h('div.error-panel', null, h('h1', null, 'Cannot start'), h('p', null, error.message)));
     return;
   }

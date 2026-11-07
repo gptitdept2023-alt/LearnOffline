@@ -53,7 +53,7 @@ export const render = async () => {
     await screen(view, ...params);
   } catch (error) {
     console.error(error);
-    view.replaceChildren();
+    view.textContent = ''; // (replaceChildren needs Chrome 86+)
     const msg = document.createElement('div');
     msg.className = 'error-panel';
     msg.innerHTML = '<h2>Something went wrong</h2><p></p><a class="btn btn-primary" href="#/">Go to start</a>';
@@ -61,7 +61,8 @@ export const render = async () => {
     view.append(msg);
   }
   if (token !== renderToken) return;
-  root.replaceChildren(view);
+  root.textContent = '';
+  root.append(view);
   window.scrollTo(0, 0);
   const heading = view.querySelector('h1');
   if (heading) { heading.tabIndex = -1; heading.focus({ preventScroll: true }); }

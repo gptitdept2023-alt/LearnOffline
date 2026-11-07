@@ -65,7 +65,7 @@ export const svg = (tag, attrs = {}, ...children) => {
 
 /** Replace all content of `el` with `children`. */
 export const mount = (el, ...children) => {
-  el.replaceChildren();
+  el.textContent = ''; // works on older Android WebViews (replaceChildren needs Chrome 86+)
   return appendChildren(el, children);
 };
 
