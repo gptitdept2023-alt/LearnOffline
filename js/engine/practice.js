@@ -12,12 +12,13 @@ export const SET_SIZE = 10;
 export const YOUNG_SET_SIZE = 6; // Shorter sets for pre-readers.
 
 /** Normalise a fixed question from a pack to the generator Question shape. */
-const fromFixed = (q) => ({
+const fromFixed = (q, rng = Math.random) => ({
   answerType: q.type === 'multiple-choice' || q.type === 'true-false' ? 'choice'
     : q.type === 'fraction' ? 'fraction' : 'numeric',
   prompt: q.prompt,
   answer: q.type === 'true-false' ? String(q.answer) : q.answer,
-  choices: q.type === 'true-false' ? ['true', 'false'] : q.choices,
+  // Packs made in the sheet list the right answer first, so their choices are mixed.
+  choices: q.type === 'true-false' ? ['true', 'false'] : (q.shuffle && q.choices ? shuffle(q.choices, rng) : q.choices),
   visual: q.visual,
   model: q.model,
   hint: q.hint,
@@ -43,7 +44,7 @@ export const questionsForSkill = (skill, count, rng = Math.random) => {
   };
   for (const q of shuffle(skill.questions || [], rng)) {
     if (out.length >= count) break;
-    add(fromFixed(q));
+    add(fromFixed(q, rng));
   }
   if (skill.generator) {
     // Bounded retries: small skills (e.g. "count to 5") may have few unique questions.
