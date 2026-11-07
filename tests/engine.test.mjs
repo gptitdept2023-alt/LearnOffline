@@ -16,6 +16,8 @@ const PARAMS = {
   factorsMultiples: {}, fractionOfShape: {}, equivalentFraction: {}, fractionSameDen: {}, decimals: {},
   wordProblem: { kinds: ['partWhole', 'compare', 'multiply'], max: 500, maxTimes: 6 },
   countPictures: {}, numberOrder: {}, moreOrFewer: {}, shapes: {}, patterns: {}, addPictures: {}, takeAwayPictures: {},
+  convertUnits: { forms: ['toSmall', 'toBig', 'whole', 'add'] }, readClock: {}, clock24h: {}, timeDuration: {},
+  moneyProblem: {}, angles: {}, areaPerimeter: {}, symmetry: {}, readGraph: {},
 };
 
 test('every generator produces 500 well-formed, self-consistent questions', () => {

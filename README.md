@@ -7,7 +7,10 @@ PC or an Android phone.
 
 Phase 1 ships **Math for Kinder 2** (picture-based, read aloud) and **Math
 for Grade 4**, taught the Singapore way: Concrete → Pictorial → Abstract
-lessons and bar models for word problems. All lessons and questions are
+lessons and bar models for word problems. Grade 4 covers whole numbers,
+factors, multiplication and division, fractions, decimals, length, mass and
+volume, money, time (clock, 24-hour clock, durations), angles, perimeter and
+area, symmetry, tables and bar graphs, and word problems. All lessons and questions are
 original.
 
 ## Install on a device
@@ -46,7 +49,7 @@ Techniques (`js/engine/techniques.js`): count on, make ten, number bonds, column
 
 ## Voice
 
-The app ships a **recorded voice pack** (`audio/voice/`, about 10 MB, cached for offline use): every lesson sentence, every Kinder question and hint, praise and nudges were recorded with the open-source [Piper](https://github.com/rhasspy/piper) engine using the *Kathleen* voice (CC0). Sentences that are not recorded (for example a random Grade 4 sum) use the device's best offline voice, read a little slower and higher. Parents can change voice, speed and pitch under **Parents → Voice**.
+The app ships a **recorded voice pack** (`audio/voice/`, about 14 MB, cached for offline use): every lesson sentence, every Kinder question and hint, praise and nudges were recorded with the open-source [Piper](https://github.com/rhasspy/piper) engine using the *Kathleen* voice (CC0). Sentences that are not recorded (for example a random Grade 4 sum) use the device's best offline voice, read a little slower and higher. Parents can change voice, speed and pitch under **Parents → Voice**.
 
 After changing lesson text or Kinder generators, re-record the new sentences (existing clips are kept):
 

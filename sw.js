@@ -7,7 +7,7 @@
  * tests/precache.test.mjs fails if a file is missing from PRECACHE.
  */
 
-const CACHE_VERSION = 'v11';
+const CACHE_VERSION = 'v12';
 const VOICE_MANIFEST = './audio/voice/manifest.json';
 const CACHE_NAME = `learnoffline-${CACHE_VERSION}`;
 
@@ -52,6 +52,13 @@ const PRECACHE = [
   './js/engine/rewards.js',
   './js/engine/shop.js',
   './js/engine/techniques.js',
+  './js/engine/topics/geometry.js',
+  './js/engine/topics/graphs.js',
+  './js/engine/topics/index.js',
+  './js/engine/topics/measurement.js',
+  './js/engine/topics/money.js',
+  './js/engine/topics/shared.js',
+  './js/engine/topics/time.js',
   './js/ui/components/cards.js',
   './js/ui/components/celebrate.js',
   './js/ui/components/common.js',
@@ -59,6 +66,7 @@ const PRECACHE = [
   './js/ui/components/map.js',
   './js/ui/components/mascot.js',
   './js/ui/components/visuals.js',
+  './js/ui/components/visualsTopics.js',
   './js/ui/screens/badges.js',
   './js/ui/screens/games.js',
   './js/ui/screens/guided.js',

@@ -234,3 +234,77 @@
 .shift-cell { min-height: 44px; justify-content: center; }
 .shift-new { background: var(--warn-soft, #fff1c9); }
 .shift-new .pv-digit { color: var(--extra); }
+
+/* ------------------------------------------------------------------ */
+/* Grade 4 topics: clock, day line, angles, area grid, symmetry, graphs */
+/* ------------------------------------------------------------------ */
+
+/* Clock face */
+.visual-clock svg { max-width: 220px; }
+.clk-face { fill: var(--surface); stroke: var(--text); stroke-width: 4; }
+.clk-tick { stroke: var(--muted); stroke-width: 1; }
+.clk-tick-big { stroke: var(--text); stroke-width: 2.5; }
+.clk-num { font-size: 19px; font-weight: 800; fill: var(--text); text-anchor: middle; }
+.clk-hour, .clk-minute { stroke: var(--text); stroke-linecap: round; }
+.clk-hour { stroke-width: 7; stroke: var(--primary); }
+.clk-minute { stroke-width: 4; }
+.clk-hot { stroke: var(--extra); }
+.clk-pin { fill: var(--text); }
+
+/* 24-hour day line */
+.visual-dayline svg { max-width: 420px; }
+.day-am { fill: var(--accent-soft); stroke: var(--border); }
+.day-pm { fill: var(--primary-soft); stroke: var(--border); }
+.day-half { font-size: 11px; font-weight: 800; fill: var(--muted); text-anchor: middle; }
+.day-label { font-size: 11px; fill: var(--text); text-anchor: middle; }
+.day-24 { font-weight: 800; fill: var(--primary); }
+.day-marker { fill: var(--extra); }
+.day-marker-line { stroke: var(--extra); stroke-width: 3; }
+.day-now { font-size: 14px; font-weight: 800; fill: var(--extra); text-anchor: middle; }
+
+/* Angles and turns */
+.visual-angle svg { max-width: 240px; }
+.ang-arm { stroke: var(--text); stroke-width: 4; stroke-linecap: round; }
+.ang-mark { fill: none; stroke: var(--primary); stroke-width: 3; }
+.ang-turn { fill: none; stroke: var(--extra); stroke-width: 3; stroke-linecap: round; }
+.ang-ref { fill: none; stroke: var(--good); stroke-width: 2.5; stroke-dasharray: 6 4; }
+.ang-guide { fill: none; stroke: var(--border); stroke-width: 1.5; stroke-dasharray: 3 4; }
+
+/* Area and perimeter grid */
+.rg-cell { fill: var(--primary-soft); stroke: var(--primary); stroke-width: 1; }
+.rg-alt { fill: var(--accent-soft); }
+.rg-fill { fill: var(--primary-soft); }
+.rg-outline { fill: none; stroke: var(--text); stroke-width: 2; }
+.rg-thick { stroke: var(--extra); stroke-width: 4; }
+.rg-label { font-size: 13px; font-weight: 800; fill: var(--text); text-anchor: middle; }
+.rg-left { text-anchor: end; }
+.rg-right { text-anchor: start; }
+.rg-area { font-size: 16px; font-weight: 800; fill: var(--text); text-anchor: middle; paint-order: stroke; stroke: var(--surface); stroke-width: 4px; }
+
+/* Symmetry */
+.visual-symmetry svg { max-width: 200px; overflow: visible; }
+.sym-shape { fill: var(--primary-soft); stroke: var(--primary); stroke-width: 2.5; stroke-linejoin: round; }
+.sym-flip { fill: var(--extra); fill-opacity: 0.25; stroke: var(--extra); stroke-width: 1.5; stroke-dasharray: 3 2; }
+.sym-line { stroke: var(--text); stroke-width: 2; stroke-dasharray: 5 4; }
+.sym-true { stroke: var(--good); stroke-width: 2; }
+
+/* Bar graph */
+.visual-bar-graph svg { max-width: 460px; }
+.bg-title { font-size: 13px; font-weight: 800; fill: var(--text); text-anchor: middle; }
+.bg-grid { stroke: var(--border); stroke-width: 1; }
+.bg-axis { stroke: var(--text); stroke-width: 2; }
+.bg-scale { font-size: 11px; fill: var(--muted); text-anchor: end; }
+.bg-unit { font-size: 11px; fill: var(--muted); text-anchor: middle; }
+.bg-bar { fill: var(--primary); opacity: 0.85; }
+.bg-hot { fill: var(--extra); opacity: 1; }
+.bg-label { font-size: 12px; font-weight: 700; fill: var(--text); text-anchor: middle; }
+.bg-guide { stroke: var(--extra); stroke-width: 2; stroke-dasharray: 5 4; }
+.bg-value { font-size: 13px; font-weight: 800; fill: var(--extra); text-anchor: middle; }
+
+/* Data table */
+.data-table { border-collapse: collapse; min-width: 220px; background: var(--surface); border-radius: var(--radius-sm); overflow: hidden; }
+.data-table caption { font-weight: 800; padding-bottom: 6px; }
+.data-table th, .data-table td { padding: 6px 14px; border: 1px solid var(--border); text-align: left; }
+.data-table thead th { background: var(--surface-2); font-size: 0.85rem; }
+.data-table td { text-align: right; font-weight: 800; }
+.data-table .dt-hot th, .data-table .dt-hot td { background: var(--accent-soft); }

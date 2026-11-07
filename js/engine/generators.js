@@ -20,6 +20,7 @@
  */
 
 import { randInt, pick, shuffle } from '../core/random.js';
+import { TOPIC_GENERATORS } from './topics/index.js';
 
 /* ------------------------------------------------------------------ */
 /* Shared helpers                                                      */
@@ -744,6 +745,8 @@ export const GENERATORS = Object.freeze({
   patterns,
   addPictures,
   takeAwayPictures,
+  // Measurement, time, money, geometry and graphs (js/engine/topics/).
+  ...TOPIC_GENERATORS,
 });
 
 /**

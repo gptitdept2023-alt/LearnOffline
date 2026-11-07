@@ -6,7 +6,7 @@
 
 /** Parse a typed number: "1,250" -> 1250, " 0.5 " -> 0.5. Returns NaN if not a number. */
 export const parseNumber = (raw) => {
-  const cleaned = String(raw ?? '').trim().replace(/[,\s]/g, '').replace(/^−/, '-');
+  const cleaned = String(raw ?? '').trim().replace(/[,\s]/g, '').replace(/^\$/, '').replace(/^−/, '-');
   if (!/^-?(\d+(\.\d*)?|\.\d+)$/.test(cleaned)) return Number.NaN;
   return Number(cleaned);
 };

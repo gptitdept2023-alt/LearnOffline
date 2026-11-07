@@ -122,6 +122,36 @@ const sayFraction = (num, den) => {
   return names ? `${num} ${Number(num) === 1 ? names[0] : names[1]}` : `${num} over ${den}`;
 };
 
+/** Measurement units read as words: [singular, plural]. */
+const UNIT_WORDS = {
+  'cm²': ['square centimetre', 'square centimetres'],
+  km: ['kilometre', 'kilometres'], cm: ['centimetre', 'centimetres'], mm: ['millimetre', 'millimetres'], m: ['metre', 'metres'],
+  kg: ['kilogram', 'kilograms'], g: ['gram', 'grams'], ml: ['millilitre', 'millilitres'], 'ℓ': ['litre', 'litres'],
+  h: ['hour', 'hours'], min: ['minute', 'minutes'],
+};
+const UNIT_RE = '(cm²|km|cm|mm|kg|ml|min|ℓ|m|g|h)(?![A-Za-z²])';
+
+/** "$7.35" -> "7 dollars 35 cents", "$0.35" -> "35 cents", "$10.00" -> "10 dollars". */
+const sayMoney = (whole, cents = '00') => {
+  const d = Number(whole);
+  const c = Number(cents);
+  const parts = [d && `${d} ${d === 1 ? 'dollar' : 'dollars'}`, c && `${c} ${c === 1 ? 'cent' : 'cents'}`].filter(Boolean);
+  return parts.join(' ') || '0 dollars';
+};
+
+/** Money, units and degrees as words, before the rest of the maths rules run. */
+const sayMeasures = (text) => text
+  .replace(/\$(\d+) note/g, (_, d) => `${d} dollar note`)
+  .replace(/\b1\/2 turn/g, 'half turn')
+  .replace(/\b(\d)\/4 turn/g, (_, n) => (n === '1' ? 'quarter turn' : `${n} quarter turn`))
+  .replace(/\$(\d+)(?:\.(\d{2}))?/g, (_, d, c) => sayMoney(d, c))
+  .replace(/(\d+)¢/g, (_, c) => `${c} ${c === '1' ? 'cent' : 'cents'}`)
+  .replace(/(\d+)°/g, (_, n) => `${n} degrees`)
+  .replace(new RegExp(`=\\s*\\?\\s*${UNIT_RE}`, 'g'), (_, u) => `equals how many ${UNIT_WORDS[u][1]}?`)
+  .replace(new RegExp(`\\?\\s*${UNIT_RE}`, 'g'), (_, u) => `and how many ${UNIT_WORDS[u][1]}?`)
+  .replace(new RegExp(`(\\d[\\d,]*)\\s?${UNIT_RE}`, 'g'), (_, n, u) => `${n} ${UNIT_WORDS[u][n === '1' ? 0 : 1]}`)
+  .replace(new RegExp(`\\bin ${UNIT_RE}`, 'g'), (_, u) => `in ${UNIT_WORDS[u][1]}`);
+
 /**
  * Put a short pause before each "equals" after the first in one sentence, so
  * a chain is read as steps: "7 times 8 equals 7 times 4 times 2, equals 28
@@ -144,7 +174,7 @@ const pauseChains = (text) => text
  * a teacher would pause. Used by the device voice AND to name recorded clips,
  * so both voices say exactly the same thing.
  */
-export const toSpokenText = (text) => pauseChains(String(text)
+export const toSpokenText = (text) => pauseChains(sayMeasures(String(text))
   .replace(/(\d),(\d{3})/g, '$1$2')
   .replace(/\?\s*\/\s*(\d+)/g, (_, den) => `how many ${FRACTION_NAMES[Number(den)]?.[1] || `over ${den}`}?`)
   .replace(/(\d+)\/(\d+)/g, (_, num, den) => sayFraction(num, den))

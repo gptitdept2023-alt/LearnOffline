@@ -13,6 +13,7 @@
 
 import { longDivisionSteps } from './longDivision.js';
 import { addShortcut, subShortcut, mulShortcut, divShortcut } from './shortcuts.js';
+import { TOPIC_METHODS } from './topics/index.js';
 
 const fmt = (n) => Number(n).toLocaleString('en-US');
 const digits = (n) => String(n).split('').reverse().map(Number); // ones first
@@ -524,6 +525,8 @@ const takeAwayCount = ({ emoji, a, b }) => ({
 const METHODS = {
   makeTen, countOn, columnAdd, columnSub, subtractBond, skipCount, divideByFact, splitMultiply,
   longDivide, equivalentFraction, sameDenominator, barModel, tapCount, countAll, takeAwayCount,
+  // Measurement, time, money, geometry and graphs (js/engine/topics/).
+  ...TOPIC_METHODS,
 };
 
 /** Optional faster tricks, shown only after the main method (see shortcuts.js). */

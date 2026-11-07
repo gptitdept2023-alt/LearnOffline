@@ -7,6 +7,7 @@
 
 import { h, svg } from '../../core/dom.js';
 import { longDivisionSteps } from '../../engine/longDivision.js';
+import { TOPIC_RENDERERS } from './visualsTopics.js';
 
 /* ------------------------------------------------------------------ */
 /* Pictures (Kinder)                                                   */
@@ -227,18 +228,33 @@ const renderJumps = ({ from = 0, step = 1, count = 1, hideEnd = false }) => {
  * 456 → +300 → 756 → −2 → 754. Points are spaced by order, not to scale,
  * so a small "−2" hop stays visible next to a big "+300" one.
  * Forward hops arc above the line, backward hops below.
- * @param {{start: number, moves: number[]}} spec
+ * `format` changes the labels: 'time' reads values as minutes after
+ * midnight (9:45, "+15 min", "+1 h"); 'money' reads them as cents
+ * ($7.35, "+65¢", "+$2.00").
+ * @param {{start: number, moves: number[], format?: 'time'|'money'}} spec
  */
-const renderHops = ({ start, moves }) => {
+const HOP_FORMATS = {
+  time: {
+    value: (n) => `${Math.floor(n / 60) % 12 || 12}:${String(n % 60).padStart(2, '0')}`,
+    move: (m) => (m % 60 ? `${m} min` : `${m / 60} h`),
+  },
+  money: {
+    value: (n) => `$${(n / 100).toFixed(2)}`,
+    move: (m) => (m < 100 ? `${m}¢` : `$${(m / 100).toFixed(2)}`),
+  },
+};
+
+const renderHops = ({ start, moves, format }) => {
   const points = moves.reduce((acc, m) => [...acc, acc[acc.length - 1] + m], [start]);
   const order = [...new Set(points)].sort((p, q) => p - q);
   const x = (n) => 34 + (order.indexOf(n) / Math.max(1, order.length - 1)) * 272;
-  const f = (n) => n.toLocaleString('en-US');
+  const fmtValue = HOP_FORMATS[format]?.value || ((n) => n.toLocaleString('en-US'));
+  const fmtMove = HOP_FORMATS[format]?.move || ((n) => n.toLocaleString('en-US'));
   const AXIS = 66;
   const nodes = [svg('line', { x1: 10, y1: AXIS, x2: 330, y2: AXIS, class: 'nl-axis' })];
   order.forEach((n) => {
     nodes.push(svg('line', { x1: x(n), y1: AXIS - 6, x2: x(n), y2: AXIS + 6, class: 'nl-tick' }));
-    nodes.push(svg('text', { x: x(n), y: AXIS + 24, class: `nl-label${n === points[points.length - 1] ? ' nl-mark' : ''}` }, f(n)));
+    nodes.push(svg('text', { x: x(n), y: AXIS + 24, class: `nl-label${n === points[points.length - 1] ? ' nl-mark' : ''}` }, fmtValue(n)));
   });
   moves.forEach((m, i) => {
     const x0 = x(points[i]);
@@ -248,9 +264,9 @@ const renderHops = ({ start, moves }) => {
     const lift = Math.min(24, 10 + Math.abs(x1 - x0) * 0.12); // arc height; labels stay inside the box
     const y0 = up ? AXIS - 8 : AXIS + 30;                       // backward hops go under the number labels
     nodes.push(svg('path', { d: `M${x0} ${y0} Q${mid} ${up ? y0 - lift * 2 : y0 + lift * 2} ${x1} ${y0}`, class: `jump-arc${up ? '' : ' jump-back'}`, style: `--i:${i + 1}` }));
-    nodes.push(svg('text', { x: mid, y: up ? y0 - lift - 6 : y0 + lift + 18, class: 'jump-label' }, `${up ? '+' : '−'}${f(Math.abs(m))}`));
+    nodes.push(svg('text', { x: mid, y: up ? y0 - lift - 6 : y0 + lift + 18, class: 'jump-label' }, `${up ? '+' : '−'}${fmtMove(Math.abs(m))}`));
   });
-  const label = `${f(start)} ${moves.map((m) => `${m >= 0 ? 'plus' : 'minus'} ${f(Math.abs(m))}`).join(' ')} is ${f(points[points.length - 1])}`;
+  const label = `${fmtValue(start)} ${moves.map((m) => `${m >= 0 ? 'plus' : 'minus'} ${fmtMove(Math.abs(m))}`).join(' ')} is ${fmtValue(points[points.length - 1])}`;
   return h('div.visual.visual-jumps.visual-hops', null, svg('svg', { viewBox: '0 0 340 150', role: 'img', 'aria-label': label }, nodes));
 };
 
@@ -572,6 +588,8 @@ const RENDERERS = {
   longDivision: renderLongDivision,
   area: renderArea,
   stack: renderStack,
+  // Clock, day line, angle, area grid, symmetry, bar graph, table.
+  ...TOPIC_RENDERERS,
 };
 
 /**
