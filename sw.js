@@ -7,7 +7,7 @@
  * tests/precache.test.mjs fails if a file is missing from PRECACHE.
  */
 
-const CACHE_VERSION = 'v7';
+const CACHE_VERSION = 'v8';
 const VOICE_MANIFEST = './audio/voice/manifest.json';
 const CACHE_NAME = `learnoffline-${CACHE_VERSION}`;
 

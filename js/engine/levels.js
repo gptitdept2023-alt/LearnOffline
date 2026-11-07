@@ -107,10 +107,10 @@ export const levelStars = (level, correct, total) => {
   return STAR_MARKS.filter((m) => acc >= m).length;
 };
 
-/** Level n is open once the level before it has at least one star. */
-export const isUnlocked = (n, levelStarsMap = {}) => n === 1 || (levelStarsMap[n - 1] || 0) > 0;
-
-/** The level to play next: the first one without stars (or 100 when all done). */
+/**
+ * The suggested level to play next: the first one without stars (or 100 when all done).
+ * All levels are open, so this only places Pip on the map; it never blocks a level.
+ */
 export const currentLevel = (levelStarsMap = {}) => {
   for (let n = 1; n <= LEVEL_COUNT; n += 1) if (!(levelStarsMap[n] > 0)) return n;
   return LEVEL_COUNT;

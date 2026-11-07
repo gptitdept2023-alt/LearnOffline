@@ -132,7 +132,7 @@ test('more games: memory, bond bubbles and number line rounds are fair', async (
 });
 
 test('100 levels: built from every pack, a boss every 10th level, ramping up', async () => {
-  const { buildLevels, levelStars, applyLevel, currentLevel, isUnlocked, LEVEL_COUNT } = await import('../js/engine/levels.js');
+  const { buildLevels, levelStars, applyLevel, currentLevel, LEVEL_COUNT } = await import('../js/engine/levels.js');
   const loadPackForTest = (file, young) => {
     const pack = JSON.parse(readFileSync(new URL(`../packs/${file}`, import.meta.url), 'utf8'));
     return { pack: { ...pack, young }, skillById: new Map(pack.topics.flatMap((t) => t.skills.map((s) => [s.skillId, s]))) };
@@ -161,7 +161,10 @@ test('100 levels: built from every pack, a boss every 10th level, ramping up', a
   assert.equal(levelStars({ n: 3, pass: 0.5 }, 9, 10), 3);
   let r = { ...emptyRewards('p') };
   ({ rewards: r } = applyLevel(r, 1, 2, true));
-  assert.ok(isUnlocked(2, r.levels) && !isUnlocked(3, r.levels));
+  assert.equal(currentLevel(r.levels), 2);
+  // Levels can be played in any order: skipping ahead still saves stars and Pip stays on the first gap.
+  ({ rewards: r } = applyLevel(r, 57, 3, true));
+  assert.equal(r.levels[57], 3);
   assert.equal(currentLevel(r.levels), 2);
   const first = applyLevel({ ...r, levels: { ...r.levels, 9: 1 } }, 10, 3, true);
   assert.ok(first.firstClear && first.bonus >= 20 && first.rewards.bossesBeaten === 1);

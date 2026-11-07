@@ -10,7 +10,7 @@ import { navigate } from '../../core/router.js';
 import { getState, setLastResult } from '../../core/state.js';
 import { speak, canSpeak, stopSpeaking } from '../../core/speech.js';
 import { getMasteryMap, saveSetResult, recordLevel } from '../../data/repo.js';
-import { buildLevels, levelStars, isUnlocked, WORLDS } from '../../engine/levels.js';
+import { buildLevels, levelStars, WORLDS } from '../../engine/levels.js';
 import { topicSkillsFor } from '../../data/packs.js';
 import { isCorrect, isBlank } from '../../engine/answers.js';
 import { pickDailyMix } from '../../engine/mastery.js';
@@ -41,12 +41,11 @@ const levelFor = (indexed, skillId) => {
 };
 
 /** Build the questions for this route. */
-const buildQuestions = async (profile, indexed, skillId, rewards) => {
+const buildQuestions = async (profile, indexed, skillId) => {
   const young = indexed.pack.young;
   if (String(skillId).startsWith(LEVEL_PREFIX)) {
     const level = levelFor(indexed, skillId);
     if (!level) throw new Error('That level was not found.');
-    if (!isUnlocked(level.n, rewards.levels)) return { locked: level };
     const skills = level.skillIds.map((id) => indexed.skillById.get(id)).filter(Boolean);
     return { label: level.boss ? `Boss: ${level.title}` : `Level ${level.n}`, questions: buildMixSet(skills, young, Math.random, level.size), level };
   }
@@ -93,12 +92,7 @@ const answerInput = (question, onSubmit) => {
 export const renderPractice = async (view, skillId) => {
   const { profile, indexed } = getState();
   const rewards = await getRewards(profile.profileId);
-  const { label, questions, level = null, locked } = await buildQuestions(profile, indexed, skillId, rewards);
-  if (locked) {
-    toast(`Level ${locked.n} is locked. Pass level ${locked.n - 1} first!`, 'info');
-    navigate('levels');
-    return;
-  }
+  const { label, questions, level = null } = await buildQuestions(profile, indexed, skillId);
   if (!questions.length) throw new Error('No questions are available for this practice yet.');
 
   const young = indexed.pack.young;

@@ -344,7 +344,6 @@
 .lv-world-8 { background: linear-gradient(180deg, #f3f8ff, #dbe9fb); }
 .lv-world-9 { background: linear-gradient(180deg, #ffe0cc, #ffb999); }
 .lv-world-10 { background: linear-gradient(180deg, #2a2f6b, #4b3a8f); color: #fff; }
-.lv-world-locked { filter: saturate(0.4); opacity: 0.85; }
 .lv-world-head { display: flex; align-items: center; gap: 10px; color: #1f2430; }
 .lv-world-10 .lv-world-head { color: #fff; }
 .lv-world-head > span:last-child { display: flex; flex-direction: column; }
@@ -369,10 +368,8 @@
 }
 .lv-circle { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; background: #fff; border: 4px solid #2f6fde; font-weight: 900; font-size: 1.1rem; box-shadow: 0 3px 0 rgba(0, 0, 0, 0.15); }
 .lv-done .lv-circle { background: #def7e8; border-color: #1f9d55; }
-.lv-locked .lv-circle { background: #eceae4; border-color: #b9b4a8; font-size: 1rem; }
 .lv-current .lv-circle { background: #fff1c9; border-color: #ffb703; animation: pulse 1.6s ease-in-out infinite; }
 .lv-boss .lv-circle { width: 60px; height: 60px; font-size: 1.9rem; border-color: #e0446a; background: linear-gradient(135deg, #fff, #ffe0ea); }
-.lv-boss.lv-locked .lv-circle { border-color: #b9b4a8; background: #eceae4; }
 .lv-boss-tag { margin-top: -6px; padding: 0 6px; border-radius: 999px; background: #e0446a; color: #fff; font-size: 0.62rem; font-weight: 900; letter-spacing: 0.05em; }
 .lv-stars { font-size: 0.8rem; letter-spacing: 1px; color: rgba(0, 0, 0, 0.2); line-height: 1; }
 .lv-stars .on { color: #ffb703; }
