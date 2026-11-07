@@ -67,7 +67,7 @@ const buildQuestions = async (profile, indexed, skillId) => {
 /** Input controls for one question. Returns { el, read(), focus() }. */
 const answerInput = (question, onSubmit) => {
   if (question.answerType === 'choice') {
-    const kindClass = { shape: '.choices-pictures', letter: '.choices-letters', word: '.choices-words', picture: '.choices-pics' }[question.choiceKind] || '';
+    const kindClass = { shape: '.choices-pictures', letter: '.choices-letters', word: '.choices-words', picture: '.choices-pics', phrase: '.choices-phrases', sentence: '.choices-sentences' }[question.choiceKind] || '';
     const el = h(`div.choices${kindClass}`, null,
       question.choices.map((c) => h('button.choice', {
         type: 'button',

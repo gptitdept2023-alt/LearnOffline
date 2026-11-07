@@ -1,0 +1,524 @@
+{
+  "packId": "english-g3",
+  "version": "1.0.0",
+  "subject": "english",
+  "title": "English · Grade 3",
+  "topics": [
+    {
+      "topicId": "en3-words",
+      "title": "Word parts",
+      "icon": "🧩",
+      "summary": "Prefixes, suffixes and syllables.",
+      "skills": [
+        {
+          "skillId": "en3-prefixes",
+          "title": "Prefixes",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "A prefix is added to the start of a word and changes its meaning. un- means not: unhappy means not happy.",
+                "visual": {
+                  "kind": "letters",
+                  "text": "un + happy = unhappy",
+                  "label": "un + happy = unhappy"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "re- means again (redo), dis- means not (dislike), pre- means before (preheat), mis- means wrongly (misspell)."
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: What does \"misspell\" mean?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "What does \"misspell\" mean?",
+                  "choices": [
+                    "spell well",
+                    "spell wrongly",
+                    "spell again"
+                  ],
+                  "answer": "spell wrongly",
+                  "explain": "Misspell means spell wrongly."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "affix",
+            "kind": "prefix"
+          }
+        },
+        {
+          "skillId": "en3-suffixes",
+          "title": "Suffixes",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "A suffix is added to the end of a word. -ful means full of: careful means full of care.",
+                "visual": {
+                  "kind": "letters",
+                  "text": "care + ful = careful",
+                  "label": "care + ful = careful"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "-less means without (careless), -er can mean a person who (teacher), -ly means in a way (slowly)."
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: What does \"softly\" mean?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "What does \"softly\" mean?",
+                  "choices": [
+                    "not soft",
+                    "in a soft way",
+                    "very soft"
+                  ],
+                  "answer": "in a soft way",
+                  "explain": "Softly means in a soft way."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "affix",
+            "kind": "suffix"
+          }
+        },
+        {
+          "skillId": "en3-syllables",
+          "title": "Syllables",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "A syllable is a beat in a word. Clap as you say ba-na-na: 3 claps, so 3 syllables.",
+                "visual": {
+                  "kind": "letters",
+                  "text": "ba · na · na",
+                  "label": "ba · na · na"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: How many syllables are in \"papaya\"?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "How many syllables are in \"papaya\"?",
+                  "choices": [
+                    "1",
+                    "2",
+                    "3",
+                    "4"
+                  ],
+                  "answer": "3",
+                  "explain": "Papaya has 3 syllables."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "syllables"
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "en3-usage",
+      "title": "Using words",
+      "icon": "🗣️",
+      "summary": "Homophones, a or an, and words that compare.",
+      "skills": [
+        {
+          "skillId": "en3-homophones",
+          "title": "Sound-alike words",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "Homophones sound the same but have different spellings and meanings: hear (with your ears) and here (this place).",
+                "visual": {
+                  "kind": "letters",
+                  "text": "hear 👂 · here 📍",
+                  "label": "hear 👂 · here 📍"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "their = belongs to them, there = that place, they're = they are."
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: Which word fits?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which word fits?",
+                  "visual": {
+                    "kind": "letters",
+                    "text": "This is ___ house.",
+                    "label": "This is blank house."
+                  },
+                  "choices": [
+                    "our",
+                    "hour"
+                  ],
+                  "answer": "our",
+                  "explain": "This is our house."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "fillBlank",
+            "bank": "homophone"
+          }
+        },
+        {
+          "skillId": "en3-articles",
+          "title": "a or an",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "Use an before a vowel sound: an apple, an egg. Use a before other sounds: a ball, a dog.",
+                "visual": {
+                  "kind": "letters",
+                  "text": "an apple · a ball",
+                  "label": "an apple · a ball"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Listen to the sound, not the letter: an hour (the h is quiet), but a uniform (it starts with a y sound)."
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: Which goes before \"unicorn\"?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which goes before \"unicorn\"?",
+                  "visual": {
+                    "kind": "letters",
+                    "text": "___ unicorn",
+                    "label": "blank unicorn"
+                  },
+                  "choices": [
+                    "a",
+                    "an"
+                  ],
+                  "answer": "a",
+                  "explain": "A unicorn."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "article"
+          }
+        },
+        {
+          "skillId": "en3-compare",
+          "title": "Comparing words",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "Comparing two things: add -er. Comparing three or more: add -est. tall, taller, tallest.",
+                "visual": {
+                  "kind": "letters",
+                  "text": "tall · taller · tallest",
+                  "label": "tall · taller · tallest"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Long words use more and most: more beautiful, most beautiful. Some words change: good, better, best; bad, worse, worst."
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: Which word fits?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which word fits?",
+                  "visual": {
+                    "kind": "letters",
+                    "text": "Ana is the ___ girl in her class. (tall)",
+                    "label": "Ana is the blank girl in her class. (tall)"
+                  },
+                  "choices": [
+                    "most tall",
+                    "taller",
+                    "tallest"
+                  ],
+                  "answer": "tallest",
+                  "explain": "Ana is the tallest girl in her class. (tall)"
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "fillBlank",
+            "bank": "compare"
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "en3-grammar",
+      "title": "Grammar",
+      "icon": "✏️",
+      "summary": "Verb tenses, agreement, adverbs and joining words.",
+      "skills": [
+        {
+          "skillId": "en3-tenses",
+          "title": "Past, present, future",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "Time words tell you the tense. Yesterday, I cleaned (past). Right now, I am cleaning (present). Tomorrow, I will clean (future).",
+                "visual": {
+                  "kind": "letters",
+                  "text": "cleaned · am cleaning · will clean",
+                  "label": "cleaned · am cleaning · will clean"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: Which words fit?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which words fit?",
+                  "visual": {
+                    "kind": "letters",
+                    "text": "Right now, the baby ___.",
+                    "label": "Right now, the baby blank."
+                  },
+                  "choices": [
+                    "was sleeping",
+                    "slept",
+                    "is sleeping"
+                  ],
+                  "answer": "is sleeping",
+                  "explain": "Right now, the baby is sleeping."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "fillBlank",
+            "bank": "tense"
+          }
+        },
+        {
+          "skillId": "en3-agreement",
+          "title": "Is or are?",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "One person or thing: The dog is barking. More than one: The dogs are barking.",
+                "visual": {
+                  "kind": "letters",
+                  "text": "The dog is · The dogs are",
+                  "label": "The dog is · The dogs are"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "With he, she or one name, many action words add -s: He walks. They walk."
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: Which word fits?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which word fits?",
+                  "visual": {
+                    "kind": "letters",
+                    "text": "There ___ three apples.",
+                    "label": "There blank three apples."
+                  },
+                  "choices": [
+                    "are",
+                    "is"
+                  ],
+                  "answer": "are",
+                  "explain": "There are three apples."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "fillBlank",
+            "bank": "agreement"
+          }
+        },
+        {
+          "skillId": "en3-adverbs",
+          "title": "Adverbs",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "An adverb tells more about an action: how, when or where. The turtle walked slowly. Slowly tells how.",
+                "visual": {
+                  "kind": "letters",
+                  "text": "walked slowly",
+                  "label": "walked slowly"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: Which word tells how, when or where?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which word tells how, when or where?",
+                  "visual": {
+                    "kind": "letters",
+                    "text": "The children played happily.",
+                    "label": "The children played happily."
+                  },
+                  "choices": [
+                    "happily",
+                    "children",
+                    "played"
+                  ],
+                  "answer": "happily",
+                  "explain": "Happily tells more about the action."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "wordInSentence",
+            "bank": "adverb"
+          }
+        },
+        {
+          "skillId": "en3-conjunctions",
+          "title": "Joining words",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "Joining words connect ideas. and adds, but shows a difference, so tells what happened because of it, because tells why.",
+                "visual": {
+                  "kind": "letters",
+                  "text": "and · but · so · because",
+                  "label": "and · but · so · because"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: Which joining word fits?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which joining word fits?",
+                  "visual": {
+                    "kind": "letters",
+                    "text": "We bought rice ___ eggs at the store.",
+                    "label": "We bought rice blank eggs at the store."
+                  },
+                  "choices": [
+                    "so",
+                    "and",
+                    "because"
+                  ],
+                  "answer": "and",
+                  "explain": "We bought rice and eggs at the store."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "fillBlank",
+            "bank": "conjunction"
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "en3-reading",
+      "title": "Reading",
+      "icon": "📖",
+      "summary": "Main idea, details, word meanings and reasons.",
+      "skills": [
+        {
+          "skillId": "en3-stories",
+          "title": "Read and answer",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "The main idea is what the whole story is mostly about. Details are small facts that support it.",
+                "visual": {
+                  "kind": "passage",
+                  "title": "The tree of life",
+                  "text": "Many people call the coconut tree the \"tree of life\" because almost every part is useful."
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "For \"why\" questions, look for words like because and so in the story."
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: In the story, \"coasts\" are…",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "In the story, \"coasts\" are…",
+                  "visual": {
+                    "kind": "passage",
+                    "title": "Mangrove forests",
+                    "text": "Along many coasts in the Philippines, you can find mangrove trees. Their roots grow down into the salty water like long legs. These roots hold the mud in place, so big waves cannot wash the land away. Small fish hide among the roots, where bigger fish cannot reach them. That is why people work hard to plant new mangroves."
+                  },
+                  "choices": [
+                    "big cities",
+                    "land next to the sea",
+                    "tall mountains"
+                  ],
+                  "answer": "land next to the sea",
+                  "explain": "The answer is in the story \"Mangrove forests\"."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "story",
+            "grade": 3
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "en3-challenge",
+      "title": "Challenge zone",
+      "icon": "⭐",
+      "summary": "Ready for more? These go a step beyond this grade.",
+      "challenge": true,
+      "skills": [
+        {
+          "skillId": "en3-ch-idioms",
+          "title": "Sayings",
+          "generator": {
+            "type": "idiom"
+          }
+        },
+        {
+          "skillId": "en3-ch-abc",
+          "title": "ABC order",
+          "generator": {
+            "type": "abcOrder",
+            "sameFirst": true
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,663 @@
+{
+  "packId": "english-g1",
+  "version": "1.0.0",
+  "subject": "english",
+  "title": "English · Grade 1",
+  "topics": [
+    {
+      "topicId": "en1-phonics",
+      "title": "Letter teams",
+      "icon": "🔤",
+      "summary": "Two letters, one sound: sh, ch, th, wh, and blends like fr and st.",
+      "skills": [
+        {
+          "skillId": "en1-digraphs",
+          "title": "sh, ch, th, wh",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Some letters work as a team to make one new sound. s and h together say shh, like in ship.",
+                "visual": {
+                  "kind": "letters",
+                  "text": null,
+                  "tiles": [
+                    "s",
+                    "h",
+                    "i",
+                    "p"
+                  ],
+                  "emoji": "🚢",
+                  "highlight": [
+                    0,
+                    1
+                  ],
+                  "label": "ship"
+                }
+              },
+              {
+                "stage": "pictorial",
+                "text": "ch says ch, like in chair. th puts your tongue between your teeth, like in three. wh says w, like in whale.",
+                "visual": {
+                  "kind": "letters",
+                  "text": null,
+                  "tiles": [
+                    "c",
+                    "h"
+                  ],
+                  "emoji": "💺 3️⃣ 🐋",
+                  "label": "ch"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: Which two letters does it start with?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which two letters does it start with?",
+                  "visual": {
+                    "kind": "letters",
+                    "emoji": "🚢",
+                    "label": "ship"
+                  },
+                  "choices": [
+                    "wh",
+                    "ch",
+                    "sh",
+                    "th"
+                  ],
+                  "answer": "sh",
+                  "explain": "Ship starts with sh."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "digraphStart"
+          }
+        },
+        {
+          "skillId": "en1-blends",
+          "title": "Blends",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "In a blend, you hear both letters, said quickly together. f and r make fr, like in frog.",
+                "visual": {
+                  "kind": "letters",
+                  "text": null,
+                  "tiles": [
+                    "f",
+                    "r",
+                    "o",
+                    "g"
+                  ],
+                  "emoji": "🐸",
+                  "highlight": [
+                    0,
+                    1
+                  ],
+                  "label": "frog"
+                }
+              },
+              {
+                "stage": "pictorial",
+                "text": "More blends: st as in star, tr as in tree, fl as in flag, sn as in snake.",
+                "visual": {
+                  "kind": "letters",
+                  "text": null,
+                  "tiles": [
+                    "s",
+                    "t",
+                    "a",
+                    "r"
+                  ],
+                  "emoji": "⭐ 🌳 🚩 🐍",
+                  "highlight": [
+                    0,
+                    1
+                  ],
+                  "label": "star"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: Which two letters does it start with?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which two letters does it start with?",
+                  "visual": {
+                    "kind": "letters",
+                    "emoji": "🦀",
+                    "label": "crab"
+                  },
+                  "choices": [
+                    "cr",
+                    "sp",
+                    "tr"
+                  ],
+                  "answer": "cr",
+                  "explain": "Crab starts with cr: c and r blended together."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "blendStart"
+          }
+        },
+        {
+          "skillId": "en1-magic-e",
+          "title": "Magic e",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Kit has a short i. Add an e at the end and you get kite. The e is quiet, but it makes the i say its name.",
+                "visual": {
+                  "kind": "letters",
+                  "text": null,
+                  "tiles": [
+                    "k",
+                    "i",
+                    "t",
+                    "e"
+                  ],
+                  "emoji": "🪁",
+                  "highlight": [
+                    3
+                  ],
+                  "label": "kite"
+                }
+              },
+              {
+                "stage": "pictorial",
+                "text": "The same thing happens with other vowels: cub becomes cube, and hop becomes hope.",
+                "visual": {
+                  "kind": "letters",
+                  "text": null,
+                  "tiles": [
+                    "c",
+                    "u",
+                    "b",
+                    "e"
+                  ],
+                  "emoji": "🧊",
+                  "highlight": [
+                    3
+                  ],
+                  "label": "cube"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: Which word names the picture?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which word names the picture?",
+                  "visual": {
+                    "kind": "letters",
+                    "emoji": "🦴",
+                    "label": "the picture"
+                  },
+                  "choices": [
+                    "box",
+                    "bun",
+                    "bone"
+                  ],
+                  "answer": "bone",
+                  "explain": "Bone ends with a quiet e, so the o says its name."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "magicE"
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "en1-sight",
+      "title": "Sight words",
+      "icon": "👀",
+      "summary": "Words to know by heart, so reading gets fast.",
+      "skills": [
+        {
+          "skillId": "en1-sight-1",
+          "title": "Sight words 1",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Some words are used so often that we learn to read them in one look. Say each word as you see it.",
+                "visual": {
+                  "kind": "letters",
+                  "text": "after  again  could  every  from",
+                  "label": "after  again  could  every  from"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: Tap the word: once.",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Tap the word: once.",
+                  "choices": [
+                    "know",
+                    "once",
+                    "after"
+                  ],
+                  "answer": "once",
+                  "explain": "The answer is once."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sightWord",
+            "words": [
+              "after",
+              "again",
+              "could",
+              "every",
+              "from",
+              "give",
+              "going",
+              "know",
+              "once",
+              "thank"
+            ]
+          }
+        },
+        {
+          "skillId": "en1-sight-2",
+          "title": "Sight words 2",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Here are more words to know by heart. Read them three times, faster each time.",
+                "visual": {
+                  "kind": "letters",
+                  "text": "were  when  them  then  think",
+                  "label": "were  when  them  then  think"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: Tap the word: take.",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Tap the word: take.",
+                  "choices": [
+                    "some",
+                    "take",
+                    "were"
+                  ],
+                  "answer": "take",
+                  "explain": "The answer is take."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sightWord",
+            "words": [
+              "were",
+              "when",
+              "them",
+              "then",
+              "think",
+              "walk",
+              "over",
+              "some",
+              "take",
+              "open"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "en1-words",
+      "title": "Words",
+      "icon": "📚",
+      "summary": "Naming words, action words, opposites and more than one.",
+      "skills": [
+        {
+          "skillId": "en1-nouns",
+          "title": "Naming words",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "A naming word names a person, an animal, a place or a thing. Teacher, bird, school and ball are naming words.",
+                "visual": {
+                  "kind": "letters",
+                  "text": null,
+                  "tiles": null,
+                  "emoji": "👩‍🏫 🐦 🏫 ⚽",
+                  "label": ""
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: Which word is a naming word?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which word is a naming word?",
+                  "choices": [
+                    "school",
+                    "pretty",
+                    "give"
+                  ],
+                  "answer": "school",
+                  "explain": "It names a person, animal, place or thing."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "wordType",
+            "kind": "noun"
+          }
+        },
+        {
+          "skillId": "en1-verbs",
+          "title": "Action words",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "An action word tells what someone does. Jump, eat, sing and swim are action words. Can you jump?",
+                "visual": {
+                  "kind": "letters",
+                  "text": null,
+                  "tiles": null,
+                  "emoji": "🤸 🍽️ 🎤 🏊",
+                  "label": ""
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: Which word is an action word?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which word is an action word?",
+                  "choices": [
+                    "sit",
+                    "sad",
+                    "big"
+                  ],
+                  "answer": "sit",
+                  "explain": "It is something you can do."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "wordType",
+            "kind": "verb"
+          }
+        },
+        {
+          "skillId": "en1-plurals",
+          "title": "One and more",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "One cat, two cats. Add -s to show more than one.",
+                "visual": {
+                  "kind": "letters",
+                  "text": null,
+                  "tiles": null,
+                  "emoji": "🐱 🐱",
+                  "label": ""
+                }
+              },
+              {
+                "stage": "pictorial",
+                "text": "Words that end in s, x, sh or ch add -es, because it is easier to say: one box, two boxes. One dish, two dishes.",
+                "visual": {
+                  "kind": "letters",
+                  "text": "box → boxes",
+                  "label": "box → boxes"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: One dish, two ___.",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "One dish, two ___.",
+                  "choices": [
+                    "dish",
+                    "dishes",
+                    "dishs"
+                  ],
+                  "answer": "dishes",
+                  "explain": "One dish, two dishes."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "plural"
+          }
+        },
+        {
+          "skillId": "en1-opposites",
+          "title": "Opposites",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Opposites are as different as can be. Hot and cold are opposites. So are up and down.",
+                "visual": {
+                  "kind": "letters",
+                  "text": null,
+                  "tiles": null,
+                  "emoji": "🔥 🧊",
+                  "label": ""
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: What is the opposite of \"happy\"?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "What is the opposite of \"happy\"?",
+                  "choices": [
+                    "sad",
+                    "down",
+                    "wet"
+                  ],
+                  "answer": "sad",
+                  "explain": "Happy and sad are opposites."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "pairWord",
+            "kind": "opposite"
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "en1-sentences",
+      "title": "Sentences",
+      "icon": "✏️",
+      "summary": "Capital letters, full stops and question marks.",
+      "skills": [
+        {
+          "skillId": "en1-capitals",
+          "title": "Capital letter and full stop",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "A sentence starts with a capital letter and ends with a full stop.",
+                "visual": {
+                  "kind": "letters",
+                  "text": "The cat is on the mat.",
+                  "label": "The cat is on the mat."
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Check both ends: Is the first letter big? Is there a dot at the end?"
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: Which sentence is written the right way?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which sentence is written the right way?",
+                  "choices": [
+                    "Dad is at home",
+                    "dad is at home.",
+                    "Dad is at home."
+                  ],
+                  "answer": "Dad is at home.",
+                  "explain": "It starts with a capital letter and ends with a full stop."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "capitalStop"
+          }
+        },
+        {
+          "skillId": "en1-end-marks",
+          "title": "Telling or asking?",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "A telling sentence ends with a full stop: My hat is red.",
+                "visual": {
+                  "kind": "letters",
+                  "text": "My hat is red.",
+                  "label": "My hat is red."
+                }
+              },
+              {
+                "stage": "pictorial",
+                "text": "An asking sentence ends with a question mark: Where is my hat?",
+                "visual": {
+                  "kind": "letters",
+                  "text": "Where is my hat?",
+                  "label": "Where is my hat?"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: Which mark goes at the end?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which mark goes at the end?",
+                  "visual": {
+                    "kind": "letters",
+                    "text": "Who is at the door ___",
+                    "label": "Who is at the door blank"
+                  },
+                  "choices": [
+                    ".",
+                    "?"
+                  ],
+                  "answer": "?",
+                  "explain": "It asks something, so it ends with a question mark."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "endMark"
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "en1-reading",
+      "title": "Reading",
+      "icon": "📖",
+      "summary": "Read short stories and answer questions.",
+      "skills": [
+        {
+          "skillId": "en1-stories",
+          "title": "Read and answer",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "Read the whole story first. Then read the question.",
+                "visual": {
+                  "kind": "passage",
+                  "title": "The red ball",
+                  "text": "Ben has a red ball. He kicks it to his dog. The dog runs to get the ball."
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Look back at the story to find the answer. What color is the ball? The story says: a red ball."
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: What does Ben do with the ball?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "What does Ben do with the ball?",
+                  "visual": {
+                    "kind": "passage",
+                    "title": "The red ball",
+                    "text": "Ben has a red ball. He kicks it to his dog. The dog runs to get the ball."
+                  },
+                  "choices": [
+                    "He hides it.",
+                    "He kicks it.",
+                    "He throws it in a box."
+                  ],
+                  "answer": "He kicks it.",
+                  "explain": "The answer is in the story \"The red ball\"."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "story",
+            "grade": 1
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "en1-challenge",
+      "title": "Challenge zone",
+      "icon": "⭐",
+      "summary": "Ready for more? These go a step beyond this grade.",
+      "challenge": true,
+      "skills": [
+        {
+          "skillId": "en1-ch-rhymes",
+          "title": "Rhyming words",
+          "generator": {
+            "type": "rhymeWord"
+          }
+        },
+        {
+          "skillId": "en1-ch-abc",
+          "title": "ABC order",
+          "generator": {
+            "type": "abcOrder"
+          }
+        }
+      ]
+    }
+  ]
+}

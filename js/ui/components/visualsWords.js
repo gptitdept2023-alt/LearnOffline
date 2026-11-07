@@ -5,6 +5,7 @@
  *   { kind: 'letters', emoji: '🐱', tiles: ['c', null, 't'], label: 'cat' }
  *   { kind: 'letters', tiles: ['G'] }                 one big letter
  *   { kind: 'letters', text: 'I see a big dog.' }      a sentence to read
+ *   { kind: 'passage', title: 'Splash!', text: '…' }   a short story to read
  *
  * `null` in `tiles` is the blank to fill; `highlight` lists tile positions to
  * colour (the sound being taught). `label` is what a screen reader hears, so
@@ -22,4 +23,13 @@ const renderLetters = ({ emoji, tiles, text, highlight = [], label }) => {
     text && h('p.read-text', { 'aria-hidden': 'true' }, text));
 };
 
-export const WORD_RENDERERS = { letters: renderLetters };
+/**
+ * A short story to read: { kind: 'passage', title, text }. Shown as plain
+ * text in a card (not read aloud for the learner: reading it is the skill).
+ */
+const renderPassage = ({ title, text }) => h('div.visual.visual-passage', null,
+  h('article.passage', { 'aria-label': title ? `Story: ${title}` : 'Story' },
+    title && h('h3.passage-title', null, title),
+    h('p.passage-text', null, text)));
+
+export const WORD_RENDERERS = { letters: renderLetters, passage: renderPassage };
