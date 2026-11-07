@@ -194,10 +194,16 @@ const addition = ({ min = 0, max = 10, maxSum, regroup }, rng) => {
     prompt: `${fmt(a)} + ${fmt(b)} = ?`,
     answer: sum,
     visual: sum <= 20 ? { kind: 'tenFrames', value: a, extra: b } : undefined,
-    hint: sum <= 20 ? 'Make a ten first, then add what is left.' : 'Add the ones first, then the tens. Carry if the ones make 10 or more.',
+    hint: ADD_HINTS[additionMethod(a, b).kind],
     explain: `${fmt(a)} + ${fmt(b)} = ${fmt(sum)}`,
     method: additionMethod(a, b),
   };
+};
+
+const ADD_HINTS = {
+  countOn: 'Start at the bigger number and count on.',
+  makeTen: 'Make a ten first, then add what is left.',
+  columnAdd: 'Add the ones first, then the tens. Carry if the ones make 10 or more.',
 };
 
 /** Which Singapore technique fits an addition: count on, make ten, or column method. */

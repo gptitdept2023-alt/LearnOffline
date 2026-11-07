@@ -67,6 +67,7 @@ const setPinFlow = safely(async () => {
   const salt = newSalt();
   await setSetting(PIN_KEY, { salt, hash: await hashPin(pin, salt) });
   toast('Parent PIN saved.', 'success');
+  setParentUnlocked(true); // the parent who just set it stays in
   render();
 });
 

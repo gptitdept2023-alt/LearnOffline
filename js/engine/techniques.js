@@ -62,6 +62,16 @@ const makeTen = ({ a, b }) => {
 const countOn = ({ a, b }) => {
   const big = Math.max(a, b);
   const small = Math.min(a, b);
+  if (small === 0) {
+    return {
+      name: 'Add nothing',
+      steps: [
+        { text: `Adding 0 means adding nothing.`, visual: { kind: 'numberLine', from: Math.max(0, big - 2), to: big + 2, mark: big } },
+        { text: `${a} + ${b} = ${big}. The number stays the same.` },
+      ],
+      guided: [ask(`${a} + ${b} = ?`, big)],
+    };
+  }
   const counts = Array.from({ length: small }, (_, i) => big + i + 1);
   return {
     name: 'Count on',

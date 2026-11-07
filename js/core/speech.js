@@ -225,6 +225,7 @@ export const toSpokenText = (text) => pauseChains(sayMeasures(String(text))
   // A colon introduces the working ("Use facts you know: 7 × 8 ..."): pause like a full stop.
   .replace(/:\s+/g, '. ')
   // A "?" standing alone is the symbol itself: "put ? on what you must find".
+  .replace(/\b(the|a) \?$/g, '$1 question mark?')
   .replace(/\b(the|a) \?(?=\s|$|[.,])/g, '$1 question mark')
   .replace(/(^|\s)\?(?=\s|$|[.,])/g, '$1a question mark')
   .replace(/\s+/g, ' ')

@@ -65,7 +65,11 @@ export const openDb = () => {
     request.onsuccess = () => {
       const db = request.result;
       // If another tab upgrades the schema, close so it can proceed.
-      db.onversionchange = () => { db.close(); dbPromise = null; };
+      db.onversionchange = () => {
+        db.close();
+        dbPromise = Promise.reject(new Error('LearnOffline was updated in another tab. Please reload this page.'));
+        dbPromise.catch(() => {});
+      };
       resolve(db);
     };
     request.onerror = () => reject(request.error);

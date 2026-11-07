@@ -25,6 +25,7 @@ const hasKey = (value) => typeof value === 'string' || (typeof value === 'number
 const validRow = (name, row) => {
   if (!isRow(row)) return false;
   if (!(ROW_KEYS[name] || []).every((field) => hasKey(row[field]))) return false;
+  if (name === STORES.attempts && row.attemptId !== undefined && !hasKey(row.attemptId)) return false;
   if (name === STORES.rewards) {
     for (const field of ['badges', 'owned']) if (row[field] !== undefined && !Array.isArray(row[field])) return false;
   }

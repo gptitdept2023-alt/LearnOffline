@@ -101,7 +101,7 @@ test('voice audit regressions: symbols, clock times and unknowns are read as wor
   const cases = [
     ['It is −. Type − to go on.', 'It is minus. Type minus to go on.'],
     ['Label what you know, and put ? on what you must find.', 'Label what you know, and put a question mark on what you must find.'],
-    ['Which operation finds the ?', 'Which operation finds the question mark'],
+    ['Which operation finds the ?', 'Which operation finds the question mark?'],
     ['515 ÷ 4 = 128 remainder ?', '515 divided by 4 equals 128 remainder what?'],
     ['646 ÷ 4 = ? remainder 2', '646 divided by 4 equals what, remainder 2?'],
     ['₱45 + ₱28 = ₱?', '45 pesos plus 28 pesos equals how many pesos?'],
