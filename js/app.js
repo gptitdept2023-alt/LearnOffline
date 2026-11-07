@@ -4,7 +4,7 @@
  */
 
 import { h, mount, toast } from './core/dom.js';
-import { setLanguage, t } from './core/i18n.js';
+import { setLanguage, t, DEFAULT_LANGUAGE } from './core/i18n.js';
 import { route, setNotFound, setBeforeEach, startRouter } from './core/router.js';
 import { getState, activateProfile, rememberedProfileId, setParentUnlocked, refreshProfile, clearProfile } from './core/state.js';
 import { openDb } from './data/db.js';
@@ -44,28 +44,39 @@ const registerRoutes = () => {
   setNotFound(renderStart);
 
   setBeforeEach(async (name) => {
-    // Back button, ⇄ or a typed link all leave the parent area: lock it again.
-    if (name !== 'parent') setParentUnlocked(false);
-    if (!LEARNER_SCREENS.has(name)) return null;
-    const active = getState().profile;
-    if (active) {
-      // The learner may have been deleted, edited or replaced by a restore in the parent area.
-      const fresh = await getProfile(active.profileId);
-      if (!fresh) { clearProfile(); return ''; }
-      if (fresh.packId !== active.packId) await activateProfile(fresh.profileId);
-      else refreshProfile(fresh);
-      return null;
-    }
-    // After a reload, resume the last learner on this device if they still exist.
-    const remembered = rememberedProfileId();
-    if (remembered) {
-      try {
-        await activateProfile(remembered);
-        return null;
-      } catch { /* fall through to the start screen */ }
-    }
-    return '';
+    const redirect = await guardRoute(name);
+    // A learner's screens use the labels language they chose; the start screen and parent area stay English.
+    setLanguage(redirect === null && LEARNER_SCREENS.has(name) ? getState().profile?.language : DEFAULT_LANGUAGE);
+    return redirect;
   });
+};
+
+/**
+ * Locks the parent area when leaving it and makes sure a learner is active on
+ * learner screens. Returns null to go on, or the route to go to instead.
+ */
+const guardRoute = async (name) => {
+  // Back button, ⇄ or a typed link all leave the parent area: lock it again.
+  if (name !== 'parent') setParentUnlocked(false);
+  if (!LEARNER_SCREENS.has(name)) return null;
+  const active = getState().profile;
+  if (active) {
+    // The learner may have been deleted, edited or replaced by a restore in the parent area.
+    const fresh = await getProfile(active.profileId);
+    if (!fresh) { clearProfile(); return ''; }
+    if (fresh.packId !== active.packId) await activateProfile(fresh.profileId);
+    else refreshProfile(fresh);
+    return null;
+  }
+  // After a reload, resume the last learner on this device if they still exist.
+  const remembered = rememberedProfileId();
+  if (remembered) {
+    try {
+      await activateProfile(remembered);
+      return null;
+    } catch { /* fall through to the start screen */ }
+  }
+  return '';
 };
 
 /** Register the service worker and offer a reload when an update is ready. */
@@ -108,7 +119,7 @@ const registerServiceWorker = async () => {
 };
 
 const start = async () => {
-  setLanguage('en');
+  setLanguage(DEFAULT_LANGUAGE);
   try {
     await openDb();
   } catch (error) {

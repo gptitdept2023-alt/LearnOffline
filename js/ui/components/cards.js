@@ -3,7 +3,8 @@
  */
 
 import { h, toast } from '../../core/dom.js';
-import { describeTask, questComplete, chestStarsFor, TIER_NAMES, MAX_TIER } from '../../engine/quests.js';
+import { t } from '../../core/i18n.js';
+import { describeTask, questComplete, chestStarsFor, tierName, MAX_TIER } from '../../engine/quests.js';
 import { weekProgress } from '../../engine/goals.js';
 import { claimQuestChest } from '../../data/repo.js';
 import { playSfx } from '../../core/sfx.js';
@@ -23,15 +24,15 @@ export const questCard = (quest, { profileId, young, onChange }) => {
   const tier = quest.tier || 1;
   if (tier >= MAX_TIER && quest.claimed) {
     return h('section.quest-card.quest-all-done', null,
-      h('h2', null, '👑 All quests done!'),
-      h('p', null, 'You beat today\u2019s quest, bonus quest and champion quest. Come back tomorrow for new ones!'));
+      h('h2', null, t('allQuestsDone')),
+      h('p', null, t('allQuestsDoneHelp')));
   }
   const done = questComplete(quest);
   const chestStars = chestStarsFor(young, tier);
   const chest = h(`button.chest${done && !quest.claimed ? '.chest-ready' : ''}${quest.claimed ? '.chest-open' : ''}`, {
     type: 'button',
     disabled: !done || quest.claimed,
-    'aria-label': quest.claimed ? 'Chest opened' : done ? `Open the chest: ${chestStars} stars` : 'Finish the quest to open the chest',
+    'aria-label': quest.claimed ? t('chestOpened') : done ? t('chestOpen', chestStars) : t('chestLocked'),
     onclick: async (event) => {
       const btn = event.currentTarget;
       btn.disabled = true;
@@ -41,7 +42,7 @@ export const questCard = (quest, { profileId, young, onChange }) => {
         playSfx('chest');
         confetti();
         speak(`Quest complete! You found ${stars} stars!`);
-        toast(`Quest complete! +${stars} ⭐${unlockedTier ? ` · ${TIER_NAMES[unlockedTier]} unlocked!` : ''}`, 'success');
+        toast(`${t('questCompleteToast', stars)}${unlockedTier ? ` · ${t('tierUnlocked', tierName(unlockedTier))}` : ''}`, 'success');
         setTimeout(() => { if (btn.isConnected) onChange(); }, 1400);
       } catch (error) {
         toast(error.message, 'error');
@@ -49,13 +50,13 @@ export const questCard = (quest, { profileId, young, onChange }) => {
       }
     },
   }, h('span.chest-icon', { 'aria-hidden': 'true' }, quest.claimed ? '🎉' : done ? '🎁' : '🔒'),
-  h('small', null, quest.claimed ? 'Opened!' : done ? 'Open me!' : `${chestStars} ⭐`));
+  h('small', null, quest.claimed ? t('chestOpenedShort') : done ? t('chestOpenMe') : `${chestStars} ⭐`));
 
   return h(`section.quest-card.quest-tier-${tier}`, null,
     h('div.quest-head', null,
       h('div', null,
-        h('h2', null, `${tier === 1 ? '🗺️' : tier === 2 ? '🚀' : '👑'} ${TIER_NAMES[tier]}`),
-        tier > 1 && h('small.quest-sub', null, 'Harder goals, bigger chest!')),
+        h('h2', null, `${tier === 1 ? '🗺️' : tier === 2 ? '🚀' : '👑'} ${tierName(tier)}`),
+        tier > 1 && h('small.quest-sub', null, t('questHarder'))),
       chest),
     h('ul.quest-tasks', null, quest.tasks.map((task) => {
       const { icon, text } = describeTask(task);
@@ -64,7 +65,7 @@ export const questCard = (quest, { profileId, young, onChange }) => {
         h('span.quest-icon', { 'aria-hidden': 'true' }, ok ? '✅' : icon),
         h('span.quest-text', null,
           ok || !TASK_LINKS[task.type] ? h('span', null, text) : h('a.quest-link', { href: TASK_LINKS[task.type] }, text),
-          task.need > 1 && progressBar(task.have, task.need, `${task.have} of ${task.need}`)),
+          task.need > 1 && progressBar(task.have, task.need, t('nOfM', task.have, task.need))),
         h('small.quest-count', null, `${task.have}/${task.need}`));
     })));
 };
@@ -76,10 +77,10 @@ export const goalCard = (goal, sessions) => {
   const todayDone = wp.today >= wp.target;
   return h(`section.goal-card${wp.weekDone ? '.goal-won' : ''}`, null,
     h('div.goal-head', null,
-      h('h2', null, '🎯 My goal'),
-      h('small', null, `${wp.daysMet} of ${goal.daysPerWeek} days this week`)),
-    h('p.goal-today', null, todayDone ? '✅ Done for today!' : `Today: ${Math.min(wp.today, wp.target)} of ${wp.target} practice set${wp.target === 1 ? '' : 's'}`),
-    h('ol.goal-week', { 'aria-label': 'This week' }, wp.days.map((d) => h(`li${d.met ? '.met' : ''}${d.isToday ? '.today' : ''}${d.future ? '.future' : ''}`, null,
+      h('h2', null, t('myGoal')),
+      h('small', null, t('goalDays', wp.daysMet, goal.daysPerWeek))),
+    h('p.goal-today', null, todayDone ? t('goalDoneToday') : t('goalToday', Math.min(wp.today, wp.target), wp.target)),
+    h('ol.goal-week', { 'aria-label': t('thisWeek') }, wp.days.map((d) => h(`li${d.met ? '.met' : ''}${d.isToday ? '.today' : ''}${d.future ? '.future' : ''}`, null,
       h('span', null, d.met ? '★' : d.label.slice(0, 1)), h('small', null, d.label)))),
-    goal.reward && h('p.goal-reward', null, wp.weekDone ? `🎉 You did it! Ask for: ${goal.reward}` : `🎁 Reward: ${goal.reward}`));
+    goal.reward && h('p.goal-reward', null, wp.weekDone ? t('goalWon', goal.reward) : t('goalReward', goal.reward)));
 };

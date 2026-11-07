@@ -1,8 +1,16 @@
 /**
- * All user-facing labels live here, keyed by id, so a Filipino translation
- * can be added later by adding one more dictionary. Content text (lessons and
+ * All user-facing labels live here, keyed by id. Content text (lessons and
  * questions) lives in the content packs instead.
+ *
+ * A value is a string, or a function of the values it needs (for counts and
+ * names), so each language can put words in its own order and plural form.
+ *
+ * Each learner picks the language of the buttons and labels on their own
+ * screens (profile.language). Words the app SAYS aloud stay in English via
+ * tEn(), because the recorded voice and most device voices are English.
  */
+
+const plural = (n, one, many) => (n === 1 ? one : many);
 
 const DICTIONARIES = {
   en: {
@@ -13,6 +21,7 @@ const DICTIONARIES = {
     name: 'Name',
     grade: 'Grade',
     avatar: 'Pick a buddy',
+    labelLanguage: 'Buttons and labels',
     save: 'Save',
     cancel: 'Cancel',
     delete: 'Delete',
@@ -22,6 +31,7 @@ const DICTIONARIES = {
     check: 'Check',
     hint: 'Hint',
     showModel: 'Draw the model',
+    showMeHow: 'Show me how',
     listen: 'Read aloud',
     tryAgain: 'Try again',
     continue: 'Continue',
@@ -30,11 +40,18 @@ const DICTIONARIES = {
     practice: 'Practice',
     dailyMix: 'Daily mix',
     dailyMixHelp: 'A short set picked for you: review plus the skills that need work.',
+    challenge: 'Challenge',
+    games: 'Games',
+    shop: 'Shop',
     stars: 'Stars',
     streak: 'Day streak',
+    starsToSpend: 'Stars to spend in the shop',
     badges: 'Badges',
     parents: 'Parents',
     settings: 'Settings',
+    subject: 'Subject',
+    opening: 'Opening…',
+    saving: 'Saving…',
     correct: 'Correct!',
     notQuite: 'Not quite.',
     answerWas: 'The answer is',
@@ -47,16 +64,414 @@ const DICTIONARIES = {
     offlineReady: 'Ready to use offline.',
     updateReady: 'A new version is ready.',
     reload: 'Reload',
+
+    // Greeting by time of day.
+    greetMorning: (name) => `Good morning, ${name}! Ready to learn?`,
+    greetAfternoon: (name) => `Good afternoon, ${name}! Ready to learn?`,
+    greetEvening: (name) => `Good evening, ${name}! Ready to learn?`,
+
+    // Home, topic and map.
+    topicsOf: (title) => `${title}: topics`,
+    worldName: (n, name) => `World ${n}: ${name}`,
+    levelN: (n) => `Level ${n}`,
+    bossLevel: (n, title) => `Boss level ${n}: ${title}`,
+    bossShort: (title) => `Boss: ${title}`,
+    bossCardHelp: 'Harder questions, no hints, big bonus!',
+    allLevelsPassed: (done) => `🗺️ All 100 levels · ${done} passed`,
+    topicN: (n) => `Topic ${n}`,
+    bonusTopic: 'Bonus topic',
+    topicAria: (n, title, mastered, total) => `Topic ${n}: ${title}. ${mastered} of ${total} skills mastered.`,
+    learn: 'Learn',
+    learnHelp: 'Watch and do',
+    tryWithHelp: 'Try with help',
+    tryWithHelpHelp: 'Step by step',
+    onMyOwn: 'On my own',
+    scoreLine: (score, answered) => `Score ${score} · ${answered} ${plural(answered, 'question', 'questions')} answered`,
+
+    // Lesson.
+    stageConcrete: 'Use objects',
+    stagePictorial: 'Draw it',
+    stageAbstract: 'Use numbers',
+    stageTechnique: 'Technique',
+    stageTry: 'Your turn',
+    stepOf: (n, total) => `Step ${n} of ${total}`,
+    nextStep: 'Next step',
+    showAll: 'Show all',
+    picture: 'Picture',
+    hidePicture: 'Hide picture',
+    counted: 'Counted: ',
+    typeNumberFirst: 'Type a number first.',
+    notQuiteLookAgain: 'Not quite. Look again and try another one.',
+    notYetLookAgain: 'Not yet. Look at the picture and try again.',
+
+    // Practice.
+    questionOf: (n, total) => `Question ${n} of ${total}`,
+    stopPractice: 'Stop practice',
+    stopPracticeTitle: 'Stop practice?',
+    stopPracticeMessage: 'Answers in this set will not be saved.',
+    stop: 'Stop',
+    typeAnswerFirst: 'Type an answer first.',
+    topNumber: 'Top number',
+    bottomNumber: 'Bottom number',
+    wholeNumber: 'Whole number (leave empty if none)',
+    fillBottom: 'Fill in the bottom number too.',
+    fillTop: 'Fill in the top number too.',
+    couldNotSave: (message) => `Could not save progress: ${message}`,
+    bossIntro: (boss, need, total) => `Boss level! Beat ${boss}: get ${need} of ${total} right. No hints. You can do it!`,
+
+    // Try with help.
+    exampleOf: (n, total) => `Example ${n} of ${total}`,
+    answerIs: (answer) => `Answer: ${answer}`,
+    nextExample: 'Next example',
+    knowTheSteps: 'You know the steps!',
+    knowTheStepsHelp: 'Now try some on your own. You can still tap “Show me how” if you get stuck.',
+    moreWithHelp: 'More with help',
+    practiseOnMyOwn: 'Practise on my own',
+
+    // Results.
+    noResults: 'No results yet.',
+    scoreOutOf: (correct, total) => `${correct} out of ${total} correct`,
+    cheerPerfect: 'Perfect!',
+    cheerGreat: 'Great work!',
+    cheerGood: 'Good effort!',
+    cheerKeep: 'Keep practising!',
+    bossBeaten: '🏆 Boss beaten!',
+    bossBeatenPip: 'We beat the boss! You’re amazing!',
+    youBeat: (boss) => `You beat ${boss}!`,
+    bossWins: (boss) => `${boss} wins this time!`,
+    levelComplete: (n) => `Level ${n} complete!`,
+    levelNotYet: (n) => `Level ${n}: not yet`,
+    starsOf3: (n) => `${n} of 3 stars`,
+    levelBonus: (n) => `Level bonus +${n} ⭐`,
+    needToPass: (need) => `Get ${need} right to pass. You can do it!`,
+    allLevels: 'All levels',
+    questDoneOpenChest: '🎁 Quest complete! Open your chest on the home screen.',
+    newBadge: 'New badge!',
+    practiseAgain: 'Practise again',
+
+    // Badges and levels.
+    starsEarned: 'Stars earned',
+    bestStreak: 'Best streak',
+    setsDone: 'Sets done',
+    levelsTitle: '🗺️ 100 levels',
+    levelsIntro: (stars) => `${stars} of 300 level stars. Play any level you like! Every 10th level is a boss: harder, no hints, and a big star bonus!`,
+    levelsRange: (from, to, stars, max) => `Levels ${from}–${to} · ${stars}/${max} ★`,
+    bossTag: 'BOSS',
+    levelAria: (label, stars) => `${label}. ${stars} ${plural(stars, 'star', 'stars')}.`,
+    levelsInMath: 'Levels are in Math. Switch to Math on the home screen.',
+
+    // Quest and goal cards.
+    questTier1: 'Today’s quest',
+    questTier2: 'Bonus quest',
+    questTier3: 'Champion quest',
+    questHarder: 'Harder goals, bigger chest!',
+    allQuestsDone: '👑 All quests done!',
+    allQuestsDoneHelp: 'You beat today’s quest, bonus quest and champion quest. Come back tomorrow for new ones!',
+    chestOpened: 'Chest opened',
+    chestOpen: (stars) => `Open the chest: ${stars} stars`,
+    chestLocked: 'Finish the quest to open the chest',
+    chestOpenedShort: 'Opened!',
+    chestOpenMe: 'Open me!',
+    questCompleteToast: (stars) => `Quest complete! +${stars} ⭐`,
+    tierUnlocked: (tier) => `${tier} unlocked!`,
+    taskSets: (n) => `Finish ${n} practice ${plural(n, 'set', 'sets')}`,
+    taskLessons: () => 'Do a lesson or Try with help',
+    taskGames: () => 'Play a game',
+    taskCorrect: (n) => `Get ${n} answers right`,
+    taskStars: (n) => `Earn ${n} stars`,
+    taskChallenge: (n) => `Finish ${n} Challenge ${plural(n, 'set', 'sets')}`,
+    taskPerfect: (n) => (n === 1 ? 'Get every answer right in a set' : `Get every answer right in ${n} sets`),
+    myGoal: '🎯 My goal',
+    goalDays: (met, days) => `${met} of ${days} days this week`,
+    goalDoneToday: '✅ Done for today!',
+    goalToday: (done, target) => `Today: ${done} of ${target} practice ${plural(target, 'set', 'sets')}`,
+    thisWeek: 'This week',
+    goalWon: (reward) => `🎉 You did it! Ask for: ${reward}`,
+    goalReward: (reward) => `🎁 Reward: ${reward}`,
+
+    // Shop.
+    shopTitle: (name) => `🛍️ ${name}’s shop`,
+    shopHello: (stars) => `You have ${stars} stars. Tap something to try it on!`,
+    shopWear: (item) => `Wear the ${item}?`,
+    shopPrice: (item, price) => `${item}! ${price} stars.`,
+    slotColor: 'Colours',
+    slotHat: 'Hats',
+    slotPet: 'Pets',
+    slotScene: 'Places',
+    wearing: 'Wearing ✓',
+    yours: 'Yours',
+    needMore: (n) => `Need ${n} more ⭐`,
+    buyFor: (price) => `Buy for ⭐ ${price}`,
+    wearIt: 'Wear it',
+    takeOff: 'Take it off',
+    buyTitle: (item) => `Buy the ${item}?`,
+    buyMessage: (price, left) => `It costs ${price} stars. You will have ${left} stars left.`,
+    lovesIt: (pet, item) => `${pet} loves the ${item}!`,
+    nOfM: (n, m) => `${n} of ${m}`,
+    pipMood: (name, mood) => `${name} looks ${mood}`,
+    moodHappy: 'happy',
+    moodCheer: 'cheerful',
+    moodThink: 'thoughtful',
+    moodOops: 'surprised',
+    moodSleep: 'sleepy',
+  },
+
+  fil: {
+    whoIsLearning: 'Sino ang mag-aaral ngayon?',
+    addLearner: 'Magdagdag ng mag-aaral',
+    editLearner: 'I-edit ang mag-aaral',
+    name: 'Pangalan',
+    grade: 'Baitang',
+    avatar: 'Pumili ng kasama',
+    save: 'I-save',
+    cancel: 'Kanselahin',
+    delete: 'Burahin',
+    back: 'Bumalik',
+    start: 'Simulan',
+    next: 'Susunod',
+    check: 'I-check',
+    hint: 'Pahiwatig',
+    showModel: 'Iguhit ang modelo',
+    showMeHow: 'Ipakita kung paano',
+    listen: 'Pakinggan',
+    tryAgain: 'Subukan ulit',
+    continue: 'Magpatuloy',
+    done: 'Tapos na',
+    lesson: 'Aralin',
+    practice: 'Magsanay',
+    dailyMix: 'Halo-halo ngayong araw',
+    dailyMixHelp: 'Maikling set na pinili para sa iyo: balik-aral at mga kasanayang kailangan pang sanayin.',
+    challenge: 'Hamon',
+    games: 'Mga laro',
+    shop: 'Tindahan',
+    stars: 'Mga bituin',
+    streak: 'Sunod-sunod na araw',
+    starsToSpend: 'Mga bituing magagamit sa tindahan',
+    badges: 'Medalya',
+    parents: 'Para sa mga magulang',
+    settings: 'Mga setting',
+    subject: 'Asignatura',
+    opening: 'Binubuksan…',
+    saving: 'Sine-save…',
+    correct: 'Tama!',
+    notQuite: 'Hindi pa tama.',
+    answerWas: 'Ang sagot ay',
+    yourAnswer: 'Ang sagot mo',
+    resultsTitle: 'Tapos na ang set!',
+    mastered: 'Bihasa na',
+    learning: 'Nag-aaral pa',
+    notStarted: 'Hindi pa nasisimulan',
+    switchLearner: 'Palitan ang mag-aaral',
+    offlineReady: 'Handa nang gamitin kahit walang internet.',
+    updateReady: 'May bagong bersyon na.',
+    reload: 'I-reload',
+
+    greetMorning: (name) => `Magandang umaga, ${name}! Handa ka na bang matuto?`,
+    greetAfternoon: (name) => `Magandang hapon, ${name}! Handa ka na bang matuto?`,
+    greetEvening: (name) => `Magandang gabi, ${name}! Handa ka na bang matuto?`,
+
+    topicsOf: (title) => `${title}: mga paksa`,
+    worldName: (n, name) => `Mundo ${n}: ${name}`,
+    levelN: (n) => `Antas ${n}`,
+    bossLevel: (n, title) => `Boss na antas ${n}: ${title}`,
+    bossShort: (title) => `Boss: ${title}`,
+    bossCardHelp: 'Mas mahihirap na tanong, walang pahiwatig, malaking bonus!',
+    allLevelsPassed: (done) => `🗺️ Lahat ng 100 antas · ${done} ang naipasa`,
+    topicN: (n) => `Paksa ${n}`,
+    bonusTopic: 'Bonus na paksa',
+    topicAria: (n, title, mastered, total) => `Paksa ${n}: ${title}. Bihasa ka na sa ${mastered} sa ${total} kasanayan.`,
+    learn: 'Matuto',
+    learnHelp: 'Manood at gawin',
+    tryWithHelp: 'Subukan nang may tulong',
+    tryWithHelpHelp: 'Hakbang-hakbang',
+    onMyOwn: 'Mag-isa',
+    scoreLine: (score, answered) => `Iskor ${score} · ${answered} tanong ang nasagot`,
+
+    stageConcrete: 'Gumamit ng bagay',
+    stagePictorial: 'Iguhit ito',
+    stageAbstract: 'Gumamit ng numero',
+    stageTechnique: 'Paraan',
+    stageTry: 'Ikaw naman',
+    stepOf: (n, total) => `Hakbang ${n} sa ${total}`,
+    nextStep: 'Susunod na hakbang',
+    showAll: 'Ipakita lahat',
+    picture: 'Larawan',
+    hidePicture: 'Itago ang larawan',
+    counted: 'Nabilang: ',
+    typeNumberFirst: 'Mag-type muna ng numero.',
+    notQuiteLookAgain: 'Hindi pa tama. Tingnan ulit at pumili ng iba.',
+    notYetLookAgain: 'Hindi pa. Tingnan ang larawan at subukan ulit.',
+
+    questionOf: (n, total) => `Tanong ${n} sa ${total}`,
+    stopPractice: 'Ihinto ang pagsasanay',
+    stopPracticeTitle: 'Ihinto ang pagsasanay?',
+    stopPracticeMessage: 'Hindi mase-save ang mga sagot sa set na ito.',
+    stop: 'Ihinto',
+    typeAnswerFirst: 'Mag-type muna ng sagot.',
+    topNumber: 'Numero sa itaas',
+    bottomNumber: 'Numero sa ibaba',
+    wholeNumber: 'Buong bilang (iwanang blangko kung wala)',
+    fillBottom: 'Punan din ang numero sa ibaba.',
+    fillTop: 'Punan din ang numero sa itaas.',
+    couldNotSave: (message) => `Hindi na-save ang progreso: ${message}`,
+    bossIntro: (boss, need, total) => `Boss na antas! Talunin si ${boss}: ${need} sa ${total} ang dapat tama. Walang pahiwatig. Kaya mo ’yan!`,
+
+    exampleOf: (n, total) => `Halimbawa ${n} sa ${total}`,
+    answerIs: (answer) => `Sagot: ${answer}`,
+    nextExample: 'Susunod na halimbawa',
+    knowTheSteps: 'Alam mo na ang mga hakbang!',
+    knowTheStepsHelp: 'Subukan mo na nang mag-isa. Puwede mo pa ring pindutin ang “Ipakita kung paano” kapag nahirapan ka.',
+    moreWithHelp: 'Ulitin nang may tulong',
+    practiseOnMyOwn: 'Magsanay nang mag-isa',
+
+    noResults: 'Wala pang resulta.',
+    scoreOutOf: (correct, total) => `${correct} sa ${total} ang tama`,
+    cheerPerfect: 'Perpekto!',
+    cheerGreat: 'Napakahusay!',
+    cheerGood: 'Ang sipag mo!',
+    cheerKeep: 'Magsanay pa tayo!',
+    bossBeaten: '🏆 Natalo ang boss!',
+    bossBeatenPip: 'Natalo natin ang boss! Ang galing mo!',
+    youBeat: (boss) => `Natalo mo si ${boss}!`,
+    bossWins: (boss) => `Panalo muna si ${boss} ngayon!`,
+    levelComplete: (n) => `Tapos na ang Antas ${n}!`,
+    levelNotYet: (n) => `Antas ${n}: hindi pa`,
+    starsOf3: (n) => `${n} sa 3 bituin`,
+    levelBonus: (n) => `Bonus sa antas +${n} ⭐`,
+    needToPass: (need) => `Kailangan ng ${need} tamang sagot para pumasa. Kaya mo ’yan!`,
+    allLevels: 'Lahat ng antas',
+    questDoneOpenChest: '🎁 Tapos na ang misyon! Buksan ang iyong kaban sa unang screen.',
+    newBadge: 'Bagong medalya!',
+    practiseAgain: 'Magsanay ulit',
+
+    starsEarned: 'Mga bituing nakuha',
+    bestStreak: 'Pinakamahabang sunod-sunod na araw',
+    setsDone: 'Mga set na natapos',
+    levelsTitle: '🗺️ 100 antas',
+    levelsIntro: (stars) => `${stars} sa 300 bituin sa mga antas. Laruin ang kahit anong antas! Boss ang bawat ika-10 antas: mas mahirap, walang pahiwatig, at may malaking bonus na bituin!`,
+    levelsRange: (from, to, stars, max) => `Antas ${from}–${to} · ${stars}/${max} ★`,
+    bossTag: 'BOSS',
+    levelAria: (label, stars) => `${label}. ${stars} bituin.`,
+    levelsInMath: 'Nasa Math ang mga antas. Lumipat sa Math sa unang screen.',
+
+    questTier1: 'Misyon ngayong araw',
+    questTier2: 'Bonus na misyon',
+    questTier3: 'Misyon ng kampeon',
+    questHarder: 'Mas mahihirap na layunin, mas malaking kaban!',
+    allQuestsDone: '👑 Tapos na lahat ng misyon!',
+    allQuestsDoneHelp: 'Natapos mo ang misyon ngayong araw, ang bonus na misyon at ang misyon ng kampeon. Bumalik bukas para sa mga bago!',
+    chestOpened: 'Nabuksan na ang kaban',
+    chestOpen: (stars) => `Buksan ang kaban: ${stars} bituin`,
+    chestLocked: 'Tapusin ang misyon para mabuksan ang kaban',
+    chestOpenedShort: 'Nabuksan na!',
+    chestOpenMe: 'Buksan mo ako!',
+    questCompleteToast: (stars) => `Tapos na ang misyon! +${stars} ⭐`,
+    tierUnlocked: (tier) => `Bukas na ang ${tier}!`,
+    taskSets: (n) => `Tapusin ang ${n} practice set`,
+    taskLessons: () => 'Tapusin ang isang aralin o ang Subukan nang may tulong',
+    taskGames: () => 'Maglaro ng isang laro',
+    taskCorrect: (n) => `Makakuha ng ${n} tamang sagot`,
+    taskStars: (n) => `Makakuha ng ${n} bituin`,
+    taskChallenge: (n) => `Tapusin ang ${n} set ng Hamon`,
+    taskPerfect: (n) => (n === 1 ? 'Sagutin nang tama ang lahat sa isang set' : `Sagutin nang tama ang lahat sa ${n} set`),
+    myGoal: '🎯 Ang layunin ko',
+    goalDays: (met, days) => `${met} sa ${days} araw ngayong linggo`,
+    goalDoneToday: '✅ Tapos na para ngayong araw!',
+    goalToday: (done, target) => `Ngayon: ${done} sa ${target} practice set`,
+    thisWeek: 'Ngayong linggo',
+    goalWon: (reward) => `🎉 Nagawa mo! Puwede mo nang hingin: ${reward}`,
+    goalReward: (reward) => `🎁 Gantimpala: ${reward}`,
+
+    shopTitle: (name) => `🛍️ Tindahan ni ${name}`,
+    shopHello: (stars) => `May ${stars} bituin ka. Pindutin ang kahit ano para isukat!`,
+    shopWear: (item) => `Isuot ang ${item}?`,
+    shopPrice: (item, price) => `${item}! ${price} bituin.`,
+    slotColor: 'Kulay',
+    slotHat: 'Sumbrero',
+    slotPet: 'Alaga',
+    slotScene: 'Lugar',
+    wearing: 'Suot ✓',
+    yours: 'Sa iyo na',
+    needMore: (n) => `Kulang pa ng ${n} ⭐`,
+    buyFor: (price) => `Bilhin sa ⭐ ${price}`,
+    wearIt: 'Isuot',
+    takeOff: 'Tanggalin',
+    buyTitle: (item) => `Bilhin ang ${item}?`,
+    buyMessage: (price, left) => `${price} bituin ito. Matitira sa iyo ang ${left} bituin.`,
+    lovesIt: (pet, item) => `Gustong-gusto ni ${pet} ang ${item}!`,
+    nOfM: (n, m) => `${n} sa ${m}`,
+    pipMood: (name, mood) => `${mood} si ${name}`,
+    moodHappy: 'Masaya',
+    moodCheer: 'Tuwang-tuwa',
+    moodThink: 'Nag-iisip',
+    moodOops: 'Nagulat',
+    moodSleep: 'Inaantok',
   },
 };
 
-let current = 'en';
+/** Badge names and how to earn them, in Filipino ([title, description] by badge id). */
+const BADGES_FIL = {
+  'first-set': ['Unang hakbang', 'Tapusin ang iyong unang practice set.'],
+  'perfect-set': ['Perpekto!', 'Sagutin nang tama ang lahat ng tanong sa isang set.'],
+  'ten-sets': ['Tuloy lang', 'Tapusin ang 10 practice set.'],
+  'streak-3': ['3 araw sunod-sunod', 'Magsanay nang 3 magkakasunod na araw.'],
+  'streak-7': ['7 araw sunod-sunod', 'Magsanay nang 7 magkakasunod na araw.'],
+  'stars-100': ['100 bituin', 'Mag-ipon ng 100 bituin.'],
+  'stars-500': ['500 bituin', 'Mag-ipon ng 500 bituin.'],
+  'first-mastered': ['Bihasa sa kasanayan', 'Maging bihasa sa iyong unang kasanayan.'],
+  'topic-complete': ['Kampeon ng paksa', 'Maging bihasa sa lahat ng kasanayan sa isang paksa.'],
+  'quest-1': ['Tapos na ang misyon', 'Buksan ang iyong unang kaban ng misyon.'],
+  'quest-10': ['Bayani ng misyon', 'Magbukas ng 10 kaban ng misyon.'],
+  'first-buy': ['Pagandahin si Pip', 'Bumili ng kahit ano sa tindahan.'],
+  gamer: ['Oras ng laro', 'Maglaro ng isang laro.'],
+  speedy: ['Kasimbilis ng kidlat', 'Makakuha ng 20 sa Speed Round.'],
+  'boss-1': ['Taga-talo ng boss', 'Talunin ang iyong unang boss na antas.'],
+  'level-50': ['Kalahati na!', 'Ipasa ang antas 50.'],
+  'level-100': ['Alamat ng antas', 'Ipasa ang lahat ng 100 antas.'],
+};
+
+/** The label languages a learner can choose. */
+export const LANGUAGES = Object.freeze([
+  { code: 'en', name: 'English' },
+  { code: 'fil', name: 'Filipino' },
+]);
+
+export const DEFAULT_LANGUAGE = 'en';
+
+/** True for a language code the app has labels for. */
+export const isLanguage = (code) => typeof code === 'string' && Object.hasOwn(DICTIONARIES, code);
+
+let current = DEFAULT_LANGUAGE;
 
 /** Set the active language; unknown codes fall back to English. */
 export const setLanguage = (code) => {
-  current = DICTIONARIES[code] ? code : 'en';
-  document.documentElement.lang = current;
+  current = isLanguage(code) ? code : DEFAULT_LANGUAGE;
+  if (typeof document !== 'undefined') document.documentElement.lang = current;
 };
 
-/** Look up a label; returns the key itself when missing so gaps are visible. */
-export const t = (key) => DICTIONARIES[current][key] ?? DICTIONARIES.en[key] ?? key;
+export const getLanguage = () => current;
+
+/** Look up a label in one language, falling back to English, then to the key (so gaps are visible). */
+const lookup = (lang, key, args) => {
+  const value = DICTIONARIES[lang][key] ?? DICTIONARIES.en[key];
+  if (value === undefined) return key;
+  return typeof value === 'function' ? value(...args) : value;
+};
+
+/** A label in the active language. Extra arguments fill in counts and names. */
+export const t = (key, ...args) => lookup(current, key, args);
+
+/** A label in English, for words the app says aloud. */
+export const tEn = (key, ...args) => lookup(DEFAULT_LANGUAGE, key, args);
+
+/** A badge's title and description in the active language (English when there is no translation). */
+export const badgeText = (badge) => {
+  const fil = current === 'fil' ? BADGES_FIL[badge.id] : null;
+  return fil ? { title: fil[0], description: fil[1] } : { title: badge.title, description: badge.description };
+};
+
+/** Badge ids that have a Filipino title (for tests). */
+export const translatedBadgeIds = () => Object.keys(BADGES_FIL);
+
+/** Dictionary entries of one language, for tests that check every label. */
+export const dictionaryEntries = (lang) => Object.entries(DICTIONARIES[lang] || {});

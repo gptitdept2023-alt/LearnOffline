@@ -6,6 +6,7 @@
  */
 
 import { h, svg } from '../../core/dom.js';
+import { t } from '../../core/i18n.js';
 import { statusOf } from '../../engine/mastery.js';
 import { mascot } from './mascot.js';
 
@@ -33,7 +34,7 @@ export const levelProgress = (topic, mastery) => {
  * @param {Object} look Pip's look (from the shop).
  */
 export const learningMap = (topics, mastery, look) => {
-  const progress = topics.map((t) => levelProgress(t, mastery));
+  const progress = topics.map((topic) => levelProgress(topic, mastery));
   const current = Math.max(0, progress.findIndex((p) => !p.done));
   const height = topics.length * ROW;
   const point = (i) => ({ x: XS[i % XS.length], y: i * ROW + ROW / 2 });
@@ -56,11 +57,11 @@ export const learningMap = (topics, mastery, look) => {
     const state = pr.done ? 'done' : i === current ? 'current' : i < current ? 'open' : 'ahead';
     const bonus = topic.challenge ? '.map-bonus' : '';
     return h(`li.map-level.map-${state}${bonus}`, { style: { '--x': `${p.x}%`, '--y': `${p.y}px` } },
-      h('a.map-node', { href: `#/topic/${encodeURIComponent(topic.topicId)}`, 'aria-label': `Topic ${i + 1}: ${topic.title}. ${pr.mastered} of ${pr.total} skills mastered.` },
+      h('a.map-node', { href: `#/topic/${encodeURIComponent(topic.topicId)}`, 'aria-label': t('topicAria', i + 1, topic.title, pr.mastered, pr.total) },
         h('span.map-ring', { style: { '--pct': `${pr.total ? Math.round((pr.mastered / pr.total) * 100) : 0}%` } },
           h('span.map-icon', { 'aria-hidden': 'true' }, pr.done ? '🏆' : topic.icon || i + 1))),
       h('span.map-stars', { 'aria-hidden': 'true' }, [0, 1, 2].map((k) => h(`span${k < pr.stars ? '.on' : ''}`, null, '★'))),
-      h('span.map-label', null, h('small', null, topic.challenge ? 'Bonus topic' : `Topic ${i + 1}`), h('strong', null, topic.title)),
+      h('span.map-label', null, h('small', null, topic.challenge ? t('bonusTopic') : t('topicN', i + 1)), h('strong', null, topic.title)),
       i === current && h(`span.map-pip${p.x > 50 ? '.map-pip-left' : ''}`, null, mascot({ mood: 'happy', look, size: 'sm' })));
   });
 

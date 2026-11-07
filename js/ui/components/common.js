@@ -3,7 +3,7 @@
  */
 
 import { h, openDialog } from '../../core/dom.js';
-import { t } from '../../core/i18n.js';
+import { t, LANGUAGES, DEFAULT_LANGUAGE } from '../../core/i18n.js';
 import { currentStreak, walletOf } from '../../engine/rewards.js';
 import { saveProfile } from '../../data/repo.js';
 import { loadPackIndex, levelsOf } from '../../data/packs.js';
@@ -19,7 +19,7 @@ export const learnerBar = (profile, rewards, { back } = {}) =>
     h('span.avatar.avatar-sm', { 'aria-hidden': 'true' }, profile.avatar),
     h('strong.learner-name', null, profile.name),
     h('span.spacer'),
-    h('a.chip', { href: '#/shop', title: 'Stars to spend in the shop' }, '⭐ ', h('span', null, walletOf(rewards))),
+    h('a.chip', { href: '#/shop', title: t('starsToSpend') }, '⭐ ', h('span', null, walletOf(rewards))),
     h('span.chip', { title: t('streak') }, '🔥 ', h('span', null, currentStreak(rewards))),
   );
 
@@ -83,6 +83,11 @@ export const openProfileEditor = async (existing = null) => {
     });
     gradeSelect.dispatchEvent(new Event('change'));
 
+    // Language of the buttons and labels on this learner's screens. Questions stay in their subject's language.
+    const currentLanguage = existing?.language || DEFAULT_LANGUAGE;
+    const languageSelect = h('select', { name: 'language' },
+      LANGUAGES.map((l) => h('option', { value: l.code, selected: l.code === currentLanguage }, l.name)));
+
     const form = h('form.dialog-body.form', {
       onsubmit: async (event) => {
         event.preventDefault();
@@ -96,6 +101,7 @@ export const openProfileEditor = async (existing = null) => {
             avatar,
             packId: packForLevel(data.get('level')),
             readAloud: data.get('readAloud') === 'on',
+            language: data.get('language'),
           });
           close(saved);
         } catch (err) {
@@ -109,6 +115,7 @@ export const openProfileEditor = async (existing = null) => {
       h('input', { name: 'name', required: true, maxlength: 30, autocomplete: 'off', value: existing?.name || '', autofocus: true })),
     h('div.field', null, h('span', null, t('avatar')), h('div.avatar-grid', null, avatarButtons)),
     h('label.field', null, h('span', null, t('grade')), gradeSelect),
+    h('label.field', null, h('span', null, t('labelLanguage')), languageSelect),
     readAloud,
     error,
     h('div.dialog-actions', null,

@@ -11,21 +11,23 @@
  * Pure and DOM-free.
  */
 
-/** What each kind of task counts, and its wording. `need` is [young, older]. */
+import { t } from '../core/i18n.js';
+
+/** What each kind of task counts, and its wording (a label key in core/i18n.js). `need` is [young, older]. */
 const TASKS = {
-  sets: { icon: '✏️', need: [1, 2], text: (n) => `Finish ${n} practice set${n === 1 ? '' : 's'}` },
-  lessons: { icon: '📖', need: [1, 1], text: () => 'Do a lesson or Try with help' },
-  games: { icon: '🎮', need: [1, 1], text: () => 'Play a game' },
-  correct: { icon: '✅', need: [5, 15], text: (n) => `Get ${n} answers right` },
-  stars: { icon: '⭐', need: [10, 20], text: (n) => `Earn ${n} stars` },
-  challenge: { icon: '🚀', need: [1, 1], text: (n) => `Finish ${n} Challenge set${n === 1 ? '' : 's'}` },
-  perfect: { icon: '💯', need: [1, 1], text: (n) => (n === 1 ? 'Get every answer right in a set' : `Get every answer right in ${n} sets`) },
+  sets: { icon: '✏️', need: [1, 2], label: 'taskSets' },
+  lessons: { icon: '📖', need: [1, 1], label: 'taskLessons' },
+  games: { icon: '🎮', need: [1, 1], label: 'taskGames' },
+  correct: { icon: '✅', need: [5, 15], label: 'taskCorrect' },
+  stars: { icon: '⭐', need: [10, 20], label: 'taskStars' },
+  challenge: { icon: '🚀', need: [1, 1], label: 'taskChallenge' },
+  perfect: { icon: '💯', need: [1, 1], label: 'taskPerfect' },
 };
 
 export const MAX_TIER = 3;
 
-/** Names shown on the card, by tier. */
-export const TIER_NAMES = { 1: 'Today’s quest', 2: 'Bonus quest', 3: 'Champion quest' };
+/** Name shown on the card for a tier (1 Today's quest, 2 Bonus quest, 3 Champion quest). */
+export const tierName = (tier) => t(`questTier${Math.min(MAX_TIER, Math.max(1, tier))}`);
 
 /** Harder tiers: [type, need] for [young, older]. */
 const TIER_TASKS = {
@@ -100,6 +102,6 @@ export const progressQuest = (quest, event) => {
 export const questComplete = (quest) => Boolean(quest) && quest.tasks.every((t) => t.have >= t.need);
 
 /** Wording and icon for a task, for the screen. */
-export const describeTask = (task) => ({ icon: TASKS[task.type].icon, text: TASKS[task.type].text(task.need) });
+export const describeTask = (task) => ({ icon: TASKS[task.type].icon, text: t(TASKS[task.type].label, task.need) });
 
 export const chestStarsFor = (young, tier = 1) => (young ? CHEST_STARS.young : CHEST_STARS.older)[Math.min(MAX_TIER, tier) - 1];

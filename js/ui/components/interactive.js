@@ -14,6 +14,7 @@
  */
 
 import { h, mount } from '../../core/dom.js';
+import { t, tEn } from '../../core/i18n.js';
 import { speak } from '../../core/speech.js';
 import { isCorrect, isBlank } from '../../engine/answers.js';
 import { renderVisual } from './visuals.js';
@@ -60,7 +61,7 @@ export const tapCount = ({ emoji, count }, onDone) => {
   }, emoji));
   return h('div.tap-count', null,
     h('div.tap-grid', null, items),
-    h('p.tap-status', null, 'Counted: ', total));
+    h('p.tap-status', null, t('counted'), total));
 };
 
 /* ------------------------------------------------------------------ */
@@ -107,7 +108,7 @@ export const fillFrame = ({ target }, onDone) => {
         speak(msg);
       }
     },
-  }, 'Check');
+  }, t('check'));
   return h('div.fill-frame', null, h('div.visual.visual-ten-frames', null, frameEls), status, check);
 };
 
@@ -133,8 +134,8 @@ export const pickAnswer = ({ prompt, choices, answer, explain, visual }, onDone)
       } else {
         el.classList.add('choice-wrong');
         el.disabled = true;
-        feedback.textContent = 'Not quite. Look again and try another one.';
-        speak(feedback.textContent);
+        feedback.textContent = t('notQuiteLookAgain');
+        speak(tEn('notQuiteLookAgain'));
       }
     },
   }, String(c)));
@@ -170,8 +171,8 @@ const fasterPanel = (faster) => h('section.method-faster', null,
 export const methodPlayer = (method, { autoSpeak = true, onDone, compact = false } = {}) => {
   let index = 0;
   const list = h('ol.method-steps');
-  const next = h('button.btn.btn-secondary', { type: 'button' }, 'Next step ▶');
-  const showAll = h('button.btn.btn-ghost.btn-sm', { type: 'button' }, 'Show all');
+  const next = h('button.btn.btn-secondary', { type: 'button' }, `${t('nextStep')} ▶`);
+  const showAll = h('button.btn.btn-ghost.btn-sm', { type: 'button' }, t('showAll'));
 
   const renderStep = (i) => {
     const step = method.steps[i];
@@ -189,9 +190,9 @@ export const methodPlayer = (method, { autoSpeak = true, onDone, compact = false
           type: 'button',
           onclick: (e) => {
             const open = li.classList.toggle('is-open');
-            e.currentTarget.textContent = open ? 'Hide picture' : '🖼 Picture';
+            e.currentTarget.textContent = open ? t('hidePicture') : `🖼 ${t('picture')}`;
           },
-        }, '🖼 Picture')));
+        }, `🖼 ${t('picture')}`)));
     list.append(li);
     li.scrollIntoView?.({ block: 'nearest', behavior: 'smooth' });
     return step;
@@ -231,7 +232,7 @@ export const methodPlayer = (method, { autoSpeak = true, onDone, compact = false
   });
 
   const el = h(`section.method${compact ? '.method-compact' : ''}`, null,
-    h('div.method-head', null, h('span.method-tag', null, 'Technique'), h('strong', null, method.name)),
+    h('div.method-head', null, h('span.method-tag', null, t('stageTechnique')), h('strong', null, method.name)),
     list,
     actions);
   advance();
@@ -258,7 +259,7 @@ export const guidedRunner = (method, onDone, { speakPrompts = true } = {}) => {
 
   const finishStep = (step, firstTime) => {
     if (firstTime) firstTry += 1;
-    const label = step.answerType === 'tapCount' ? 'Counted: ' : `${step.prompt.replace(/\s*\?$/, '')} → `;
+    const label = step.answerType === 'tapCount' ? t('counted') : `${step.prompt.replace(/\s*\?$/, '')} → `;
     trail.append(h('li', null, h('span.guided-check', { 'aria-hidden': 'true' }, '✓'), label, h('strong', null, String(step.answer))));
     index += 1;
     misses = 0;
@@ -276,7 +277,7 @@ export const guidedRunner = (method, onDone, { speakPrompts = true } = {}) => {
 
     const submit = (raw) => {
       if (step.answerType !== 'choice' && isBlank({ answerType: 'numeric' }, raw)) {
-        feedback.textContent = 'Type a number first.';
+        feedback.textContent = t('typeNumberFirst');
         return;
       }
       if (isCorrect({ answerType: step.answerType === 'choice' ? 'choice' : 'numeric', answer: step.answer }, raw)) {
@@ -285,8 +286,8 @@ export const guidedRunner = (method, onDone, { speakPrompts = true } = {}) => {
         return;
       }
       misses += 1;
-      feedback.textContent = misses >= 2 ? revealText(step) : 'Not yet. Look at the picture and try again.';
-      speak(feedback.textContent);
+      feedback.textContent = misses >= 2 ? revealText(step) : t('notYetLookAgain');
+      speak(misses >= 2 ? feedback.textContent : tEn('notYetLookAgain'));
       host.querySelector('.guided-input')?.classList.add('shake');
       setTimeout(() => host.querySelector('.guided-input')?.classList.remove('shake'), 400);
     };
@@ -296,14 +297,14 @@ export const guidedRunner = (method, onDone, { speakPrompts = true } = {}) => {
     } else if (step.answerType === 'choice') {
       input = h('div.choices.guided-input', null, step.choices.map((c) => h('button.choice', { type: 'button', onclick: () => submit(c) }, c)));
     } else {
-      const field = h('input.answer-input', { inputmode: 'decimal', autocomplete: 'off', 'aria-label': 'Your answer' });
+      const field = h('input.answer-input', { inputmode: 'decimal', autocomplete: 'off', 'aria-label': t('yourAnswer') });
       input = h('form.answer-form.guided-input', { onsubmit: (e) => { e.preventDefault(); submit(field.value); } },
-        field, h('button.btn.btn-primary', { type: 'submit' }, 'Check'));
+        field, h('button.btn.btn-primary', { type: 'submit' }, t('check')));
       setTimeout(() => field.focus(), 50);
     }
 
     mount(host,
-      h('p.guided-count.muted', null, `Step ${index + 1} of ${method.guided.length}`),
+      h('p.guided-count.muted', null, t('stepOf', index + 1, method.guided.length)),
       h('p.prompt', null, step.prompt),
       renderVisual(step.visual),
       input,
@@ -313,6 +314,6 @@ export const guidedRunner = (method, onDone, { speakPrompts = true } = {}) => {
 
   show();
   return h('section.guided', null,
-    h('div.method-head', null, h('span.method-tag', null, 'Technique'), h('strong', null, method.name)),
+    h('div.method-head', null, h('span.method-tag', null, t('stageTechnique')), h('strong', null, method.name)),
     trail, host);
 };

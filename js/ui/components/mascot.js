@@ -6,6 +6,7 @@
  */
 
 import { h, svg } from '../../core/dom.js';
+import { t, getLanguage } from '../../core/i18n.js';
 
 export const MASCOT_NAME = 'Pip';
 const DEFAULT_COLOR = '#ff9f43';
@@ -20,17 +21,34 @@ export const LINES = {
   tryAgain: ['Practice makes us strong!', 'Let’s try again together.', 'Every try helps you learn.'],
 };
 
-export const pickLine = (kind) => {
-  const list = LINES[kind] || LINES.good;
+/** The same lines in Filipino, for learners who chose Filipino labels. */
+export const LINES_FIL = {
+  correct: ['Yehey!', 'Tama ka!', 'Ang galing!', 'Napakahusay!', 'Apir!', 'Wow, ang talino!', 'Sakto!'],
+  wrong: ['Malapit na! Tingnan natin.', 'Ayos lang ’yan! Panoorin natin kung paano.', 'Natututo tayo sa pagkakamali.', 'Okay lang! Tingnan natin.'],
+  streak: ['Tuloy-tuloy ka!', 'Walang makakapigil sa iyo!', 'Sunod-sunod na tama!'],
+  great: ['Ang galing-galing mo!', 'Proud na proud ako sa iyo!', 'Isa kang bituin!'],
+  good: ['Magaling!', 'Gumagaling ka na!', 'Ituloy mo lang!'],
+  tryAgain: ['Gumagaling tayo sa pagsasanay!', 'Subukan natin ulit nang magkasama.', 'Sa bawat subok, may natututunan tayo.'],
+};
+
+/**
+ * A random line of one kind. Lines that are also spoken (the games) pass
+ * lang 'en', so the words match the English voice.
+ */
+export const pickLine = (kind, lang = getLanguage()) => {
+  const lines = lang === 'fil' ? LINES_FIL : LINES;
+  const list = lines[kind] || lines.good;
   return list[Math.floor(Math.random() * list.length)];
 };
 
 /** A greeting that fits the time of day. */
 export const greeting = (name) => {
   const hour = new Date().getHours();
-  const part = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
-  return `${part}, ${name}! Ready to learn?`;
+  return t(hour < 12 ? 'greetMorning' : hour < 18 ? 'greetAfternoon' : 'greetEvening', name);
 };
+
+/** Label keys for how Pip looks, read by screen readers. */
+const MOOD_KEYS = { happy: 'moodHappy', cheer: 'moodCheer', think: 'moodThink', oops: 'moodOops', sleep: 'moodSleep' };
 
 /** Face parts for each mood. */
 const face = (mood) => {
@@ -78,7 +96,7 @@ export const mascot = ({ mood = 'happy', look = {}, size = 'md' } = {}) => {
     face(mood),
     mood === 'sleep' && svg('text', { x: 92, y: 30, class: 'pip-zz' }, 'z z'));
 
-  return h(`div.pip.pip-${size}.pip-${mood}`, { role: 'img', 'aria-label': `${MASCOT_NAME} looks ${mood}` },
+  return h(`div.pip.pip-${size}.pip-${mood}`, { role: 'img', 'aria-label': t('pipMood', MASCOT_NAME, MOOD_KEYS[mood] ? t(MOOD_KEYS[mood]) : mood) },
     body,
     look.hat && h('span.pip-hat', { 'aria-hidden': 'true' }, look.hat),
     look.pet && h('span.pip-pet', { 'aria-hidden': 'true' }, look.pet));
