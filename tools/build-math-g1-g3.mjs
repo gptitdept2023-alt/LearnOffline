@@ -1,60 +1,7 @@
 // Builds packs/math-g1.json, math-g2.json, math-g3.json:  node tools/build-math-g1-g3.mjs
-// Each skill's lesson: hand-written CPA intro steps, then a worked example and
-// a "your turn" taken from the skill's OWN generator (seeded), so every number
-// in a lesson is produced and checked by the same code as practice.
-import { writeFileSync } from 'node:fs';
-import { generate } from '../js/engine/generators.js';
-import { methodFor } from '../js/engine/techniques.js';
-import { seededRng } from '../js/core/random.js';
-
-const ROOT = new URL('../packs/', import.meta.url).pathname;
-const fmt = (n) => Number(n).toLocaleString('en-US');
-
-/** First generated question passing `ok`, from a seed based on the skill id. */
-const example = (gen, ok = () => true, salt = 1) => {
-  const rng = seededRng([...gen.type].reduce((a, c) => a + c.charCodeAt(0), 0) * 97 + salt * 7919);
-  for (let i = 0; i < 2000; i += 1) {
-    const q = generate(gen, rng);
-    if (ok(q)) return q;
-  }
-  throw new Error(`no example for ${JSON.stringify(gen)}`);
-};
-
-/** A numeric answer turned into 3 choices for a quick check. */
-const numericChoices = (answer) => {
-  const a = Number(answer);
-  const near = [a + 1, a - 1, a + 10, a - 10].filter((n) => n >= 0 && n !== a);
-  return [a, near[0], near[1]].sort((x, y) => x - y).map(fmt);
-};
-
-/** Worked example + your turn from the generator; a quick check when the question has no technique. */
-const practiceSteps = (gen, ok) => {
-  const q1 = example(gen, ok, 1);
-  const q2 = example(gen, (q) => ok(q) && `${q.prompt}${q.answer}` !== `${q1.prompt}${q1.answer}`, 2);
-  if (q1.method && methodFor(q1)) {
-    const answer = methodFor(q2).guided.at(-1).answer;
-    return [
-      { stage: 'technique', text: `Watch how: ${q1.prompt}`, interact: { kind: 'worked', method: q1.method } },
-      { stage: 'try', text: `Your turn: ${q2.prompt}`, interact: { kind: 'tryIt', method: { ...q2.method, answer } } },
-    ];
-  }
-  const choices = q2.answerType === 'choice' ? q2.choices : numericChoices(q2.answer);
-  const answer = q2.answerType === 'choice' ? q2.answer : fmt(q2.answer);
-  return [{
-    stage: 'abstract',
-    text: `Your turn: ${q2.prompt}`,
-    interact: { kind: 'check', prompt: q2.prompt, ...(q2.visual ? { visual: q2.visual } : {}), choices, answer, explain: q2.explain || `The answer is ${q2.spoken || answer}.` },
-  }];
-};
-
-const skill = (skillId, title, generator, intro, ok = () => true) => ({
-  skillId,
-  title,
-  lesson: { steps: [...intro.map(([stage, text, visual]) => ({ stage, text, ...(visual ? { visual } : {}) })), ...practiceSteps(generator, ok)] },
-  generator,
-});
-const topic = (topicId, title, icon, summary, skills, extra = {}) => ({ topicId, title, icon, summary, ...extra, skills });
-const challenge = (prefix, skills) => topic(`${prefix}-challenge`, 'Challenge zone', '⭐', 'Ready for more? These go a step beyond this grade.', skills.map(([id, title, generator]) => ({ skillId: id, title, generator })), { challenge: true });
+// Lessons are made by tools/packBuilder.mjs: hand-written CPA intro steps, then a
+// worked example and a "your turn" from the skill's own generator.
+import { skill, topic, challenge, writePack } from './packBuilder.mjs';
 
 /* ------------------------------------------------------------------ */
 /* Grade 1                                                             */
@@ -312,10 +259,6 @@ const g3 = [
   ]),
 ];
 
-const write = (packId, title, topics) => {
-  writeFileSync(`${ROOT}${packId}.json`, `${JSON.stringify({ packId, version: '1.0.0', subject: 'math', title, topics }, null, 2)}\n`);
-  console.log(packId, topics.reduce((n, t) => n + t.skills.length, 0), 'skills');
-};
-write('math-g1', 'Math · Grade 1', g1);
-write('math-g2', 'Math · Grade 2', g2);
-write('math-g3', 'Math · Grade 3', g3);
+writePack('math-g1', 'Math · Grade 1', g1);
+writePack('math-g2', 'Math · Grade 2', g2);
+writePack('math-g3', 'Math · Grade 3', g3);

@@ -121,6 +121,9 @@
   background: var(--surface);
 }
 .frac-bar { width: 100px; border-top: 4px solid var(--text); }
+/* Mixed numbers: a whole-number box to the left of the fraction ("1 3/4"). */
+.frac-entry-row { display: inline-flex; align-items: center; gap: 10px; }
+.frac-whole { width: 72px; }
 
 .choices { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; }
 .choice {

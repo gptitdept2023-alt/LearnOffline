@@ -79,17 +79,24 @@ const answerInput = (question, onSubmit) => {
   if (question.answerType === 'fraction') {
     const num = h('input.frac-input', { inputmode: 'numeric', 'aria-label': 'Top number', autocomplete: 'off' });
     const den = h('input.frac-input', { inputmode: 'numeric', 'aria-label': 'Bottom number', autocomplete: 'off' });
+    // Answers that can be more than 1 also get a box for the whole number ("1 3/4").
+    const whole = question.mixed ? h('input.frac-input.frac-whole', { inputmode: 'numeric', 'aria-label': 'Whole number (leave empty if none)', autocomplete: 'off' }) : null;
+    const read = () => {
+      const [w, n, d] = [whole?.value.trim() || '', num.value.trim(), den.value.trim()];
+      if (w && !n && !d) return w;
+      return w ? `${w} ${n}/${d}` : `${n}/${d}`;
+    };
     const form = h('form.answer-form', {
       onsubmit: (e) => {
         e.preventDefault();
         if (num.value.trim() && !den.value.trim()) { toast('Fill in the bottom number too.', 'error'); den.focus(); return; }
         if (!num.value.trim() && den.value.trim()) { toast('Fill in the top number too.', 'error'); num.focus(); return; }
-        onSubmit(`${num.value.trim()}/${den.value.trim()}`);
+        onSubmit(read());
       },
     },
-      h('div.frac-entry', null, num, h('span.frac-bar'), den),
+      h(`div.frac-entry-row${whole ? '.has-whole' : ''}`, null, whole, h('div.frac-entry', null, num, h('span.frac-bar'), den)),
       h('button.btn.btn-primary.btn-lg', { type: 'submit' }, t('check')));
-    return { el: form, read: () => `${num.value}/${den.value}`, focus: () => num.focus() };
+    return { el: form, read, focus: () => num.focus() };
   }
 
   const input = h('input.answer-input', { inputmode: 'decimal', 'aria-label': t('yourAnswer'), autocomplete: 'off', enterkeyhint: 'done' });

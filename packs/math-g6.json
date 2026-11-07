@@ -1,0 +1,1565 @@
+{
+  "packId": "math-g6",
+  "version": "1.0.0",
+  "subject": "math",
+  "title": "Math · Grade 6",
+  "topics": [
+    {
+      "topicId": "g6-fractions",
+      "title": "Fractions",
+      "icon": "🍕",
+      "summary": "All four operations with fractions.",
+      "skills": [
+        {
+          "skillId": "g6-frac-add-sub",
+          "title": "Add and subtract fractions",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "Make the parts the same size first. Find the smallest number both bottom numbers go into."
+              },
+              {
+                "stage": "abstract",
+                "text": "3/4 + 5/6: 4 and 6 both go into 12. 9/12 + 10/12 = 19/12 = 1 7/12."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: 5/6 + 5/9 = ?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "unlikeDenominator",
+                    "n1": 5,
+                    "d1": 6,
+                    "n2": 5,
+                    "d2": 9,
+                    "op": "+"
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 2/3 − 1/7 = ?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "unlikeDenominator",
+                    "n1": 2,
+                    "d1": 3,
+                    "n2": 1,
+                    "d2": 7,
+                    "op": "−",
+                    "answer": "11/21"
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "fractionUnlike",
+            "maxDen": 12
+          }
+        },
+        {
+          "skillId": "g6-frac-times",
+          "title": "Multiply fractions",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "abstract",
+                "text": "Multiply the tops and multiply the bottoms, then simplify: 3/4 × 2/5 = 6/20 = 3/10."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: 10/11 × 9/10 = ?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "multiplyFractions",
+                    "n1": 10,
+                    "d1": 11,
+                    "n2": 9,
+                    "d2": 10
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 6/11 × 2/5 = ?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "multiplyFractions",
+                    "n1": 6,
+                    "d1": 11,
+                    "n2": 2,
+                    "d2": 5,
+                    "answer": "12/55"
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "fractionMultiply",
+            "maxDen": 12
+          }
+        },
+        {
+          "skillId": "g6-frac-divide",
+          "title": "Divide fractions",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "2 ÷ 1/4: how many fourths are in 2 wholes? Each whole has 4, so 2 × 4 = 8.",
+                "visual": {
+                  "kind": "stack",
+                  "items": [
+                    {
+                      "kind": "fraction",
+                      "numerator": 4,
+                      "denominator": 4,
+                      "shape": "bar",
+                      "label": "1 whole"
+                    },
+                    {
+                      "kind": "fraction",
+                      "numerator": 4,
+                      "denominator": 4,
+                      "shape": "bar",
+                      "label": "1 whole"
+                    }
+                  ]
+                }
+              },
+              {
+                "stage": "pictorial",
+                "text": "So dividing by 1/4 is the same as multiplying by 4, its flip."
+              },
+              {
+                "stage": "abstract",
+                "text": "To divide by a fraction, multiply by its flip: 3/4 ÷ 3/8 = 3/4 × 8/3 = 24/12 = 2."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: 5 ÷ 1/10 = ?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "divideFractions",
+                    "n1": 5,
+                    "d1": 1,
+                    "n2": 1,
+                    "d2": 10
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 1/9 ÷ 3 = ?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "divideFractions",
+                    "n1": 1,
+                    "d1": 9,
+                    "n2": 3,
+                    "d2": 1,
+                    "answer": "1/27"
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "fractionDivide"
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g6-decimals",
+      "title": "Decimals",
+      "icon": "🔟",
+      "summary": "Multiply and divide decimals.",
+      "skills": [
+        {
+          "skillId": "g6-dec-multiply",
+          "title": "Multiply decimals",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "0.3 × 0.2 is 3 tenths of 2 tenths. On a 10 by 10 grid that is 6 small squares out of 100: 0.06.",
+                "visual": {
+                  "kind": "hundredSquare",
+                  "filled": 6
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Multiply without the points: 3 × 2 = 6. There are 2 decimal places in the question, so the answer is 0.06."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: 7.7 × 0.3 = ?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "decimalMultiply",
+                    "a": 77,
+                    "pa": 1,
+                    "b": 3,
+                    "pb": 1
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 7.9 × 0.6 = ?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "decimalMultiply",
+                    "a": 79,
+                    "pa": 1,
+                    "b": 6,
+                    "pb": 1,
+                    "answer": 4.74
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "decimalOps",
+            "forms": [
+              "mulDec"
+            ]
+          }
+        },
+        {
+          "skillId": "g6-dec-divide",
+          "title": "Divide decimals",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "2.4 ÷ 0.4: how many 0.4s are in 2.4? Multiply both by 10: 24 ÷ 4."
+              },
+              {
+                "stage": "abstract",
+                "text": "24 ÷ 4 = 6, so 2.4 ÷ 0.4 = 6."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: 3 ÷ 0.3 = ?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "decimalDivide",
+                    "b": 3,
+                    "q": 10
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 26.35 ÷ 5 = ?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "decimalByWhole",
+                    "x": 2635,
+                    "w": 5,
+                    "p": 2,
+                    "op": "÷",
+                    "answer": 5.27
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "decimalOps",
+            "forms": [
+              "divDec",
+              "divWhole"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g6-percent",
+      "title": "Percentage",
+      "icon": "💯",
+      "summary": "Discounts, increases and finding the whole.",
+      "skills": [
+        {
+          "skillId": "g6-percent-change",
+          "title": "Discounts and increases",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "A ₱500 shirt is 20% off. 100% is ₱500. 20% is 1 of 5 equal parts: ₱100.",
+                "visual": {
+                  "kind": "bar",
+                  "rows": [
+                    {
+                      "label": "",
+                      "segments": [
+                        {
+                          "units": 1,
+                          "text": ""
+                        },
+                        {
+                          "units": 1,
+                          "text": ""
+                        },
+                        {
+                          "units": 1,
+                          "text": ""
+                        },
+                        {
+                          "units": 1,
+                          "text": ""
+                        },
+                        {
+                          "units": 1,
+                          "text": ""
+                        }
+                      ]
+                    }
+                  ],
+                  "braces": [
+                    {
+                      "row": 0,
+                      "from": 0,
+                      "to": 5,
+                      "side": "above",
+                      "text": "100% = ₱500"
+                    },
+                    {
+                      "row": 0,
+                      "from": 0,
+                      "to": 1,
+                      "side": "below",
+                      "text": "20%"
+                    }
+                  ]
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Sale price = ₱500 − ₱100 = ₱400. For an increase, add the part on instead."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: A farm had 822 chickens last year. This year it has 50% more. How many chickens does it have now?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "percentOf",
+                    "p": 50,
+                    "Q": 822,
+                    "then": "add"
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: A farm had 436 chickens last year. This year it has 50% more. How many chickens does it have now?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "percentOf",
+                    "p": 50,
+                    "Q": 436,
+                    "then": "add",
+                    "answer": 654
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "percentage",
+            "forms": [
+              "discount",
+              "increase"
+            ]
+          }
+        },
+        {
+          "skillId": "g6-percent-whole",
+          "title": "Find the whole",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "30% of a number is 60. 10% is 1 part, so 3 parts = 60 and 1 part = 20.",
+                "visual": {
+                  "kind": "bar",
+                  "rows": [
+                    {
+                      "label": "",
+                      "segments": [
+                        {
+                          "units": 1,
+                          "text": ""
+                        },
+                        {
+                          "units": 1,
+                          "text": ""
+                        },
+                        {
+                          "units": 1,
+                          "text": ""
+                        },
+                        {
+                          "units": 1,
+                          "text": ""
+                        },
+                        {
+                          "units": 1,
+                          "text": ""
+                        },
+                        {
+                          "units": 1,
+                          "text": ""
+                        },
+                        {
+                          "units": 1,
+                          "text": ""
+                        },
+                        {
+                          "units": 1,
+                          "text": ""
+                        },
+                        {
+                          "units": 1,
+                          "text": ""
+                        },
+                        {
+                          "units": 1,
+                          "text": ""
+                        }
+                      ]
+                    }
+                  ],
+                  "braces": [
+                    {
+                      "row": 0,
+                      "from": 0,
+                      "to": 10,
+                      "side": "above",
+                      "text": "100% = ?"
+                    },
+                    {
+                      "row": 0,
+                      "from": 0,
+                      "to": 3,
+                      "side": "below",
+                      "text": "60"
+                    }
+                  ]
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "100% is 10 parts: 10 × 20 = 200."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: 90% of a number is 441. What is the number?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "percentWhole",
+                    "p": 90,
+                    "part": 441
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 80% of a number is 200. What is the number?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "percentWhole",
+                    "p": 80,
+                    "part": 200,
+                    "answer": 250
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "percentage",
+            "forms": [
+              "findWhole"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g6-ratio",
+      "title": "Ratio",
+      "icon": "⚖️",
+      "summary": "Harder ratio problems with units.",
+      "skills": [
+        {
+          "skillId": "g6-ratio-units",
+          "title": "Ratio problems",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "The ratio of Ana's money to Ben's is 5 : 2. Ana has ₱30 more. The difference is 5 − 2 = 3 units.",
+                "visual": {
+                  "kind": "bar",
+                  "rows": [
+                    {
+                      "label": "Ana",
+                      "segments": [
+                        {
+                          "units": 1,
+                          "text": ""
+                        },
+                        {
+                          "units": 1,
+                          "text": ""
+                        },
+                        {
+                          "units": 1,
+                          "text": ""
+                        },
+                        {
+                          "units": 1,
+                          "text": ""
+                        },
+                        {
+                          "units": 1,
+                          "text": ""
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Ben",
+                      "segments": [
+                        {
+                          "units": 1,
+                          "text": ""
+                        },
+                        {
+                          "units": 1,
+                          "text": ""
+                        }
+                      ]
+                    }
+                  ],
+                  "braces": []
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "3 units = 30, so 1 unit = 10. Ana has 5 × 10 = 50."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: The ratio of Jun's beads to Ben's beads is 7 : 5. Jun has 28 more beads than Ben. How many beads does Jun have?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "ratioUnits",
+                    "names": [
+                      "Jun",
+                      "Ben"
+                    ],
+                    "x": 7,
+                    "y": 5,
+                    "known": "difference",
+                    "value": 28,
+                    "find": 0
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: The ratio of Tomas's marbles to Maya's marbles is 3 : 1. Tomas has 39 marbles. How many do they have altogether?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "ratioUnits",
+                    "names": [
+                      "Tomas",
+                      "Maya"
+                    ],
+                    "x": 3,
+                    "y": 1,
+                    "known": "first",
+                    "value": 39,
+                    "find": "total",
+                    "answer": 52
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "ratio",
+            "forms": [
+              "share",
+              "findPart",
+              "total",
+              "difference"
+            ],
+            "maxUnit": 15
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g6-algebra",
+      "title": "Algebra",
+      "icon": "🔤",
+      "summary": "Use a letter for an unknown number.",
+      "skills": [
+        {
+          "skillId": "g6-alg-write",
+          "title": "Write expressions",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "A box has n pencils. We do not know how many, so we call the number n."
+              },
+              {
+                "stage": "abstract",
+                "text": "3 more than n is n + 3. 3 times as many is 3 × n, written 3n."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: Ana has y shells. Mei has 5 times as many as Ana. How many shells does Mei have?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "writeExpression",
+                    "relation": "times",
+                    "v": "y",
+                    "m": 5
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: Jun has y cards. Jun shares them equally among 8 friends. How many does each friend get?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "writeExpression",
+                    "relation": "share",
+                    "v": "y",
+                    "m": 8,
+                    "answer": "y ÷ 8"
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "algebra",
+            "forms": [
+              "write"
+            ]
+          }
+        },
+        {
+          "skillId": "g6-alg-evaluate",
+          "title": "Find the value",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "abstract",
+                "text": "If n = 5, then 4n + 2 = 4 × 5 + 2 = 20 + 2 = 22. Put the number in place of the letter."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: If y = 6, what is (y + 15) × 3?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "algebraEvaluate",
+                    "tokens": [
+                      "(",
+                      "V",
+                      "+",
+                      15,
+                      ")",
+                      "×",
+                      3
+                    ],
+                    "v": "y",
+                    "val": 6
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: If y = 2, what is 4y − 4?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "algebraEvaluate",
+                    "tokens": [
+                      4,
+                      "×",
+                      "V",
+                      "−",
+                      4
+                    ],
+                    "v": "y",
+                    "val": 2,
+                    "answer": 4
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "algebra",
+            "forms": [
+              "evaluate"
+            ]
+          }
+        },
+        {
+          "skillId": "g6-alg-simplify",
+          "title": "Simplify expressions",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "3n is 3 lots of n. 3n + 2n is 3 lots and 2 lots: 5 lots of n."
+              },
+              {
+                "stage": "abstract",
+                "text": "3n + 2n = 5n. A number on its own stays apart: 3n + 4 + 2n = 5n + 4."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: Simplify 7y + 5 + 4y.",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "likeTerms",
+                    "a": 7,
+                    "b": 5,
+                    "c": 4,
+                    "v": "y",
+                    "withNumber": true
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: Simplify 3y + 4 + y.",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "likeTerms",
+                    "a": 3,
+                    "b": 4,
+                    "c": 1,
+                    "v": "y",
+                    "withNumber": true,
+                    "answer": "4y + 4"
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "algebra",
+            "forms": [
+              "likeTerms"
+            ]
+          }
+        },
+        {
+          "skillId": "g6-alg-solve",
+          "title": "Solve simple equations",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "2n + 3 = 11. The bar is 2 units of n and 3 more, making 11.",
+                "visual": {
+                  "kind": "bar",
+                  "rows": [
+                    {
+                      "label": "",
+                      "segments": [
+                        {
+                          "units": 4,
+                          "text": "n"
+                        },
+                        {
+                          "units": 4,
+                          "text": "n"
+                        },
+                        {
+                          "units": 3,
+                          "text": "3"
+                        }
+                      ]
+                    }
+                  ],
+                  "braces": [
+                    {
+                      "row": 0,
+                      "from": 0,
+                      "to": 3,
+                      "side": "above",
+                      "text": "11"
+                    }
+                  ]
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Undo the steps: 11 − 3 = 8, then 8 ÷ 2 = 4. So n = 4."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: y + 13 = 17. What is y?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "algebraSolve",
+                    "text": "y + 13",
+                    "R": 17,
+                    "undo": [
+                      [
+                        "−",
+                        13
+                      ]
+                    ],
+                    "v": "y"
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 4y + 2 = 22. What is y?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "algebraSolve",
+                    "text": "4y + 2",
+                    "R": 22,
+                    "undo": [
+                      [
+                        "−",
+                        2
+                      ],
+                      [
+                        "÷",
+                        4
+                      ]
+                    ],
+                    "v": "y",
+                    "answer": 5
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "algebra",
+            "forms": [
+              "solve"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g6-order-ops",
+      "title": "Order of operations",
+      "icon": "🧮",
+      "summary": "Longer number sentences with brackets.",
+      "skills": [
+        {
+          "skillId": "g6-order-ops",
+          "title": "Order of operations",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "abstract",
+                "text": "Brackets first. Then × and ÷ from left to right. Then + and − from left to right.\n(6 + 4) × 3 − 5 = 10 × 3 − 5 = 30 − 5 = 25."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: 3 + 6 × 9 − 57 = ?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "orderOfOperations",
+                    "tokens": [
+                      3,
+                      "+",
+                      6,
+                      "×",
+                      9,
+                      "−",
+                      57
+                    ]
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 43 + 6 × 6 − 24 = ?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "orderOfOperations",
+                    "tokens": [
+                      43,
+                      "+",
+                      6,
+                      "×",
+                      6,
+                      "−",
+                      24
+                    ],
+                    "answer": 55
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "orderOps",
+            "templates": [
+              "more"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g6-speed",
+      "title": "Speed",
+      "icon": "🚗",
+      "summary": "Distance, time and speed.",
+      "skills": [
+        {
+          "skillId": "g6-speed",
+          "title": "Distance, time and speed",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "A car going at 60 km/h travels 60 km in each hour.",
+                "visual": {
+                  "kind": "bar",
+                  "rows": [
+                    {
+                      "label": "",
+                      "segments": [
+                        {
+                          "units": 1,
+                          "text": "60 km"
+                        },
+                        {
+                          "units": 1,
+                          "text": "60 km"
+                        },
+                        {
+                          "units": 1,
+                          "text": "60 km"
+                        }
+                      ]
+                    }
+                  ],
+                  "braces": [
+                    {
+                      "row": 0,
+                      "from": 0,
+                      "to": 3,
+                      "side": "above",
+                      "text": "3 hours"
+                    }
+                  ]
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Distance = speed × time: 60 × 3 = 180 km. Time = distance ÷ speed. Speed = distance ÷ time."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: A truck travels 300 km at 60 km/h. How many hours does it take?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "speedDistanceTime",
+                    "s": 60,
+                    "t": 5,
+                    "find": "time",
+                    "unit": "kmh"
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: Siti walks at 50 m/min for 15 minutes. How far is that, in m?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "speedDistanceTime",
+                    "s": 50,
+                    "t": 15,
+                    "find": "distance",
+                    "unit": "mmin",
+                    "answer": 750
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "speed"
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g6-circles",
+      "title": "Circles",
+      "icon": "⭕",
+      "summary": "Radius, diameter, circumference and area.",
+      "skills": [
+        {
+          "skillId": "g6-circle-parts",
+          "title": "Radius and diameter",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "The radius goes from the centre to the edge. The diameter goes right across, through the centre.",
+                "visual": {
+                  "kind": "circle",
+                  "show": "both"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "The diameter is 2 radii: diameter = 2 × radius."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: A circle has a diameter of 14 cm. What is its radius, in cm?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "circleFormula",
+                    "r": 7,
+                    "find": "radius",
+                    "given": "d"
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: A circle has a diameter of 6 cm. What is its radius, in cm?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "circleFormula",
+                    "r": 3,
+                    "find": "radius",
+                    "given": "d",
+                    "answer": 3
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "circle",
+            "forms": [
+              "diameter",
+              "radius"
+            ]
+          }
+        },
+        {
+          "skillId": "g6-circumference",
+          "title": "Circumference",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Wrap a string round a can, then lay it next to the diameter. It is a little more than 3 diameters long.",
+                "visual": {
+                  "kind": "circle",
+                  "show": "diameter",
+                  "label": "diameter"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "That number is π, about 3.14. Circumference = π × diameter."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: A circle has a radius of 6 cm. Use π = 3.14. What is its circumference, in cm?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "circleFormula",
+                    "r": 6,
+                    "find": "circumference",
+                    "given": "r"
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: A circle has a radius of 3 cm. Use π = 3.14. What is its circumference, in cm?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "circleFormula",
+                    "r": 3,
+                    "find": "circumference",
+                    "given": "r",
+                    "answer": 18.84
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "circle",
+            "forms": [
+              "circumference"
+            ],
+            "max": 10
+          }
+        },
+        {
+          "skillId": "g6-circle-area",
+          "title": "Area of a circle",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "Cut a circle into thin slices and line them up. They make a shape close to a rectangle, π × radius long and 1 radius high.",
+                "visual": {
+                  "kind": "circle",
+                  "show": "radius",
+                  "label": "radius"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Area of a circle = π × radius × radius."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: A circle has a radius of 6 cm. Use π = 3.14. What is its area, in cm²?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "circleFormula",
+                    "r": 6,
+                    "find": "area",
+                    "given": "r"
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: A circle has a radius of 3 cm. Use π = 3.14. What is its area, in cm²?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "circleFormula",
+                    "r": 3,
+                    "find": "area",
+                    "given": "r",
+                    "answer": 28.26
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "circle",
+            "forms": [
+              "area"
+            ],
+            "max": 10
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g6-volume",
+      "title": "Volume",
+      "icon": "📦",
+      "summary": "Find a missing edge, and litres.",
+      "skills": [
+        {
+          "skillId": "g6-volume-missing",
+          "title": "Find a missing edge",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "Volume = bottom layer × number of layers. If you know the volume and the bottom, divide.",
+                "visual": {
+                  "kind": "cuboid",
+                  "l": 4,
+                  "w": 3,
+                  "h": 2,
+                  "cubes": true,
+                  "unknown": "h"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Volume 24 cm³, bottom 4 × 3 = 12. Height = 24 ÷ 12 = 2 cm."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: A box has a volume of 168 cm³. It is 3 cm long and 7 cm wide. How high is it, in cm?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "volumeLayers",
+                    "l": 3,
+                    "w": 7,
+                    "h": 8,
+                    "form": "missing"
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: A box has a volume of 75 cm³. It is 5 cm long and 3 cm wide. How high is it, in cm?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "volumeLayers",
+                    "l": 5,
+                    "w": 3,
+                    "h": 5,
+                    "form": "missing",
+                    "answer": 5
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "volume",
+            "forms": [
+              "missing"
+            ]
+          }
+        },
+        {
+          "skillId": "g6-volume-litres",
+          "title": "Volume and litres",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "A 10 cm cube holds exactly 1 litre: 10 × 10 × 10 = 1,000 cm³ = 1 ℓ.",
+                "visual": {
+                  "kind": "cuboid",
+                  "l": 10,
+                  "w": 10,
+                  "h": 10
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "To change cm³ to litres, divide by 1,000."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: A tank is 20 cm long, 50 cm wide and 40 cm high. How many litres of water does it hold when full? (1 ℓ = 1,000 cm³)",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "volumeLayers",
+                    "l": 20,
+                    "w": 50,
+                    "h": 40,
+                    "form": "litres"
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: A tank is 30 cm long, 30 cm wide and 30 cm high. How many litres of water does it hold when full? (1 ℓ = 1,000 cm³)",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "volumeLayers",
+                    "l": 30,
+                    "w": 30,
+                    "h": 30,
+                    "form": "litres",
+                    "answer": 27
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "volume",
+            "forms": [
+              "litres"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g6-average-geometry",
+      "title": "Average and triangles",
+      "icon": "📐",
+      "summary": "Missing values, isosceles triangles and heights.",
+      "skills": [
+        {
+          "skillId": "g6-average-missing",
+          "title": "Average: the missing number",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "abstract",
+                "text": "If the average of 4 numbers is 10, their total is 4 × 10 = 40. Take away the numbers you know to find the last one."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: The average of 3 numbers is 17. 2 of them are 20 and 24. What is the other number?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "averageMissing",
+                    "known": [
+                      20,
+                      24
+                    ],
+                    "mean": 17,
+                    "count": 3
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: The average of 3 numbers is 33. 2 of them are 26 and 24. What is the other number?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "averageMissing",
+                    "known": [
+                      26,
+                      24
+                    ],
+                    "mean": 33,
+                    "count": 3,
+                    "answer": 49
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "average",
+            "forms": [
+              "missing"
+            ]
+          }
+        },
+        {
+          "skillId": "g6-isosceles",
+          "title": "Angles in isosceles triangles",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "An isosceles triangle has 2 equal sides, marked with a tick. The 2 angles at the bottom are equal too.",
+                "visual": {
+                  "kind": "triangle",
+                  "angles": [
+                    70,
+                    70,
+                    40
+                  ],
+                  "labels": [
+                    "70°",
+                    "70°",
+                    "40°"
+                  ],
+                  "equal": true
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "180 − 40 = 140, and 140 ÷ 2 = 70. Each base angle is 70°."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: In an isosceles triangle, the top angle is 20°. The two base angles are equal. What is one base angle, in degrees?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "angleSum",
+                    "known": [
+                      20
+                    ],
+                    "isosceles": true
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: In an isosceles triangle, the top angle is 98°. The two base angles are equal. What is one base angle, in degrees?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "angleSum",
+                    "known": [
+                      98
+                    ],
+                    "isosceles": true,
+                    "answer": 41
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "triangleAngles",
+            "forms": [
+              "isosceles"
+            ]
+          }
+        },
+        {
+          "skillId": "g6-triangle-height",
+          "title": "Triangle: find the height",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "abstract",
+                "text": "Area = base × height ÷ 2. Work backwards: double the area, then divide by the base."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: A triangle has an area of 15 cm² and a base of 5 cm. What is its height, in cm?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "triangleArea",
+                    "b": 5,
+                    "h": 6,
+                    "apex": 0.7,
+                    "form": "height"
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: A triangle has an area of 9 cm² and a base of 6 cm. What is its height, in cm?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "triangleArea",
+                    "b": 6,
+                    "h": 3,
+                    "apex": 0.5,
+                    "form": "height",
+                    "answer": 3
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "triangleArea",
+            "forms": [
+              "height"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g6-challenge",
+      "title": "Challenge zone",
+      "icon": "⭐",
+      "summary": "Ready for more? These go a step beyond this grade.",
+      "challenge": true,
+      "skills": [
+        {
+          "skillId": "g6-ch-fractions",
+          "title": "Fraction ÷ fraction",
+          "generator": {
+            "type": "fractionDivide",
+            "forms": [
+              "fracByFrac"
+            ],
+            "maxDen": 12
+          }
+        },
+        {
+          "skillId": "g6-ch-percent",
+          "title": "Mixed percentage problems",
+          "generator": {
+            "type": "percentage",
+            "forms": [
+              "ofQuantity",
+              "discount",
+              "increase",
+              "findWhole"
+            ],
+            "max": 2000
+          }
+        },
+        {
+          "skillId": "g6-ch-algebra",
+          "title": "Algebra mix",
+          "generator": {
+            "type": "algebra"
+          }
+        },
+        {
+          "skillId": "g6-ch-speed",
+          "title": "Speed in m/min",
+          "generator": {
+            "type": "speed",
+            "units": [
+              "mmin"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

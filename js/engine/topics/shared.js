@@ -69,3 +69,43 @@ export const tidyMethod = (m) => ({
   steps: m.steps.map((s) => ({ ...s, text: tidy(s.text) })),
   guided: m.guided.map((g) => ({ ...g, prompt: tidy(g.prompt) })),
 });
+
+/* ------------------------------------------------------------------ */
+/* Number helpers for the Grade 5–6 topics                             */
+/* ------------------------------------------------------------------ */
+
+export const gcd = (a, b) => (b === 0 ? Math.abs(a) : gcd(b, a % b));
+export const lcm = (a, b) => (a / gcd(a, b)) * b;
+
+/**
+ * Draw values until `accept` passes. Bounded so a bad parameter set can never
+ * hang the app; falls back to the last draw.
+ */
+export const drawUntil = (draw, accept, tries = 300) => {
+  let value = draw();
+  for (let i = 0; i < tries && !accept(value); i += 1) value = draw();
+  return value;
+};
+
+/** [6, 8] -> [3, 4]. */
+export const simplest = (n, d) => {
+  const g = gcd(n, d) || 1;
+  return [n / g, d / g];
+};
+
+/**
+ * A fraction as text, in simplest form: "3/4", "2" (a whole number) or
+ * "1 1/2" (a mixed number; pass { mixed: false } for "3/2").
+ */
+export const fracText = (n, d, { mixed = true } = {}) => {
+  const [a, b] = simplest(n, d);
+  if (b === 1) return String(a);
+  if (mixed && a > b) return `${Math.floor(a / b)} ${a % b}/${b}`;
+  return `${a}/${b}`;
+};
+
+/** A decimal as text with no float noise: 2.3500000001 -> "2.35", 1250.5 -> "1,250.5". */
+export const dec = (x) => Number(Number(x).toFixed(6)).toLocaleString('en-US', { maximumFractionDigits: 4 });
+
+/** A decimal answer with no float noise: 0.1 + 0.2 -> 0.3. */
+export const tidyNumber = (x) => Number(Number(x).toFixed(6));

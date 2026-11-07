@@ -5,6 +5,8 @@
     { "packId": "math-g1", "subject": "math", "subjectName": "Math", "icon": "🔢", "level": "G1", "levelName": "Grade 1", "title": "Math · Grade 1", "file": "math-g1.json", "young": false, "readAloud": true },
     { "packId": "math-g2", "subject": "math", "subjectName": "Math", "icon": "🔢", "level": "G2", "levelName": "Grade 2", "title": "Math · Grade 2", "file": "math-g2.json", "young": false, "readAloud": true },
     { "packId": "math-g3", "subject": "math", "subjectName": "Math", "icon": "🔢", "level": "G3", "levelName": "Grade 3", "title": "Math · Grade 3", "file": "math-g3.json", "young": false },
-    { "packId": "math-g4", "subject": "math", "subjectName": "Math", "icon": "🔢", "level": "G4", "levelName": "Grade 4", "title": "Math · Grade 4", "file": "math-g4.json", "young": false }
+    { "packId": "math-g4", "subject": "math", "subjectName": "Math", "icon": "🔢", "level": "G4", "levelName": "Grade 4", "title": "Math · Grade 4", "file": "math-g4.json", "young": false },
+    { "packId": "math-g5", "subject": "math", "subjectName": "Math", "icon": "🔢", "level": "G5", "levelName": "Grade 5", "title": "Math · Grade 5", "file": "math-g5.json", "young": false },
+    { "packId": "math-g6", "subject": "math", "subjectName": "Math", "icon": "🔢", "level": "G6", "levelName": "Grade 6", "title": "Math · Grade 6", "file": "math-g6.json", "young": false }
   ]
 }

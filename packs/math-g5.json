@@ -1,0 +1,1506 @@
+{
+  "packId": "math-g5",
+  "version": "1.0.0",
+  "subject": "math",
+  "title": "Math · Grade 5",
+  "topics": [
+    {
+      "topicId": "g5-numbers",
+      "title": "Numbers to 10 million",
+      "icon": "🔢",
+      "summary": "Big numbers, × by 10, 100 and 1,000, and the order of operations.",
+      "skills": [
+        {
+          "skillId": "g5-place-value",
+          "title": "Place value to millions",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "Group the digits in threes from the right. 4,250,000 is 4 millions, 250 thousands."
+              },
+              {
+                "stage": "abstract",
+                "text": "In 4,250,000 the 4 is in the millions place, so it stands for 4,000,000."
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: What digit is in the hundred thousands place in 4,728,928?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "What digit is in the hundred thousands place in 4,728,928?",
+                  "choices": [
+                    "6",
+                    "7",
+                    "8"
+                  ],
+                  "answer": "7",
+                  "explain": "The answer is 7."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "placeValue",
+            "digits": 7
+          }
+        },
+        {
+          "skillId": "g5-times-tens",
+          "title": "Multiply by 10, 100 and 1,000",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "10 tens make 100. Multiplying by 10 makes every digit worth 10 times as much."
+              },
+              {
+                "stage": "pictorial",
+                "text": "× 10: each digit moves 1 place to the left. × 100: 2 places. × 1,000: 3 places. Empty places get a 0."
+              },
+              {
+                "stage": "abstract",
+                "text": "36 × 100 = 3,600. 36 × 1,000 = 36,000."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: 951 × 10 = ?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "shiftPlaces",
+                    "x": 951,
+                    "p": 10,
+                    "op": "×"
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 837 × 1,000 = ?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "shiftPlaces",
+                    "x": 837,
+                    "p": 1000,
+                    "op": "×",
+                    "answer": 837000
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "powersOfTen",
+            "ops": [
+              "×"
+            ],
+            "decimals": false
+          }
+        },
+        {
+          "skillId": "g5-order-ops",
+          "title": "Order of operations",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "Some sums have more than one step. Everyone must do them in the same order, or we get different answers."
+              },
+              {
+                "stage": "abstract",
+                "text": "Brackets first. Then × and ÷ from left to right. Then + and − from left to right.\n10 − 2 × 3 = 10 − 6 = 4, not 24."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: 10 × (17 + 38) = ?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "orderOfOperations",
+                    "tokens": [
+                      10,
+                      "×",
+                      "(",
+                      17,
+                      "+",
+                      38,
+                      ")"
+                    ]
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 43 + 6 × 6 = ?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "orderOfOperations",
+                    "tokens": [
+                      43,
+                      "+",
+                      6,
+                      "×",
+                      6
+                    ],
+                    "answer": 79
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "orderOps",
+            "templates": [
+              "basic"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g5-fractions",
+      "title": "Fractions",
+      "icon": "🍕",
+      "summary": "Add and subtract unlike fractions, mixed numbers, a fraction of an amount, and multiplying.",
+      "skills": [
+        {
+          "skillId": "g5-frac-related",
+          "title": "Add and subtract: one bottom is a multiple",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Halves and fourths are different sizes. Cut each half into 2, and 1/2 becomes 2/4.",
+                "visual": {
+                  "kind": "stack",
+                  "items": [
+                    {
+                      "kind": "fraction",
+                      "numerator": 1,
+                      "denominator": 2,
+                      "shape": "bar",
+                      "label": "1/2"
+                    },
+                    {
+                      "kind": "fraction",
+                      "numerator": 2,
+                      "denominator": 4,
+                      "shape": "bar",
+                      "label": "2/4"
+                    }
+                  ]
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Now both are fourths: 2/4 + 1/4 = 3/4."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: 5/12 − 1/4 = ?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "unlikeDenominator",
+                    "n1": 5,
+                    "d1": 12,
+                    "n2": 1,
+                    "d2": 4,
+                    "op": "−"
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 9/10 − 1/5 = ?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "unlikeDenominator",
+                    "n1": 9,
+                    "d1": 10,
+                    "n2": 1,
+                    "d2": 5,
+                    "op": "−",
+                    "answer": "7/10"
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "fractionUnlike",
+            "related": true
+          }
+        },
+        {
+          "skillId": "g5-frac-unlike",
+          "title": "Add and subtract unlike fractions",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "1/3 and 1/4: thirds and fourths. Both 3 and 4 go into 12, so change both into twelfths.",
+                "visual": {
+                  "kind": "stack",
+                  "items": [
+                    {
+                      "kind": "fraction",
+                      "numerator": 1,
+                      "denominator": 3,
+                      "shape": "bar",
+                      "label": "1/3"
+                    },
+                    {
+                      "kind": "fraction",
+                      "numerator": 1,
+                      "denominator": 4,
+                      "shape": "bar",
+                      "label": "1/4"
+                    }
+                  ]
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "1/3 = 4/12 and 1/4 = 3/12. So 1/3 + 1/4 = 4/12 + 3/12 = 7/12.",
+                "visual": {
+                  "kind": "stack",
+                  "items": [
+                    {
+                      "kind": "fraction",
+                      "numerator": 4,
+                      "denominator": 12,
+                      "shape": "bar",
+                      "label": "4/12"
+                    },
+                    {
+                      "kind": "fraction",
+                      "numerator": 3,
+                      "denominator": 12,
+                      "shape": "bar",
+                      "label": "3/12"
+                    }
+                  ]
+                }
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: 5/9 + 5/6 = ?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "unlikeDenominator",
+                    "n1": 5,
+                    "d1": 9,
+                    "n2": 5,
+                    "d2": 6,
+                    "op": "+"
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 1/8 + 2/3 = ?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "unlikeDenominator",
+                    "n1": 1,
+                    "d1": 8,
+                    "n2": 2,
+                    "d2": 3,
+                    "op": "+",
+                    "answer": "19/24"
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "fractionUnlike",
+            "maxDen": 10
+          }
+        },
+        {
+          "skillId": "g5-mixed",
+          "title": "Mixed numbers",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "7/4 is 7 fourths. 4 fourths make 1 whole, and 3 fourths are left over.",
+                "visual": {
+                  "kind": "stack",
+                  "items": [
+                    {
+                      "kind": "fraction",
+                      "numerator": 4,
+                      "denominator": 4,
+                      "shape": "bar",
+                      "label": "1 whole"
+                    },
+                    {
+                      "kind": "fraction",
+                      "numerator": 3,
+                      "denominator": 4,
+                      "shape": "bar",
+                      "label": "3/4"
+                    }
+                  ]
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "So 7/4 = 1 3/4. A mixed number is a whole number and a fraction."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: Write 2 1/8 as an improper fraction.",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "mixedNumber",
+                    "w": 2,
+                    "n": 1,
+                    "d": 8,
+                    "form": "toImproper"
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: Write 3 2/5 as an improper fraction.",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "mixedNumber",
+                    "w": 3,
+                    "n": 2,
+                    "d": 5,
+                    "form": "toImproper",
+                    "answer": "17/5"
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "mixedNumbers",
+            "maxDen": 8
+          }
+        },
+        {
+          "skillId": "g5-frac-of",
+          "title": "Fraction of an amount",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "3/4 of 20: draw 20 as a bar cut into 4 equal units.",
+                "visual": {
+                  "kind": "bar",
+                  "rows": [
+                    {
+                      "label": "",
+                      "segments": [
+                        {
+                          "units": 1,
+                          "text": ""
+                        },
+                        {
+                          "units": 1,
+                          "text": ""
+                        },
+                        {
+                          "units": 1,
+                          "text": ""
+                        },
+                        {
+                          "units": 1,
+                          "text": ""
+                        }
+                      ]
+                    }
+                  ],
+                  "braces": [
+                    {
+                      "row": 0,
+                      "from": 0,
+                      "to": 4,
+                      "side": "above",
+                      "text": "20"
+                    },
+                    {
+                      "row": 0,
+                      "from": 0,
+                      "to": 3,
+                      "side": "below",
+                      "text": "?"
+                    }
+                  ]
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "4 units = 20, so 1 unit = 20 ÷ 4 = 5. 3 units = 3 × 5 = 15."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: Lea had 12 marbles and gave away 1/2 of them. How many marbles did Lea have left?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "fractionOfAmount",
+                    "n": 1,
+                    "d": 2,
+                    "Q": 12,
+                    "rest": true
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: Mei had 72 stamps and gave away 5/9 of them. How many stamps did Mei give away?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "fractionOfAmount",
+                    "n": 5,
+                    "d": 9,
+                    "Q": 72,
+                    "rest": false,
+                    "answer": 40
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "fractionOf"
+          }
+        },
+        {
+          "skillId": "g5-frac-times",
+          "title": "Multiply fractions",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "1/2 × 1/3 means half of a third. Cut a third in half: each piece is 1/6.",
+                "visual": {
+                  "kind": "fraction",
+                  "numerator": 1,
+                  "denominator": 3,
+                  "shape": "bar",
+                  "label": "1/3"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Multiply the tops and multiply the bottoms: 1/2 × 1/3 = 1/6. 2/3 × 6 = 12/3 = 4."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: 7/8 × 4/7 = ?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "multiplyFractions",
+                    "n1": 7,
+                    "d1": 8,
+                    "n2": 4,
+                    "d2": 7
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 3/8 × 1/5 = ?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "multiplyFractions",
+                    "n1": 3,
+                    "d1": 8,
+                    "n2": 1,
+                    "d2": 5,
+                    "answer": "3/40"
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "fractionMultiply",
+            "maxDen": 8
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g5-decimals",
+      "title": "Decimals",
+      "icon": "🔟",
+      "summary": "Add, subtract, multiply and divide decimals, and round them.",
+      "skills": [
+        {
+          "skillId": "g5-dec-add-sub",
+          "title": "Add and subtract decimals",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "Line up the decimal points, one under the other. 4.5 + 2.36: write 4.5 as 4.50."
+              },
+              {
+                "stage": "abstract",
+                "text": "450 hundredths + 236 hundredths = 686 hundredths = 6.86."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: 7.25 + 38.6 = ?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "decimalColumn",
+                    "a": 725,
+                    "b": 3860,
+                    "op": "+",
+                    "places": 2
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 39.36 − 21.56 = ?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "decimalColumn",
+                    "a": 3936,
+                    "b": 2156,
+                    "op": "−",
+                    "places": 2,
+                    "answer": 17.8
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "decimalOps",
+            "forms": [
+              "add",
+              "sub"
+            ],
+            "places": 2,
+            "max": 50
+          }
+        },
+        {
+          "skillId": "g5-dec-by-whole",
+          "title": "Multiply and divide by a whole number",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "1.2 is 12 tenths. 12 tenths × 3 = 36 tenths."
+              },
+              {
+                "stage": "abstract",
+                "text": "36 tenths = 3.6. So 1.2 × 3 = 3.6, and 3.6 ÷ 3 = 1.2."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: 2.86 × 3 = ?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "decimalByWhole",
+                    "x": 286,
+                    "w": 3,
+                    "p": 2,
+                    "op": "×"
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 26.35 ÷ 5 = ?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "decimalByWhole",
+                    "x": 2635,
+                    "w": 5,
+                    "p": 2,
+                    "op": "÷",
+                    "answer": 5.27
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "decimalOps",
+            "forms": [
+              "mulWhole",
+              "divWhole"
+            ]
+          }
+        },
+        {
+          "skillId": "g5-dec-tens",
+          "title": "Decimals × and ÷ 10, 100, 1,000",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "× 10 moves each digit 1 place to the left: 2.35 × 10 = 23.5. ÷ 10 moves each digit 1 place to the right: 2.35 ÷ 10 = 0.235."
+              },
+              {
+                "stage": "abstract",
+                "text": "The number of zeros tells you how many places to move: 2.35 × 100 = 235."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: 50.9 × 10 = ?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "shiftPlaces",
+                    "x": 50.9,
+                    "p": 10,
+                    "op": "×"
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: 55 ÷ 1,000 = ?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "shiftPlaces",
+                    "x": 55,
+                    "p": 1000,
+                    "op": "÷",
+                    "answer": 0.055
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "powersOfTen"
+          }
+        },
+        {
+          "skillId": "g5-dec-round",
+          "title": "Round decimals",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "Round 3.47 to 1 decimal place. It is between 3.4 and 3.5. Look at the next digit, 7."
+              },
+              {
+                "stage": "abstract",
+                "text": "7 is 5 or more, so round up: 3.47 is about 3.5."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: Round 15.175 to 2 decimal places.",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "roundDecimal",
+                    "value": 15175,
+                    "to": 2
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: Round 43.561 to 2 decimal places.",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "roundDecimal",
+                    "value": 43561,
+                    "to": 2,
+                    "answer": 43.56
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "decimalOps",
+            "forms": [
+              "round"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g5-percent",
+      "title": "Percentage",
+      "icon": "💯",
+      "summary": "Percent means out of 100.",
+      "skills": [
+        {
+          "skillId": "g5-percent-meaning",
+          "title": "What is a percentage?",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "A 10 by 10 grid has 100 squares. 25 squares shaded is 25 out of 100: 25%.",
+                "visual": {
+                  "kind": "hundredSquare",
+                  "filled": 25
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "To change a fraction, make it out of 100: 3/4 = 75/100 = 75%. 0.4 = 40/100 = 40%."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: Tomas got 40 out of 50 in a quiz. What percentage is that?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "toPercent",
+                    "n": 40,
+                    "d": 50
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: Ana got 19 out of 50 in a quiz. What percentage is that?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "toPercent",
+                    "n": 19,
+                    "d": 50,
+                    "answer": 38
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "percentage",
+            "forms": [
+              "toPercent",
+              "whatPercent"
+            ]
+          }
+        },
+        {
+          "skillId": "g5-percent-of",
+          "title": "Percentage of an amount",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "25% of 80: 100% is 80. 25% is 1 of 4 equal parts.",
+                "visual": {
+                  "kind": "bar",
+                  "rows": [
+                    {
+                      "label": "",
+                      "segments": [
+                        {
+                          "units": 1,
+                          "text": ""
+                        },
+                        {
+                          "units": 1,
+                          "text": ""
+                        },
+                        {
+                          "units": 1,
+                          "text": ""
+                        },
+                        {
+                          "units": 1,
+                          "text": ""
+                        }
+                      ]
+                    }
+                  ],
+                  "braces": [
+                    {
+                      "row": 0,
+                      "from": 0,
+                      "to": 4,
+                      "side": "above",
+                      "text": "100% = 80"
+                    },
+                    {
+                      "row": 0,
+                      "from": 0,
+                      "to": 1,
+                      "side": "below",
+                      "text": "25%"
+                    }
+                  ]
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "1 part = 80 ÷ 4 = 20. So 25% of 80 = 20."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: 90% of 490 = ?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "percentOf",
+                    "p": 90,
+                    "Q": 490
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: A school has 235 pupils. 80% of them walk to school. How many pupils walk to school?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "percentOf",
+                    "p": 80,
+                    "Q": 235,
+                    "answer": 188
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "percentage",
+            "forms": [
+              "ofQuantity"
+            ],
+            "max": 600
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g5-ratio",
+      "title": "Ratio",
+      "icon": "⚖️",
+      "summary": "Compare amounts in units, with bar models.",
+      "skills": [
+        {
+          "skillId": "g5-ratio-simplify",
+          "title": "Ratio in simplest form",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "6 red beads and 4 blue beads: the ratio of red to blue is 6 : 4."
+              },
+              {
+                "stage": "abstract",
+                "text": "Divide both by 2: 6 : 4 = 3 : 2. For every 3 red there are 2 blue."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: Write 35 : 63 in simplest form.",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "simplifyRatio",
+                    "a": 35,
+                    "b": 63
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: Write 21 : 7 in simplest form.",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "simplifyRatio",
+                    "a": 21,
+                    "b": 7,
+                    "answer": "3 : 1"
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "ratio",
+            "forms": [
+              "simplify"
+            ]
+          }
+        },
+        {
+          "skillId": "g5-ratio-units",
+          "title": "Ratio word problems",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "Ana and Ben share in the ratio 2 : 3. Ana gets 2 units and Ben gets 3 units. All units are the same size.",
+                "visual": {
+                  "kind": "bar",
+                  "rows": [
+                    {
+                      "label": "Ana",
+                      "segments": [
+                        {
+                          "units": 1,
+                          "text": ""
+                        },
+                        {
+                          "units": 1,
+                          "text": ""
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Ben",
+                      "segments": [
+                        {
+                          "units": 1,
+                          "text": ""
+                        },
+                        {
+                          "units": 1,
+                          "text": ""
+                        },
+                        {
+                          "units": 1,
+                          "text": ""
+                        }
+                      ]
+                    }
+                  ],
+                  "braces": [
+                    {
+                      "side": "right",
+                      "rows": [
+                        0,
+                        1
+                      ],
+                      "text": "?"
+                    }
+                  ]
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "If they share 40, then 5 units = 40, so 1 unit = 8. Ana gets 2 × 8 = 16 and Ben gets 3 × 8 = 24."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: The ratio of Lito's beads to Raj's beads is 5 : 9. Lito has 40 beads. How many do they have altogether?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "ratioUnits",
+                    "names": [
+                      "Lito",
+                      "Raj"
+                    ],
+                    "x": 5,
+                    "y": 9,
+                    "known": "first",
+                    "value": 40,
+                    "find": "total"
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: The ratio of Tomas's marbles to Maya's marbles is 3 : 1. Tomas has 27 marbles. How many do they have altogether?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "ratioUnits",
+                    "names": [
+                      "Tomas",
+                      "Maya"
+                    ],
+                    "x": 3,
+                    "y": 1,
+                    "known": "first",
+                    "value": 27,
+                    "find": "total",
+                    "answer": 36
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "ratio",
+            "forms": [
+              "share",
+              "findPart",
+              "total"
+            ],
+            "maxUnit": 10
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g5-average",
+      "title": "Average",
+      "icon": "📊",
+      "summary": "Share the total out equally.",
+      "skills": [
+        {
+          "skillId": "g5-average",
+          "title": "Find the average",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Towers of 3, 5 and 7 cubes. Move cubes so the towers are the same height: each has 5."
+              },
+              {
+                "stage": "abstract",
+                "text": "Average = total ÷ how many. (3 + 5 + 7) ÷ 3 = 15 ÷ 3 = 5."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: Ben scored 17, 21 and 4 points in 3 games. What is the average score?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "averageOf",
+                    "values": [
+                      17,
+                      21,
+                      4
+                    ]
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: Find the average of 19, 17 and 42.",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "averageOf",
+                    "values": [
+                      19,
+                      17,
+                      42
+                    ],
+                    "answer": 26
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "average",
+            "forms": [
+              "mean"
+            ],
+            "max": 40
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g5-geometry",
+      "title": "Triangles and volume",
+      "icon": "📐",
+      "summary": "Area and angles of a triangle, and volume of boxes.",
+      "skills": [
+        {
+          "skillId": "g5-triangle-area",
+          "title": "Area of a triangle",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "Draw a rectangle round a triangle. The triangle fills exactly half of it.",
+                "visual": {
+                  "kind": "triangle",
+                  "base": 8,
+                  "height": 6,
+                  "apex": 0.5,
+                  "box": true
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Area of a triangle = base × height ÷ 2. The height goes straight up from the base, at a right angle."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: A triangle has a base of 5 cm and a height of 6 cm. What is its area, in cm²?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "triangleArea",
+                    "b": 5,
+                    "h": 6,
+                    "apex": 0.7,
+                    "form": "area"
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: A triangle has a base of 13 cm and a height of 10 cm. What is its area, in cm²?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "triangleArea",
+                    "b": 13,
+                    "h": 10,
+                    "apex": 0.3,
+                    "form": "area",
+                    "answer": 65
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "triangleArea",
+            "forms": [
+              "area"
+            ],
+            "max": 14
+          }
+        },
+        {
+          "skillId": "g5-triangle-angles",
+          "title": "Angles in a triangle",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Cut out a paper triangle and tear off its 3 corners. Put them together: they make a straight line, 180°.",
+                "visual": {
+                  "kind": "triangle",
+                  "angles": [
+                    70,
+                    50,
+                    60
+                  ],
+                  "labels": [
+                    "70°",
+                    "50°",
+                    "60°"
+                  ]
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "The 3 angles of a triangle always add up to 180°. 70 + 50 + 60 = 180."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: Two angles of a triangle are 20° and 80°. What is the third angle, in degrees?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "angleSum",
+                    "known": [
+                      20,
+                      80
+                    ]
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: Two angles of a triangle are 80° and 30°. What is the third angle, in degrees?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "angleSum",
+                    "known": [
+                      80,
+                      30
+                    ],
+                    "answer": 70
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "triangleAngles",
+            "forms": [
+              "two",
+              "right"
+            ]
+          }
+        },
+        {
+          "skillId": "g5-volume",
+          "title": "Volume of cubes and cuboids",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Volume is how much space a solid takes up. We count it in 1 cm cubes: cm³.",
+                "visual": {
+                  "kind": "cuboid",
+                  "l": 4,
+                  "w": 3,
+                  "h": 2,
+                  "cubes": true
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "The bottom layer is 4 × 3 = 12 cubes. 2 layers make 12 × 2 = 24 cm³. Volume = length × width × height."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: A cube has edges of 3 cm. What is its volume, in cm³?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "volumeLayers",
+                    "l": 3,
+                    "w": 3,
+                    "h": 3,
+                    "form": "cube"
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: A box is 5 cm long, 3 cm wide and 5 cm high. What is its volume, in cm³?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "volumeLayers",
+                    "l": 5,
+                    "w": 3,
+                    "h": 5,
+                    "form": "cuboid",
+                    "answer": 75
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "volume",
+            "forms": [
+              "cuboid",
+              "cube"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g5-word-problems",
+      "title": "Word problems",
+      "icon": "📝",
+      "summary": "Bar models with big numbers.",
+      "skills": [
+        {
+          "skillId": "g5-wp-mixed",
+          "title": "Mixed word problems",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "Read the story. Draw the bars. Put ? on what you must find."
+              },
+              {
+                "stage": "abstract",
+                "text": "Decide: is a part missing, the whole, or the difference? Then choose +, −, × or ÷."
+              },
+              {
+                "stage": "technique",
+                "text": "Watch how: Aisha has 22,156 marbles. Lea has 12,552 marbles. How many marbles do they have altogether?",
+                "interact": {
+                  "kind": "worked",
+                  "method": {
+                    "kind": "barModel",
+                    "model": {
+                      "rows": [
+                        {
+                          "label": "",
+                          "segments": [
+                            {
+                              "units": 22156,
+                              "text": "Aisha: 22,156"
+                            },
+                            {
+                              "units": 12552,
+                              "text": "Lea: 12,552"
+                            }
+                          ]
+                        }
+                      ],
+                      "braces": [
+                        {
+                          "row": 0,
+                          "from": 0,
+                          "to": 2,
+                          "side": "above",
+                          "text": "?"
+                        }
+                      ]
+                    },
+                    "op": "+",
+                    "a": 22156,
+                    "b": 12552,
+                    "answer": 34708
+                  }
+                }
+              },
+              {
+                "stage": "try",
+                "text": "Your turn: Ben has 1,929 eggs. Lito has 5 times as many eggs as Ben. How many eggs do they have altogether?",
+                "interact": {
+                  "kind": "tryIt",
+                  "method": {
+                    "kind": "barModel",
+                    "model": {
+                      "rows": [
+                        {
+                          "label": "Lito",
+                          "segments": [
+                            {
+                              "units": 1929,
+                              "text": ""
+                            },
+                            {
+                              "units": 1929,
+                              "text": ""
+                            },
+                            {
+                              "units": 1929,
+                              "text": ""
+                            },
+                            {
+                              "units": 1929,
+                              "text": ""
+                            },
+                            {
+                              "units": 1929,
+                              "text": ""
+                            }
+                          ]
+                        },
+                        {
+                          "label": "Ben",
+                          "segments": [
+                            {
+                              "units": 1929,
+                              "text": "1929"
+                            }
+                          ]
+                        }
+                      ],
+                      "braces": [
+                        {
+                          "rows": [
+                            0,
+                            1
+                          ],
+                          "side": "right",
+                          "text": "?"
+                        }
+                      ]
+                    },
+                    "op": "×",
+                    "a": 6,
+                    "b": 1929,
+                    "answer": 11574,
+                    "timesAltogether": 5
+                  }
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "wordProblem",
+            "kinds": [
+              "partWhole",
+              "compare",
+              "multiply"
+            ],
+            "max": 50000,
+            "maxTimes": 9
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "g5-challenge",
+      "title": "Challenge zone",
+      "icon": "⭐",
+      "summary": "Ready for more? These go a step beyond this grade.",
+      "challenge": true,
+      "skills": [
+        {
+          "skillId": "g5-ch-frac-divide",
+          "title": "Divide with fractions",
+          "generator": {
+            "type": "fractionDivide",
+            "forms": [
+              "wholeByUnit",
+              "fracByWhole"
+            ]
+          }
+        },
+        {
+          "skillId": "g5-ch-percent",
+          "title": "Discounts",
+          "generator": {
+            "type": "percentage",
+            "forms": [
+              "discount"
+            ]
+          }
+        },
+        {
+          "skillId": "g5-ch-ratio",
+          "title": "Ratio: more than",
+          "generator": {
+            "type": "ratio",
+            "forms": [
+              "difference"
+            ]
+          }
+        },
+        {
+          "skillId": "g5-ch-litres",
+          "title": "Volume in litres",
+          "generator": {
+            "type": "volume",
+            "forms": [
+              "litres"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

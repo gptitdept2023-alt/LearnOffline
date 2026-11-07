@@ -7,7 +7,7 @@
  * tests/packs.test.mjs fails if a file is missing from PRECACHE.
  */
 
-const CACHE_VERSION = 'v20';
+const CACHE_VERSION = 'v21';
 const VOICE_MANIFEST = './audio/voice/manifest.json';
 const CACHE_NAME = `learnoffline-${CACHE_VERSION}`;
 
@@ -55,10 +55,14 @@ const PRECACHE = [
   './js/engine/topics/geometry.js',
   './js/engine/topics/graphs.js',
   './js/engine/topics/english.js',
+  './js/engine/topics/decimalsPercent.js',
+  './js/engine/topics/fractionsPlus.js',
   './js/engine/topics/index.js',
   './js/engine/topics/measurement.js',
   './js/engine/topics/money.js',
+  './js/engine/topics/ratioAlgebra.js',
   './js/engine/topics/shared.js',
+  './js/engine/topics/solids.js',
   './js/engine/topics/time.js',
   './js/ui/components/cards.js',
   './js/ui/components/celebrate.js',
@@ -69,6 +73,7 @@ const PRECACHE = [
   './js/ui/components/visuals.js',
   './js/ui/components/visualsTopics.js',
   './js/ui/components/visualsWords.js',
+  './js/ui/components/visualsSolids.js',
   './js/ui/screens/badges.js',
   './js/ui/screens/games.js',
   './js/ui/screens/guided.js',
@@ -89,6 +94,8 @@ const PRECACHE = [
   './packs/math-g2.json',
   './packs/math-g3.json',
   './packs/math-g4.json',
+  './packs/math-g5.json',
+  './packs/math-g6.json',
 ];
 
 self.addEventListener('install', (event) => {

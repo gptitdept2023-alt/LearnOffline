@@ -118,6 +118,11 @@ const FRACTION_NAMES = {
   2: ['half', 'halves'], 3: ['third', 'thirds'], 4: ['fourth', 'fourths'], 5: ['fifth', 'fifths'],
   6: ['sixth', 'sixths'], 7: ['seventh', 'sevenths'], 8: ['eighth', 'eighths'], 9: ['ninth', 'ninths'],
   10: ['tenth', 'tenths'], 11: ['eleventh', 'elevenths'], 12: ['twelfth', 'twelfths'],
+  // Common denominators in Grade 5–6 work (2/3 + 1/4 = 11/12, 3/8 + 1/6 = 13/24).
+  ...Object.fromEntries([
+    [13, 'thirteenth'], [14, 'fourteenth'], [15, 'fifteenth'], [16, 'sixteenth'], [17, 'seventeenth'], [18, 'eighteenth'], [19, 'nineteenth'], [20, 'twentieth'],
+    [21, 'twenty-first'], [22, 'twenty-second'], [23, 'twenty-third'], [24, 'twenty-fourth'], [25, 'twenty-fifth'], [30, 'thirtieth'], [100, 'hundredth'],
+  ].map(([d, word]) => [d, [word, `${word}s`]])),
 };
 
 /** "2/3" -> "2 thirds", "1/2" -> "1 half"; denominators above 12 read as "over". */
@@ -128,12 +133,12 @@ const sayFraction = (num, den) => {
 
 /** Measurement units read as words: [singular, plural]. */
 const UNIT_WORDS = {
-  'cm²': ['square centimetre', 'square centimetres'],
+  'cm²': ['square centimetre', 'square centimetres'], 'cm³': ['cubic centimetre', 'cubic centimetres'],
   km: ['kilometre', 'kilometres'], cm: ['centimetre', 'centimetres'], mm: ['millimetre', 'millimetres'], m: ['metre', 'metres'],
   kg: ['kilogram', 'kilograms'], g: ['gram', 'grams'], ml: ['millilitre', 'millilitres'], 'ℓ': ['litre', 'litres'],
   h: ['hour', 'hours'], min: ['minute', 'minutes'],
 };
-const UNIT_RE = '(cm²|km|cm|mm|kg|ml|min|ℓ|m|g|h)(?![A-Za-z²])';
+const UNIT_RE = '(cm²|cm³|km|cm|mm|kg|ml|min|ℓ|m|g|h)(?![A-Za-z²³])';
 
 /** "₱37.75" -> "37 pesos 75 centavos", "₱0.25" -> "25 centavos", "₱100.00" -> "100 pesos". */
 const sayMoney = (whole, centavos = '00') => {
@@ -160,6 +165,17 @@ const sayClock = (hours, mins, after) => {
 
 /** Money, units, clock times and degrees as words, before the rest of the maths rules run. */
 const sayMeasures = (text) => text
+  // Speeds before the units, so "60 km/h" is not read as "60 kilometres slash h".
+  .replace(/(\d[\d,]*)\s?km\/h\b/g, (_, n) => `${n} ${n === '1' ? 'kilometre' : 'kilometres'} per hour`)
+  .replace(/(\d[\d,]*)\s?m\/min\b/g, (_, n) => `${n} ${n === '1' ? 'metre' : 'metres'} per minute`)
+  .replace(/\bkm\/h\b/g, 'kilometres per hour')
+  .replace(/\bm\/min\b/g, 'metres per minute')
+  .replace(/(\d)%/g, '$1 percent')
+  .replace(/π/g, 'pi')
+  // A ratio "2 : 3" is "2 to 3" (a clock time has no spaces: "2:30").
+  .replace(/(\d) : (\d)/g, '$1 to $2')
+  // Algebra: "3n + 4" is "3 n plus 4".
+  .replace(/\b(\d+)([nky])\b/g, '$1 $2')
   .replace(/=\s*₱\?/g, 'equals how many pesos?')
   .replace(/=\s*\?¢/g, 'equals how many centavos?')
   .replace(new RegExp(`${PESO_RE} bill`, 'g'), (_, d) => `${d.replace(/,/g, '')} peso bill`)
@@ -210,6 +226,8 @@ const joinLines = (text) => String(text).replace(/([^.!?:,\s])[ \t]*\n+\s*/g, '$
 export const toSpokenText = (text) => pauseChains(sayMeasures(joinLines(text))
   .replace(/(\d),(\d{3})/g, '$1$2')
   .replace(/\?\s*\/\s*(\d+)/g, (_, den) => `how many ${FRACTION_NAMES[Number(den)]?.[1] || `over ${den}`}?`)
+  // A mixed number: "2 3/4" is "2 and 3 fourths".
+  .replace(/\b(\d+) (\d+)\/(\d+)/g, (_, w, num, den) => `${w} and ${sayFraction(num, den)}`)
   .replace(/(\d+)\/(\d+)/g, (_, num, den) => sayFraction(num, den))
   .replace(/\b(\d+)ths\b/g, (match, den) => FRACTION_NAMES[Number(den)]?.[1] || match)
   .replace(/\s*\+\s*/g, ' plus ')
