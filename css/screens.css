@@ -200,3 +200,9 @@
   .data-table { font-size: 0.82rem; }
   .data-table th, .data-table td { padding: 6px; }
 }
+
+/* Support note at the bottom of the parent area: quiet, never in the way. */
+.support-panel { border-style: dashed; }
+.support-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.support-label { font-size: 0.8rem; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.support-number { font-size: 1.25rem; letter-spacing: 0.03em; font-variant-numeric: tabular-nums; user-select: all; }

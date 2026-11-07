@@ -329,6 +329,48 @@ const pinPanel = (hasPin) => h('section.panel', null,
     hasPin && h('button.btn.btn-ghost', { type: 'button', onclick: removePinFlow }, 'Remove PIN')));
 
 /* ------------------------------------------------------------------ */
+/* Support (optional donation, parents only)                           */
+/* ------------------------------------------------------------------ */
+
+/** The app is free; parents who want to can send a tip by GCash. */
+const SUPPORT = Object.freeze({ method: 'GCash', number: '09952938507' });
+
+/** "09952938507" -> "0995 293 8507" (easier to read and type). */
+const groupedNumber = (n) => n.replace(/^(\d{4})(\d{3})(\d{4})$/, '$1 $2 $3');
+
+/** Copy text; falls back to a hidden input on browsers without the Clipboard API (e.g. plain http). */
+const copyText = async (text) => {
+  if (navigator.clipboard?.writeText && window.isSecureContext) {
+    await navigator.clipboard.writeText(text);
+    return;
+  }
+  const input = h('input', { value: text, readonly: true, 'aria-hidden': 'true', style: { position: 'fixed', opacity: '0' } });
+  document.body.append(input);
+  input.select();
+  const ok = document.execCommand('copy');
+  input.remove();
+  if (!ok) throw new Error('copy not supported');
+};
+
+const supportPanel = () => h('section.panel.support-panel', null,
+  h('h2', null, '💙 Support this app'),
+  h('p.muted', null, `LearnOffline is free, with no ads. If it helps your family, you can send a small tip by ${SUPPORT.method}. Thank you!`),
+  h('div.support-row', null,
+    h('span.support-label', null, SUPPORT.method),
+    h('strong.support-number', null, groupedNumber(SUPPORT.number)),
+    h('button.btn.btn-secondary.btn-sm', {
+      type: 'button',
+      onclick: async () => {
+        try {
+          await copyText(SUPPORT.number);
+          toast('Number copied. Paste it in GCash → Send Money.', 'success');
+        } catch {
+          toast(`Could not copy. The number is ${groupedNumber(SUPPORT.number)}.`, 'error');
+        }
+      },
+    }, '📋 Copy number')));
+
+/* ------------------------------------------------------------------ */
 /* Screen                                                              */
 /* ------------------------------------------------------------------ */
 
@@ -367,6 +409,7 @@ export const renderParent = async (view) => {
     voicePanel(),
     backupPanel(),
     pinPanel(hasPin),
+    supportPanel(),
   );
   // Reports load in parallel; each child's data is read with indexed queries only.
   mount(reports, await Promise.all(profiles.map(childReport)));
