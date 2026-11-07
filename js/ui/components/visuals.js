@@ -226,7 +226,7 @@ const renderJumps = ({ from = 0, step = 1, count = 1, hideEnd = false }) => {
 /* Place-value discs: chart, trading, sharing into groups              */
 /* ------------------------------------------------------------------ */
 
-const PLACE_NAMES = { 1: ['one', 'ones'], 10: ['ten', 'tens'], 100: ['hundred', 'hundreds'], 1000: ['thousand', 'thousands'], 10000: ['ten thousand', 'ten thousands'] };
+const PLACE_NAMES = { 1: ['one', 'ones'], 10: ['ten', 'tens'], 100: ['hundred', 'hundreds'], 1000: ['thousand', 'thousands'], 10000: ['ten thousand', 'ten thousands'], 100000: ['hundred thousand', 'hundred thousands'] };
 
 /** "3 hundreds", "1 ten". */
 const placeCount = (n, place) => `${n.toLocaleString('en-US')} ${(PLACE_NAMES[place] || ['', ''])[n === 1 ? 0 : 1]}`;
@@ -271,6 +271,33 @@ const renderPlaceChart = ({ rows }) => {
   });
   return h('div.visual.visual-place-chart', { role: 'img', 'aria-label': rows.map((r) => r.value).join(' and ') + ' in a place-value chart' },
     h(`div.pv-grid${labelled ? '.pv-labelled' : ''}`, { style: { '--cols': places.length } }, header, body));
+};
+
+/**
+ * Multiplying by 10 as a place-value shift: every digit moves one place to
+ * the left and a 0 fills the ones. Digits only (no discs), so it stays
+ * readable for big numbers such as 2,980 -> 29,800.
+ * @param {{value: number, hideResult?: boolean}} spec The number before multiplying by 10.
+ *   hideResult shows "?" in the answer row (used when the child is asked for it).
+ */
+const renderShift = ({ value, hideResult = false }) => {
+  const result = value * 10;
+  const places = placesOf(result);
+  const row = (n, label, isResult) => {
+    const ds = String(n).padStart(places.length, ' ').split('');
+    return [
+      h('span.pv-label', null, label),
+      places.map((p, k) => h(`span.pv-cell.shift-cell${isResult && p === 1 && !hideResult ? '.shift-new' : ''}`, null,
+        h('b.pv-digit', null, isResult && hideResult ? '?' : ds[k].trim()))),
+    ];
+  };
+  const caption = '× 10: each digit moves one place to the left, and a 0 goes in the ones place.';
+  const label = hideResult ? `${value} times 10` : `${value} times 10 is ${result}`;
+  return h('div.visual.visual-place-chart.visual-shift', { role: 'img', 'aria-label': label },
+    h('div.pv-grid.pv-labelled', { style: { '--cols': places.length } },
+      h('span.pv-head'), places.map((p) => h(`span.pv-head.pv-head-${p}`, null, PLACE_NAMES[p]?.[1] || p)),
+      row(value, ''), row(result, '×10', true)),
+    h('p.visual-caption', null, caption));
 };
 
 /**
@@ -503,6 +530,7 @@ const RENDERERS = {
   column: renderColumn,
   jumps: renderJumps,
   placeChart: renderPlaceChart,
+  shift: renderShift,
   trade: renderTrade,
   share: renderShare,
   longDivision: renderLongDivision,

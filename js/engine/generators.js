@@ -269,7 +269,9 @@ const multiplyLong = ({ digits = 2, byDigits = 1 }, rng) => {
     answerType: 'numeric',
     prompt: `${fmt(a)} × ${b} = ?`,
     answer: a * b,
-    hint: byDigits === 1 ? 'Multiply the ones, then the tens, then the hundreds. Remember to carry.' : `Split ${b} into ${Math.floor(b / 10) * 10} and ${b % 10}, multiply each, then add.`,
+    hint: byDigits === 1 ? 'Multiply the ones, then the tens, then the hundreds. Remember to carry.'
+      : b % 10 === 0 ? `${b} is ${b / 10} tens. Multiply by ${b / 10}, then by 10.`
+        : `Split ${b} into ${Math.floor(b / 10) * 10} and ${b % 10}, multiply each, then add.`,
     explain: `${fmt(a)} × ${b} = ${fmt(a * b)}`,
     method: { kind: 'splitMultiply', a, b },
   };

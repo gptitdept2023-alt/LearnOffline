@@ -196,6 +196,23 @@ test('long division steps rebuild the quotient and remainder', async () => {
   }
 });
 
+test('multiplication methods never split off a zero part', async () => {
+  const { methodFor } = await import('../js/engine/techniques.js');
+  const ZERO_PART = /\band 0\b|\+ 0 =|= 0 \+|× 0 =|\b0 × /;
+  for (const a of [7, 40, 305, 745, 1000, 2408]) {
+    for (let b = 2; b <= 99; b += 1) {
+      const m = methodFor({ method: { kind: 'splitMultiply', a, b } });
+      for (const s of m.steps) assert.ok(!ZERO_PART.test(s.text), `${a} × ${b}: ${s.text}`);
+      for (const g of m.guided) assert.ok(!ZERO_PART.test(g.prompt), `${a} × ${b}: ${g.prompt}`);
+      assert.equal(String(m.guided.at(-1).answer), String(a * b), `${a} × ${b} ends on the answer`);
+    }
+  }
+  const tens = methodFor({ method: { kind: 'splitMultiply', a: 745, b: 40 } });
+  assert.equal(tens.name, 'Multiply by tens');
+  assert.equal(tens.steps.at(-1).visual.kind, 'shift');
+  assert.ok(tens.guided.some((g) => g.prompt === '2,980 × 10 = ?' && g.answer === 29800));
+});
+
 test('spoken maths reads naturally, with pauses in chains', async () => {
   const { toSpokenText } = await import('../js/core/speech.js');
   assert.equal(toSpokenText('Use facts you know: 7 × 8 = 7 × 4 × 2 = 28 × 2 = 56.'),

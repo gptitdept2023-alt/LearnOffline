@@ -228,3 +228,9 @@
 .frac-label { font-weight: 800; }
 .frac-extra { fill: var(--extra); stroke: var(--surface); stroke-width: 2; }
 .frac-cross { stroke: var(--bad); stroke-width: 3; stroke-linecap: round; }
+
+/* Multiply by 10: digits shift one place left */
+.visual-shift { flex-direction: column; }
+.shift-cell { min-height: 44px; justify-content: center; }
+.shift-new { background: var(--warn-soft, #fff1c9); }
+.shift-new .pv-digit { color: var(--extra); }

@@ -93,23 +93,30 @@ const columnAdd = ({ a, b }) => {
     const x = da[i] || 0;
     const y = db[i] || 0;
     const sum = x + y + carry;
-    const parts = carry ? `${x} + ${y} + 1 carried` : `${x} + ${y}`;
+    // A place only one number has (e.g. the tens of 12 + 6) is not "1 + 0": just bring it down.
+    const onlyOne = i >= Math.min(da.length, db.length);
+    const parts = onlyOne
+      ? (carry ? `${x || y} + 1 carried` : `${x || y}`)
+      : (carry ? `${x} + ${y} + 1 carried` : `${x} + ${y}`);
     const place = PLACE[i][0].toUpperCase() + PLACE[i].slice(1);
-    guided.push(ask(`Add the ${PLACE[i]}: ${parts} = ?`, sum,
-      { kind: 'column', a, b, op: '+', shown: i, carries: carries.slice(), focus: i, result: toNumber(written) }));
+    if (!onlyOne || carry) {
+      guided.push(ask(`Add the ${PLACE[i]}: ${parts} = ?`, sum,
+        { kind: 'column', a, b, op: '+', shown: i, carries: carries.slice(), focus: i, result: toNumber(written) }));
+    }
     const last = i === places - 1;
     if (sum >= 10 && !last) {
       written.push(sum % 10);
       carries[i + 1] = 1;
       const columnView = { kind: 'column', a, b, op: '+', shown: i + 1, carries: carries.slice(), focus: i, result: toNumber(written) };
       steps.push({
-        text: `${place}: ${parts} = ${sum}. That is 10 ${PLACE[i]} and ${sum % 10} more. Change 10 ${PLACE[i]} for 1 ${PLACE[i + 1].replace(/s$/, '')}: write ${sum % 10}, carry 1.`,
+        text: `${place}: ${parts} = ${sum}. That is 10 ${PLACE[i]}${sum % 10 ? ` and ${sum % 10} more` : ''}. Change 10 ${PLACE[i]} for 1 ${PLACE[i + 1].replace(/s$/, '')}: write ${sum % 10}, carry 1.`,
         visual: discsFit(a, b) ? stack({ kind: 'trade', from: 10 ** i, count: 10, into: 10 ** (i + 1) }, columnView) : columnView,
       });
     } else {
       written.push(sum % 10);
       if (sum >= 10) written.push(1);
-      steps.push({ text: `${place}: ${parts} = ${sum}.`, visual: { kind: 'column', a, b, op: '+', shown: i + 1, carries: carries.slice(), focus: i, result: toNumber(written) } });
+      const text = onlyOne && !carry ? `${place}: only one number has ${PLACE[i]}. Bring down ${x || y}.` : `${place}: ${parts} = ${sum}.`;
+      steps.push({ text, visual: { kind: 'column', a, b, op: '+', shown: i + 1, carries: carries.slice(), focus: i, result: toNumber(written) } });
     }
     carry = sum >= 10 ? 1 : 0;
   }
@@ -216,6 +223,7 @@ const divideByFact = ({ dividend, divisor }) => {
 
 /** Split the number by place value and multiply each part (area model). */
 const splitMultiply = ({ a, b }) => {
+  if (b >= 10 && b < 100 && b % 10 === 0) return multiplyByTens({ a, b });
   if (b >= 10) {
     // 2-digit multiplier: a × tens + a × ones.
     const tens = Math.floor(b / 10) * 10;
@@ -259,6 +267,30 @@ const splitMultiply = ({ a, b }) => {
     guided: [
       ...parts.map((p, k) => ask(`${fmt(p.value)} × ${b} = ?`, p.value * b, area(k, k))),
       ask(`${parts.map((p) => fmt(p.value * b)).join(' + ')} = ?`, a * b, area(parts.length)),
+    ],
+  };
+};
+
+/**
+ * a × (k tens), e.g. 745 × 40: multiply by k first, then by 10 as a
+ * place-value shift. Splitting 40 into "40 and 0" would teach nothing.
+ */
+const multiplyByTens = ({ a, b }) => {
+  const k = b / 10;
+  const partial = a * k;
+  const shift = { kind: 'shift', value: partial };
+  // Reuse the 1-digit method for a × k so both methods always match.
+  const inner = k > 1 ? splitMultiply({ a, b: k }) : null;
+  return {
+    name: 'Multiply by tens',
+    steps: [
+      { text: `${b} is ${k} ten${k === 1 ? '' : 's'}, so ${fmt(a)} × ${b} = ${fmt(a)} × ${k} × 10. First find ${fmt(a)} × ${k}, then multiply by 10.`, visual: { kind: 'placeChart', rows: [{ value: b }] } },
+      ...(inner ? inner.steps.map((s, i) => (i === inner.steps.length - 1 ? { ...s, text: `${s.text} So ${fmt(a)} × ${k} = ${fmt(partial)}.` } : s)) : []),
+      { text: `Now multiply by 10: ${fmt(partial)} × 10 = ${fmt(a * b)}. Each digit moves one place to the left and a 0 goes in the ones place.`, visual: shift },
+    ],
+    guided: [
+      ...(inner ? inner.guided : []),
+      ask(`${fmt(partial)} × 10 = ?`, a * b, { kind: 'shift', value: partial, hideResult: true }),
     ],
   };
 };
