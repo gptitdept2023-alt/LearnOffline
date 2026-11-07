@@ -83,11 +83,17 @@ const renderDayline = ({ mins }) => {
 /* ------------------------------------------------------------------ */
 
 /**
- * An angle between two arms. `ref` overlays a dashed right angle on the
- * first arm; `turn` draws a turning arrow (for 1/4, 1/2, 3/4, full turns).
- * @param {{deg: number, rotate?: number, ref?: boolean, turn?: boolean}} spec
+ * An angle between two arms.
+ * - `ref` lays a square-corner card (a right angle, like a book corner) with
+ *   its bottom edge exactly on the first arm and its corner on the vertex.
+ * - `highlight: 'compare'` then shades what decides the answer: the part of
+ *   the angle sticking out past the card (obtuse) or the gap the angle
+ *   leaves inside the card (acute).
+ * - `label` writes text such as "90°" inside the angle.
+ * - `turn` draws a turning arrow (for 1/4, 1/2, 3/4 and full turns).
+ * @param {{deg: number, rotate?: number, ref?: boolean, highlight?: 'compare', label?: string, turn?: boolean}} spec
  */
-const renderAngle = ({ deg, rotate = 0, ref = false, turn = false }) => {
+const renderAngle = ({ deg, rotate = 0, ref = false, highlight, label, turn = false }) => {
   const cx = 100;
   const cy = 100;
   const len = 80;
@@ -95,6 +101,21 @@ const renderAngle = ({ deg, rotate = 0, ref = false, turn = false }) => {
   const [x1, y1] = at(rotate, len);
   const [x2, y2] = at(rotate + deg, len);
   const nodes = [];
+  /** Filled wedge from angle a0 to a1 (degrees), radius r, at the vertex. */
+  const wedge = (a0, a1, r, cls) => {
+    const [sx, sy] = at(a0, r);
+    const [ex, ey] = at(a1, r);
+    return svg('path', { d: `M${cx} ${cy} L${sx} ${sy} A${r} ${r} 0 ${a1 - a0 > 180 ? 1 : 0} 0 ${ex} ${ey} Z`, class: cls });
+  };
+  if (ref) {
+    // The card goes UNDER the arms, so the arms stay easy to see on top of it.
+    const s = 58;
+    const [ax, ay] = at(rotate, s);
+    const [bx, by] = at(rotate + 90, s);
+    nodes.push(svg('path', { d: `M${cx} ${cy} L${ax} ${ay} L${ax + bx - cx} ${ay + by - cy} L${bx} ${by} Z`, class: 'ang-card' }));
+    if (highlight === 'compare' && deg > 90) nodes.push(wedge(rotate + 90, rotate + deg, 52, 'ang-extra'));
+    if (highlight === 'compare' && deg < 90) nodes.push(wedge(rotate + deg, rotate + 90, 52, 'ang-gap'));
+  }
   if (turn) nodes.push(svg('circle', { cx, cy, r: len, class: 'ang-guide' }));
   nodes.push(svg('line', { x1: cx, y1: cy, x2: x1, y2: y1, class: 'ang-arm' }));
   if (deg % 360) nodes.push(svg('line', { x1: cx, y1: cy, x2: x2, y2: y2, class: 'ang-arm' }));
@@ -110,23 +131,25 @@ const renderAngle = ({ deg, rotate = 0, ref = false, turn = false }) => {
     const [ex, ey] = at(rotate + end, r);
     nodes.push(svg('path', { d: `M${sx} ${sy} A${r} ${r} 0 ${end > 180 ? 1 : 0} 0 ${ex} ${ey}`, class: `ang-mark${turn ? ' ang-turn' : ''}` }));
     if (turn) {
-      // Arrow head at the end of the turn.
+      // Arrow head at the end of the turn: two short lines pointing back along the arc.
       const a = rad(-(rotate + end));
       const tx = -Math.sin(a);
       const ty = Math.cos(a);
-      nodes.push(svg('path', { d: `M${ex} ${ey} l${-tx * 9 + Math.cos(a) * 6} ${-ty * 9 + Math.sin(a) * 6} M${ex} ${ey} l${-tx * 9 - Math.cos(a) * 6} ${-ty * 9 - Math.sin(a) * 6}`, class: 'ang-turn' }));
+      nodes.push(svg('path', { d: `M${ex} ${ey} l${tx * 9 + Math.cos(a) * 6} ${ty * 9 + Math.sin(a) * 6} M${ex} ${ey} l${tx * 9 - Math.cos(a) * 6} ${ty * 9 - Math.sin(a) * 6}`, class: 'ang-turn' }));
     }
   }
   if (ref) {
-    const s = 44;
-    const [ax, ay] = at(rotate, s);
-    const [bx, by] = at(rotate + 90, s);
-    nodes.push(svg('path', { d: `M${ax} ${ay} L${ax + bx - cx} ${ay + by - cy} L${bx} ${by}`, class: 'ang-ref' }));
-    nodes.push(svg('line', { x1: cx, y1: cy, x2: at(rotate + 90, len)[0], y2: at(rotate + 90, len)[1], class: 'ang-ref' }));
+    // The card's upright edge, continued, so the child sees where 90° is.
+    const [ux, uy] = at(rotate + 90, len);
+    nodes.push(svg('line', { x1: cx, y1: cy, x2: ux, y2: uy, class: 'ang-ref' }));
+  }
+  if (label) {
+    const [lx, ly] = at(rotate + Math.min(deg, 180) / 2, 46);
+    nodes.push(svg('text', { x: lx, y: ly + 5, class: 'ang-label' }, label));
   }
   nodes.push(svg('circle', { cx, cy, r: 3.5, class: 'clk-pin' }));
   return h('div.visual.visual-angle', null,
-    svg('svg', { viewBox: turn ? '0 0 200 200' : fitBox([[cx, cy], [x1, y1], [x2, y2], ...(ref ? [at(rotate + 90, len)] : [])]), role: 'img', 'aria-label': turn ? `A turn of ${deg} degrees` : 'An angle' }, nodes));
+    svg('svg', { viewBox: turn ? '0 0 200 200' : fitBox([[cx, cy], [x1, y1], [x2, y2], ...(ref ? [at(rotate + 90, len), at(rotate + 45, 58 * Math.SQRT2)] : [])]), role: 'img', 'aria-label': turn ? `A turn of ${deg} degrees` : 'An angle' }, nodes));
 };
 
 /* ------------------------------------------------------------------ */

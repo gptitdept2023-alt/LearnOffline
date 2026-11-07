@@ -51,12 +51,18 @@ const angleTypeMethod = ({ deg, rotate = 0 }) => {
   const compare = deg === 90 ? 'exactly the same as' : deg < 90 ? 'smaller than' : 'bigger than';
   const pic = { kind: 'angle', deg, rotate };
   const withRef = { ...pic, ref: true };
+  const compared = { ...withRef, highlight: 'compare' };
+  const why = deg > 90
+    ? 'The orange part sticks out past the square corner, so the angle is bigger than a right angle.'
+    : deg < 90
+      ? 'The angle fits inside the square corner and leaves a yellow gap, so it is smaller than a right angle.'
+      : 'The angle fits the square corner exactly.';
   return {
     name: 'Compare with a right angle',
     steps: [
-      { text: 'A right angle is a square corner, like the corner of a book. It is 90°.', visual: pic },
-      { text: `Put a square corner on the angle (the dashed corner). The angle is ${compare} a right angle.`, visual: withRef },
-      { text: `Smaller than a right angle is acute. Bigger is obtuse. So this is ${type === 'right angle' ? 'a right angle' : `an ${type}`}.`, visual: withRef },
+      { text: 'A right angle is a square corner, like the corner of a book. It is 90°.', visual: { kind: 'angle', deg: 90, rotate, ref: true, label: '90°' } },
+      { text: `Put the square corner on the angle: its corner on the point, and its bottom edge along one arm. Look at the other arm. The angle is ${compare} a right angle.`, visual: withRef },
+      { text: `${why} Smaller than a right angle is acute. Bigger is obtuse. So this is ${type === 'right angle' ? 'a right angle' : `an ${type}`}.`, visual: compared },
     ],
     guided: [
       askChoice('Is the angle smaller than, the same as, or bigger than a right angle?', compare.replace('exactly ', ''), ['smaller than', 'the same as', 'bigger than'], withRef),
