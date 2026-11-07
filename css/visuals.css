@@ -29,12 +29,13 @@
 .visual-picture-rows { flex-direction: column; align-items: flex-start; }
 .pic-row { display: flex; }
 .visual-picture-rows .pic-group { flex-wrap: nowrap; justify-content: flex-start; column-gap: 4px; }
-.visual-picture-rows .pic { font-size: min(1.6rem, 6.4vw); width: 1.15em; text-align: center; }
-.young .visual-picture-rows .pic { font-size: min(1.6rem, 6.4vw); }
+/* 10 pictures plus gaps fit a 320 px phone: the width left after page and card padding, shared by 12.5. */
+.visual-picture-rows .pic { font-size: min(1.6rem, calc((100vw - 96px) / 12.5)); width: 1.15em; text-align: center; }
+.young .visual-picture-rows .pic { font-size: min(1.6rem, calc((100vw - 96px) / 12.5)); }
 .op-sign { font-size: 2rem; font-weight: 800; color: var(--muted); }
 
-.visual-sequence { gap: 8px; }
-.seq-item { font-size: 2.3rem; }
+.visual-sequence { gap: 6px; flex-wrap: nowrap; }
+.seq-item { font-size: min(2.3rem, calc((100vw - 120px) / 10)); }
 .seq-unknown {
   display: inline-grid;
   place-items: center;
@@ -163,7 +164,7 @@
 /* Place-value chart */
 .visual-place-chart { background: var(--surface); }
 .pv-grid { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); width: 100%; max-width: 440px; border: 2px solid var(--text); border-radius: 10px; overflow: hidden; }
-.pv-head { padding: 4px 2px; text-align: center; font-size: 0.72rem; overflow-wrap: anywhere; font-weight: 800; text-transform: capitalize; background: var(--surface-2); border-bottom: 2px solid var(--text); }
+.pv-head { padding: 4px 2px; text-align: center; font-size: 0.72rem; hyphens: auto; overflow-wrap: break-word; font-weight: 800; text-transform: capitalize; background: var(--surface-2); border-bottom: 2px solid var(--text); }
 .pv-head + .pv-head, .pv-cell + .pv-cell, .pv-label + .pv-cell { border-left: 2px solid var(--border); }
 .pv-label { display: grid; place-items: center; font-weight: 800; font-size: 1.3rem; color: var(--muted); }
 .pv-cell { display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 4px; padding: 6px 2px; min-height: 64px; }
@@ -318,3 +319,10 @@
 .data-table thead th { background: var(--surface-2); font-size: 0.85rem; }
 .data-table td { text-align: right; font-weight: 800; }
 .data-table .dt-hot th, .data-table .dt-hot td { background: var(--accent-soft); }
+
+/* Very narrow phones (320-380 px): smaller discs so 5 place columns fit. */
+@media (max-width: 380px) {
+  .pv-head { font-size: 0.62rem; }
+  .pv-discs .disc { width: 15px; height: 15px; font-size: 0.34rem; }
+  .pv-cell { padding: 4px 1px; }
+}

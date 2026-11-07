@@ -176,7 +176,7 @@ const sayMeasures = (text) => text
   .replace(new RegExp(`\\?\\s*${UNIT_RE}`, 'g'), (_, u) => `and how many ${UNIT_WORDS[u][1]}?`)
   .replace(new RegExp(`(\\d[\\d,]*)\\s?${UNIT_RE}`, 'g'), (_, n, u) => `${n} ${UNIT_WORDS[u][n === '1' ? 0 : 1]}`)
   // A unit with no number before it: "in cm", "Add the g", "into ml", "the whole kg".
-  .replace(new RegExp(`\\b(in|the|into|whole) ${UNIT_RE}`, 'g'), (_, w, u) => `${w} ${UNIT_WORDS[u][1]}`);
+  .replace(new RegExp(`\\b(in|the|into|whole|many) ${UNIT_RE}`, 'g'), (_, w, u) => `${w} ${UNIT_WORDS[u][1]}`);
 
 /**
  * Put a short pause before each "equals" after the first in one sentence, so
@@ -204,7 +204,10 @@ const pauseChains = (text) => text
  * a teacher would pause. Used by the device voice AND to name recorded clips,
  * so both voices say exactly the same thing.
  */
-export const toSpokenText = (text) => pauseChains(sayMeasures(String(text))
+/** Lines of a lesson ("…by place value:\n38,415\n38,154") are read with a pause between them. */
+const joinLines = (text) => String(text).replace(/([^.!?:,\s])[ \t]*\n+\s*/g, '$1. ').replace(/\s*\n+\s*/g, ' ');
+
+export const toSpokenText = (text) => pauseChains(sayMeasures(joinLines(text))
   .replace(/(\d),(\d{3})/g, '$1$2')
   .replace(/\?\s*\/\s*(\d+)/g, (_, den) => `how many ${FRACTION_NAMES[Number(den)]?.[1] || `over ${den}`}?`)
   .replace(/(\d+)\/(\d+)/g, (_, num, den) => sayFraction(num, den))

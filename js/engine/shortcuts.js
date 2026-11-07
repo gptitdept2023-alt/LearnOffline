@@ -171,7 +171,7 @@ export const mulShortcut = ({ a, b }) => {
     steps[steps.length - 1].visual = doublingBars(a, times);
     return {
       name: b === 4 ? 'Double, double' : 'Double, double, double',
-      why: `× ${b} is doubling ${times} times, and doubling is quick.`,
+      why: `Multiplying by ${b} is doubling ${times} times, and doubling is quick.`,
       answer: ans,
       steps,
     };

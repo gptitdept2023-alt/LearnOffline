@@ -16,6 +16,7 @@ import { methodFor } from '../js/engine/techniques.js';
 import { toSpokenText, speechKey } from '../js/core/speech.js';
 import { seededRng } from '../js/core/random.js';
 import { LINES } from '../js/ui/components/mascot.js';
+import { revealText } from '../js/ui/components/interactive.js';
 import { CHEST_STARS } from '../js/engine/quests.js';
 import { cheer } from '../js/ui/screens/resultsText.js';
 
@@ -29,7 +30,7 @@ const addMethod = (m) => {
   (m.faster?.steps || []).forEach((s) => add(s.text));
   m.guided.forEach((g) => {
     add(g.prompt);
-    add(`It is ${g.answer}. ${g.answerType === 'choice' ? 'Tap' : 'Type'} ${g.answer} to go on.`);
+    add(revealText(g));
   });
 };
 

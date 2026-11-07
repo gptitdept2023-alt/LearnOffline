@@ -71,7 +71,7 @@ const renderDayline = ({ mins }) => {
   }
   const hh = Math.floor(mins / 60);
   const label24 = `${String(hh).padStart(2, '0')}:${String(mins % 60).padStart(2, '0')}`;
-  nodes.push(svg('line', { x1: x(mins), y1: 40, x2: x(mins), y2: 88, class: 'day-marker-line' }));
+  nodes.push(svg('line', { x1: x(mins), y1: 40, x2: x(mins), y2: 66, class: 'day-marker-line' }));
   nodes.push(svg('path', { d: `M${x(mins)} 88 l-7 10 h14 Z`, class: 'day-marker' }));
   nodes.push(svg('text', { x: Math.min(300, Math.max(40, x(mins))), y: 114, class: 'day-now' }, label24));
   return h('div.visual.visual-dayline', null,

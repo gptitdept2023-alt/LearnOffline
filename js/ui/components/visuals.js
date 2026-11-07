@@ -448,9 +448,16 @@ const renderLongDivision = ({ dividend, divisor, upto, focus, phase }) => {
     // Divide phase: the digit on top is written, but not yet multiplied and subtracted.
     if (phase === 'divide' && k === focus) return;
     const end = s.i + 1;
-    const used = digitsAt(s.product, end, hot(k));
-    used.set(end - String(s.product).length, { text: '−', cls: `.ld-minus${hot(k)}` });
-    row(used);
+    // Nothing shared here (0 on top): no "− 0" row; the amount simply carries on.
+    if (s.q !== 0) {
+      const used = digitsAt(s.product, end, hot(k));
+      used.set(end - String(s.product).length, { text: '−', cls: `.ld-minus${hot(k)}` });
+      row(used);
+    }
+    // When the next place shares nothing and is finished, its own row repeats this one: show it once.
+    const after = steps[k + 1];
+    const afterDone = after && !after.lead && after.q === 0 && k + 1 < shown && !(phase === 'divide' && focus === k + 1);
+    if (afterDone) return;
 
     const nextShown = s.i < steps.length - 1 && (k + 1 < shown || k + 1 === focus);
     const nextHot = hot(k + 1);
@@ -525,8 +532,8 @@ export const renderBarModel = (model) => {
   });
 
   const nodes = [];
-  const textW = (t) => t.length * 8.5; // approximate width of 15px bold text
-  const rightEdge = labelW + barMaxW + 8;
+  const textW = (t) => t.length * 10; // generous width of 15px bold text, so labels never spill
+  const rightEdge = labelW + barMaxW;
   model.rows.forEach((r, i) => {
     const y = rowY(i);
     if (r.label) nodes.push(svg('text', { x: labelW - 10, y: y + rowH / 2 + 5, class: 'bm-label' }, r.label));

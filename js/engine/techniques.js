@@ -207,7 +207,9 @@ const subtractBond = ({ a, b }) => {
   if (b <= 3 || b < a - b) {
     // 20 − 2: two hops back is quicker than counting on 18.
     const counts = Array.from({ length: b }, (_, i) => a - i - 1);
-    const back = (shown) => ({ kind: 'hops', start: a, moves: Array.from({ length: shown }, () => -1) });
+    const back = (shown) => (shown
+      ? { kind: 'hops', start: a, moves: Array.from({ length: shown }, () => -1) }
+      : { kind: 'numberLine', from: Math.max(0, a - b - 1), to: a + 1, mark: a });
     return {
       name: 'Count back',
       steps: [
@@ -331,7 +333,7 @@ const splitMultiply = ({ a, b }) => {
         { text: `${b} groups of ${placeCount(p.d, p.i)} = ${placeCount(p.d * b, p.i)} = ${fmt(a * b)}.`, visual: stack(p.i < 4 && { kind: 'share', groups: b, each: [{ place: 10 ** p.i, n: p.d }], focus: 10 ** p.i }, area(1, 0)) },
       ],
       guided: [
-        ask(`${p.d} × ${b} = ? (${PLACE[p.i]})`, p.d * b, area(0, 0)),
+        ask(`${b} groups of ${p.d} ${PLACE[p.i]} make how many ${PLACE[p.i]}?`, p.d * b, area(0, 0)),
         ask(`So ${fmt(a)} × ${b} = ?`, a * b, area(1)),
       ],
     };
@@ -499,7 +501,7 @@ const longDivide = ({ dividend, divisor, asks }) => {
     text: `Each group gets ${fmt(q)}. So ${fmt(dividend)} ÷ ${divisor} = ${fmt(q)}${r ? ` remainder ${r}` : ''}. ${check}`,
     visual: stack(bar, layout(n)),
   });
-  if (asks !== 'remainder') guided.push(ask(`So ${fmt(dividend)} ÷ ${divisor} = ?${r ? ' (the number on top)' : ''}`, q, layout(n)));
+  if (asks !== 'remainder') guided.push(ask(r ? `So ${fmt(dividend)} ÷ ${divisor} = ? remainder ${r}` : `So ${fmt(dividend)} ÷ ${divisor} = ?`, q, layout(n)));
   // "= ? remainder 4" already gives the remainder, so it is not asked again.
   if (r && asks !== 'quotient') guided.push(ask('What is left over? (the remainder)', r, layout(n)));
   return { name: 'Long division', steps, guided };
@@ -555,7 +557,7 @@ const sameDenominator = ({ x, y, den, op }) => {
       },
       { text: num === den ? `The answer is ${num}/${den}. That is 1 whole.` : `The answer is ${num}/${den}.`, visual: fractionBar(num, den) },
     ],
-    guided: [ask(`${x} ${add ? '+' : '−'} ${y} = ? (the top number)`, num, { ...result, label: `? / ${den}` })],
+    guided: [ask(`How many parts now? ${x} ${add ? '+' : '−'} ${y} = ?`, num, { ...result, label: `?/${den}` })],
   };
 };
 
@@ -585,7 +587,7 @@ const barModel = ({ model, op, a, b, answer, timesAltogether }) => {
       { text: `${fmt(a)} ${op} ${fmt(b)} = ${fmt(answer)}.` },
     ],
     guided: [
-      ...(timesAltogether ? [ask(`1 + ${timesAltogether} = ? units`, timesAltogether + 1, { kind: 'bar', ...model })] : []),
+      ...(timesAltogether ? [ask(`How many units in all? 1 + ${timesAltogether} = ?`, timesAltogether + 1, { kind: 'bar', ...model })] : []),
       { prompt: 'Look at the bar model. Which operation finds the ?', answer: op, answerType: 'choice', choices: small ? ['+', '−'] : OPS, visual: { kind: 'bar', ...model } },
       ask(`${fmt(a)} ${op} ${fmt(b)} = ?`, answer, { kind: 'bar', ...model }),
     ],

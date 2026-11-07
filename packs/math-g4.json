@@ -387,7 +387,7 @@
             "steps": [
               {
                 "stage": "concrete",
-                "text": "Share 17 sweets among 5 children. Each gets 3, and 2 are left over The 2 sweets on their own are the remainder.",
+                "text": "Share 17 sweets among 5 children. Each gets 3, and 2 are left over. The 2 sweets on their own are the remainder.",
                 "visual": {
                   "kind": "stack",
                   "items": [

@@ -19,7 +19,7 @@ import { isCorrect, isBlank } from '../../engine/answers.js';
 import { renderVisual } from './visuals.js';
 
 /** Shown after two misses: the answer, and how to enter it (tap a button or type). */
-export const revealText = (step) => `It is ${step.answer}. ${step.answerType === 'choice' ? 'Tap' : 'Type'} ${step.answer} to go on.`;
+export const revealText = (step) => `It is ${step.answer}${String(step.answer).endsWith('.') ? '' : '.'} ${step.answerType === 'choice' ? 'Tap' : 'Type'} ${step.answer} to go on.`;
 
 /* ------------------------------------------------------------------ */
 /* Tap to count                                                        */
