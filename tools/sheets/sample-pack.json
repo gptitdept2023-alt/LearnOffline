@@ -1,0 +1,161 @@
+{
+ "format": "learnoffline-pack",
+ "version": 1,
+ "packId": "custom-sample-extra-g4k7",
+ "title": "Filipino words and money",
+ "subjectName": "Extra",
+ "icon": "🇵🇭",
+ "level": "G4",
+ "topics": [
+  {
+   "topicId": "custom-sample-extra-g4k7-money",
+   "title": "Money",
+   "skills": [
+    {
+     "skillId": "custom-sample-extra-g4k7-money-adding-pesos",
+     "title": "Adding pesos",
+     "questions": [
+      {
+       "type": "numeric",
+       "prompt": "Ana has ₱25. She gets ₱40 more. How much does she have now?",
+       "answer": "65",
+       "hint": "Add 25 and 40.",
+       "explain": "25 + 40 = 65"
+      },
+      {
+       "type": "numeric",
+       "prompt": "A pencil costs ₱12 and an eraser costs ₱8. How much for both?",
+       "answer": "20",
+       "hint": "Add the two prices.",
+       "explain": "12 + 8 = 20"
+      },
+      {
+       "type": "multiple-choice",
+       "prompt": "Which coins make ₱15?",
+       "answer": "₱10 and ₱5",
+       "choices": [
+        "₱10 and ₱5",
+        "₱10 and ₱1",
+        "₱5 and ₱5",
+        "₱20"
+       ],
+       "hint": "Add the coins in each choice."
+      }
+     ],
+     "lesson": {
+      "steps": [
+       {
+        "text": "To find how much money in all, add the amounts."
+       },
+       {
+        "text": "Line up the ones and the tens. Add the ones first, then the tens."
+       }
+      ]
+     }
+    },
+    {
+     "skillId": "custom-sample-extra-g4k7-money-change",
+     "title": "Change",
+     "questions": [
+      {
+       "type": "numeric",
+       "prompt": "You pay ₱50 for a ₱35 snack. How much change do you get?",
+       "answer": "15",
+       "hint": "Take 35 away from 50.",
+       "explain": "50 − 35 = 15"
+      },
+      {
+       "type": "true-false",
+       "prompt": "If you pay ₱100 for a ₱60 book, your change is ₱40.",
+       "answer": "true",
+       "explain": "100 − 60 = 40"
+      }
+     ],
+     "lesson": {
+      "steps": [
+       {
+        "text": "Change is what you get back. Take the price away from what you paid."
+       }
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "topicId": "custom-sample-extra-g4k7-fractions",
+   "title": "Fractions",
+   "skills": [
+    {
+     "skillId": "custom-sample-extra-g4k7-fractions-half-and-quarter",
+     "title": "Half and quarter",
+     "questions": [
+      {
+       "type": "fraction",
+       "prompt": "A pizza has 8 slices. You eat 2. What fraction did you eat?",
+       "answer": "1/4",
+       "hint": "2 out of 8, then simplify.",
+       "explain": "2/8 = 1/4"
+      },
+      {
+       "type": "true-false",
+       "prompt": "1/2 is bigger than 1/4.",
+       "answer": "true",
+       "hint": "Think of a pizza cut in 2 and in 4."
+      },
+      {
+       "type": "multiple-choice",
+       "prompt": "Which is the same as 2/4?",
+       "answer": "1/2",
+       "choices": [
+        "1/2",
+        "1/4",
+        "2/8",
+        "3/4"
+       ],
+       "hint": "Divide the top and the bottom by 2."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "topicId": "custom-sample-extra-g4k7-filipino-words",
+   "title": "Filipino words",
+   "skills": [
+    {
+     "skillId": "custom-sample-extra-g4k7-filipino-words-days-of-the-week",
+     "title": "Days of the week",
+     "questions": [
+      {
+       "type": "multiple-choice",
+       "prompt": "What is Monday in Filipino?",
+       "answer": "Lunes",
+       "choices": [
+        "Lunes",
+        "Martes",
+        "Linggo",
+        "Sabado"
+       ]
+      },
+      {
+       "type": "multiple-choice",
+       "prompt": "What is Sunday in Filipino?",
+       "answer": "Linggo",
+       "choices": [
+        "Linggo",
+        "Biyernes",
+        "Huwebes",
+        "Lunes"
+       ]
+      },
+      {
+       "type": "true-false",
+       "prompt": "Sabado is Saturday.",
+       "answer": "true"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -13,12 +13,13 @@ import {
 } from '../../data/repo.js';
 import { normaliseGoal } from '../../engine/goals.js';
 import { setSfxEnabled, sfxEnabled, playSfx } from '../../core/sfx.js';
-import { loadPack, subjectsAtLevel } from '../../data/packs.js';
+import { loadPack, subjectsAtLevel, resetPackCaches } from '../../data/packs.js';
 import { downloadBackup, readBackupFile, restoreAll, validateBackup } from '../../data/backup.js';
 import { statusOf } from '../../engine/mastery.js';
 import { dayKey, currentStreak } from '../../engine/rewards.js';
 import { openProfileEditor, statusPill, toggle } from '../components/common.js';
 import { listVoices, getVoiceSettings, setVoiceSettings, speak } from '../../core/speech.js';
+import { customPacksPanel } from './parentPacks.js';
 
 const PIN_KEY = 'parentPin';
 const ACTIVITY_DAYS = 14;
@@ -256,6 +257,7 @@ const backupPanel = () => {
       });
       if (!ok) return;
       const count = await withLoading(() => restoreAll(backup), 'Restoring…');
+      resetPackCaches(); // the backup may bring its own question packs
       toast(`Restored ${count} learner${count === 1 ? '' : 's'}.`, 'success');
       render();
     } catch (error) {
@@ -405,7 +407,7 @@ export const renderParent = async (view) => {
     return;
   }
 
-  const profiles = await listProfiles();
+  const [profiles, packsPanel] = await Promise.all([listProfiles(), customPacksPanel()]);
   const reports = h('div.reports');
   view.append(
     h('header.learner-bar', null,
@@ -415,6 +417,7 @@ export const renderParent = async (view) => {
     profiles.length ? reports : h('p.muted', null, 'No learners yet. Add one below.'),
     learnersPanel(profiles),
     profiles.length > 0 && goalsPanel(profiles),
+    packsPanel,
     voicePanel(),
     backupPanel(),
     pinPanel(hasPin),

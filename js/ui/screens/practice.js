@@ -50,8 +50,10 @@ const buildQuestions = async (profile, indexed, skillId) => {
     return { label: level.boss ? `Boss: ${level.title}` : `Level ${level.n}`, questions: buildMixSet(skills, young, Math.random, level.size), level };
   }
   if (skillId === MIX_ID || skillId === CHALLENGE_ID) {
-    const pool = skillId === CHALLENGE_ID ? challengeSkillIds(indexed) : indexed.skillOrder;
-    if (!pool.length) throw new Error('There are no Challenge questions for this grade yet.');
+    // A pack with no Challenge topic (a parent's own pack) uses all its skills for Challenge.
+    const challenge = skillId === CHALLENGE_ID ? challengeSkillIds(indexed) : [];
+    const pool = challenge.length ? challenge : indexed.skillOrder;
+    if (!pool.length) throw new Error('There are no questions for this subject yet.');
     const mastery = await getMasteryMap(profile.profileId);
     const ids = pickDailyMix(pool, mastery, young ? 2 : 4);
     const label = skillId === CHALLENGE_ID ? '🚀 Challenge' : t('dailyMix');
