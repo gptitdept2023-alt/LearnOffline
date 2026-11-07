@@ -17,7 +17,8 @@ import { learnerBar, progressBar } from '../components/common.js';
 import { renderVisual } from '../components/visuals.js';
 import { tapCount, fillFrame, pickAnswer, methodPlayer, guidedRunner } from '../components/interactive.js';
 
-const STAGE_LABEL = { concrete: 'Use objects', pictorial: 'Draw it', abstract: 'Use numbers', technique: 'Technique', try: 'Your turn' };
+/** Label keys for the Concrete -> Pictorial -> Abstract stage chip. */
+const STAGE_KEY = { concrete: 'stageConcrete', pictorial: 'stagePictorial', abstract: 'stageAbstract', technique: 'stageTechnique', try: 'stageTry' };
 
 /** True if this skill has a technique to practise with help. */
 export const skillHasGuided = (skill) => {
@@ -55,7 +56,7 @@ export const renderLesson = async (view, skillId) => {
   const steps = skill.lesson.steps;
   const id = encodeURIComponent(skillId);
   const afterLesson = skillHasGuided(skill)
-    ? { href: `#/guided/${id}`, label: 'Try with help' }
+    ? { href: `#/guided/${id}`, label: t('tryWithHelp') }
     : { href: `#/practice/${id}`, label: t('practice') };
   let index = 0;
   let counted = false; // the lesson counts for the quest and streak once per visit
@@ -94,8 +95,8 @@ export const renderLesson = async (view, skillId) => {
     }
 
     mount(card,
-      progressBar(index + 1, steps.length, `Step ${index + 1} of ${steps.length}`),
-      step.stage && h(`span.stage.stage-${step.stage}`, null, STAGE_LABEL[step.stage] || step.stage),
+      progressBar(index + 1, steps.length, t('stepOf', index + 1, steps.length)),
+      step.stage && h(`span.stage.stage-${step.stage}`, null, STAGE_KEY[step.stage] ? t(STAGE_KEY[step.stage]) : step.stage),
       step.text && h('p.lesson-text', null, step.text),
       renderVisual(step.visual),
       interaction,

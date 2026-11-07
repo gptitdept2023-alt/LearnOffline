@@ -3,5 +3,12 @@
  * (tools/collect-speech.mjs) records exactly what the screen says.
  */
 
-/** The cheer for a score in percent. */
-export const cheer = (pct) => (pct === 100 ? 'Perfect!' : pct >= 80 ? 'Great work!' : pct >= 50 ? 'Good effort!' : 'Keep practising!');
+import { t, tEn } from '../../core/i18n.js';
+
+const cheerKey = (pct) => (pct === 100 ? 'cheerPerfect' : pct >= 80 ? 'cheerGreat' : pct >= 50 ? 'cheerGood' : 'cheerKeep');
+
+/** The cheer for a score in percent, as spoken (always English, to match the voice). */
+export const cheer = (pct) => tEn(cheerKey(pct));
+
+/** The cheer as shown, in the learner's label language. */
+export const cheerShown = (pct) => t(cheerKey(pct));

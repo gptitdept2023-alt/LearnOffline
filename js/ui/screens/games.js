@@ -59,7 +59,7 @@ const finishGame = async (stage, { game, score, profile, young, look }) => {
     console.error(error);
     toast(`Could not save your score: ${error.message}`, 'error');
   }
-  const line = result.newBest ? `New best: ${score}!` : score > 0 ? pickLine('good') : pickLine('tryAgain');
+  const line = result.newBest ? `New best: ${score}!` : score > 0 ? pickLine('good', 'en') : pickLine('tryAgain', 'en');
   if (result.newBest || score >= 10) { confetti(); playSfx('fanfare'); } else playSfx('coin');
   speak(`${line} You scored ${score}.`);
   mount(stage, h('section.game-panel.game-over', null,
@@ -200,7 +200,7 @@ const popBalloons = (stage, ctx) => {
           el.classList.add('popped');
           playSfx('pop');
           setTimeout(() => playSfx('correct'), 120);
-          status.textContent = pickLine('correct');
+          status.textContent = pickLine('correct', 'en');
           round += 1;
           setTimeout(showRound, 900);
         } else {
@@ -269,7 +269,7 @@ const memoryGame = (stage, ctx) => () => {
           b.btn.classList.add('matched');
           matched += 1;
           playSfx('correct');
-          status.textContent = pickLine('correct');
+          status.textContent = pickLine('correct', 'en');
           if (matched === pairs.length) setTimeout(() => finishGame(stage, { ...ctx, score: memoryScore(pairs.length, moves) }), 700);
         } else {
           busy = true;
@@ -328,7 +328,7 @@ const bondGame = (stage, ctx) => {
             playSfx('pop');
             score += 1;
             scoreEl.textContent = String(score);
-            status.textContent = `${fmtN(first.b.value)} + ${fmtN(b.value)} = ${fmtN(r.target)}. ${pickLine('correct')}`;
+            status.textContent = `${fmtN(first.b.value)} + ${fmtN(b.value)} = ${fmtN(r.target)}. ${pickLine('correct', 'en')}`;
             left -= 2;
             if (left === 0) { round += 1; setTimeout(showRound, 1000); }
           } else {

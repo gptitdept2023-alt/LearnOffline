@@ -29,11 +29,11 @@ const levelCard = (indexed, rewards) => {
     h('a.level-card-main', { href: `#/practice/level-${n}` },
       h('span.level-card-icon', { 'aria-hidden': 'true' }, level.boss ? world.boss.icon : world.icon),
       h('span.level-card-text', null,
-        h('small', null, `World ${level.world}: ${world.name}`),
-        h('strong', null, level.boss ? `Boss level ${n}: ${level.title}` : `Level ${n}`),
-        h('small', null, level.boss ? 'Harder questions, no hints, big bonus!' : level.title)),
+        h('small', null, t('worldName', level.world, world.name)),
+        h('strong', null, level.boss ? t('bossLevel', n, level.title) : t('levelN', n)),
+        h('small', null, level.boss ? t('bossCardHelp') : level.title)),
       h('span.mix-go', { 'aria-hidden': 'true' }, '▶')),
-    h('a.level-card-all', { href: '#/levels' }, `🗺️ All 100 levels · ${done} passed`));
+    h('a.level-card-all', { href: '#/levels' }, t('allLevelsPassed', done)));
 };
 
 /**
@@ -49,13 +49,13 @@ const subjectTabs = (profile, subjects) => {
       await withLoading(async () => {
         await saveProfile({ ...profile, packId });
         await activateProfile(profile.profileId);
-      }, 'Opening…');
+      }, t('opening'));
       render();
     } catch (error) {
       toast(error.message, 'error');
     }
   };
-  return h('nav.subject-tabs', { 'aria-label': 'Subject' }, subjects.map((p) => {
+  return h('nav.subject-tabs', { 'aria-label': t('subject') }, subjects.map((p) => {
     const on = p.packId === profile.packId;
     return h(`button.subject-tab${on ? '.active' : ''}`, { type: 'button', 'aria-pressed': String(on), onclick: () => choose(p.packId) },
       h('span.subject-tab-icon', { 'aria-hidden': 'true' }, p.icon || '📘'), h('span', null, p.subjectName || p.title));
@@ -87,14 +87,14 @@ export const renderHome = async (view) => {
       mascotSays(greeting(profile.name), { mood: 'happy', look, size: 'lg' }),
       h('div.home-actions', null,
         action('#/practice/mix', '🎯', t('dailyMix'), '.home-action-main'),
-        action('#/games', '🎮', 'Games'),
-        action('#/practice/challenge', '🚀', 'Challenge'),
-        action('#/shop', '🛍️', 'Shop'),
+        action('#/games', '🎮', t('games')),
+        action('#/practice/challenge', '🚀', t('challenge')),
+        action('#/shop', '🛍️', t('shop')),
         action('#/badges', '🏅', t('badges')))),
     levelCard(indexed, rewards),
     goalOn && goalCard(profile.goal, weekSessions),
     questCard(rewards.quest, { profileId: profile.profileId, young, onChange: render }),
-    h('h2.section-title', null, `${pack.title}: topics`),
+    h('h2.section-title', null, t('topicsOf', pack.title)),
     learningMap(pack.topics, mastery, look),
   ].filter(Boolean));
 };
