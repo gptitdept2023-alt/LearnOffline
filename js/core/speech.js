@@ -131,21 +131,21 @@ const UNIT_WORDS = {
 };
 const UNIT_RE = '(cm²|km|cm|mm|kg|ml|min|ℓ|m|g|h)(?![A-Za-z²])';
 
-/** "$7.35" -> "7 dollars 35 cents", "$0.35" -> "35 cents", "$10.00" -> "10 dollars". */
-const sayMoney = (whole, cents = '00') => {
-  const d = Number(whole);
-  const c = Number(cents);
-  const parts = [d && `${d} ${d === 1 ? 'dollar' : 'dollars'}`, c && `${c} ${c === 1 ? 'cent' : 'cents'}`].filter(Boolean);
-  return parts.join(' ') || '0 dollars';
+/** "₱37.75" -> "37 pesos 75 centavos", "₱0.25" -> "25 centavos", "₱100.00" -> "100 pesos". */
+const sayMoney = (whole, centavos = '00') => {
+  const p = Number(String(whole).replace(/,/g, ''));
+  const c = Number(centavos);
+  const parts = [p && `${p} ${p === 1 ? 'peso' : 'pesos'}`, c && `${c} ${c === 1 ? 'centavo' : 'centavos'}`].filter(Boolean);
+  return parts.join(' ') || '0 pesos';
 };
 
 /** Money, units and degrees as words, before the rest of the maths rules run. */
 const sayMeasures = (text) => text
-  .replace(/\$(\d+) note/g, (_, d) => `${d} dollar note`)
+  .replace(/₱([\d,]+) bill/g, (_, d) => `${d.replace(/,/g, '')} peso bill`)
   .replace(/\b1\/2 turn/g, 'half turn')
   .replace(/\b(\d)\/4 turn/g, (_, n) => (n === '1' ? 'quarter turn' : `${n} quarter turn`))
-  .replace(/\$(\d+)(?:\.(\d{2}))?/g, (_, d, c) => sayMoney(d, c))
-  .replace(/(\d+)¢/g, (_, c) => `${c} ${c === '1' ? 'cent' : 'cents'}`)
+  .replace(/₱([\d,]+)(?:\.(\d{2}))?/g, (_, p, c) => sayMoney(p, c))
+  .replace(/(\d+)¢/g, (_, c) => `${c} ${c === '1' ? 'centavo' : 'centavos'}`)
   .replace(/(\d+)°/g, (_, n) => `${n} degrees`)
   .replace(new RegExp(`=\\s*\\?\\s*${UNIT_RE}`, 'g'), (_, u) => `equals how many ${UNIT_WORDS[u][1]}?`)
   .replace(new RegExp(`\\?\\s*${UNIT_RE}`, 'g'), (_, u) => `and how many ${UNIT_WORDS[u][1]}?`)

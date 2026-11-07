@@ -7,6 +7,7 @@ import { seededRng } from '../js/core/random.js';
 import { toSpokenText } from '../js/core/speech.js';
 import { isCorrect } from '../js/engine/answers.js';
 import { timeJumps } from '../js/engine/topics/time.js';
+import { changeJumps } from '../js/engine/topics/money.js';
 import { SYMMETRY_SHAPES } from '../js/engine/topics/geometry.js';
 import { clock12, clock24, duration, money } from '../js/engine/topics/shared.js';
 
@@ -24,7 +25,7 @@ test('new topics: every question and worked step reads cleanly', () => {
       assert.ok(m, `${type} has a method`);
       const texts = [q.prompt, ...m.steps.map((s) => s.text), ...m.guided.map((g) => g.prompt)];
       for (const t of texts) {
-        assert.ok(!/undefined|NaN|\.\.(\s|$)|\b0 (min|cm|g|ml|m)\b|and 0\b|\ba [aeiou]/.test(t), `${type}: "${t}"`);
+        assert.ok(!/undefined|NaN|\.\.(\s|$)|\b0 (min|cm|g|ml|m)\b|and 0\b|(^|\s)0¢|\ba [aeiou]/.test(t), `${type}: "${t}"`);
       }
       assert.equal(String(m.guided.at(-1).answer), String(q.answer), `${type}: guided ends on the answer (${q.prompt})`);
     }
@@ -46,8 +47,10 @@ test('time helpers and timeline jumps', () => {
   }
 });
 
-test('money keeps cents exact and accepts a typed $', () => {
-  assert.equal(money(1000 - 735), '$2.65');
+test('money keeps centavos exact and accepts a typed ₱', () => {
+  assert.equal(money(10000 - 3775), '₱62.25');
+  assert.equal(money(123750), '₱1,237.50');
+  assert.deepEqual(changeJumps(3775, 10000), [25, 200, 6000], 'next peso, next ₱10, then the bill');
   const rng = seededRng(4);
   for (let i = 0; i < 300; i += 1) {
     const q = generate({ type: 'moneyProblem' }, rng);
@@ -66,8 +69,8 @@ test('symmetry data: true lines, tempting lines that are not', () => {
 
 test('measures, money and turns are read aloud as words', () => {
   assert.equal(toSpokenText('3 m 45 cm = ? cm'), '3 metres 45 centimetres equals how many centimetres?');
-  assert.equal(toSpokenText('$7.35 + 65¢ = $8.00.'), '7 dollars 35 cents plus 65 cents equals 8 dollars.');
-  assert.equal(toSpokenText('He pays with a $10 note.'), 'He pays with a 10 dollar note.');
+  assert.equal(toSpokenText('₱37.75 + 25¢ = ₱38.00.'), '37 pesos 75 centavos plus 25 centavos equals 38 pesos.');
+  assert.equal(toSpokenText('He pays with a ₱1,000 bill.'), 'He pays with a 1000 peso bill.');
   assert.equal(toSpokenText('How many degrees is a 3/4 turn?'), 'How many degrees is a 3 quarter turn?');
   assert.equal(toSpokenText('What is its area, in cm²?'), 'What is its area, in square centimetres?');
   assert.equal(toSpokenText('It lasts 1 h 40 min.'), 'It lasts 1 hour 40 minutes.');

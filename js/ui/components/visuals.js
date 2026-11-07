@@ -230,7 +230,7 @@ const renderJumps = ({ from = 0, step = 1, count = 1, hideEnd = false }) => {
  * Forward hops arc above the line, backward hops below.
  * `format` changes the labels: 'time' reads values as minutes after
  * midnight (9:45, "+15 min", "+1 h"); 'money' reads them as cents
- * ($7.35, "+65¢", "+$2.00").
+ * (₱37.75, "+25¢", "+₱2.00").
  * @param {{start: number, moves: number[], format?: 'time'|'money'}} spec
  */
 const HOP_FORMATS = {
@@ -239,15 +239,15 @@ const HOP_FORMATS = {
     move: (m) => (m % 60 ? `${m} min` : `${m / 60} h`),
   },
   money: {
-    value: (n) => `$${(n / 100).toFixed(2)}`,
-    move: (m) => (m < 100 ? `${m}¢` : `$${(m / 100).toFixed(2)}`),
+    value: (n) => `₱${(n / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+    move: (m) => (m < 100 ? `${m}¢` : `₱${(m / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`),
   },
 };
 
 const renderHops = ({ start, moves, format }) => {
   const points = moves.reduce((acc, m) => [...acc, acc[acc.length - 1] + m], [start]);
   const order = [...new Set(points)].sort((p, q) => p - q);
-  const x = (n) => 34 + (order.indexOf(n) / Math.max(1, order.length - 1)) * 272;
+  const x = (n) => 46 + (order.indexOf(n) / Math.max(1, order.length - 1)) * 248; // room for "₱100.00" at both ends
   const fmtValue = HOP_FORMATS[format]?.value || ((n) => n.toLocaleString('en-US'));
   const fmtMove = HOP_FORMATS[format]?.move || ((n) => n.toLocaleString('en-US'));
   const AXIS = 66;

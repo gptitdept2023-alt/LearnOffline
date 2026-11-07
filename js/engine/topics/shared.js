@@ -27,11 +27,11 @@ export const choicesWith = (answer, distractors, rng, count = 4) => {
   return shuffle([String(answer), ...shuffle(unique, rng).slice(0, count - 1)], rng);
 };
 
-/** Cents -> "$7.35". Whole dollars keep the cents ("$10.00") so money always reads the same way. */
-export const money = (cents) => `$${(cents / 100).toFixed(2)}`;
+/** Centavos -> "₱1,237.50". Whole pesos keep the centavos ("₱20.00") so money always reads the same way. */
+export const money = (centavos) => `₱${(centavos / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
-/** Cents -> dollars as a number with 2 decimals (7.35), for numeric answers. */
-export const dollars = (cents) => Math.round(cents) / 100;
+/** Centavos -> pesos as a number with 2 decimals (37.75), for numeric answers. */
+export const pesos = (centavos) => Math.round(centavos) / 100;
 
 /** Minutes after midnight -> "9:45 a.m." (12-hour clock). */
 export const clock12 = (mins) => {

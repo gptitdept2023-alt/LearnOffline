@@ -1,6 +1,6 @@
 {
   "packId": "math-g4",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "subject": "math",
   "title": "Math · Grade 4",
   "topics": [
@@ -747,7 +747,7 @@
       "topicId": "g4-money",
       "title": "Money",
       "icon": "💵",
-      "summary": "Add prices and give change in dollars and cents.",
+      "summary": "Add prices and give change in pesos and centavos.",
       "skills": [
         {
           "skillId": "g4-money-total",
@@ -756,41 +756,41 @@
             "steps": [
               {
                 "stage": "concrete",
-                "text": "100 cents make 1 dollar. $3.45 is 3 dollars and 45 cents.",
+                "text": "100 centavos make 1 peso. ₱45.75 is 45 pesos and 75 centavos.",
                 "interact": {
                   "kind": "check",
-                  "prompt": "How many cents make $1?",
+                  "prompt": "How many centavos make ₱1?",
                   "choices": [
                     "10",
                     "100",
                     "1,000"
                   ],
                   "answer": "100",
-                  "explain": "100¢ = $1."
+                  "explain": "100 centavos = ₱1."
                 }
               },
               {
                 "stage": "technique",
-                "text": "Add the dollars, then the cents. Change 100¢ into $1 when you can.",
+                "text": "Add the pesos, then the centavos. Change 100 centavos into ₱1 when you can.",
                 "interact": {
                   "kind": "worked",
                   "method": {
                     "kind": "moneyTotal",
-                    "a": 245,
-                    "b": 180
+                    "a": 4575,
+                    "b": 2850
                   }
                 }
               },
               {
                 "stage": "try",
-                "text": "Your turn: $3.65 + $2.50.",
+                "text": "Your turn: ₱36.50 + ₱25.75.",
                 "interact": {
                   "kind": "tryIt",
                   "method": {
                     "kind": "moneyTotal",
-                    "a": 365,
-                    "b": 250,
-                    "answer": 6.15
+                    "a": 3650,
+                    "b": 2575,
+                    "answer": 62.25
                   }
                 }
               }
@@ -801,7 +801,7 @@
             "forms": [
               "total"
             ],
-            "max": 20
+            "max": 300
           }
         },
         {
@@ -811,26 +811,26 @@
             "steps": [
               {
                 "stage": "technique",
-                "text": "Shopkeepers count up to give change: from the price to the next dollar, then to the note.",
+                "text": "Storekeepers count up to give change: to the next peso, then to friendly numbers, then to the bill.",
                 "interact": {
                   "kind": "worked",
                   "method": {
                     "kind": "moneyChange",
-                    "cost": 735,
-                    "paid": 1000
+                    "cost": 3775,
+                    "paid": 10000
                   }
                 }
               },
               {
                 "stage": "try",
-                "text": "Your turn: a book costs $12.40. You pay with $20.",
+                "text": "Your turn: a book costs ₱124.50. You pay with a ₱200 bill.",
                 "interact": {
                   "kind": "tryIt",
                   "method": {
                     "kind": "moneyChange",
-                    "cost": 1240,
-                    "paid": 2000,
-                    "answer": 7.6
+                    "cost": 12450,
+                    "paid": 20000,
+                    "answer": 75.5
                   }
                 }
               }
@@ -841,7 +841,7 @@
             "forms": [
               "change"
             ],
-            "max": 20
+            "max": 300
           }
         }
       ]
