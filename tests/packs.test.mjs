@@ -68,3 +68,18 @@ test('service worker precaches every app file', () => {
   assert.ok(sw.includes("const VOICE_CACHE = 'learnoffline-voice'"), 'voice clips have their own cache');
   for (const f of files) assert.ok(sw.includes(`'./${f}'`), `${f} missing from sw.js PRECACHE`);
 });
+
+// A grade can have 3+ subjects (Math, English, Science, plus imported packs).
+// The home subject tabs used a one-row grid, which pushed the third tab off a
+// phone screen. Guard the wrapping layout that keeps every subject reachable.
+test('subject tabs wrap so every subject at a grade stays on screen', () => {
+  const perLevel = new Map();
+  for (const p of index.packs) perLevel.set(p.level, (perLevel.get(p.level) || 0) + 1);
+  assert.ok(Math.max(...perLevel.values()) >= 3, 'some grade has 3+ subjects');
+  const css = read('css/engage.css');
+  const rule = (sel) => (css.match(new RegExp(`^\\${sel} \\{([^}]*)\\}`, 'm')) || [])[1] || '';
+  const tabs = rule('.subject-tabs');
+  assert.match(tabs, /flex-wrap:\s*wrap/, '.subject-tabs must wrap');
+  assert.doesNotMatch(tabs, /grid-auto-flow:\s*column/, '.subject-tabs must not force one row');
+  assert.match(rule('.subject-tab'), /min-width:\s*0/, '.subject-tab must be able to shrink');
+});
