@@ -94,6 +94,14 @@ export const getRewards = async (profileId) => ({ ...emptyRewards(profileId), ..
 export const getSessionsSince = (profileId, sinceMs) =>
   getAllByIndex(STORES.sessions, 'byProfileDate', IDBKeyRange.bound([profileId, sinceMs], [profileId, Infinity]));
 
+/** Finished sets from `fromMs` up to (not including) `toMs`, oldest first. */
+export const getSessionsBetween = (profileId, fromMs, toMs) =>
+  getAllByIndex(STORES.sessions, 'byProfileDate', IDBKeyRange.bound([profileId, fromMs], [profileId, toMs], false, true));
+
+/** Answers from `fromMs` up to (not including) `toMs`, oldest first (one indexed range read). */
+export const getAttemptsBetween = (profileId, fromMs, toMs) =>
+  getAllByIndex(STORES.attempts, 'byProfileDate', IDBKeyRange.bound([profileId, fromMs], [profileId, toMs], false, true));
+
 /**
  * Save a finished practice set in ONE transaction: the attempts log, mastery
  * for each skill, the session row and rewards. One transaction is faster than
