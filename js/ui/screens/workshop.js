@@ -8,14 +8,15 @@ import { h, mount, confirmDialog, toast } from '../../core/dom.js';
 import { t } from '../../core/i18n.js';
 import { render } from '../../core/router.js';
 import {
-  getRewards, buyRobotPart, wearRobotPart, chooseRobot, renameRobot, surpriseRobot, buyShopItem, equipShopItem,
+  getRewards, buyRobotPart, wearRobotPart, renameRobot, surpriseRobot, buyShopItem, equipShopItem,
 } from '../../data/repo.js';
 import { ROBOT_SLOTS, ROBOT_NAME_MAX, partsInSlot, ownsPart, robotLook, robotParts } from '../../engine/robot.js';
 import { itemsInSlot, lookOf } from '../../engine/shop.js';
 import { walletOf } from '../../engine/rewards.js';
 import { playSfx } from '../../core/sfx.js';
 import { learnerBar } from '../components/common.js';
-import { mascotSays, MASCOT_NAME } from '../components/mascot.js';
+import { mascotSays } from '../components/mascot.js';
+import { crewPicker } from '../components/crewPicker.js';
 import { robotSvg, robotPetSvg } from '../components/robot.js';
 import { confetti } from '../components/celebrate.js';
 
@@ -79,11 +80,7 @@ export const renderWorkshop = async (view, { profile, young }) => {
     h('button.btn.btn-secondary', {
       type: 'button',
       onclick: () => save(() => surpriseRobot(profile.profileId), () => { trying = null; line = null; playSfx('pop'); }),
-    }, '🎲 ', t('surpriseMe')),
-    h('button.btn.btn-ghost', {
-      type: 'button',
-      onclick: () => save(() => chooseRobot(profile.profileId, false), () => render()),
-    }, t('usePip', MASCOT_NAME)));
+    }, '🎲 ', t('surpriseMe')));
 
   const purchase = async (item, isScene) => {
     const ok = await confirmDialog({
@@ -165,6 +162,7 @@ export const renderWorkshop = async (view, { profile, young }) => {
       h('button.btn.btn-ghost', { type: 'button', onclick: () => { trying = null; draw(); } }, t('cancel')));
   };
 
-  view.append(header, title, preview, tools, tabs, grid, actions);
+  const picker = crewPicker({ profile, rewards, young, onChanged: () => render() });
+  view.append(header, title, preview, picker, tools, tabs, grid, actions);
   draw();
 };

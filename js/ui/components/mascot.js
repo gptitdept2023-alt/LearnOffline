@@ -8,6 +8,8 @@
 import { h, svg } from '../../core/dom.js';
 import { t, getLanguage } from '../../core/i18n.js';
 import { robotSvg, robotPetSvg } from './robot.js';
+import { crewSvg } from './crew.js';
+import { faceForMood } from '../../engine/crew.js';
 
 export const MASCOT_NAME = 'Pip';
 const DEFAULT_COLOR = '#ff9f43';
@@ -72,7 +74,15 @@ const face = (mood) => {
 };
 
 /** The companion's name: the robot's own name, or Pip. */
-export const companionName = (look = {}) => look.robot?.name || MASCOT_NAME;
+export const companionName = (look = {}) => look.crew?.name || look.robot?.name || MASCOT_NAME;
+
+/**
+ * A robot crew character. Its LED face follows the mood, and when it
+ * cheers it plays the learner's chosen celebration emote.
+ */
+const crewCompanion = (mood, crew, size, { expr, emote } = {}) =>
+  h(`div.pip.pip-crew.pip-${size}.pip-${mood}`, { role: 'img', 'aria-label': t('pipMood', crew.name, MOOD_KEYS[mood] ? t(MOOD_KEYS[mood]) : mood) },
+    crewSvg(crew, { expr: expr || faceForMood(mood), emote: emote !== undefined ? emote : mood === 'cheer' ? crew.emote : null }));
 
 /** The learner's robot, in the same frame (sizes, moods, animations) as Pip. */
 const robotCompanion = (mood, robot, size) => {
@@ -84,9 +94,11 @@ const robotCompanion = (mood, robot, size) => {
 
 /**
  * Draw the companion: the learner's robot when look.robot is set, else Pip.
- * @param {{mood?: 'happy'|'cheer'|'think'|'oops'|'sleep', look?: {color?: string, hat?: string, pet?: string, robot?: Object}, size?: 'sm'|'md'|'lg'|'xl'}} [options]
+ * @param {{mood?: 'happy'|'cheer'|'think'|'oops'|'sleep', look?: {color?: string, hat?: string, pet?: string, robot?: Object, crew?: Object}, size?: 'sm'|'md'|'lg'|'xl', expr?: string, emote?: string|null}} [options]
+ *   expr and emote override the crew character's face and emote (workshop previews).
  */
-export const mascot = ({ mood = 'happy', look = {}, size = 'md' } = {}) => {
+export const mascot = ({ mood = 'happy', look = {}, size = 'md', expr, emote } = {}) => {
+  if (look.crew) return crewCompanion(mood, look.crew, size, { expr, emote });
   if (look.robot) return robotCompanion(mood, look.robot, size);
   const rainbow = look.color === 'rainbow';
   const fill = rainbow ? 'url(#pip-rainbow)' : (look.color || DEFAULT_COLOR);

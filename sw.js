@@ -12,7 +12,7 @@
  * tests/packs.test.mjs fails if a file is missing from PRECACHE.
  */
 
-const CACHE_VERSION = 'v27';
+const CACHE_VERSION = 'v28';
 const CACHE_NAME = `learnoffline-${CACHE_VERSION}`;
 const VOICE_CACHE = 'learnoffline-voice'; // same name as js/core/voiceCache.js
 const VOICE_CLIP = /\/audio\/voice\/[^/]+\.ogg$/;
@@ -63,6 +63,7 @@ const PRECACHE = [
   './js/engine/rewards.js',
   './js/engine/shop.js',
   './js/engine/robot.js',
+  './js/engine/crew.js',
   './js/engine/techniques.js',
   './js/engine/topics/geometry.js',
   './js/engine/topics/graphs.js',
@@ -85,6 +86,8 @@ const PRECACHE = [
   './js/ui/components/map.js',
   './js/ui/components/mascot.js',
   './js/ui/components/robot.js',
+  './js/ui/components/crew.js',
+  './js/ui/components/crewPicker.js',
   './js/ui/components/visuals.js',
   './js/ui/components/visualsTopics.js',
   './js/ui/components/visualsWords.js',
@@ -103,6 +106,7 @@ const PRECACHE = [
   './js/ui/screens/resultsText.js',
   './js/ui/screens/shop.js',
   './js/ui/screens/workshop.js',
+  './js/ui/screens/crewWorkshop.js',
   './js/ui/screens/start.js',
   './js/ui/screens/topic.js',
   './packs/index.json',
