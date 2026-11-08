@@ -34,6 +34,16 @@ for now; the parent report shows every subject at the learner's grade.
 
 Every question comes from hand-checked word lists and original Filipino-setting stories in `js/engine/topics/englishData.js`. Grades 1 and 2 are read aloud.
 
+**Science for Grades 1 to 6** (`node tools/build-science-g1-g6.mjs`), a Science tab next to Math and English. Lessons follow the Singapore inquiry approach: *Look closely* (observe), *Why it happens* (explain), then *Use it* (a question). Grades 1 and 2 are read aloud.
+- Grade 1: senses and body parts, living or non-living, what living things need, animal homes, movement and babies, plant parts and the plant parts we eat, materials, day and night, weather, healthy habits (go, grow and glow foods).
+- Grade 2: animal groups and coverings, what animals eat, what plants need, seed to plant, uses of plants, properties of materials, solids, liquids and gases, push and pull, magnets, wet and dry seasons, the Sun, Moon and stars.
+- Grade 3: signs of life, classifying animals and plants, fungi and bacteria, materials and their uses, animal and plant life cycles (and stopping mosquitoes), plant parts, the digestive system, magnets and poles, reading an experiment.
+- Grade 4: matter, mass and volume (measuring cylinders), changes of state, the water cycle, melting and boiling points, heat and conductors, light, transparent to opaque, shadows, fair tests.
+- Grade 5: cells, breathing, the heart and blood, how plants carry water and food, pollination and seed dispersal, water as a resource, circuits, conductors and insulators, predicting from results.
+- Grade 6: forms of energy and energy changes, photosynthesis, forces, friction, springs, food chains, habitats, adaptations, people and the environment, the Solar System, the Earth, Moon and Sun.
+
+Questions come from hand-checked banks and generators in `js/engine/topics/science.js` (data in `scienceData.js` and `scienceDataUpper.js`): sorting into groups, life cycles and other sequences, food chains (what happens when one animal dies out), fair tests with a results table, melting and boiling points, springs, and circuits. `tests/science.test.mjs` checks that every question has exactly one right answer.
+
 **Filipino labels.** Each learner can have the app's buttons and labels in
 English or Filipino (*Parents → Edit learner → Buttons and labels*). It covers
 every learner screen: home, topics, lessons, practice and feedback, results,

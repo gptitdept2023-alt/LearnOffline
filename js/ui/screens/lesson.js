@@ -17,8 +17,11 @@ import { learnerBar, progressBar } from '../components/common.js';
 import { renderVisual } from '../components/visuals.js';
 import { tapCount, fillFrame, pickAnswer, methodPlayer, guidedRunner } from '../components/interactive.js';
 
-/** Label keys for the Concrete -> Pictorial -> Abstract stage chip. */
-const STAGE_KEY = { concrete: 'stageConcrete', pictorial: 'stagePictorial', abstract: 'stageAbstract', technique: 'stageTechnique', try: 'stageTry' };
+/** Label keys for the stage chip: Concrete -> Pictorial -> Abstract (Math), Observe -> Explain -> Apply (Science). */
+const STAGE_KEY = {
+  concrete: 'stageConcrete', pictorial: 'stagePictorial', abstract: 'stageAbstract', technique: 'stageTechnique', try: 'stageTry',
+  observe: 'stageObserve', explain: 'stageExplain', apply: 'stageApply',
+};
 
 /** True if this skill has a technique to practise with help. */
 export const skillHasGuided = (skill) => {

@@ -91,11 +91,11 @@ for (const entry of index.packs) {
       // skills (numbers to 100, story sums…) have too many sentences to record,
       // so they use the device voice.
       // The Challenge zone's small sums (bonds, within 20) are finite, so they are recorded too.
-      // English word lists are small and fixed, so all of English is recorded too.
-      const finite = entry.subject === 'english'
+      // English word lists and Science question banks are small and fixed, so they are recorded too.
+      const finite = entry.subject === 'english' || entry.subject === 'science'
         || (['numberBond', 'addition'].includes(skill.generator?.type) && (skill.generator.max ?? 20) <= 20);
-      // English Grades 1–2 are read aloud too, and their word lists are fixed, so they are recorded.
-      const recorded = entry.young || (entry.subject === 'english' && entry.readAloud);
+      // English and Science Grades 1–2 are read aloud too, and their lists are fixed, so they are recorded.
+      const recorded = entry.young || (['english', 'science'].includes(entry.subject) && entry.readAloud);
       if (recorded && skill.generator && (!topic.challenge || finite)) {
         const rng = seededRng(skill.skillId.length * 7919);
         let quiet = 0;

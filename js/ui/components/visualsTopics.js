@@ -273,13 +273,18 @@ const renderBarGraph = ({ title, unit, labels, values, scale, focus = [] }) => {
     svg('svg', { viewBox: '0 0 336 214', role: 'img', 'aria-label': `${title}: ${labels.map((l, i) => `${l} ${values[i]}`).join(', ')}` }, nodes));
 };
 
-/** The same data as a table. */
-const renderTable = ({ title, unit, labels, values, focus = [] }) =>
+/**
+ * The same data as a table. Science results pass their own column headings
+ * and rows instead: { head: ['Mass (g)', 'Length (cm)'], rows: [['0', '8'], …] }.
+ */
+const renderTable = ({ title, unit, labels, values, focus = [], head, rows }) =>
   h('div.visual.visual-table', null,
     h('table.data-table', null,
       h('caption', null, title),
-      h('thead', null, h('tr', null, h('th', null, ''), h('th', null, `Number of ${unit}`))),
-      h('tbody', null, labels.map((l, i) => h(`tr${focus.includes(i) ? '.dt-hot' : ''}`, null, h('th', null, l), h('td', null, values[i]))))));
+      h('thead', null, h('tr', null, head ? head.map((c) => h('th', null, c)) : [h('th', null, ''), h('th', null, `Number of ${unit}`)])),
+      h('tbody', null, rows
+        ? rows.map((r) => h('tr', null, h('th', null, r[0]), r.slice(1).map((c) => h('td', null, c))))
+        : labels.map((l, i) => h(`tr${focus.includes(i) ? '.dt-hot' : ''}`, null, h('th', null, l), h('td', null, values[i]))))));
 
 export const TOPIC_RENDERERS = {
   clock: renderClock,

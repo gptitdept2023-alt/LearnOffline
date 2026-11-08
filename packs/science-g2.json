@@ -1,0 +1,620 @@
+{
+  "packId": "science-g2",
+  "version": "1.0.0",
+  "subject": "science",
+  "title": "Science · Grade 2",
+  "topics": [
+    {
+      "topicId": "sci2-animals",
+      "title": "Animal groups",
+      "icon": "🐾",
+      "summary": "Mammals, birds, fish and insects; body coverings; what animals eat.",
+      "skills": [
+        {
+          "skillId": "sci2-groups",
+          "title": "Animal groups",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "A dog has fur. A chicken has feathers. A fish has fins. An ant has six legs. How are they different?",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🐶 🐔 🐟 🐜",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "Mammals have fur and feed their babies milk. Birds have feathers and beaks. Fish live in water and breathe with gills. Insects have six legs."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: Which animal group does it belong to?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which animal group does it belong to?",
+                  "visual": {
+                    "kind": "letters",
+                    "emoji": "🐴",
+                    "text": "horse",
+                    "label": "horse"
+                  },
+                  "choices": [
+                    "bird",
+                    "mammal",
+                    "fish",
+                    "insect"
+                  ],
+                  "answer": "mammal",
+                  "explain": "A horse is a mammal: it has hair or fur and feeds its young on milk."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciSort",
+            "set": "animals",
+            "groups": [
+              "mammal",
+              "bird",
+              "fish",
+              "insect"
+            ]
+          }
+        },
+        {
+          "skillId": "sci2-coverings",
+          "title": "Body coverings",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Stroke a cat: soft fur. Touch a feather: light and smooth. Look at a fish: shiny scales.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🐱 🪶 🐟",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "Body coverings protect animals. Fur keeps mammals warm. Feathers help birds fly and stay warm. Scales protect fish and reptiles."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: What protects a snail?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "What protects a snail?",
+                  "visual": {
+                    "kind": "letters",
+                    "emoji": "🐌",
+                    "label": "a picture"
+                  },
+                  "choices": [
+                    "a shell",
+                    "feathers",
+                    "fur"
+                  ],
+                  "answer": "a shell",
+                  "explain": "A snail can hide inside its shell."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "coverings"
+          }
+        },
+        {
+          "skillId": "sci2-diet",
+          "title": "What animals eat",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "A cow eats grass. A lion eats other animals. A chicken eats grain and worms.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🐄 🦁 🐔",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "Some animals eat only plants. Some eat only other animals. Some eat both plants and animals."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: What does it eat?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "What does it eat?",
+                  "visual": {
+                    "kind": "letters",
+                    "emoji": "🐛",
+                    "text": "caterpillar",
+                    "label": "caterpillar"
+                  },
+                  "choices": [
+                    "only plants",
+                    "only animals",
+                    "plants and animals"
+                  ],
+                  "answer": "only plants",
+                  "explain": "A caterpillar eats only plants: grass, leaves and other plant parts are its food."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciSort",
+            "set": "diet"
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "sci2-plants",
+      "title": "How plants grow",
+      "icon": "🌱",
+      "summary": "What plants need, from seed to plant, and how we use plants.",
+      "skills": [
+        {
+          "skillId": "sci2-plant-needs",
+          "title": "What plants need",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Grow two bean seeds. Keep one in the light and one in a dark box. After a week, the one in the dark is pale, thin and weak.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🌱 📦",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "Plants need sunlight, water, air and space to grow. They make their own food in their leaves.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "☀️ 💧 💨",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: Which plant will grow best?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which plant will grow best?",
+                  "choices": [
+                    "one with sunlight, water and space",
+                    "one in a closed box with no light",
+                    "one that is never watered"
+                  ],
+                  "answer": "one with sunlight, water and space",
+                  "explain": "A plant grows best when it gets all it needs."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "plantNeeds"
+          }
+        },
+        {
+          "skillId": "sci2-seed",
+          "title": "From seed to plant",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Soak a bean seed and watch it each day. First a root pokes out, then a shoot with tiny leaves.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🌰 🌱",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "A seed grows into a seedling, then a young plant, then an adult plant with flowers. The flowers make pods with new seeds.",
+                "visual": {
+                  "kind": "letters",
+                  "text": "seed → seedling → plant → flowers → seeds",
+                  "label": "seed → seedling → plant → flowers → seeds"
+                }
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: In the life cycle of a bean plant, what comes just before \"a seed\"?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "In the life cycle of a bean plant, what comes just before \"a seed\"?",
+                  "visual": {
+                    "kind": "letters",
+                    "emoji": "🌱",
+                    "label": "the life cycle of a bean plant"
+                  },
+                  "choices": [
+                    "a young plant",
+                    "the seed sprouts a root",
+                    "a seedling with small leaves",
+                    "pods with new seeds"
+                  ],
+                  "answer": "pods with new seeds",
+                  "explain": "The life cycle of a bean plant: a seed → the seed sprouts a root → a seedling with small leaves → a young plant → an adult plant with flowers → pods with new seeds, and then it starts again. The new seeds can grow into new bean plants."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciOrder",
+            "seqs": [
+              "beanPlant"
+            ]
+          }
+        },
+        {
+          "skillId": "sci2-plant-uses",
+          "title": "How we use plants",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Look around your home. What came from a plant? Rice, wood, paper, cotton…",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🍚 🪑 📄 👕",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "Plants give us food, wood, paper, cloth, rope, oil and medicine. Trees also give us shade and oxygen."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: Trees give off … that we breathe.",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Trees give off … that we breathe.",
+                  "visual": {
+                    "kind": "letters",
+                    "emoji": "🌳",
+                    "label": "a picture"
+                  },
+                  "choices": [
+                    "oxygen",
+                    "smoke",
+                    "dust"
+                  ],
+                  "answer": "oxygen",
+                  "explain": "Plants give off oxygen. We need oxygen to breathe."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "plantUses"
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "sci2-matter",
+      "title": "Materials and matter",
+      "icon": "🧱",
+      "summary": "What materials are like; solids, liquids and gases.",
+      "skills": [
+        {
+          "skillId": "sci2-properties",
+          "title": "What is it like?",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Squeeze a sponge, then a rock. Rub sandpaper, then a mirror. How do they feel?",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🧽 🪨 🪞",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "We describe materials by their properties: hard or soft, rough or smooth, bendy, waterproof, or see-through. We choose materials for these properties."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: Why is a window made of glass?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Why is a window made of glass?",
+                  "choices": [
+                    "Glass lets light through.",
+                    "Glass is soft.",
+                    "Glass soaks up water."
+                  ],
+                  "answer": "Glass lets light through.",
+                  "explain": "Glass is see-through, so light comes into the room."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "properties2"
+          }
+        },
+        {
+          "skillId": "sci2-states",
+          "title": "Solid, liquid or gas?",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Pour water into a cup: it takes the cup's shape. A block stays a block. Air fills a balloon.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🧊 💧 🎈",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "A solid keeps its own shape. A liquid flows and takes the shape of its container. A gas spreads out to fill any space."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: Is it a solid, a liquid or a gas?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Is it a solid, a liquid or a gas?",
+                  "visual": {
+                    "kind": "letters",
+                    "emoji": "🧱",
+                    "text": "a brick",
+                    "label": "a brick"
+                  },
+                  "choices": [
+                    "solid",
+                    "liquid",
+                    "gas"
+                  ],
+                  "answer": "solid",
+                  "explain": "A brick is a solid: it keeps its own shape."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciSort",
+            "set": "states"
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "sci2-forces",
+      "title": "Pushes, pulls and magnets",
+      "icon": "🧲",
+      "summary": "Push or pull, and what magnets attract.",
+      "skills": [
+        {
+          "skillId": "sci2-push-pull",
+          "title": "Push or pull?",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Kick a ball. Open a drawer. One moves away from you; one comes toward you.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "⚽ 🗄️",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "A push moves something away from you. A pull moves something toward you. Pushes and pulls can make things start, stop or change direction."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: Is it a push or a pull?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Is it a push or a pull?",
+                  "visual": {
+                    "kind": "letters",
+                    "text": "closing a drawer",
+                    "label": "closing a drawer"
+                  },
+                  "choices": [
+                    "push",
+                    "pull"
+                  ],
+                  "answer": "push",
+                  "explain": "Closing a drawer is a push: it moves something away from you."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciSort",
+            "set": "pushPull"
+          }
+        },
+        {
+          "skillId": "sci2-magnets",
+          "title": "Magnets",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Hold a magnet near a steel paper clip, a plastic button and a pencil. Which one jumps to the magnet?",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🧲 📎",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "Magnets attract things made of iron and steel. They do not attract wood, plastic, paper, glass or rubber. A magnet is strongest at its ends, called poles."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: How do we use magnets at home?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "How do we use magnets at home?",
+                  "choices": [
+                    "to stick notes on the fridge",
+                    "to cook rice",
+                    "to cut paper"
+                  ],
+                  "answer": "to stick notes on the fridge",
+                  "explain": "Fridge magnets hold notes on the steel door."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "magnets2"
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "sci2-earth",
+      "title": "Earth and sky",
+      "icon": "☀️",
+      "summary": "Weather and seasons; the Sun, the Moon and the stars.",
+      "skills": [
+        {
+          "skillId": "sci2-weather",
+          "title": "Weather and seasons",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Keep a weather chart for a week. Draw the Sun, clouds or rain each day.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "☀️ ☁️ 🌧️",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "The Philippines has a wet season (about June to November) and a dry season. A thermometer measures temperature and a rain gauge measures rain. PAGASA warns us about typhoons.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🌡️ 🌀",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: Rain is water that falls from…",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Rain is water that falls from…",
+                  "choices": [
+                    "clouds",
+                    "the Sun",
+                    "trees"
+                  ],
+                  "answer": "clouds",
+                  "explain": "Clouds are made of tiny water drops. When they get big, they fall as rain."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "weather2"
+          }
+        },
+        {
+          "skillId": "sci2-sky",
+          "title": "Sun, Moon and stars",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Look at the Moon each night for a week. Does its shape stay the same?",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🌒 🌓 🌔 🌕",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "The Sun is a star. The Moon has no light of its own; it reflects sunlight. The Earth spins once a day, which gives us day and night."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: Why are stars hard to see in the daytime?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Why are stars hard to see in the daytime?",
+                  "visual": {
+                    "kind": "letters",
+                    "emoji": "✨",
+                    "label": "a picture"
+                  },
+                  "choices": [
+                    "The Sun is too bright.",
+                    "They go away in the day.",
+                    "They are asleep."
+                  ],
+                  "answer": "The Sun is too bright.",
+                  "explain": "Stars are still there in the day. The bright sunlight hides them."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "sky2"
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "sci2-challenge",
+      "title": "Challenge zone",
+      "icon": "⭐",
+      "summary": "Ready for more? These go a step beyond this grade.",
+      "challenge": true,
+      "skills": [
+        {
+          "skillId": "sci2-ch-groups",
+          "title": "All six animal groups",
+          "generator": {
+            "type": "sciSort",
+            "set": "animals"
+          }
+        },
+        {
+          "skillId": "sci2-ch-shadows",
+          "title": "Light and shadows",
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "shadows2"
+          }
+        }
+      ]
+    }
+  ]
+}

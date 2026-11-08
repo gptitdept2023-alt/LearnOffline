@@ -1,0 +1,685 @@
+{
+  "packId": "science-g6",
+  "version": "1.0.0",
+  "subject": "science",
+  "title": "Science · Grade 6",
+  "topics": [
+    {
+      "topicId": "sci6-energy",
+      "title": "Energy",
+      "icon": "⚡",
+      "summary": "Forms of energy, energy changes and photosynthesis.",
+      "skills": [
+        {
+          "skillId": "sci6-energy-forms",
+          "title": "Forms of energy",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Stretch a rubber band and let go. Lift a book onto a shelf. Eat a banana. Where is the energy in each?",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🪢 📚 🍌",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "Kinetic energy is the energy of moving things. Potential energy is stored: by height, by stretching, or as chemicals in food and batteries. Light, heat, sound and electrical energy are other forms."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: Where do animals get their energy from?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Where do animals get their energy from?",
+                  "choices": [
+                    "the food they eat",
+                    "the air only",
+                    "the water they drink"
+                  ],
+                  "answer": "the food they eat",
+                  "explain": "Food stores chemical energy that animals use."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "energyForms"
+          }
+        },
+        {
+          "skillId": "sci6-energy-change",
+          "title": "Energy changes",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Switch on a torch. Feel the bulb after a minute: it is warm.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🔦",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "Energy is never made or destroyed; it changes form. In a torch: chemical (battery) → electrical → light and heat.",
+                "visual": {
+                  "kind": "letters",
+                  "text": "chemical → electrical → light + heat",
+                  "label": "chemical → electrical → light + heat"
+                }
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: Green plants change light energy into…",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Green plants change light energy into…",
+                  "choices": [
+                    "chemical potential energy in food",
+                    "sound energy",
+                    "elastic energy"
+                  ],
+                  "answer": "chemical potential energy in food",
+                  "explain": "Photosynthesis stores light energy as food."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "energyChange"
+          }
+        },
+        {
+          "skillId": "sci6-photosynthesis",
+          "title": "Photosynthesis",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Put a water plant under bright light. Tiny bubbles of gas rise from its leaves.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🌿 🫧",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "In photosynthesis, chlorophyll traps light energy to turn water and carbon dioxide into sugar, giving out oxygen.",
+                "visual": {
+                  "kind": "letters",
+                  "text": "light + water + carbon dioxide → sugar + oxygen",
+                  "label": "light + water + carbon dioxide → sugar + oxygen"
+                }
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: Why is photosynthesis important to animals?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Why is photosynthesis important to animals?",
+                  "choices": [
+                    "It makes the food and oxygen that animals need.",
+                    "It makes carbon dioxide for animals.",
+                    "It makes rain."
+                  ],
+                  "answer": "It makes the food and oxygen that animals need.",
+                  "explain": "Almost all food chains start with green plants or algae, and they give out oxygen."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "photosynthesis"
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "sci6-forces",
+      "title": "Forces",
+      "icon": "🏋️",
+      "summary": "Gravity, friction and springs.",
+      "skills": [
+        {
+          "skillId": "sci6-forces",
+          "title": "Kinds of forces",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Drop a ball, slide a book across a table, and stretch a spring. Each one is a force at work.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "⚽ 📕",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "A force is a push or a pull, measured in newtons. Gravity pulls things down. Friction acts against motion. A spring pushes or pulls back. Forces can change speed, direction or shape."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: Which tool measures force?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which tool measures force?",
+                  "choices": [
+                    "a spring balance",
+                    "a thermometer",
+                    "a measuring cylinder"
+                  ],
+                  "answer": "a spring balance",
+                  "explain": "A spring balance stretches more with a bigger force."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "forces"
+          }
+        },
+        {
+          "skillId": "sci6-friction",
+          "title": "Friction",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Slide a toy car on a carpet, then on smooth tiles. Where does it go farther?",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🚗",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "Friction is greater between rough surfaces and smaller between smooth or oiled ones. It is useful (walking, braking) but also wears things out and makes heat."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: Which is an unwanted effect of friction?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which is an unwanted effect of friction?",
+                  "choices": [
+                    "It wears out the soles of shoes.",
+                    "It helps cars to brake.",
+                    "It lets us hold a pencil."
+                  ],
+                  "answer": "It wears out the soles of shoes.",
+                  "explain": "Rubbing wears surfaces away over time."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "friction"
+          }
+        },
+        {
+          "skillId": "sci6-spring",
+          "title": "Springs and stretch",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Hang masses on a spring, 100 g at a time, and measure its length each time.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "⚖️",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "A spring stretches by the same amount for each equal mass, as long as it is not stretched past its limit. Find the stretch for 100 g, then use it to predict."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: What mass will make the spring 23 cm long, in g?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "What mass will make the spring 23 cm long, in g?",
+                  "visual": {
+                    "kind": "table",
+                    "title": "Masses hung on a spring",
+                    "head": [
+                      "Mass (g)",
+                      "Length of spring (cm)"
+                    ],
+                    "rows": [
+                      [
+                        "0",
+                        "11"
+                      ],
+                      [
+                        "100",
+                        "13"
+                      ],
+                      [
+                        "200",
+                        "15"
+                      ],
+                      [
+                        "300",
+                        "17"
+                      ]
+                    ]
+                  },
+                  "choices": [
+                    "500",
+                    "600",
+                    "700"
+                  ],
+                  "answer": "600",
+                  "explain": "It must stretch 23 − 11 = 12 cm. At 2 cm for each 100 g, that is 6 × 100 g = 600 g."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "springStretch"
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "sci6-environment",
+      "title": "Living together",
+      "icon": "🌏",
+      "summary": "Food chains, habitats, adaptations and caring for the environment.",
+      "skills": [
+        {
+          "skillId": "sci6-food-chains",
+          "title": "Food chains",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "In a rice field, rats eat the rice, snakes eat the rats, and hawks eat the snakes.",
+                "visual": {
+                  "kind": "letters",
+                  "text": "rice plant → rat → snake → hawk",
+                  "label": "rice plant → rat → snake → hawk"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "A food chain starts with a producer, such as a green plant or algae. Each arrow points to the animal that eats it. Animals are consumers."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: Which animal in this food chain is not eaten by any other?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which animal in this food chain is not eaten by any other?",
+                  "visual": {
+                    "kind": "letters",
+                    "text": "algae → shrimp → small fish → kingfisher",
+                    "emoji": "🌿",
+                    "label": "algae → shrimp → small fish → kingfisher"
+                  },
+                  "choices": [
+                    "small fish",
+                    "shrimp",
+                    "kingfisher"
+                  ],
+                  "answer": "kingfisher",
+                  "explain": "Nothing in this chain eats the kingfisher. It is at the end of the chain."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "foodChain",
+            "forms": [
+              "producer",
+              "eats",
+              "eatenBy",
+              "top"
+            ]
+          }
+        },
+        {
+          "skillId": "sci6-ecosystem",
+          "title": "Habitats and communities",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "explain",
+                "text": "A population is all of one kind of living thing in a place. A community is all the populations living together. The habitat is the place. Decomposers break down dead things.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🐟 🐸 🌿 🍄",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: An animal that is hunted and eaten is called…",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "An animal that is hunted and eaten is called…",
+                  "choices": [
+                    "prey",
+                    "a predator",
+                    "a producer"
+                  ],
+                  "answer": "prey",
+                  "explain": "A mouse is the prey of an owl."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "ecosystem"
+          }
+        },
+        {
+          "skillId": "sci6-adaptations",
+          "title": "Adaptations",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Why does a duck have webbed feet, and an eagle sharp claws?",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🦆 🦅",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "Adaptations are features or behaviours that help a living thing survive in its habitat: to get food, escape predators, keep warm, or save water."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: A fish has gills to…",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "A fish has gills to…",
+                  "visual": {
+                    "kind": "letters",
+                    "emoji": "🐟",
+                    "label": "a picture"
+                  },
+                  "choices": [
+                    "take in oxygen from water",
+                    "see in the dark",
+                    "float on top"
+                  ],
+                  "answer": "take in oxygen from water",
+                  "explain": "Gills take in oxygen dissolved in water."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "adaptations"
+          }
+        },
+        {
+          "skillId": "sci6-impact",
+          "title": "People and the environment",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "explain",
+                "text": "People can harm the environment by cutting forests and polluting, or protect it by planting trees and mangroves, practising the 3Rs and saving energy.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🌳 ♻️",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: Which reduces air pollution?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which reduces air pollution?",
+                  "choices": [
+                    "walking, cycling or sharing rides",
+                    "burning more rubbish",
+                    "leaving car engines running"
+                  ],
+                  "answer": "walking, cycling or sharing rides",
+                  "explain": "Fewer engines running means less smoke."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "humanImpact"
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "sci6-space",
+      "title": "Earth and space",
+      "icon": "🪐",
+      "summary": "The Solar System; the Earth, the Moon and the Sun.",
+      "skills": [
+        {
+          "skillId": "sci6-solar-system",
+          "title": "The Solar System",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "explain",
+                "text": "Eight planets orbit the Sun: Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus and Neptune.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "☀️ 🪐",
+                  "text": "Mercury · Venus · Earth · Mars · Jupiter · Saturn · Uranus · Neptune",
+                  "label": "Mercury · Venus · Earth · Mars · Jupiter · Saturn · Uranus · Neptune"
+                }
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: The Moon is Earth's…",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "The Moon is Earth's…",
+                  "visual": {
+                    "kind": "letters",
+                    "emoji": "🌙",
+                    "label": "a picture"
+                  },
+                  "choices": [
+                    "natural satellite",
+                    "planet",
+                    "star"
+                  ],
+                  "answer": "natural satellite",
+                  "explain": "The Moon orbits the Earth."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "solarSystem"
+          }
+        },
+        {
+          "skillId": "sci6-earth-moon",
+          "title": "Earth, Moon and Sun",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Shine a torch on a ball in a dark room and walk around it. You see more or less of its lit half: that is how Moon phases work.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🔦 🌓",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "The Earth rotates once a day (day and night) and revolves around the Sun once a year. The Moon orbits the Earth about once a month."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: When we see the whole lit face of the Moon, it is called a…",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "When we see the whole lit face of the Moon, it is called a…",
+                  "visual": {
+                    "kind": "letters",
+                    "emoji": "🌕",
+                    "label": "a picture"
+                  },
+                  "choices": [
+                    "full moon",
+                    "new moon",
+                    "crescent moon"
+                  ],
+                  "answer": "full moon",
+                  "explain": "At full moon, we see all of the Moon's sunlit half."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "earthMoon"
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "sci6-inquiry",
+      "title": "Think like a scientist",
+      "icon": "🔬",
+      "summary": "Experiments from start to finish.",
+      "skills": [
+        {
+          "skillId": "sci6-experiment",
+          "title": "Investigations",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "explain",
+                "text": "An investigation: ask a question, change one variable, keep the others the same, measure the results, look for a pattern, and make a conclusion."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: What did Ben change in this experiment?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "What did Ben change in this experiment?",
+                  "visual": {
+                    "kind": "stack",
+                    "column": true,
+                    "items": [
+                      {
+                        "kind": "passage",
+                        "title": "Dissolving sugar",
+                        "text": "Ben stirred 1 spoon of sugar into each of 4 cups of water at different temperatures. Ben timed how long the sugar took to dissolve."
+                      },
+                      {
+                        "kind": "table",
+                        "title": "Dissolving sugar",
+                        "head": [
+                          "Water temperature (°C)",
+                          "Time to dissolve (s)"
+                        ],
+                        "rows": [
+                          [
+                            "20 °C",
+                            "172"
+                          ],
+                          [
+                            "40 °C",
+                            "147"
+                          ],
+                          [
+                            "60 °C",
+                            "119"
+                          ],
+                          [
+                            "80 °C",
+                            "86"
+                          ]
+                        ]
+                      }
+                    ]
+                  },
+                  "choices": [
+                    "the time the sugar took to dissolve",
+                    "the temperature of the water",
+                    "the amount of sugar"
+                  ],
+                  "answer": "the temperature of the water",
+                  "explain": "Only the temperature of the water was different for each one, so that is what was changed."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "experiment",
+            "forms": [
+              "changed",
+              "measured",
+              "same",
+              "best",
+              "worst",
+              "conclude",
+              "predict"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "sci6-challenge",
+      "title": "Challenge zone",
+      "icon": "⭐",
+      "summary": "Ready for more? These go a step beyond this grade.",
+      "challenge": true,
+      "skills": [
+        {
+          "skillId": "sci6-ch-food-webs",
+          "title": "When a population changes",
+          "generator": {
+            "type": "foodChain",
+            "forms": [
+              "removePrey",
+              "removePredator"
+            ]
+          }
+        },
+        {
+          "skillId": "sci6-ch-spring",
+          "title": "Spring puzzles",
+          "generator": {
+            "type": "springStretch",
+            "forms": [
+              "mass",
+              "length"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

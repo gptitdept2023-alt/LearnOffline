@@ -32,6 +32,9 @@ const PARAMS = {
   pairWord: { kind: 'synonym' }, compound: {}, contraction: {}, affix: { kind: 'suffix' }, syllables: {}, article: {}, rhymeWord: {},
   abcOrder: { sameFirst: true }, fillBlank: { bank: 'homophone' }, wordInSentence: { bank: 'adverb' }, capitalStop: {}, endMark: {},
   properNoun: {}, sentenceOrder: {}, idiom: {}, story: { grade: 3 },
+  sciQuiz: { bank: 'senses' }, sciSort: { set: 'animals' }, sciOrder: { seqs: ['butterfly', 'digestion', 'waterCycle'] }, magnetPoles: {},
+  foodChain: {}, experiment: { forms: ['changed', 'measured', 'same', 'best', 'worst', 'conclude', 'predict'] }, stateAtTemp: {},
+  displacement: {}, springStretch: {}, circuit: { forms: ['switches', 'gap', 'parallel'] },
 };
 
 test('every generator produces 500 well-formed, self-consistent questions', () => {

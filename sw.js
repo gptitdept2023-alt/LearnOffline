@@ -12,7 +12,7 @@
  * tests/packs.test.mjs fails if a file is missing from PRECACHE.
  */
 
-const CACHE_VERSION = 'v29';
+const CACHE_VERSION = 'v31';
 const CACHE_NAME = `learnoffline-${CACHE_VERSION}`;
 const VOICE_CACHE = 'learnoffline-voice'; // same name as js/core/voiceCache.js
 const VOICE_CLIP = /\/audio\/voice\/[^/]+\.ogg$/;
@@ -80,6 +80,9 @@ const PRECACHE = [
   './js/engine/topics/ratioAlgebra.js',
   './js/engine/topics/shared.js',
   './js/engine/topics/solids.js',
+  './js/engine/topics/science.js',
+  './js/engine/topics/scienceData.js',
+  './js/engine/topics/scienceDataUpper.js',
   './js/engine/topics/time.js',
   './js/ui/components/cards.js',
   './js/ui/components/celebrate.js',
@@ -124,6 +127,12 @@ const PRECACHE = [
   './packs/math-g4.json',
   './packs/math-g5.json',
   './packs/math-g6.json',
+  './packs/science-g1.json',
+  './packs/science-g2.json',
+  './packs/science-g3.json',
+  './packs/science-g4.json',
+  './packs/science-g5.json',
+  './packs/science-g6.json',
 ];
 
 self.addEventListener('install', (event) => {
