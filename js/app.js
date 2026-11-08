@@ -21,7 +21,8 @@ import { renderShop } from './ui/screens/shop.js';
 import { renderGames, renderGame } from './ui/screens/games.js';
 import { renderLevels } from './ui/screens/levels.js';
 import { setSfxEnabled } from './core/sfx.js';
-import { setVoiceSettings, loadRecordedVoice } from './core/speech.js';
+import { setVoiceSettings, loadRecordedVoice, VOICE_PACK_URL } from './core/speech.js';
+import { fillVoiceCacheLater } from './core/voiceCache.js';
 import { getSetting, getProfile } from './data/repo.js';
 
 /** Screens that need an active learner. */
@@ -132,7 +133,8 @@ const start = async () => {
   // Voice: parent's saved choice, plus the recorded voice pack (works offline).
   setVoiceSettings(await getSetting('voice').catch(() => null));
   setSfxEnabled(await getSetting('sfx', true).catch(() => true));
-  loadRecordedVoice();
+  // The clips are saved for offline use in the background, after start-up (see core/voiceCache.js).
+  loadRecordedVoice().then((keys) => fillVoiceCacheLater(keys, VOICE_PACK_URL));
   registerRoutes();
   startRouter();
   registerServiceWorker();
