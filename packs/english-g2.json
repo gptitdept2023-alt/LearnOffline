@@ -1,0 +1,567 @@
+{
+  "packId": "english-g2",
+  "version": "1.0.0",
+  "subject": "english",
+  "title": "English · Grade 2",
+  "topics": [
+    {
+      "topicId": "en2-phonics",
+      "title": "Vowel teams",
+      "icon": "🔤",
+      "summary": "ai, ay, ee, ea, oa, ow, and vowels with r.",
+      "skills": [
+        {
+          "skillId": "en2-vowel-teams",
+          "title": "Vowel teams",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Two letters can team up to make one vowel sound. In rain, a and i together say the name of a.",
+                "visual": {
+                  "kind": "letters",
+                  "text": null,
+                  "tiles": [
+                    "r",
+                    "a",
+                    "i",
+                    "n"
+                  ],
+                  "emoji": "🌧️",
+                  "highlight": [
+                    1,
+                    2
+                  ],
+                  "label": "rain"
+                }
+              },
+              {
+                "stage": "pictorial",
+                "text": "Teams that say the same sound: ai and ay (rain, play), ee and ea (tree, leaf), oa and ow (boat, snow).",
+                "visual": {
+                  "kind": "letters",
+                  "text": "ai ay · ee ea · oa ow",
+                  "label": "ai ay · ee ea · oa ow"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: Tap the word: teach.",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Tap the word: teach.",
+                  "choices": [
+                    "teech",
+                    "teche",
+                    "teach"
+                  ],
+                  "answer": "teach",
+                  "explain": "Teach is spelled t-e-a-c-h."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "vowelTeam"
+          }
+        },
+        {
+          "skillId": "en2-r-vowels",
+          "title": "Vowels with r",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "When r comes after a vowel, they make a new sound together. a and r say ar, like in car.",
+                "visual": {
+                  "kind": "letters",
+                  "text": null,
+                  "tiles": [
+                    "c",
+                    "a",
+                    "r"
+                  ],
+                  "emoji": "🚗",
+                  "highlight": [
+                    1,
+                    2
+                  ],
+                  "label": "car"
+                }
+              },
+              {
+                "stage": "pictorial",
+                "text": "or is in fork. ir, ur and er all sound the same: bird, turtle, her. You learn which one by reading the word often.",
+                "visual": {
+                  "kind": "letters",
+                  "text": null,
+                  "tiles": [
+                    "b",
+                    "i",
+                    "r",
+                    "d"
+                  ],
+                  "emoji": "🐦",
+                  "highlight": [
+                    1,
+                    2
+                  ],
+                  "label": "bird"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: Which two letters are missing?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which two letters are missing?",
+                  "visual": {
+                    "kind": "letters",
+                    "emoji": "⛈️",
+                    "tiles": [
+                      "s",
+                      "t",
+                      null,
+                      "m"
+                    ],
+                    "label": "storm"
+                  },
+                  "choices": [
+                    "ur",
+                    "er",
+                    "or"
+                  ],
+                  "answer": "or",
+                  "explain": "Storm is spelled with or."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "rControlled"
+          }
+        },
+        {
+          "skillId": "en2-compound",
+          "title": "Compound words",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Two small words can join to make a new word. Rain + bow = rainbow.",
+                "visual": {
+                  "kind": "letters",
+                  "text": "rain + bow = rainbow 🌈",
+                  "label": "rain + bow = rainbow 🌈"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Can you split it into two real words? Sun + flower = sunflower. Tiger cannot be split, so it is not a compound word."
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: Which word is a compound word?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which word is a compound word?",
+                  "choices": [
+                    "backpack",
+                    "apple",
+                    "zebra"
+                  ],
+                  "answer": "backpack",
+                  "explain": "Backpack = back + pack."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "compound"
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "en2-words",
+      "title": "Word study",
+      "icon": "📚",
+      "summary": "Special plurals, the past, short forms and same-meaning words.",
+      "skills": [
+        {
+          "skillId": "en2-plurals",
+          "title": "Special plurals",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "concrete",
+                "text": "Some words change in a special way for more than one: one child, two children. One mouse, two mice.",
+                "visual": {
+                  "kind": "letters",
+                  "text": null,
+                  "tiles": null,
+                  "emoji": "🐭 🐭",
+                  "label": ""
+                }
+              },
+              {
+                "stage": "pictorial",
+                "text": "Words ending in a consonant and y change y to i and add -es: one baby, two babies. Some do not change at all: one sheep, many sheep.",
+                "visual": {
+                  "kind": "letters",
+                  "text": "baby → babies",
+                  "label": "baby → babies"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: One knife, two ___.",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "One knife, two ___.",
+                  "choices": [
+                    "knifs",
+                    "knives",
+                    "knifes"
+                  ],
+                  "answer": "knives",
+                  "explain": "One knife, two knives."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "plural",
+            "irregular": true
+          }
+        },
+        {
+          "skillId": "en2-past",
+          "title": "Past tense",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "For things that already happened, many words add -ed: play → played, walk → walked.",
+                "visual": {
+                  "kind": "letters",
+                  "text": "Yesterday, I played.",
+                  "label": "Yesterday, I played."
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Some words change in a special way: go → went, eat → ate, see → saw, run → ran."
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: Which word fits?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which word fits?",
+                  "visual": {
+                    "kind": "letters",
+                    "text": "Last week, Mama ___ new shoes for me.",
+                    "label": "Last week, Mama blank new shoes for me."
+                  },
+                  "choices": [
+                    "buys",
+                    "buyed",
+                    "bought"
+                  ],
+                  "answer": "bought",
+                  "explain": "Last week, Mama bought new shoes for me."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "fillBlank",
+            "bank": "past"
+          }
+        },
+        {
+          "skillId": "en2-contractions",
+          "title": "Short forms",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "A short form joins two words. An apostrophe takes the place of the missing letters: do not → don't.",
+                "visual": {
+                  "kind": "letters",
+                  "text": "do not → don't",
+                  "label": "do not → don't"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Careful: it's means it is. its (no apostrophe) means belonging to it."
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: What is the short way to write \"are not\"?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "What is the short way to write \"are not\"?",
+                  "choices": [
+                    "are'nt",
+                    "aren't",
+                    "arent"
+                  ],
+                  "answer": "aren't",
+                  "explain": "Are not → aren't. The apostrophe shows where letters were taken out."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "contraction"
+          }
+        },
+        {
+          "skillId": "en2-synonyms",
+          "title": "Same meaning",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "Some words mean the same, or nearly the same. Big and large mean the same. Happy and glad mean the same.",
+                "visual": {
+                  "kind": "letters",
+                  "text": "big = large",
+                  "label": "big = large"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: Which word means the same as \"shout\"?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which word means the same as \"shout\"?",
+                  "choices": [
+                    "yell",
+                    "quick",
+                    "smart"
+                  ],
+                  "answer": "yell",
+                  "explain": "Shout and yell mean the same."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "pairWord",
+            "kind": "synonym"
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "en2-grammar",
+      "title": "Grammar",
+      "icon": "✏️",
+      "summary": "Pronouns, describing words and capital letters for names.",
+      "skills": [
+        {
+          "skillId": "en2-pronouns",
+          "title": "Pronouns",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "A pronoun takes the place of a name. Mia is my sister. She likes to dance. She means Mia.",
+                "visual": {
+                  "kind": "letters",
+                  "text": "Mia → she",
+                  "label": "Mia → she"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "A boy is he, a girl is she, a thing is it, and more than one is they. Talking about yourself and others: we."
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: Which word fits?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which word fits?",
+                  "visual": {
+                    "kind": "letters",
+                    "text": "Carlo gave the book to Mia. He gave it to ___.",
+                    "label": "Carlo gave the book to Mia. He gave it to blank."
+                  },
+                  "choices": [
+                    "them",
+                    "him",
+                    "her"
+                  ],
+                  "answer": "her",
+                  "explain": "Carlo gave the book to Mia. He gave it to her."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "fillBlank",
+            "bank": "pronoun"
+          }
+        },
+        {
+          "skillId": "en2-adjectives",
+          "title": "Describing words",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "A describing word tells what something is like. In \"the brown dog\", brown describes the dog.",
+                "visual": {
+                  "kind": "letters",
+                  "text": "the brown dog",
+                  "label": "the brown dog"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: Which word describes something?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which word describes something?",
+                  "visual": {
+                    "kind": "letters",
+                    "text": "The brown dog barked.",
+                    "label": "The brown dog barked."
+                  },
+                  "choices": [
+                    "brown",
+                    "barked",
+                    "dog"
+                  ],
+                  "answer": "brown",
+                  "explain": "Brown describes something in the sentence."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "wordInSentence",
+            "bank": "adjective"
+          }
+        },
+        {
+          "skillId": "en2-names",
+          "title": "Capital letters for names",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "Names of people, places, days and months start with a capital letter: Carlo, Manila, Monday, June.",
+                "visual": {
+                  "kind": "letters",
+                  "text": "Carlo · Manila · Monday · June",
+                  "label": "Carlo · Manila · Monday · June"
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: Which sentence is written the right way?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which sentence is written the right way?",
+                  "choices": [
+                    "My best friend is Carlo.",
+                    "my best friend is Carlo.",
+                    "My best friend is carlo."
+                  ],
+                  "answer": "My best friend is Carlo.",
+                  "explain": "Carlo is a name, so it starts with a capital letter."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "properNoun"
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "en2-reading",
+      "title": "Reading",
+      "icon": "📖",
+      "summary": "Read stories; find details, word meanings and what happened first.",
+      "skills": [
+        {
+          "skillId": "en2-stories",
+          "title": "Read and answer",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "pictorial",
+                "text": "Read the story. Then read the question and look back for the answer.",
+                "visual": {
+                  "kind": "passage",
+                  "title": "Paper boats",
+                  "text": "Rain fell all morning, so Nina could not play outside. She was bored. Her brother showed her how to fold a paper boat."
+                }
+              },
+              {
+                "stage": "abstract",
+                "text": "If a word is new, read the sentences around it. They give clues to what it means."
+              },
+              {
+                "stage": "abstract",
+                "text": "Your turn: In the story, \"ripe\" mangoes are…",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "In the story, \"ripe\" mangoes are…",
+                  "visual": {
+                    "kind": "passage",
+                    "title": "At the market",
+                    "text": "On Saturday, Lia went to the market with her grandmother. They bought fish, rice and ripe mangoes. Lia carried the bag of mangoes. It was heavy, but she did not drop it. Grandma gave her a mango as a thank-you."
+                  },
+                  "choices": [
+                    "still green and hard",
+                    "ready to eat",
+                    "very small"
+                  ],
+                  "answer": "ready to eat",
+                  "explain": "The answer is in the story \"At the market\"."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "story",
+            "grade": 2
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "en2-challenge",
+      "title": "Challenge zone",
+      "icon": "⭐",
+      "summary": "Ready for more? These go a step beyond this grade.",
+      "challenge": true,
+      "skills": [
+        {
+          "skillId": "en2-ch-abc",
+          "title": "ABC order: second letter",
+          "generator": {
+            "type": "abcOrder",
+            "sameFirst": true
+          }
+        },
+        {
+          "skillId": "en2-ch-order",
+          "title": "Make a sentence",
+          "generator": {
+            "type": "sentenceOrder"
+          }
+        }
+      ]
+    }
+  ]
+}

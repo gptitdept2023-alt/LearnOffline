@@ -1,4 +1,4 @@
-// Shared helpers for the pack build scripts (build-math-g1-g3.mjs, build-math-g5-g6.mjs).
+// Shared helpers for the pack build scripts (build-math-g1-g3.mjs, build-math-g5-g6.mjs, build-english-g1-g3.mjs).
 // Each skill's lesson: hand-written CPA intro steps, then a worked example and
 // a "your turn" taken from the skill's OWN generator (seeded), so every number
 // in a lesson is produced and checked by the same code as practice.
@@ -48,8 +48,9 @@ const practiceSteps = (gen, ok) => {
   const answer = q2.answerType === 'choice' ? q2.answer : fmt(q2.answer);
   return [{
     stage: 'abstract',
-    text: `Your turn: ${q2.prompt}`,
-    interact: { kind: 'check', prompt: q2.prompt, ...(q2.visual ? { visual: q2.visual } : {}), choices, answer, explain: q2.explain || `The answer is ${q2.spoken || answer}.` },
+    text: `Your turn: ${q2.listen && q2.say ? q2.say : q2.prompt}`,
+    // A listening question ("Tap the word you hear") shows what it says, since a lesson step is not played on its own.
+    interact: { kind: 'check', prompt: q2.listen && q2.say ? q2.say : q2.prompt, ...(q2.visual ? { visual: q2.visual } : {}), choices, answer, explain: q2.explain || `The answer is ${q2.spoken || answer}.` },
   }];
 };
 
@@ -63,7 +64,7 @@ export const topic = (topicId, title, icon, summary, skills, extra = {}) => ({ t
 export const challenge = (prefix, skills) => topic(`${prefix}-challenge`, 'Challenge zone', '⭐', 'Ready for more? These go a step beyond this grade.', skills.map(([id, title, generator]) => ({ skillId: id, title, generator })), { challenge: true });
 
 /** Write packs/<packId>.json and report its size. */
-export const writePack = (packId, title, topics, version = '1.0.0') => {
-  writeFileSync(`${ROOT}${packId}.json`, `${JSON.stringify({ packId, version, subject: 'math', title, topics }, null, 2)}\n`);
+export const writePack = (packId, title, topics, version = '1.0.0', subject = 'math') => {
+  writeFileSync(`${ROOT}${packId}.json`, `${JSON.stringify({ packId, version, subject, title, topics }, null, 2)}\n`);
   console.log(packId, topics.reduce((n, t) => n + t.skills.length, 0), 'skills');
 };
