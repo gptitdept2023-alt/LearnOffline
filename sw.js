@@ -12,7 +12,7 @@
  * tests/packs.test.mjs fails if a file is missing from PRECACHE.
  */
 
-const CACHE_VERSION = 'v29';
+const CACHE_VERSION = 'v30';
 const CACHE_NAME = `learnoffline-${CACHE_VERSION}`;
 const VOICE_CACHE = 'learnoffline-voice'; // same name as js/core/voiceCache.js
 const VOICE_CLIP = /\/audio\/voice\/[^/]+\.ogg$/;
