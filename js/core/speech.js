@@ -18,7 +18,7 @@
 import { textKey } from './hash.js';
 
 const supported = typeof window !== 'undefined' && 'speechSynthesis' in window;
-const VOICE_PACK_URL = './audio/voice/';
+export const VOICE_PACK_URL = './audio/voice/';
 
 export const DEFAULT_VOICE_SETTINGS = Object.freeze({ voiceURI: '', rate: 0.9, pitch: 1.15, enabled: true, recorded: true });
 
@@ -72,16 +72,20 @@ let currentAudio = null;
 /** Spoken-form key for a sentence: the same text always maps to the same clip. */
 export const speechKey = (text) => textKey(toSpokenText(text).toLowerCase());
 
-/** Load the list of recorded clips. Safe to call when the pack is missing. */
+/**
+ * Load the list of recorded clips. Safe to call when the pack is missing.
+ * @returns {Promise<string[]>} The clip keys (empty when there is no pack).
+ */
 export const loadRecordedVoice = async () => {
   try {
     const response = await fetch(`${VOICE_PACK_URL}manifest.json`);
-    if (!response.ok) return;
+    if (!response.ok) return [];
     const manifest = await response.json();
     recordedKeys = new Set(manifest.keys || []);
   } catch {
     recordedKeys = new Set();
   }
+  return [...recordedKeys];
 };
 
 const stopAudio = () => {

@@ -4,17 +4,24 @@
  *
  * To ship an update: change files, bump CACHE_VERSION. Browsers download the
  * new version in the background and the app offers a "Reload" button.
+ *
+ * The recorded voice clips are NOT part of the install: they live in their own
+ * cache (VOICE_CACHE), kept across versions and filled in the background by the
+ * page (js/core/voiceCache.js). That keeps an update small and quick, so it
+ * cannot time out on a slow phone connection.
  * tests/packs.test.mjs fails if a file is missing from PRECACHE.
  */
 
-const CACHE_VERSION = 'v25';
-const VOICE_MANIFEST = './audio/voice/manifest.json';
+const CACHE_VERSION = 'v26';
 const CACHE_NAME = `learnoffline-${CACHE_VERSION}`;
+const VOICE_CACHE = 'learnoffline-voice'; // same name as js/core/voiceCache.js
+const VOICE_CLIP = /\/audio\/voice\/[^/]+\.ogg$/;
 
 const PRECACHE = [
   './',
   './index.html',
   './manifest.webmanifest',
+  './audio/voice/manifest.json', // the list of clips; the clips themselves: see VOICE_CACHE
   './css/base.css',
   './css/components.css',
   './css/screens.css',
@@ -30,6 +37,7 @@ const PRECACHE = [
   './js/core/dom.js',
   './js/core/hash.js',
   './js/core/i18n.js',
+  './js/core/voiceCache.js',
   './js/core/pin.js',
   './js/core/random.js',
   './js/core/router.js',
@@ -113,33 +121,33 @@ self.addEventListener('install', (event) => {
   event.waitUntil((async () => {
     const cache = await caches.open(CACHE_NAME);
     await cache.addAll(PRECACHE.map((url) => new Request(url, { cache: 'reload' })));
-    await cacheVoicePack(cache);
   })());
 });
 
 /**
- * Cache the recorded voice clips listed in the voice manifest. Clips are
- * fetched in small batches so a slow phone connection is not flooded. A clip
- * that fails is skipped: the app falls back to the device voice for it.
+ * Move voice clips that older versions kept in their own caches into the
+ * shared voice cache, so an update never downloads them again.
  */
-const cacheVoicePack = async (cache) => {
-  try {
-    const response = await fetch(VOICE_MANIFEST, { cache: 'reload' });
-    if (!response.ok) return;
-    await cache.put(VOICE_MANIFEST, response.clone());
-    const { keys = [] } = await response.json();
-    const BATCH = 24;
-    for (let i = 0; i < keys.length; i += BATCH) {
-      await Promise.all(keys.slice(i, i + BATCH).map((key) =>
-        cache.add(new Request(`./audio/voice/${key}.ogg`, { cache: 'reload' })).catch(() => {})));
-    }
-  } catch { /* voice pack is optional */ }
+const keepOldVoiceClips = async (oldCacheName) => {
+  const [oldCache, voice] = await Promise.all([caches.open(oldCacheName), caches.open(VOICE_CACHE)]);
+  const clips = (await oldCache.keys()).filter((r) => VOICE_CLIP.test(new URL(r.url).pathname));
+  const BATCH = 50;
+  for (let i = 0; i < clips.length; i += BATCH) {
+    await Promise.all(clips.slice(i, i + BATCH).map(async (request) => {
+      if (await voice.match(request)) return;
+      const response = await oldCache.match(request);
+      if (response) await voice.put(request, response);
+    }));
+  }
 };
 
 self.addEventListener('activate', (event) => {
   event.waitUntil((async () => {
-    const keys = await caches.keys();
-    await Promise.all(keys.filter((k) => k.startsWith('learnoffline-') && k !== CACHE_NAME).map((k) => caches.delete(k)));
+    const old = (await caches.keys()).filter((k) => k.startsWith('learnoffline-') && k !== CACHE_NAME && k !== VOICE_CACHE);
+    for (const name of old) {
+      try { await keepOldVoiceClips(name); } catch { /* the page downloads any clip still missing */ }
+      await caches.delete(name);
+    }
     await self.clients.claim();
   })());
 });
@@ -151,6 +159,23 @@ self.addEventListener('message', (event) => {
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   if (request.method !== 'GET' || new URL(request.url).origin !== self.location.origin) return;
+
+  // Voice clips: from the shared voice cache, else the network (and keep it).
+  if (VOICE_CLIP.test(new URL(request.url).pathname)) {
+    event.respondWith((async () => {
+      const voice = await caches.open(VOICE_CACHE);
+      const cached = await voice.match(request, { ignoreSearch: true });
+      if (cached) return cached;
+      try {
+        const response = await fetch(request);
+        if (response.ok && response.status === 200) voice.put(request, response.clone());
+        return response;
+      } catch {
+        return new Response('Offline and not cached.', { status: 503, statusText: 'Offline' });
+      }
+    })());
+    return;
+  }
 
   event.respondWith((async () => {
     const cache = await caches.open(CACHE_NAME);

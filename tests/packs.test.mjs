@@ -60,6 +60,11 @@ test('service worker precaches every app file', () => {
     return statSync(join(root, rel)).isDirectory() ? walk(rel) : [rel];
   });
   const files = ['js', 'css', 'packs'].flatMap(walk);
-  assert.ok(sw.includes('audio/voice/manifest.json'), 'voice pack cached from its manifest');
+  assert.ok(sw.includes("'./audio/voice/manifest.json'"), 'the voice manifest is precached');
+  // The install must stay small: thousands of voice clips there made updates time out on phones.
+  const start = sw.indexOf("addEventListener('install'");
+  const install = sw.slice(start, sw.indexOf('\n});', start));
+  assert.ok(install.includes('addAll(PRECACHE') && !/\.ogg|voice/i.test(install), 'install does not download voice clips');
+  assert.ok(sw.includes("const VOICE_CACHE = 'learnoffline-voice'"), 'voice clips have their own cache');
   for (const f of files) assert.ok(sw.includes(`'./${f}'`), `${f} missing from sw.js PRECACHE`);
 });
