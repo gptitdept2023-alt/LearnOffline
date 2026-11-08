@@ -1,11 +1,15 @@
 /**
  * Content packs: read-only JSON files under /packs, cached by the service
- * worker so they load offline. Each pack is indexed once into lookup maps so
+ * worker so they load offline, plus packs a parent imported (customPacks.js,
+ * kept on the device). Each pack is indexed once into lookup maps so
  * screens never search arrays repeatedly.
  */
 
+import { listCustomPackEntries, getCustomPack } from './customPacks.js';
+
 const INDEX_URL = './packs/index.json';
 
+let builtInPromise = null;
 let indexPromise = null;
 const packCache = new Map();
 
@@ -15,13 +19,47 @@ const fetchJson = async (url) => {
   return response.json();
 };
 
-/** The list of installed packs: [{ packId, subject, level, title, file, young }]. */
+/** The packs that ship with the app (packs/index.json). */
+export const loadBuiltInIndex = () => {
+  if (!builtInPromise) {
+    builtInPromise = fetchJson(INDEX_URL).then((data) => data.packs);
+    builtInPromise.catch(() => { builtInPromise = null; });
+  }
+  return builtInPromise;
+};
+
+/**
+ * Imported packs whose grade is still in the app, each placed right after the
+ * built-in packs of its grade, so a grade's own subjects always come first.
+ * A storage error leaves out the imported packs instead of breaking the app.
+ */
+const mergeCustom = (builtIn, custom) => {
+  const levels = new Set(builtIn.map((p) => p.level));
+  const ids = new Set(builtIn.map((p) => p.packId));
+  const usable = custom.filter((c) => levels.has(c.level) && !ids.has(c.packId))
+    .sort((a, b) => (a.importedAt || 0) - (b.importedAt || 0));
+  const out = [];
+  builtIn.forEach((p, i) => {
+    out.push(p);
+    if (builtIn[i + 1]?.level !== p.level) out.push(...usable.filter((c) => c.level === p.level));
+  });
+  return out;
+};
+
+/** The list of installed packs: [{ packId, subject, level, title, file, young, custom? }]. */
 export const loadPackIndex = () => {
   if (!indexPromise) {
-    indexPromise = fetchJson(INDEX_URL).then((data) => data.packs);
+    indexPromise = Promise.all([loadBuiltInIndex(), listCustomPackEntries().catch(() => [])])
+      .then(([builtIn, custom]) => mergeCustom(builtIn, custom));
     indexPromise.catch(() => { indexPromise = null; });
   }
   return indexPromise;
+};
+
+/** Forget the merged index and an imported pack after it is imported again or removed. */
+export const resetPackCaches = (packId) => {
+  indexPromise = null;
+  if (packId) packCache.delete(packId);
 };
 
 /**
@@ -69,7 +107,10 @@ export const loadPack = async (packId) => {
   const index = await loadPackIndex();
   const entry = index.find((p) => p.packId === packId);
   if (!entry) throw new Error('This grade is not installed.');
-  const promise = fetchJson(`./packs/${entry.file}`).then((pack) => {
+  const source = entry.custom
+    ? getCustomPack(packId).then((pack) => { if (!pack) throw new Error('This question pack was removed.'); return pack; })
+    : fetchJson(`./packs/${entry.file}`);
+  const promise = source.then((pack) => {
     validatePack(pack);
     const skillById = new Map();
     const topicBySkill = new Map();

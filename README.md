@@ -60,6 +60,7 @@ Techniques (`js/engine/techniques.js`): count on, make ten, number bonds, column
 - **Bonus quests and Challenge zone**: opening the daily chest unlocks a harder Bonus quest, then a Champion quest. These ask for Challenge sets: stretch skills one step beyond the grade, in a "Challenge zone" topic in each pack.
 - **More games**: Memory Match (sums and answers), Bond Bubbles (number bonds to 5/10 or 100/1,000) and Number Line Jump (find numbers or fractions on a line).
 - **Parent goals**: practice sets per day, days per week and an optional reward, set in the parent area. The child sees today's progress and a week tracker on the home screen.
+- **Your own questions**: write questions in Google Sheets with `tools/sheets/LearnOfflinePacks.gs`, make a pack file, and import it under Parents → Your own questions. It shows as a new subject tab for that grade, works offline, and travels with backups. See [tools/sheets/README.md](tools/sheets/README.md).
 
 ## Voice
 
@@ -99,7 +100,7 @@ file will not work offline.
 | Screens | `js/ui/screens/*.js` | One module per screen; hash routes (`#/home`, `#/practice/<skill>`) |
 | Components | `js/ui/components/` | Visuals (ten frames, blocks, bonds, bar models, shapes), shared widgets |
 | Engine | `js/engine/` | Pure, DOM-free, unit-tested: question generators, answer checking, mastery, rewards |
-| Data | `js/data/` | `db.js` is the only IndexedDB code; `repo.js` exposes app-level reads/writes; `backup.js`, `packs.js` |
+| Data | `js/data/` | `db.js` is the only IndexedDB code; `repo.js` exposes app-level reads/writes; `backup.js`, `packs.js`, `customPacks.js` (imported packs) |
 | Offline | `sw.js`, `manifest.webmanifest` | Cache-first service worker; precache list checked by tests |
 | Content | `packs/*.json` | One JSON pack per subject and grade, listed in `packs/index.json` |
 
