@@ -52,6 +52,16 @@ export const emptyRewards = (profileId) => ({
 /** Stars the child can spend in the shop. */
 export const walletOf = (rewards) => Math.max(0, rewards.stars - (rewards.spentStars || 0));
 
+/**
+ * Pay `price` stars from the wallet. Shared by the shop and the robot workshop.
+ * @throws {Error} with a child-friendly message if the wallet is short.
+ */
+export const spendStars = (rewards, price) => {
+  const wallet = rewards.stars - (rewards.spentStars || 0);
+  if (wallet < price) throw new Error(`You need ${price - wallet} more stars.`);
+  return { ...rewards, spentStars: (rewards.spentStars || 0) + price };
+};
+
 /** Local calendar day as YYYY-MM-DD (streaks follow the child's day, not UTC). */
 export const dayKey = (date = new Date()) => {
   const d = new Date(date);

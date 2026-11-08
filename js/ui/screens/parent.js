@@ -17,7 +17,7 @@ import { loadPack, subjectsAtLevel, resetPackCaches } from '../../data/packs.js'
 import { downloadBackup, readBackupFile, restoreAll, validateBackup } from '../../data/backup.js';
 import { statusOf } from '../../engine/mastery.js';
 import { dayKey, currentStreak } from '../../engine/rewards.js';
-import { openProfileEditor, statusPill, toggle } from '../components/common.js';
+import { openProfileEditor, statusPill, toggle, avatarBadge, looksFor } from '../components/common.js';
 import { listVoices, getVoiceSettings, setVoiceSettings, speak } from '../../core/speech.js';
 import { customPacksPanel } from './parentPacks.js';
 import { renderWeeklyReport } from './report.js';
@@ -137,7 +137,7 @@ const topicsTable = (indexed, mastery, withSubject) => [
       h('td', null, r.attempts)))))),
 ];
 
-const childReport = async (profile) => {
+const childReport = async (profile, look) => {
   const [subjects, mastery, rewards, sessions] = await Promise.all([
     subjectsAtLevel(profile.packId),
     getMasteryMap(profile.profileId),
@@ -161,7 +161,7 @@ const childReport = async (profile) => {
 
   return h('section.report', null,
     h('div.report-head', null,
-      h('span.avatar.avatar-md', { 'aria-hidden': 'true' }, profile.avatar),
+      avatarBadge(profile, look, 'md'),
       h('div', null, h('h2', null, profile.name), h('small.muted', null, packs[0].entry.levelName || packs[0].pack.title))),
     h('div.stat-row', null,
       h('div.stat', null, h('strong', null, weekQuestions), h('small', null, 'Questions this week')),
@@ -182,10 +182,10 @@ const childReport = async (profile) => {
 /* Settings pieces                                                     */
 /* ------------------------------------------------------------------ */
 
-const learnersPanel = (profiles) => h('section.panel', null,
+const learnersPanel = (profiles, looks) => h('section.panel', null,
   h('h2', null, 'Learners'),
   h('ul.manage-list', null, profiles.map((p) => h('li', null,
-    h('span.avatar.avatar-sm', { 'aria-hidden': 'true' }, p.avatar),
+    avatarBadge(p, looks.get(p.profileId)),
     h('span.grow', null, p.name),
     h('button.btn.btn-secondary.btn-sm', { type: 'button', onclick: async () => { if (await openProfileEditor(p)) render(); } }, 'Edit'),
     h('button.btn.btn-danger.btn-sm', {
@@ -209,7 +209,7 @@ const learnersPanel = (profiles) => h('section.panel', null,
  * Goals: practice sets per day, days per week and an optional reward.
  * The child sees their progress on the home screen.
  */
-const goalsPanel = (profiles) => h('section.panel.form', null,
+const goalsPanel = (profiles, looks) => h('section.panel.form', null,
   h('h2', null, 'Goals'),
   h('p.muted', null, 'Set a daily practice goal. Your child sees it on their home screen with a week tracker. Add a reward to look forward to when the week is complete.'),
   profiles.map((p) => {
@@ -234,7 +234,7 @@ const goalsPanel = (profiles) => h('section.panel.form', null,
         }
       },
     },
-    h('span.goal-who', null, h('span.avatar.avatar-sm', { 'aria-hidden': 'true' }, p.avatar), h('strong', null, p.name)),
+    h('span.goal-who', null, avatarBadge(p, looks.get(p.profileId)), h('strong', null, p.name)),
     sets, days, reward,
     h('button.btn.btn-primary.btn-sm', { type: 'submit' }, t('save')));
     return form;
@@ -415,6 +415,7 @@ export const renderParent = async (view, section, ...args) => {
   }
 
   const [profiles, packsPanel] = await Promise.all([listProfiles(), customPacksPanel()]);
+  const looks = await looksFor(profiles);
   const reports = h('div.reports');
   view.append(
     h('header.learner-bar', null,
@@ -424,8 +425,8 @@ export const renderParent = async (view, section, ...args) => {
       h('h1.page-title', null, 'Progress'),
       profiles.length > 0 && h('a.btn.btn-secondary.btn-sm', { href: '#/parent/report/0/all' }, '🖨 Weekly report')),
     profiles.length ? reports : h('p.muted', null, 'No learners yet. Add one below.'),
-    learnersPanel(profiles),
-    profiles.length > 0 && goalsPanel(profiles),
+    learnersPanel(profiles, looks),
+    profiles.length > 0 && goalsPanel(profiles, looks),
     packsPanel,
     voicePanel(),
     backupPanel(),
@@ -433,5 +434,5 @@ export const renderParent = async (view, section, ...args) => {
     supportPanel(),
   );
   // Reports load in parallel; each child's data is read with indexed queries only.
-  mount(reports, await Promise.all(profiles.map(childReport)));
+  mount(reports, await Promise.all(profiles.map((p) => childReport(p, looks.get(p.profileId)))));
 };

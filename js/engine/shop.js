@@ -4,6 +4,9 @@
  * Pure and DOM-free; repo.js saves the result.
  */
 
+import { spendStars } from './rewards.js';
+import { usesRobot, robotLook } from './robot.js';
+
 /** Slots Pip can wear. Each slot holds one item at a time. */
 export const SLOTS = Object.freeze([
   { id: 'color', title: 'Colours', icon: '🎨' },
@@ -42,6 +45,8 @@ export const ITEMS = Object.freeze([
   { id: 'scene-beach', slot: 'scene', name: 'Beach', value: 'beach', price: 50 },
   { id: 'scene-space', slot: 'scene', name: 'Space', value: 'space', price: 100 },
   { id: 'scene-candy', slot: 'scene', name: 'Candy land', value: 'candy', price: 150 },
+  { id: 'scene-lab', slot: 'scene', name: 'Robot lab', value: 'lab', price: 40 },
+  { id: 'scene-city', slot: 'scene', name: 'Neon city', value: 'city', price: 120 },
 ]);
 
 const byId = new Map(ITEMS.map((i) => [i.id, i]));
@@ -50,13 +55,19 @@ export const itemById = (id) => byId.get(id) || null;
 
 export const itemsInSlot = (slot) => ITEMS.filter((i) => i.slot === slot);
 
-/** The mascot's look from what is equipped: { color, hat, pet, scene } values. */
-export const lookOf = (rewards) => {
+/**
+ * The companion's look: { color, hat, pet, scene } values from what is
+ * equipped, plus `robot` (see robotLook) when this learner uses the robot.
+ * @param {Object} rewards
+ * @param {boolean} [young] Kinder learners default to Pip, others to the robot.
+ */
+export const lookOf = (rewards, young = false) => {
   const look = {};
   for (const [slot, id] of Object.entries(rewards?.equipped || {})) {
     const item = itemById(id);
     if (item && item.slot === slot) look[slot] = item.value;
   }
+  if (usesRobot(rewards, young)) look.robot = robotLook(rewards);
   return look;
 };
 
@@ -69,11 +80,8 @@ export const buy = (rewards, itemId) => {
   if (!item) throw new Error('That item is not in the shop.');
   const owned = rewards.owned || [];
   if (owned.includes(itemId)) throw new Error('You already have this.');
-  const wallet = rewards.stars - (rewards.spentStars || 0);
-  if (wallet < item.price) throw new Error(`You need ${item.price - wallet} more stars.`);
   return {
-    ...rewards,
-    spentStars: (rewards.spentStars || 0) + item.price,
+    ...spendStars(rewards, item.price),
     owned: [...owned, itemId],
     equipped: { ...(rewards.equipped || {}), [item.slot]: itemId },
   };

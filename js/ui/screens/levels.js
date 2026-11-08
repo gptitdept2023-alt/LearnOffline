@@ -37,7 +37,7 @@ export const renderLevels = async (view) => {
   const stars = rewards.levels || {};
   const levels = buildLevels(indexed);
   const now = currentLevel(stars);
-  const look = lookOf(rewards);
+  const look = lookOf(rewards, Boolean(indexed.pack.young));
   const totalStars = Object.values(stars).reduce((a, b) => a + b, 0);
 
   const worlds = WORLDS.map((world, w) => {

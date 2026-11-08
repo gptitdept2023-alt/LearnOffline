@@ -129,7 +129,7 @@ export const renderPractice = async (view, skillId) => {
   if (!questions.length) throw new Error('No questions are available for this practice yet.');
 
   const young = indexed.pack.young;
-  const look = lookOf(rewards);
+  const look = lookOf(rewards, Boolean(young));
   const boss = Boolean(level?.boss);
   const answers = [];
   let inARow = 0; // correct answers in a row, for Pip's cheers

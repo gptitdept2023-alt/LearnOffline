@@ -46,7 +46,7 @@ export const renderResults = async (view) => {
   const total = lastResult.answers.length;
   const pct = Math.round((correct / total) * 100);
 
-  const look = lookOf(await getRewards(profile.profileId));
+  const look = lookOf(await getRewards(profile.profileId), Boolean(indexed.pack.young));
   const lv = lastResult.level;
   const pipLine = lv?.boss && lv.stars > 0 ? t('bossBeatenPip') : pickLine(pct >= 80 ? 'great' : pct >= 50 ? 'good' : 'tryAgain');
 
