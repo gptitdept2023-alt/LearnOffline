@@ -6,6 +6,7 @@
  */
 
 import { h, mount } from '../../core/dom.js';
+import { t, tEn } from '../../core/i18n.js';
 import { getState } from '../../core/state.js';
 import { speak, stopSpeaking } from '../../core/speech.js';
 import { getRewards, recordActivity } from '../../data/repo.js';
@@ -47,26 +48,26 @@ export const renderGuided = async (view, skillId) => {
     playSfx('fanfare');
     mount(stage,
       h('div.results-emoji', { 'aria-hidden': 'true' }, '🌟'),
-      h('h2', null, 'You know the steps!'),
-      h('p', null, 'Now try some on your own. You can still tap “Show me how” if you get stuck.'),
+      h('h2', null, t('knowTheSteps')),
+      h('p', null, t('knowTheStepsHelp')),
       h('div.results-actions', null,
-        h('a.btn.btn-secondary', { href: `#/guided/${id}` }, '↻ More with help'),
-        h('a.btn.btn-primary.btn-lg', { href: `#/practice/${id}` }, 'Practise on my own ▶')));
-    speak('You know the steps! Now try some on your own.');
+        h('a.btn.btn-secondary', { href: `#/guided/${id}` }, `↻ ${t('moreWithHelp')}`),
+        h('a.btn.btn-primary.btn-lg', { href: `#/practice/${id}` }, `${t('practiseOnMyOwn')} ▶`)));
+    speak(`${tEn('knowTheSteps')} Now try some on your own.`);
   };
 
   const show = () => {
     const { q, method } = questions[index];
-    mount(progressHost, progressBar(index, questions.length, `Example ${index + 1} of ${questions.length}`),
+    mount(progressHost, progressBar(index, questions.length, t('exampleOf', index + 1, questions.length)),
       h('small.muted', null, `${index + 1} / ${questions.length}`));
     const nextArea = h('div.guided-next');
     const runner = guidedRunner(method, () => {
       const last = index === questions.length - 1;
       mount(nextArea,
         h('div.feedback.feedback-good', null,
-          h('strong.feedback-title', null, `✓ Answer: ${q.display || (typeof q.answer === 'number' ? q.answer.toLocaleString('en-US') : q.answer)}`),
+          h('strong.feedback-title', null, `✓ ${t('answerIs', q.display || (typeof q.answer === 'number' ? q.answer.toLocaleString('en-US') : q.answer))}`),
           h('button.btn.btn-primary.btn-lg', { type: 'button', onclick: () => { if (last) finish(); else { index += 1; show(); } } },
-            last ? 'Done' : 'Next example', ' ▶')));
+            last ? t('done') : t('nextExample'), ' ▶')));
       nextArea.querySelector('button').focus();
     });
     mount(stage,
@@ -80,7 +81,7 @@ export const renderGuided = async (view, skillId) => {
   view.classList.toggle('young', Boolean(young));
   view.append(
     learnerBar(profile, rewards, { back: `#/topic/${encodeURIComponent(indexed.topicBySkill.get(skillId).topicId)}` }),
-    h('header.practice-bar', null, h('span.stage.stage-try', null, 'Try with help'), h('h1.practice-title', null, skill.title), progressHost),
+    h('header.practice-bar', null, h('span.stage.stage-try', null, t('tryWithHelp')), h('h1.practice-title', null, skill.title), progressHost),
     stage,
   );
   show();

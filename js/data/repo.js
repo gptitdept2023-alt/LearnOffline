@@ -11,6 +11,7 @@ import { buy, equip } from '../engine/shop.js';
 import { normaliseGoal, weekStart } from '../engine/goals.js';
 import { applyLevel } from '../engine/levels.js';
 import { uid } from '../core/random.js';
+import { isLanguage, DEFAULT_LANGUAGE } from '../core/i18n.js';
 
 export const MAX_PROFILES = 6;
 
@@ -27,7 +28,7 @@ export const getProfile = (profileId) => get(STORES.profiles, profileId);
 
 /**
  * Create or update a profile. Validates input so bad data never reaches the DB.
- * @param {{profileId?: string, name: string, avatar: string, packId: string, readAloud?: boolean}} input
+ * @param {{profileId?: string, name: string, avatar: string, packId: string, readAloud?: boolean, language?: string}} input
  */
 export const saveProfile = async (input) => {
   const name = String(input.name || '').trim();
@@ -47,6 +48,8 @@ export const saveProfile = async (input) => {
     avatar: input.avatar || '🦊',
     packId: input.packId,
     readAloud: Boolean(input.readAloud),
+    // Label language: a known code, else the learner's current one, else English.
+    language: isLanguage(input.language) ? input.language : (isLanguage(existing?.language) ? existing.language : DEFAULT_LANGUAGE),
     createdAt: existing?.createdAt || Date.now(),
   };
   await put(STORES.profiles, profile);
@@ -93,6 +96,14 @@ export const getRewards = async (profileId) => ({ ...emptyRewards(profileId), ..
 /** Finished sets since `sinceMs`, oldest first. */
 export const getSessionsSince = (profileId, sinceMs) =>
   getAllByIndex(STORES.sessions, 'byProfileDate', IDBKeyRange.bound([profileId, sinceMs], [profileId, Infinity]));
+
+/** Finished sets from `fromMs` up to (not including) `toMs`, oldest first. */
+export const getSessionsBetween = (profileId, fromMs, toMs) =>
+  getAllByIndex(STORES.sessions, 'byProfileDate', IDBKeyRange.bound([profileId, fromMs], [profileId, toMs], false, true));
+
+/** Answers from `fromMs` up to (not including) `toMs`, oldest first (one indexed range read). */
+export const getAttemptsBetween = (profileId, fromMs, toMs) =>
+  getAllByIndex(STORES.attempts, 'byProfileDate', IDBKeyRange.bound([profileId, fromMs], [profileId, toMs], false, true));
 
 /**
  * Save a finished practice set in ONE transaction: the attempts log, mastery

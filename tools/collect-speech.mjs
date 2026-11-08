@@ -94,7 +94,9 @@ for (const entry of index.packs) {
       // English word lists are small and fixed, so all of English is recorded too.
       const finite = entry.subject === 'english'
         || (['numberBond', 'addition'].includes(skill.generator?.type) && (skill.generator.max ?? 20) <= 20);
-      if (entry.young && skill.generator && (!topic.challenge || finite)) {
+      // English Grades 1–2 are read aloud too, and their word lists are fixed, so they are recorded.
+      const recorded = entry.young || (entry.subject === 'english' && entry.readAloud);
+      if (recorded && skill.generator && (!topic.challenge || finite)) {
         const rng = seededRng(skill.skillId.length * 7919);
         let quiet = 0;
         while (quiet < 3000) {

@@ -7,7 +7,7 @@
  * tests/packs.test.mjs fails if a file is missing from PRECACHE.
  */
 
-const CACHE_VERSION = 'v22';
+const CACHE_VERSION = 'v25';
 const VOICE_MANIFEST = './audio/voice/manifest.json';
 const CACHE_NAME = `learnoffline-${CACHE_VERSION}`;
 
@@ -21,6 +21,7 @@ const PRECACHE = [
   './css/visuals.css',
   './css/interactive.css',
   './css/engage.css',
+  './css/report.css',
   './icons/icon-192.png',
   './icons/icon-512.png',
   './icons/icon-maskable-512.png',
@@ -43,6 +44,7 @@ const PRECACHE = [
   './js/engine/answers.js',
   './js/engine/games.js',
   './js/engine/goals.js',
+  './js/engine/weekReport.js',
   './js/engine/levels.js',
   './js/engine/generators.js',
   './js/engine/longDivision.js',
@@ -56,6 +58,8 @@ const PRECACHE = [
   './js/engine/topics/geometry.js',
   './js/engine/topics/graphs.js',
   './js/engine/topics/english.js',
+  './js/engine/topics/englishData.js',
+  './js/engine/topics/englishPlus.js',
   './js/engine/topics/decimalsPercent.js',
   './js/engine/topics/fractionsPlus.js',
   './js/engine/topics/index.js',
@@ -83,6 +87,7 @@ const PRECACHE = [
   './js/ui/screens/levels.js',
   './js/ui/screens/parent.js',
   './js/ui/screens/parentPacks.js',
+  './js/ui/screens/report.js',
   './js/ui/screens/practice.js',
   './js/ui/screens/results.js',
   './js/ui/screens/resultsText.js',
@@ -92,6 +97,9 @@ const PRECACHE = [
   './packs/index.json',
   './packs/math-k2.json',
   './packs/english-k2.json',
+  './packs/english-g1.json',
+  './packs/english-g2.json',
+  './packs/english-g3.json',
   './packs/math-g1.json',
   './packs/math-g2.json',
   './packs/math-g3.json',

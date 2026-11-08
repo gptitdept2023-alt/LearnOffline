@@ -20,6 +20,7 @@ import { dayKey, currentStreak } from '../../engine/rewards.js';
 import { openProfileEditor, statusPill, toggle } from '../components/common.js';
 import { listVoices, getVoiceSettings, setVoiceSettings, speak } from '../../core/speech.js';
 import { customPacksPanel } from './parentPacks.js';
+import { renderWeeklyReport } from './report.js';
 
 const PIN_KEY = 'parentPin';
 const ACTIVITY_DAYS = 14;
@@ -385,7 +386,7 @@ const supportPanel = () => h('section.panel.support-panel', null,
 /* Screen                                                              */
 /* ------------------------------------------------------------------ */
 
-export const renderParent = async (view) => {
+export const renderParent = async (view, section, ...args) => {
   const stored = await getSetting(PIN_KEY);
   const hasPin = Boolean(stored);
 
@@ -407,13 +408,21 @@ export const renderParent = async (view) => {
     return;
   }
 
+  // #/parent/report/<weeksAgo>/<who>: the printable weekly report, behind the same PIN.
+  if (section === 'report') {
+    await renderWeeklyReport(view, ...args);
+    return;
+  }
+
   const [profiles, packsPanel] = await Promise.all([listProfiles(), customPacksPanel()]);
   const reports = h('div.reports');
   view.append(
     h('header.learner-bar', null,
       h('a.icon-btn', { href: '#/', 'aria-label': t('back'), onclick: () => setParentUnlocked(false) }, '←'),
       h('strong', null, t('parents'))),
-    h('h1.page-title', null, 'Progress'),
+    h('div.page-title-row', null,
+      h('h1.page-title', null, 'Progress'),
+      profiles.length > 0 && h('a.btn.btn-secondary.btn-sm', { href: '#/parent/report/0/all' }, '🖨 Weekly report')),
     profiles.length ? reports : h('p.muted', null, 'No learners yet. Add one below.'),
     learnersPanel(profiles),
     profiles.length > 0 && goalsPanel(profiles),

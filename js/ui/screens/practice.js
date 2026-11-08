@@ -5,7 +5,7 @@
  */
 
 import { h, mount, confirmDialog, toast, withLoading } from '../../core/dom.js';
-import { t } from '../../core/i18n.js';
+import { t, tEn } from '../../core/i18n.js';
 import { navigate } from '../../core/router.js';
 import { getState, setLastResult } from '../../core/state.js';
 import { speak, canSpeak, stopSpeaking } from '../../core/speech.js';
@@ -45,9 +45,9 @@ const buildQuestions = async (profile, indexed, skillId) => {
   const young = indexed.pack.young;
   if (String(skillId).startsWith(LEVEL_PREFIX)) {
     const level = levelFor(indexed, skillId);
-    if (!level) throw new Error(levelsEnabled(indexed) ? 'That level was not found.' : 'Levels are in Math. Switch to Math on the home screen.');
+    if (!level) throw new Error(levelsEnabled(indexed) ? 'That level was not found.' : t('levelsInMath'));
     const skills = level.skillIds.map((id) => indexed.skillById.get(id)).filter(Boolean);
-    return { label: level.boss ? `Boss: ${level.title}` : `Level ${level.n}`, questions: buildMixSet(skills, young, Math.random, level.size), level };
+    return { label: level.boss ? t('bossShort', level.title) : t('levelN', level.n), questions: buildMixSet(skills, young, Math.random, level.size), level };
   }
   if (skillId === MIX_ID || skillId === CHALLENGE_ID) {
     // A pack with no Challenge topic (a parent's own pack) uses all its skills for Challenge.
@@ -56,7 +56,7 @@ const buildQuestions = async (profile, indexed, skillId) => {
     if (!pool.length) throw new Error('There are no questions for this subject yet.');
     const mastery = await getMasteryMap(profile.profileId);
     const ids = pickDailyMix(pool, mastery, young ? 2 : 4);
-    const label = skillId === CHALLENGE_ID ? '🚀 Challenge' : t('dailyMix');
+    const label = skillId === CHALLENGE_ID ? `🚀 ${t('challenge')}` : t('dailyMix');
     return { label, questions: buildMixSet(ids.map((id) => indexed.skillById.get(id)), young) };
   }
   const skill = indexed.skillById.get(skillId);
@@ -67,7 +67,7 @@ const buildQuestions = async (profile, indexed, skillId) => {
 /** Input controls for one question. Returns { el, read(), focus() }. */
 const answerInput = (question, onSubmit) => {
   if (question.answerType === 'choice') {
-    const kindClass = { shape: '.choices-pictures', letter: '.choices-letters', word: '.choices-words', picture: '.choices-pics' }[question.choiceKind] || '';
+    const kindClass = { shape: '.choices-pictures', letter: '.choices-letters', word: '.choices-words', picture: '.choices-pics', phrase: '.choices-phrases', sentence: '.choices-sentences' }[question.choiceKind] || '';
     const el = h(`div.choices${kindClass}`, null,
       question.choices.map((c) => h('button.choice', {
         type: 'button',
@@ -79,10 +79,10 @@ const answerInput = (question, onSubmit) => {
   }
 
   if (question.answerType === 'fraction') {
-    const num = h('input.frac-input', { inputmode: 'numeric', 'aria-label': 'Top number', autocomplete: 'off' });
-    const den = h('input.frac-input', { inputmode: 'numeric', 'aria-label': 'Bottom number', autocomplete: 'off' });
+    const num = h('input.frac-input', { inputmode: 'numeric', 'aria-label': t('topNumber'), autocomplete: 'off' });
+    const den = h('input.frac-input', { inputmode: 'numeric', 'aria-label': t('bottomNumber'), autocomplete: 'off' });
     // Answers that can be more than 1 also get a box for the whole number ("1 3/4").
-    const whole = question.mixed ? h('input.frac-input.frac-whole', { inputmode: 'numeric', 'aria-label': 'Whole number (leave empty if none)', autocomplete: 'off' }) : null;
+    const whole = question.mixed ? h('input.frac-input.frac-whole', { inputmode: 'numeric', 'aria-label': t('wholeNumber'), autocomplete: 'off' }) : null;
     const read = () => {
       const [w, n, d] = [whole?.value.trim() || '', num.value.trim(), den.value.trim()];
       if (w && !n && !d) return w;
@@ -91,8 +91,8 @@ const answerInput = (question, onSubmit) => {
     const form = h('form.answer-form', {
       onsubmit: (e) => {
         e.preventDefault();
-        if (num.value.trim() && !den.value.trim()) { toast('Fill in the bottom number too.', 'error'); den.focus(); return; }
-        if (!num.value.trim() && den.value.trim()) { toast('Fill in the top number too.', 'error'); num.focus(); return; }
+        if (num.value.trim() && !den.value.trim()) { toast(t('fillBottom'), 'error'); den.focus(); return; }
+        if (!num.value.trim() && den.value.trim()) { toast(t('fillTop'), 'error'); num.focus(); return; }
         onSubmit(read());
       },
     },
@@ -145,9 +145,10 @@ export const renderPractice = async (view, skillId) => {
 
   const quit = async () => {
     if (answers.length === 0 || await confirmDialog({
-      title: 'Stop practice?',
-      message: 'Answers in this set will not be saved.',
-      confirmText: 'Stop',
+      title: t('stopPracticeTitle'),
+      message: t('stopPracticeMessage'),
+      confirmText: t('stop'),
+      cancelText: t('cancel'),
       danger: true,
     })) {
       stopSpeaking();
@@ -170,7 +171,7 @@ export const renderPractice = async (view, skillId) => {
         topicSkills: topicSkillsFor(indexed, skillIds),
         young: Boolean(young),
         challenge,
-      }), 'Saving…');
+      }), t('saving'));
       const result = { ...savedSet };
       let levelResult = null;
       if (level) {
@@ -185,7 +186,7 @@ export const renderPractice = async (view, skillId) => {
     } catch (error) {
       saving = false;
       console.error(error);
-      toast(`Could not save progress: ${error.message}`, 'error');
+      toast(t('couldNotSave', error.message), 'error');
     }
   };
 
@@ -215,13 +216,13 @@ export const renderPractice = async (view, skillId) => {
       feedback.insertBefore(methodPlayer(method, { autoSpeak: false, compact: true }), feedback.lastChild);
     }
     feedback.querySelector('button').focus();
-    if (profile.readAloud || young) speak(correct ? t('correct') : `${t('answerWas')} ${question.spoken || question.display || question.answer}`);
+    if (profile.readAloud || young) speak(correct ? tEn('correct') : `${tEn('answerWas')} ${question.spoken || question.display || question.answer}`);
   };
 
   const submit = (question, raw) => {
     if (answers.length > index) return; // Already answered (double tap).
     if (isBlank(question, raw)) {
-      toast('Type an answer first.', 'info');
+      toast(t('typeAnswerFirst'), 'info');
       return;
     }
     const correct = isCorrect(question, raw);
@@ -239,7 +240,7 @@ export const renderPractice = async (view, skillId) => {
     stopSpeaking();
     const question = questions[index];
     startedAt = performance.now();
-    mount(progressHost, progressBar(index, questions.length, `Question ${index + 1} of ${questions.length}`),
+    mount(progressHost, progressBar(index, questions.length, t('questionOf', index + 1, questions.length)),
       h('small.muted', null, `${index + 1} / ${questions.length}`));
 
     const input = answerInput(question, (raw) => submit(question, raw));
@@ -261,7 +262,7 @@ export const renderPractice = async (view, skillId) => {
         methodFor(question) && h('button.btn.btn-secondary', {
           type: 'button',
           onclick: (e) => { e.currentTarget.replaceWith(methodPlayer(methodFor(question), { compact: true })); },
-        }, '🧭 Show me how'),
+        }, '🧭 ', t('showMeHow')),
         question.hint && !boss && h('button.btn.btn-ghost', {
           type: 'button',
           onclick: (e) => { hintBox.hidden = false; e.currentTarget.remove(); if (young || profile.readAloud) speak(question.hint); },
@@ -277,14 +278,14 @@ export const renderPractice = async (view, skillId) => {
   if (boss) {
     const need = Math.ceil(level.pass * questions.length);
     const bossInfo = WORLDS[level.world - 1].boss;
-    const line = `Boss level! Beat ${bossInfo.name}: get ${need} of ${questions.length} right. No hints. You can do it!`;
+    const line = t('bossIntro', bossInfo.name, need, questions.length);
     view.append(h('div.boss-banner', null,
       h('span.boss-icon', { 'aria-hidden': 'true' }, bossInfo.icon),
       mascotSays(line, { mood: 'think', look, size: 'sm' })));
   }
   view.append(
     h('header.practice-bar', null,
-      h('button.icon-btn', { type: 'button', 'aria-label': 'Stop practice', onclick: quit }, '✕'),
+      h('button.icon-btn', { type: 'button', 'aria-label': t('stopPractice'), onclick: quit }, '✕'),
       h('h1.practice-title', null, label),
       progressHost),
     stage,

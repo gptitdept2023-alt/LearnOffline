@@ -4,6 +4,7 @@
  */
 
 import { h, mount, confirmDialog, toast } from '../../core/dom.js';
+import { t } from '../../core/i18n.js';
 import { getState } from '../../core/state.js';
 import { getRewards, buyShopItem, equipShopItem } from '../../data/repo.js';
 import { SLOTS, itemsInSlot, itemById, lookOf } from '../../engine/shop.js';
@@ -12,6 +13,9 @@ import { playSfx } from '../../core/sfx.js';
 import { learnerBar } from '../components/common.js';
 import { mascotSays, MASCOT_NAME } from '../components/mascot.js';
 import { confetti } from '../components/celebrate.js';
+
+/** A shop tab's name in the learner's label language ("color" -> slotColor). */
+const slotTitle = (slot) => t(`slot${slot.id[0].toUpperCase()}${slot.id.slice(1)}`);
 
 /** Small picture of an item for its card. */
 const itemPreview = (item) => (item.slot === 'color'
@@ -40,8 +44,8 @@ export const renderShop = async (view) => {
 
     mount(header, learnerBar(profile, rewards, { back: '#/home' }));
     const line = trying
-      ? (owned.has(trying.id) ? `Wear the ${trying.name.toLowerCase()}?` : `${trying.name}! ${trying.price} stars.`)
-      : `You have ${wallet} stars. Tap something to try it on!`;
+      ? (owned.has(trying.id) ? t('shopWear', trying.name.toLowerCase()) : t('shopPrice', trying.name, trying.price))
+      : t('shopHello', wallet);
     mount(preview, h(`div.shop-stage.scene-${look.scene || 'default'}`, null, mascotSays(line, { mood: trying ? 'cheer' : 'happy', look, size: 'lg' })));
 
     mount(tabs, SLOTS.map((s) => h(`button.shop-tab${s.id === slot ? '.active' : ''}`, {
@@ -49,7 +53,7 @@ export const renderShop = async (view) => {
       role: 'tab',
       'aria-selected': String(s.id === slot),
       onclick: () => { slot = s.id; trying = null; playSfx('tap'); draw(); },
-    }, h('span', { 'aria-hidden': 'true' }, s.icon), ' ', s.title)));
+    }, h('span', { 'aria-hidden': 'true' }, s.icon), ' ', slotTitle(s))));
 
     mount(grid, itemsInSlot(slot).map((item) => {
       const has = owned.has(item.id);
@@ -60,7 +64,7 @@ export const renderShop = async (view) => {
       },
       itemPreview(item),
       h('strong', null, item.name),
-      h(`small.shop-price${!has && item.price > wallet ? '.too-much' : ''}`, null, wearing ? 'Wearing ✓' : has ? 'Yours' : `⭐ ${item.price}`));
+      h(`small.shop-price${!has && item.price > wallet ? '.too-much' : ''}`, null, wearing ? t('wearing') : has ? t('yours') : `⭐ ${item.price}`));
     }));
 
     // Action for the item being tried on.
@@ -73,17 +77,18 @@ export const renderShop = async (view) => {
         type: 'button',
         disabled: current.price > wallet,
         onclick: () => purchase(current),
-      }, current.price > wallet ? `Need ${current.price - wallet} more ⭐` : `Buy for ⭐ ${current.price}`),
-      has && !wearing && h('button.btn.btn-primary.btn-lg', { type: 'button', onclick: () => wear(current.slot, current.id) }, 'Wear it'),
-      has && wearing && h('button.btn.btn-secondary', { type: 'button', onclick: () => wear(current.slot, null) }, 'Take it off'),
-      trying && h('button.btn.btn-ghost', { type: 'button', onclick: () => { trying = null; draw(); } }, 'Cancel'));
+      }, current.price > wallet ? t('needMore', current.price - wallet) : t('buyFor', current.price)),
+      has && !wearing && h('button.btn.btn-primary.btn-lg', { type: 'button', onclick: () => wear(current.slot, current.id) }, t('wearIt')),
+      has && wearing && h('button.btn.btn-secondary', { type: 'button', onclick: () => wear(current.slot, null) }, t('takeOff')),
+      trying && h('button.btn.btn-ghost', { type: 'button', onclick: () => { trying = null; draw(); } }, t('cancel')));
   };
 
   const purchase = async (item) => {
     const ok = await confirmDialog({
-      title: `Buy the ${item.name.toLowerCase()}?`,
-      message: `It costs ${item.price} stars. You will have ${walletOf(rewards) - item.price} stars left.`,
-      confirmText: `Buy for ⭐ ${item.price}`,
+      title: t('buyTitle', item.name.toLowerCase()),
+      message: t('buyMessage', item.price, walletOf(rewards) - item.price),
+      confirmText: t('buyFor', item.price),
+      cancelText: t('cancel'),
     });
     if (!ok) return;
     try {
@@ -91,7 +96,7 @@ export const renderShop = async (view) => {
       trying = null;
       playSfx('coin');
       confetti({ count: 40 });
-      toast(`${MASCOT_NAME} loves the ${item.name.toLowerCase()}!`, 'success');
+      toast(t('lovesIt', MASCOT_NAME, item.name.toLowerCase()), 'success');
       draw();
     } catch (error) {
       toast(error.message, 'error');
@@ -109,6 +114,6 @@ export const renderShop = async (view) => {
     }
   };
 
-  view.append(header, h('h1.page-title', null, '🛍️ Pip’s shop'), preview, tabs, grid, actions);
+  view.append(header, h('h1.page-title', null, t('shopTitle', MASCOT_NAME)), preview, tabs, grid, actions);
   draw();
 };

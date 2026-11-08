@@ -5,6 +5,7 @@
  */
 
 import { h } from '../../core/dom.js';
+import { t } from '../../core/i18n.js';
 import { getState } from '../../core/state.js';
 import { getRewards } from '../../data/repo.js';
 import { buildLevels, WORLDS, WORLD_SIZE, currentLevel, levelsEnabled } from '../../engine/levels.js';
@@ -17,21 +18,21 @@ const XS = [18, 38, 58, 78, 66, 46, 26, 14, 34, 62];
 
 const levelNode = (level, stars, state, look) => {
   const world = WORLDS[level.world - 1];
-  const label = level.boss ? `Boss level ${level.n}: ${level.title}` : `Level ${level.n}: ${level.title}`;
+  const label = level.boss ? t('bossLevel', level.n, level.title) : `${t('levelN', level.n)}: ${level.title}`;
   const inner = [
     h('span.lv-circle', null, level.boss ? world.boss.icon : level.n),
     h('span.lv-stars', { 'aria-hidden': 'true' }, [0, 1, 2].map((k) => h(`span${k < stars ? '.on' : ''}`, null, '★'))),
-    level.boss && h('small.lv-boss-tag', null, 'BOSS'),
+    level.boss && h('small.lv-boss-tag', null, t('bossTag')),
     state === 'current' && h(`span.lv-pip${XS[(level.n - 1) % WORLD_SIZE] >= 58 ? '.lv-pip-left' : ''}`, null, mascot({ mood: level.boss ? 'think' : 'happy', look, size: 'sm' })),
   ];
   const cls = `.lv-node.lv-${state}${level.boss ? '.lv-boss' : ''}`;
   const style = { '--x': `${XS[(level.n - 1) % WORLD_SIZE]}%`, '--row': (level.n - 1) % WORLD_SIZE };
-  return h(`a${cls}`, { href: `#/practice/level-${level.n}`, style, 'aria-label': `${label}. ${stars} stars.` }, inner);
+  return h(`a${cls}`, { href: `#/practice/level-${level.n}`, style, 'aria-label': t('levelAria', label, stars) }, inner);
 };
 
 export const renderLevels = async (view) => {
   const { profile, indexed } = getState();
-  if (!levelsEnabled(indexed)) throw new Error('Levels are in Math. Switch to Math on the home screen.');
+  if (!levelsEnabled(indexed)) throw new Error(t('levelsInMath'));
   const rewards = await getRewards(profile.profileId);
   const stars = rewards.levels || {};
   const levels = buildLevels(indexed);
@@ -46,7 +47,7 @@ export const renderLevels = async (view) => {
     return h(`section.lv-world.lv-world-${w + 1}`, null,
       h('header.lv-world-head', null,
         h('span.lv-world-icon', { 'aria-hidden': 'true' }, world.icon),
-        h('span', null, h('strong', null, `World ${w + 1}: ${world.name}`), h('small', null, `Levels ${inWorld[0].n}–${inWorld[inWorld.length - 1].n} · ${worldStars}/${inWorld.length * 3} ★`))),
+        h('span', null, h('strong', null, t('worldName', w + 1, world.name)), h('small', null, t('levelsRange', inWorld[0].n, inWorld[inWorld.length - 1].n, worldStars, inWorld.length * 3)))),
       h('ol.lv-path', null, inWorld.map((l) => {
         const state = l.n === now && !(stars[l.n] > 0) ? 'current' : stars[l.n] > 0 ? 'done' : 'open';
         return h('li', null, levelNode(l, stars[l.n] || 0, state, look));
@@ -55,8 +56,8 @@ export const renderLevels = async (view) => {
 
   view.append(
     learnerBar(profile, rewards, { back: '#/home' }),
-    h('h1.page-title', null, '🗺️ 100 levels'),
-    h('p.muted', null, `${totalStars} of 300 level stars. Play any level you like! Every 10th level is a boss: harder, no hints, and a big star bonus!`),
+    h('h1.page-title', null, t('levelsTitle')),
+    h('p.muted', null, t('levelsIntro', totalStars)),
     ...worlds.filter(Boolean),
   );
   // Scroll to the level being played now.
