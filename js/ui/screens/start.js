@@ -7,11 +7,12 @@ import { t } from '../../core/i18n.js';
 import { navigate } from '../../core/router.js';
 import { activateProfile, clearProfile } from '../../core/state.js';
 import { listProfiles, MAX_PROFILES } from '../../data/repo.js';
-import { openProfileEditor } from '../components/common.js';
+import { openProfileEditor, avatarBadge, looksFor } from '../components/common.js';
 
 export const renderStart = async (view) => {
   clearProfile();
   const profiles = await listProfiles();
+  const looks = await looksFor(profiles);
 
   const choose = async (profileId) => {
     try {
@@ -34,7 +35,7 @@ export const renderStart = async (view) => {
       h('h1', null, t('whoIsLearning'))),
     h('div.learner-grid', null,
       profiles.map((p) => h('button.learner-card', { type: 'button', onclick: () => choose(p.profileId) },
-        h('span.avatar.avatar-lg', { 'aria-hidden': 'true' }, p.avatar),
+        avatarBadge(p, looks.get(p.profileId), 'lg'),
         h('span.learner-card-name', null, p.name))),
       profiles.length < MAX_PROFILES && h('button.learner-card.learner-card-add', { type: 'button', onclick: add },
         h('span.avatar.avatar-lg', { 'aria-hidden': 'true' }, '+'),

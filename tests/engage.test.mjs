@@ -34,10 +34,10 @@ test('shop: buy spends stars, equips, and refuses when short', () => {
   const after = buy(rich, 'hat-cap');
   assert.equal(walletOf(after), 100 - item.price);
   assert.equal(after.stars, 100, 'lifetime stars (for badges) are unchanged');
-  assert.deepEqual(lookOf(after), { hat: '🧢' });
+  assert.deepEqual(lookOf(after, true), { hat: '🧢' });
   assert.throws(() => buy(after, 'hat-cap'), /already/);
   assert.throws(() => buy({ ...emptyRewards('p'), stars: 5 }, 'hat-crown'), /more stars/);
-  assert.deepEqual(lookOf(equip(after, 'hat', null)), {});
+  assert.deepEqual(lookOf(equip(after, 'hat', null), true), {});
   assert.throws(() => equip(after, 'hat', 'hat-crown'), /Buy it first/);
   assert.equal(new Set(ITEMS.map((i) => i.id)).size, ITEMS.length, 'item ids are unique');
 });

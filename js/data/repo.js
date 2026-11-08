@@ -8,6 +8,7 @@ import { applyAnswer, applySetResult, emptyMastery, statusOf } from '../engine/m
 import { applySet, applyActivity, awardBadges, emptyRewards, dayKey } from '../engine/rewards.js';
 import { ensureQuest, progressQuest, questComplete, chestStarsFor, afterClaim } from '../engine/quests.js';
 import { buy, equip } from '../engine/shop.js';
+import { buyPart, wearPart, setRobotOn, setRobotName, surpriseParts } from '../engine/robot.js';
 import { normaliseGoal, weekStart } from '../engine/goals.js';
 import { applyLevel } from '../engine/levels.js';
 import { uid } from '../core/random.js';
@@ -267,6 +268,29 @@ export const buyShopItem = (profileId, itemId) => updateRewards(profileId, (curr
 
 /** Wear an owned item, or take one off (itemId null). */
 export const equipShopItem = (profileId, slot, itemId) => updateRewards(profileId, (current) => ({ rewards: equip(current, slot, itemId) }));
+
+/* Robot workshop: each change is one read-modify-write of the rewards record. */
+
+/** Buy a robot upgrade and fit it. Throws a friendly error if not enough stars. */
+export const buyRobotPart = (profileId, partId) => updateRewards(profileId, (current) => awardBadges(buyPart(current, partId)));
+
+/** Fit a free or owned robot part. */
+export const wearRobotPart = (profileId, partId) => updateRewards(profileId, (current) => ({ rewards: wearPart(current, partId) }));
+
+/** Switch this learner between the robot (true) and Pip (false). */
+export const chooseRobot = (profileId, on) => updateRewards(profileId, (current) => ({ rewards: setRobotOn(current, on) }));
+
+/** Rename the robot (an empty name goes back to the default). */
+export const renameRobot = (profileId, name) => updateRewards(profileId, (current) => ({ rewards: setRobotName(current, name) }));
+
+/** Random look from the parts the learner owns. */
+export const surpriseRobot = (profileId) => updateRewards(profileId, (current) => ({ rewards: surpriseParts(current) }));
+
+/** Every learner's rewards record, by profileId (start screen and parent area avatars). */
+export const getAllRewards = async () => {
+  const rows = await getAll(STORES.rewards);
+  return new Map(rows.map((r) => [r.profileId, { ...emptyRewards(r.profileId), ...r }]));
+};
 
 /**
  * Save a level result: best stars, first-clear bonus (bigger for bosses), badges.

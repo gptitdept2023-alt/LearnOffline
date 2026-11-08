@@ -7,6 +7,7 @@
 
 import { h, svg } from '../../core/dom.js';
 import { t, getLanguage } from '../../core/i18n.js';
+import { robotSvg, robotPetSvg } from './robot.js';
 
 export const MASCOT_NAME = 'Pip';
 const DEFAULT_COLOR = '#ff9f43';
@@ -70,11 +71,23 @@ const face = (mood) => {
   return [eyes, mouth];
 };
 
+/** The companion's name: the robot's own name, or Pip. */
+export const companionName = (look = {}) => look.robot?.name || MASCOT_NAME;
+
+/** The learner's robot, in the same frame (sizes, moods, animations) as Pip. */
+const robotCompanion = (mood, robot, size) => {
+  const pet = robotPetSvg(robot);
+  return h(`div.pip.pip-robot.pip-${size}.pip-${mood}`, { role: 'img', 'aria-label': t('pipMood', robot.name, MOOD_KEYS[mood] ? t(MOOD_KEYS[mood]) : mood) },
+    robotSvg(robot, { mood }),
+    pet && h('span.robot-pet', { 'aria-hidden': 'true' }, pet));
+};
+
 /**
- * Draw Pip.
- * @param {{mood?: 'happy'|'cheer'|'think'|'oops'|'sleep', look?: {color?: string, hat?: string, pet?: string}, size?: 'sm'|'md'|'lg'}} [options]
+ * Draw the companion: the learner's robot when look.robot is set, else Pip.
+ * @param {{mood?: 'happy'|'cheer'|'think'|'oops'|'sleep', look?: {color?: string, hat?: string, pet?: string, robot?: Object}, size?: 'sm'|'md'|'lg'|'xl'}} [options]
  */
 export const mascot = ({ mood = 'happy', look = {}, size = 'md' } = {}) => {
+  if (look.robot) return robotCompanion(mood, look.robot, size);
   const rainbow = look.color === 'rainbow';
   const fill = rainbow ? 'url(#pip-rainbow)' : (look.color || DEFAULT_COLOR);
   const armsUp = mood === 'cheer';

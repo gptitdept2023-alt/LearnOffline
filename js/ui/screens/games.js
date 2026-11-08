@@ -420,7 +420,7 @@ export const renderGame = async (view, gameId) => {
   const { profile, indexed } = getState();
   const young = Boolean(indexed.pack.young);
   const rewards = await getRewards(profile.profileId);
-  const look = lookOf(rewards);
+  const look = lookOf(rewards, young);
   const stage = h('div.game-stage');
   const ctx = { game, profile, young, look };
   const RUNNERS = { speed: speedRound, pop: popBalloons, memory: memoryGame, bonds: bondGame, line: lineGame };

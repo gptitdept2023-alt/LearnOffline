@@ -75,7 +75,7 @@ export const renderHome = async (view) => {
     goalOn ? getWeekSessions(profile.profileId) : [],
     subjectsAtLevel(profile.packId),
   ]);
-  const look = lookOf(rewards);
+  const look = lookOf(rewards, young);
   const { pack } = indexed;
 
   view.classList.toggle('young', young);

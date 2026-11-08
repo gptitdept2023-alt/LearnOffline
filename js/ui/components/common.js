@@ -5,10 +5,35 @@
 import { h, openDialog } from '../../core/dom.js';
 import { t, LANGUAGES, DEFAULT_LANGUAGE } from '../../core/i18n.js';
 import { currentStreak, walletOf } from '../../engine/rewards.js';
-import { saveProfile } from '../../data/repo.js';
+import { saveProfile, getAllRewards } from '../../data/repo.js';
 import { loadPackIndex, levelsOf } from '../../data/packs.js';
+import { getState } from '../../core/state.js';
+import { lookOf } from '../../engine/shop.js';
+import { robotSvg } from './robot.js';
 
 export const AVATARS = ['🦊', '🐼', '🐯', '🐸', '🐵', '🦁', '🐨', '🐙', '🦄', '🐢', '🐧', '🦉'];
+
+/**
+ * A learner's avatar: their robot's face when they use the robot, else the
+ * buddy emoji they picked.
+ * @param {Object} profile
+ * @param {Object} [look] From lookOf(); without it the emoji is shown.
+ * @param {'sm'|'md'|'lg'} [size]
+ */
+export const avatarBadge = (profile, look, size = 'sm') => (look?.robot
+  ? h(`span.avatar.avatar-${size}.avatar-robot`, { 'aria-hidden': 'true' }, robotSvg(look.robot, { headOnly: true }))
+  : h(`span.avatar.avatar-${size}`, { 'aria-hidden': 'true' }, profile.avatar));
+
+/**
+ * Looks for several learners at once (start screen, parent area), so each
+ * avatar can show that learner's robot. One read of the rewards store.
+ * @returns {Promise<Map<string, Object>>} profileId -> look
+ */
+export const looksFor = async (profiles) => {
+  const [packs, rewardsById] = await Promise.all([loadPackIndex(), getAllRewards()]);
+  const young = new Map(packs.map((p) => [p.packId, Boolean(p.young)]));
+  return new Map(profiles.map((p) => [p.profileId, lookOf(rewardsById.get(p.profileId), young.get(p.packId))]));
+};
 
 /** Top bar for a learner's screens: who is learning, stars, streak. */
 export const learnerBar = (profile, rewards, { back } = {}) =>
@@ -16,7 +41,7 @@ export const learnerBar = (profile, rewards, { back } = {}) =>
     back
       ? h('a.icon-btn', { href: back, 'aria-label': t('back') }, '←')
       : h('a.icon-btn', { href: '#/', 'aria-label': t('switchLearner'), title: t('switchLearner') }, '⇄'),
-    h('span.avatar.avatar-sm', { 'aria-hidden': 'true' }, profile.avatar),
+    avatarBadge(profile, lookOf(rewards, Boolean(getState().indexed?.pack?.young))),
     h('strong.learner-name', null, profile.name),
     h('span.spacer'),
     h('a.chip', { href: '#/shop', title: t('starsToSpend') }, '⭐ ', h('span', null, walletOf(rewards))),

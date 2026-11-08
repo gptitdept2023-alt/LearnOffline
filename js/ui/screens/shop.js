@@ -1,18 +1,22 @@
 /**
  * Reward shop: spend stars on looks for Pip. Tap an item to try it on,
  * then buy or wear it. Buying asks first, because stars are hard-earned.
+ * Learners who use the robot companion get the robot workshop instead.
  */
 
 import { h, mount, confirmDialog, toast } from '../../core/dom.js';
 import { t } from '../../core/i18n.js';
 import { getState } from '../../core/state.js';
-import { getRewards, buyShopItem, equipShopItem } from '../../data/repo.js';
+import { render } from '../../core/router.js';
+import { getRewards, buyShopItem, equipShopItem, chooseRobot } from '../../data/repo.js';
 import { SLOTS, itemsInSlot, itemById, lookOf } from '../../engine/shop.js';
 import { walletOf } from '../../engine/rewards.js';
+import { usesRobot } from '../../engine/robot.js';
 import { playSfx } from '../../core/sfx.js';
 import { learnerBar } from '../components/common.js';
 import { mascotSays, MASCOT_NAME } from '../components/mascot.js';
 import { confetti } from '../components/celebrate.js';
+import { renderWorkshop } from './workshop.js';
 
 /** A shop tab's name in the learner's label language ("color" -> slotColor). */
 const slotTitle = (slot) => t(`slot${slot.id[0].toUpperCase()}${slot.id.slice(1)}`);
@@ -25,8 +29,13 @@ const itemPreview = (item) => (item.slot === 'color'
     : h('span.shop-emoji', null, item.value));
 
 export const renderShop = async (view) => {
-  const { profile } = getState();
+  const { profile, indexed } = getState();
+  const young = Boolean(indexed.pack.young);
   let rewards = await getRewards(profile.profileId);
+  if (usesRobot(rewards, young)) {
+    await renderWorkshop(view, { profile, young });
+    return;
+  }
   let slot = SLOTS[0].id;
   let trying = null; // item being tried on (not saved)
 
@@ -38,7 +47,7 @@ export const renderShop = async (view) => {
 
   const draw = () => {
     const wallet = walletOf(rewards);
-    const look = { ...lookOf(rewards) };
+    const look = { ...lookOf(rewards, young) };
     if (trying) look[trying.slot] = trying.value;
     const owned = new Set(rewards.owned || []);
 
@@ -114,6 +123,18 @@ export const renderShop = async (view) => {
     }
   };
 
-  view.append(header, h('h1.page-title', null, t('shopTitle', MASCOT_NAME)), preview, tabs, grid, actions);
+  const robotSwitch = h('div.workshop-tools', null, h('button.btn.btn-secondary', {
+    type: 'button',
+    onclick: async () => {
+      try {
+        await chooseRobot(profile.profileId, true);
+        render();
+      } catch (error) {
+        toast(error.message, 'error');
+      }
+    },
+  }, '🤖 ', t('useRobot')));
+
+  view.append(header, h('h1.page-title', null, t('shopTitle', MASCOT_NAME)), preview, robotSwitch, tabs, grid, actions);
   draw();
 };
