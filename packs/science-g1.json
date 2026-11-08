@@ -1,0 +1,700 @@
+{
+  "packId": "science-g1",
+  "version": "1.0.0",
+  "subject": "science",
+  "title": "Science · Grade 1",
+  "topics": [
+    {
+      "topicId": "sci1-me",
+      "title": "My body and senses",
+      "icon": "🖐️",
+      "summary": "Body parts and the five senses.",
+      "skills": [
+        {
+          "skillId": "sci1-senses",
+          "title": "My five senses",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Close your eyes. What can you hear? What can you smell? Our senses tell us about the world around us.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "👀 👂 👃 👅 🖐️",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "We have five senses. We see with our eyes, hear with our ears, smell with our nose, taste with our tongue and feel with our skin.",
+                "visual": {
+                  "kind": "letters",
+                  "text": "see · hear · smell · taste · touch",
+                  "label": "see · hear · smell · taste · touch"
+                }
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: Which sense tells you that bread is baking in the next room?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which sense tells you that bread is baking in the next room?",
+                  "visual": {
+                    "kind": "letters",
+                    "emoji": "🍞",
+                    "label": "a picture"
+                  },
+                  "choices": [
+                    "smell",
+                    "touch",
+                    "taste"
+                  ],
+                  "answer": "smell",
+                  "explain": "You can smell bread baking even from another room."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "senses"
+          }
+        },
+        {
+          "skillId": "sci1-body",
+          "title": "Parts of my body",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Touch your head, your shoulders, your knees and your toes. Each part of your body has a job.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🙆",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "Your legs help you walk. Your teeth chew food. Inside, your heart pumps blood and your lungs take in air.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🦵 🦷 ❤️ 🫁",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: What helps you think and remember?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "What helps you think and remember?",
+                  "choices": [
+                    "brain",
+                    "stomach",
+                    "knee"
+                  ],
+                  "answer": "brain",
+                  "explain": "Your brain is inside your head. It helps you think, learn and remember."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "body"
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "sci1-living",
+      "title": "Living things",
+      "icon": "🌱",
+      "summary": "What is alive, and what living things need.",
+      "skills": [
+        {
+          "skillId": "sci1-living-sort",
+          "title": "Living or non-living?",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "A puppy grows into a dog. A rock stays a rock. Which one is alive?",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🐶 🪨",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "Living things grow, need food, water and air, and make young like themselves. A robot can move, but it does not grow or eat, so it is non-living.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🌳 🐦 · 🤖 ⚽",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: Is it living or non-living?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Is it living or non-living?",
+                  "visual": {
+                    "kind": "letters",
+                    "emoji": "👶",
+                    "text": "baby",
+                    "label": "baby"
+                  },
+                  "choices": [
+                    "living",
+                    "non-living"
+                  ],
+                  "answer": "living",
+                  "explain": "A baby is a living thing: it grows, needs food, water and air, and makes young like itself."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciSort",
+            "set": "living"
+          }
+        },
+        {
+          "skillId": "sci1-needs",
+          "title": "What living things need",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "What happens to a plant that is never watered? It droops and dries up.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🥀",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "All living things need food, water and air. Plants also need sunlight to make their food. Animals and people need shelter too.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🍎 💧 💨 ☀️",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: Why do we drink water every day?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Why do we drink water every day?",
+                  "visual": {
+                    "kind": "letters",
+                    "emoji": "💧",
+                    "label": "a picture"
+                  },
+                  "choices": [
+                    "Our bodies need water to stay alive.",
+                    "Water makes our hair longer.",
+                    "We only need it when we are sick."
+                  ],
+                  "answer": "Our bodies need water to stay alive.",
+                  "explain": "Our bodies use water all the time, so we drink it every day."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "needs"
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "sci1-animals",
+      "title": "Animals",
+      "icon": "🐾",
+      "summary": "Where animals live, how they move, and their babies.",
+      "skills": [
+        {
+          "skillId": "sci1-homes",
+          "title": "Where animals live",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Fish swim in water. Birds build nests in trees. Bees live in a hive.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🐟 🪺 🐝",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "Every animal lives where it can find food, water and shelter. That place is its home."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: Where does a wild rabbit live?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Where does a wild rabbit live?",
+                  "visual": {
+                    "kind": "letters",
+                    "emoji": "🐇",
+                    "label": "a picture"
+                  },
+                  "choices": [
+                    "in a burrow",
+                    "in a web",
+                    "in the sea"
+                  ],
+                  "answer": "in a burrow",
+                  "explain": "A burrow is a hole that a rabbit digs in the ground."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "homes"
+          }
+        },
+        {
+          "skillId": "sci1-moves",
+          "title": "How animals move",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Watch how animals move: a bird flies, a fish swims, a frog hops and a snake slides.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🐦 🐟 🐸 🐍",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "An animal's body helps it move. Wings help birds fly. Fins help fish swim. Strong back legs help frogs hop."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: Which body parts help a bird fly?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which body parts help a bird fly?",
+                  "visual": {
+                    "kind": "letters",
+                    "emoji": "🐦",
+                    "label": "a picture"
+                  },
+                  "choices": [
+                    "wings",
+                    "fins",
+                    "hooves"
+                  ],
+                  "answer": "wings",
+                  "explain": "Birds flap their wings to fly."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "moves"
+          }
+        },
+        {
+          "skillId": "sci1-babies",
+          "title": "Animal babies",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "A kitten grows into a cat. A puppy grows into a dog.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🐱 🐶",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "Many animal babies have special names: a chick, a calf, a duckling. Some babies, like tadpoles and caterpillars, look very different from their parents.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🐣 🐄 🐛",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: A baby butterfly is called a…",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "A baby butterfly is called a…",
+                  "visual": {
+                    "kind": "letters",
+                    "emoji": "🦋",
+                    "label": "a picture"
+                  },
+                  "choices": [
+                    "caterpillar",
+                    "tadpole",
+                    "chick"
+                  ],
+                  "answer": "caterpillar",
+                  "explain": "A butterfly lays eggs. A caterpillar hatches from each egg."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "babies"
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "sci1-plants",
+      "title": "Plants",
+      "icon": "🌻",
+      "summary": "The parts of a plant, and the plant parts we eat.",
+      "skills": [
+        {
+          "skillId": "sci1-plant-parts",
+          "title": "Parts of a plant",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Look at a plant. Roots are under the soil. The stem stands up. Leaves are green and flat.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🌱",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "Roots hold the plant and take in water. The stem holds it up. Leaves make food. Flowers grow into fruits, and fruits hold seeds.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🌸 🍎 🌰",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: Water goes up the plant through the…",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Water goes up the plant through the…",
+                  "choices": [
+                    "stem",
+                    "flower",
+                    "fruit"
+                  ],
+                  "answer": "stem",
+                  "explain": "The stem carries water up from the roots to the leaves."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "plantParts1"
+          }
+        },
+        {
+          "skillId": "sci1-plant-food",
+          "title": "Plants we eat",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "A carrot grows under the ground. Pechay leaves grow above it. Both are plants we eat!",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🥕 🥬",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "We eat different parts of plants: roots like carrots, leaves like pechay, flowers like broccoli, fruits like mangoes, and seeds like peanuts.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🥦 🥭 🥜",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: Which part of the plant do we eat?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which part of the plant do we eat?",
+                  "visual": {
+                    "kind": "letters",
+                    "text": "radish (labanos)",
+                    "label": "radish (labanos)"
+                  },
+                  "choices": [
+                    "stem",
+                    "root",
+                    "leaf",
+                    "flower"
+                  ],
+                  "answer": "root",
+                  "explain": "A radish (labanos) is a root we eat: it grows under the ground and stores food for the plant."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciSort",
+            "set": "plantPartsEaten",
+            "forms": [
+              "name"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "sci1-world",
+      "title": "The world around us",
+      "icon": "🌍",
+      "summary": "Materials, day and night, and the weather.",
+      "skills": [
+        {
+          "skillId": "sci1-materials",
+          "title": "What is it made of?",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Tap a window, a table and a spoon. Do they feel the same?",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🪟 🪵 🥄",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "Things are made of materials: glass, wood, metal, plastic, paper, cloth and rubber. Each material is good for different jobs."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: What is a towel made of?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "What is a towel made of?",
+                  "choices": [
+                    "cloth",
+                    "glass",
+                    "metal"
+                  ],
+                  "answer": "cloth",
+                  "explain": "A towel is made of cloth. It soaks up water."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "materials1"
+          }
+        },
+        {
+          "skillId": "sci1-day-night",
+          "title": "Day and night",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "In the day, the Sun lights up the sky. At night, it is dark and we may see the Moon and stars.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "☀️ 🌙 ⭐",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "The Sun gives us light and heat. It rises in the morning in the east and sets in the evening in the west.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🌅",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: What can we see in the sky when the Sun shines just after rain?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "What can we see in the sky when the Sun shines just after rain?",
+                  "visual": {
+                    "kind": "letters",
+                    "emoji": "🌈",
+                    "label": "a picture"
+                  },
+                  "choices": [
+                    "a rainbow",
+                    "a full Moon",
+                    "many stars"
+                  ],
+                  "answer": "a rainbow",
+                  "explain": "Sunlight shining through raindrops makes a rainbow."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "sky1"
+          }
+        },
+        {
+          "skillId": "sci1-weather",
+          "title": "Weather",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Look outside. Is it sunny, cloudy, rainy or windy today?",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "☀️ ☁️ 🌧️ 🌬️",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "Weather is what the air outside is like. We wear and bring different things for different weather: a hat for sun, an umbrella for rain.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🧢 ☂️",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: What do you see in the sky on a cloudy day?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "What do you see in the sky on a cloudy day?",
+                  "visual": {
+                    "kind": "letters",
+                    "emoji": "☁️",
+                    "label": "a picture"
+                  },
+                  "choices": [
+                    "many clouds",
+                    "a clear blue sky",
+                    "many stars"
+                  ],
+                  "answer": "many clouds",
+                  "explain": "On a cloudy day, clouds cover much of the sky."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "weather1"
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "sci1-healthy",
+      "title": "Healthy me",
+      "icon": "🍎",
+      "summary": "Healthy food and good habits.",
+      "skills": [
+        {
+          "skillId": "sci1-healthy",
+          "title": "Healthy habits",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "What did you eat today? Did you wash your hands before eating?",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🧼 🍚 🐟 🥕",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "Go foods (rice, bread) give energy. Grow foods (fish, eggs) help us grow. Glow foods (fruits, vegetables) keep us healthy. Wash your hands, brush your teeth and sleep well."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: Fish, eggs and meat help you grow. They are … foods.",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Fish, eggs and meat help you grow. They are … foods.",
+                  "visual": {
+                    "kind": "letters",
+                    "emoji": "🐟",
+                    "label": "a picture"
+                  },
+                  "choices": [
+                    "grow",
+                    "go",
+                    "glow"
+                  ],
+                  "answer": "grow",
+                  "explain": "Grow foods, like fish, eggs and meat, help your body grow."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "healthy1"
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "sci1-challenge",
+      "title": "Challenge zone",
+      "icon": "⭐",
+      "summary": "Ready for more? These go a step beyond this grade.",
+      "challenge": true,
+      "skills": [
+        {
+          "skillId": "sci1-ch-float",
+          "title": "Float or sink?",
+          "generator": {
+            "type": "sciSort",
+            "set": "float"
+          }
+        },
+        {
+          "skillId": "sci1-ch-sound",
+          "title": "Loud or soft?",
+          "generator": {
+            "type": "sciSort",
+            "set": "sound"
+          }
+        }
+      ]
+    }
+  ]
+}
