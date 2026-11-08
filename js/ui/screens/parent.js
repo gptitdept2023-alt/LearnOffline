@@ -20,6 +20,7 @@ import { dayKey, currentStreak } from '../../engine/rewards.js';
 import { openProfileEditor, statusPill, toggle, avatarBadge, looksFor } from '../components/common.js';
 import { listVoices, getVoiceSettings, setVoiceSettings, speak } from '../../core/speech.js';
 import { customPacksPanel } from './parentPacks.js';
+import { syncPanel } from './parentSync.js';
 import { renderWeeklyReport } from './report.js';
 
 const PIN_KEY = 'parentPin';
@@ -268,7 +269,7 @@ const backupPanel = () => {
 
   return h('section.panel', null,
     h('h2', null, 'Backup and move to another device'),
-    h('p.muted', null, 'Progress is saved on this device only. Download a backup to keep it safe, or to move it between the PC and the phone: download here, then restore on the other device.'),
+    h('p.muted', null, 'Progress is saved on this device only. Download a backup to keep it safe. Restoring a backup replaces everything on this device; to combine the PC and the phone, use Sync above.'),
     h('div.button-row', null,
       h('button.btn.btn-primary', {
         type: 'button',
@@ -414,7 +415,7 @@ export const renderParent = async (view, section, ...args) => {
     return;
   }
 
-  const [profiles, packsPanel] = await Promise.all([listProfiles(), customPacksPanel()]);
+  const [profiles, packsPanel, syncBox] = await Promise.all([listProfiles(), customPacksPanel(), syncPanel()]);
   const looks = await looksFor(profiles);
   const reports = h('div.reports');
   view.append(
@@ -429,6 +430,7 @@ export const renderParent = async (view, section, ...args) => {
     profiles.length > 0 && goalsPanel(profiles, looks),
     packsPanel,
     voicePanel(),
+    syncBox,
     backupPanel(),
     pinPanel(hasPin),
     supportPanel(),

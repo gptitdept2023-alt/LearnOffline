@@ -10,6 +10,10 @@ const FORMAT_VERSION = 1;
 const ALL_STORES = Object.values(STORES);
 /** Settings key of the parent PIN (see js/ui/screens/parent.js). */
 const PIN_KEY = 'parentPin';
+/** Settings that belong to this device and are never replaced by a restore: the PIN and the sync device id. */
+const DEVICE_KEYS = [PIN_KEY, 'deviceId'];
+/** Settings left out of backups: the copy kept for "Undo last merge" (it would double the file). */
+const NOT_BACKED_UP = new Set(['syncUndo']);
 
 /** The key each row must carry, per store (matches the keyPaths in db.js). */
 const ROW_KEYS = {
@@ -37,7 +41,10 @@ const validRow = (name, row) => {
 /** Read every store into one plain object. */
 export const exportAll = () =>
   tx(ALL_STORES, 'readonly', async (s) => {
-    const entries = await Promise.all(ALL_STORES.map(async (name) => [name, await promisify(s[name].getAll())]));
+    const entries = await Promise.all(ALL_STORES.map(async (name) => {
+      const rows = await promisify(s[name].getAll());
+      return [name, name === STORES.settings ? rows.filter((r) => !NOT_BACKED_UP.has(r.key)) : rows];
+    }));
     return { format: FORMAT, version: FORMAT_VERSION, exportedAt: new Date().toISOString(), data: Object.fromEntries(entries) };
   });
 
@@ -82,16 +89,16 @@ export const restoreAll = async (backup) => {
   const error = validateBackup(backup);
   if (error) throw new Error(error);
   await tx(ALL_STORES, 'readwrite', async (s) => {
-    // The parent PIN belongs to this device, not to the backup: keep ours (or none).
-    const ownPin = await promisify(s[STORES.settings].get(PIN_KEY));
+    // The parent PIN and the sync device id belong to this device, not to the backup: keep ours (or none).
+    const own = await Promise.all(DEVICE_KEYS.map((key) => promisify(s[STORES.settings].get(key))));
     for (const name of ALL_STORES) {
       s[name].clear();
       for (const row of backup.data[name]) {
-        if (name === STORES.settings && row.key === PIN_KEY) continue;
+        if (name === STORES.settings && DEVICE_KEYS.includes(row.key)) continue;
         s[name].put(row);
       }
     }
-    if (ownPin) s[STORES.settings].put(ownPin);
+    for (const row of own) if (row) s[STORES.settings].put(row);
   });
   return backup.data.profiles.length;
 };

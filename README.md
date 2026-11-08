@@ -51,9 +51,22 @@ every label has both languages.
 3. Open it once while online. After the "Ready to use offline" message it
    works with Wi-Fi off.
 
-Progress is stored **on each device**. To move a child's progress between
-the PC and the phone, use *Parents → Download backup* on one device and
-*Restore from file* on the other.
+Progress is stored **on each device**. When the children practise on both
+the PC and the phone, keep them in step with *Parents → Sync PC and phone*:
+
+1. On one device, tap **Make sync file** (on a phone this opens the share
+   sheet, so you can send it with Nearby Share, Messenger or Drive).
+2. On the other device, tap **Merge a sync file** and pick it. Match each
+   learner to the same child, check the preview, then tap **Merge**.
+3. Do the same the other way round, and both devices are the same.
+
+Merging only adds: practice sets, answers and stars from the other device
+are added, nothing is removed, and merging the same file twice changes
+nothing. A copy is kept before each merge, so **Undo last merge** puts the
+device back. The parent PIN, voice and sound settings stay on each device.
+
+A **backup** is different: restoring one replaces everything on the device.
+Use *Download backup* to keep a safe copy, or to set up a new device.
 
 ## How a skill is taught
 
@@ -118,7 +131,7 @@ file will not work offline.
 | Screens | `js/ui/screens/*.js` | One module per screen; hash routes (`#/home`, `#/practice/<skill>`) |
 | Components | `js/ui/components/` | Visuals (ten frames, blocks, bonds, bar models, shapes), shared widgets |
 | Engine | `js/engine/` | Pure, DOM-free, unit-tested: question generators, answer checking, mastery, rewards |
-| Data | `js/data/` | `db.js` is the only IndexedDB code; `repo.js` exposes app-level reads/writes; `backup.js`, `packs.js`, `customPacks.js` (imported packs) |
+| Data | `js/data/` | `db.js` is the only IndexedDB code; `repo.js` exposes app-level reads/writes; `backup.js`, `sync.js` (PC and phone sync; merge rules in `js/engine/syncMerge.js`), `packs.js`, `customPacks.js` (imported packs) |
 | Offline | `sw.js`, `manifest.webmanifest` | Cache-first service worker; precache list checked by tests |
 | Content | `packs/*.json` | One JSON pack per subject and grade, listed in `packs/index.json` |
 

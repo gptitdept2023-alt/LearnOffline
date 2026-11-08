@@ -12,7 +12,7 @@
  * tests/packs.test.mjs fails if a file is missing from PRECACHE.
  */
 
-const CACHE_VERSION = 'v28';
+const CACHE_VERSION = 'v29';
 const CACHE_NAME = `learnoffline-${CACHE_VERSION}`;
 const VOICE_CACHE = 'learnoffline-voice'; // same name as js/core/voiceCache.js
 const VOICE_CLIP = /\/audio\/voice\/[^/]+\.ogg$/;
@@ -49,10 +49,12 @@ const PRECACHE = [
   './js/data/packs.js',
   './js/data/customPacks.js',
   './js/data/repo.js',
+  './js/data/sync.js',
   './js/engine/answers.js',
   './js/engine/games.js',
   './js/engine/goals.js',
   './js/engine/weekReport.js',
+  './js/engine/syncMerge.js',
   './js/engine/levels.js',
   './js/engine/generators.js',
   './js/engine/longDivision.js',
@@ -100,6 +102,7 @@ const PRECACHE = [
   './js/ui/screens/levels.js',
   './js/ui/screens/parent.js',
   './js/ui/screens/parentPacks.js',
+  './js/ui/screens/parentSync.js',
   './js/ui/screens/report.js',
   './js/ui/screens/practice.js',
   './js/ui/screens/results.js',

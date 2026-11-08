@@ -55,6 +55,7 @@ export const saveProfile = async (input) => {
     // Label language: a known code, else the learner's current one, else English.
     language: isLanguage(input.language) ? input.language : (isLanguage(existing?.language) ? existing.language : DEFAULT_LANGUAGE),
     createdAt: existing?.createdAt || Date.now(),
+    updatedAt: Date.now(), // sync keeps the newer edit when two devices changed a learner
   };
   await put(STORES.profiles, profile);
   return profile;
@@ -179,7 +180,7 @@ export const saveSetResult = ({ profileId, packId, label, answers, topicSkills, 
     // 6. Daily quest progress, in the same write.
     const perfect = answers.length > 0 && correct === answers.length;
     const quest = withQuestEvent(result.rewards, { kind: 'set', correct, stars: result.earnedStars, perfect, challenge }, young);
-    result.rewards = quest.rewards;
+    result.rewards = { ...quest.rewards, updatedAt: now }; // sync: the newer record's looks win
     result.questJustCompleted = quest.justCompleted;
     s[STORES.rewards].put(result.rewards);
     s[STORES.sessions].put({
@@ -211,6 +212,7 @@ const withQuestEvent = (rewards, event, young) => {
 const updateRewards = (profileId, change) => tx(STORES.rewards, 'readwrite', async (s) => {
   const current = { ...emptyRewards(profileId), ...(await promisify(s[STORES.rewards].get(profileId))) };
   const result = change(current);
+  result.rewards = { ...result.rewards, updatedAt: Date.now() }; // sync: the newer record's looks win
   s[STORES.rewards].put(result.rewards);
   return result;
 });
@@ -335,7 +337,7 @@ export const recordLevel = (profileId, n, stars, young) => updateRewards(profile
 export const saveGoal = async (profileId, goal) => {
   const profile = await getProfile(profileId);
   if (!profile) throw new Error('That learner no longer exists.');
-  const next = { ...profile, goal: normaliseGoal(goal) };
+  const next = { ...profile, goal: normaliseGoal(goal), updatedAt: Date.now() };
   await put(STORES.profiles, next);
   return next;
 };
