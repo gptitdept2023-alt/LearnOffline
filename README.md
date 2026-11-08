@@ -34,6 +34,15 @@ for now; the parent report shows every subject at the learner's grade.
 
 Every question comes from hand-checked word lists and original Filipino-setting stories in `js/engine/topics/englishData.js`. Grades 1 and 2 are read aloud.
 
+**Filipino labels.** Each learner can have the app's buttons and labels in
+English or Filipino (*Parents → Edit learner → Buttons and labels*). It covers
+every learner screen: home, topics, lessons, practice and feedback, results,
+badges, quests, goals, levels and the shop, plus Pip's speech bubbles. The
+questions stay in their subject's language, the start screen and parent area
+stay in English, and words the app says aloud stay in English to match the
+voice. Labels live in `js/core/i18n.js`; `tests/i18n.test.mjs` checks that
+every label has both languages.
+
 ## Install on a device
 
 1. Publish the app once (see *Deploy* below) and open its link in Chrome.

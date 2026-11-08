@@ -27,7 +27,8 @@ export const renderStart = async (view) => {
     if (saved) choose(saved.profileId);
   };
 
-  view.append(
+  // Native append() would print false, so the optional hint is filtered out.
+  view.append(...[
     h('div.start-hero', null,
       h('div.brand', null, h('span.brand-mark', { 'aria-hidden': 'true' }, '✏️'), t('appName')),
       h('h1', null, t('whoIsLearning'))),
@@ -40,5 +41,5 @@ export const renderStart = async (view) => {
         h('span.learner-card-name', null, t('addLearner')))),
     profiles.length === 0 && h('p.muted.center', null, 'Add each child as a learner. Their progress is saved on this device.'),
     h('div.start-footer', null, h('a.btn.btn-ghost', { href: '#/parent' }, '🔒 ', t('parents'))),
-  );
+  ].filter(Boolean));
 };
