@@ -9,6 +9,9 @@ import { applySet, applyActivity, awardBadges, emptyRewards, dayKey } from '../e
 import { ensureQuest, progressQuest, questComplete, chestStarsFor, afterClaim } from '../engine/quests.js';
 import { buy, equip } from '../engine/shop.js';
 import { buyPart, wearPart, setRobotOn, setRobotName, surpriseParts } from '../engine/robot.js';
+import {
+  claimStarter, buyCharacter, chooseCompanion, buyCrewItem, wearCrewItem, setCrewEmote, renameCrew, surpriseCrew,
+} from '../engine/crew.js';
 import { normaliseGoal, weekStart } from '../engine/goals.js';
 import { applyLevel } from '../engine/levels.js';
 import { uid } from '../core/random.js';
@@ -285,6 +288,32 @@ export const renameRobot = (profileId, name) => updateRewards(profileId, (curren
 
 /** Random look from the parts the learner owns. */
 export const surpriseRobot = (profileId) => updateRewards(profileId, (current) => ({ rewards: surpriseParts(current) }));
+
+/* Robot crew: characters, upgrades and emotes. Each change is one read-modify-write. */
+
+/** Take the one free starter character. */
+export const claimCrewStarter = (profileId, characterId) => updateRewards(profileId, (current) => ({ rewards: claimStarter(current, characterId) }));
+
+/** Buy a crew character with stars. */
+export const buyCrewCharacter = (profileId, characterId) => updateRewards(profileId, (current) => awardBadges(buyCharacter(current, characterId)));
+
+/** Show Pip, Bolt or an owned crew character. */
+export const chooseCompanionFor = (profileId, id) => updateRewards(profileId, (current) => ({ rewards: chooseCompanion(current, id) }));
+
+/** Buy a crew upgrade or emote (works on every character). */
+export const buyCrewUpgrade = (profileId, itemId) => updateRewards(profileId, (current) => awardBadges(buyCrewItem(current, itemId)));
+
+/** Fit an owned upgrade on a character. */
+export const wearCrewUpgrade = (profileId, characterId, itemId) => updateRewards(profileId, (current) => ({ rewards: wearCrewItem(current, characterId, itemId) }));
+
+/** Choose the emote played when the robot celebrates. */
+export const equipCrewEmote = (profileId, emoteId) => updateRewards(profileId, (current) => ({ rewards: setCrewEmote(current, emoteId) }));
+
+/** Rename a crew character. */
+export const renameCrewCharacter = (profileId, characterId, name) => updateRewards(profileId, (current) => ({ rewards: renameCrew(current, characterId, name) }));
+
+/** Random look for a crew character from owned parts. */
+export const surpriseCrewCharacter = (profileId, characterId) => updateRewards(profileId, (current) => ({ rewards: surpriseCrew(current, characterId) }));
 
 /** Every learner's rewards record, by profileId (start screen and parent area avatars). */
 export const getAllRewards = async () => {

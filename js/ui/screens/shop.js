@@ -1,22 +1,25 @@
 /**
  * Reward shop: spend stars on looks for Pip. Tap an item to try it on,
  * then buy or wear it. Buying asks first, because stars are hard-earned.
- * Learners who use the robot companion get the robot workshop instead.
+ * Learners who show Bolt or a robot crew character get that workshop instead;
+ * every version shows the crew picker to switch companions.
  */
 
 import { h, mount, confirmDialog, toast } from '../../core/dom.js';
 import { t } from '../../core/i18n.js';
 import { getState } from '../../core/state.js';
 import { render } from '../../core/router.js';
-import { getRewards, buyShopItem, equipShopItem, chooseRobot } from '../../data/repo.js';
+import { getRewards, buyShopItem, equipShopItem } from '../../data/repo.js';
 import { SLOTS, itemsInSlot, itemById, lookOf } from '../../engine/shop.js';
 import { walletOf } from '../../engine/rewards.js';
-import { usesRobot } from '../../engine/robot.js';
+import { companionOf } from '../../engine/crew.js';
 import { playSfx } from '../../core/sfx.js';
 import { learnerBar } from '../components/common.js';
 import { mascotSays, MASCOT_NAME } from '../components/mascot.js';
 import { confetti } from '../components/celebrate.js';
 import { renderWorkshop } from './workshop.js';
+import { renderCrewWorkshop } from './crewWorkshop.js';
+import { crewPicker } from '../components/crewPicker.js';
 
 /** A shop tab's name in the learner's label language ("color" -> slotColor). */
 const slotTitle = (slot) => t(`slot${slot.id[0].toUpperCase()}${slot.id.slice(1)}`);
@@ -32,8 +35,13 @@ export const renderShop = async (view) => {
   const { profile, indexed } = getState();
   const young = Boolean(indexed.pack.young);
   let rewards = await getRewards(profile.profileId);
-  if (usesRobot(rewards, young)) {
+  const companion = companionOf(rewards, young);
+  if (companion === 'bolt') {
     await renderWorkshop(view, { profile, young });
+    return;
+  }
+  if (companion !== 'pip') {
+    await renderCrewWorkshop(view, { profile, young, characterId: companion });
     return;
   }
   let slot = SLOTS[0].id;
@@ -123,18 +131,8 @@ export const renderShop = async (view) => {
     }
   };
 
-  const robotSwitch = h('div.workshop-tools', null, h('button.btn.btn-secondary', {
-    type: 'button',
-    onclick: async () => {
-      try {
-        await chooseRobot(profile.profileId, true);
-        render();
-      } catch (error) {
-        toast(error.message, 'error');
-      }
-    },
-  }, '🤖 ', t('useRobot')));
+  const picker = crewPicker({ profile, rewards, young, onChanged: () => render() });
 
-  view.append(header, h('h1.page-title', null, t('shopTitle', MASCOT_NAME)), preview, robotSwitch, tabs, grid, actions);
+  view.append(header, h('h1.page-title', null, t('shopTitle', MASCOT_NAME)), preview, picker, tabs, grid, actions);
   draw();
 };

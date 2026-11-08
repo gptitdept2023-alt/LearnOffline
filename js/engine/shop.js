@@ -5,7 +5,8 @@
  */
 
 import { spendStars } from './rewards.js';
-import { usesRobot, robotLook } from './robot.js';
+import { robotLook } from './robot.js';
+import { companionOf, crewLook } from './crew.js';
 
 /** Slots Pip can wear. Each slot holds one item at a time. */
 export const SLOTS = Object.freeze([
@@ -57,7 +58,8 @@ export const itemsInSlot = (slot) => ITEMS.filter((i) => i.slot === slot);
 
 /**
  * The companion's look: { color, hat, pet, scene } values from what is
- * equipped, plus `robot` (see robotLook) when this learner uses the robot.
+ * equipped, plus `robot` (see robotLook) when this learner shows Bolt, or
+ * `crew` (see crewLook) when they show a robot crew character.
  * @param {Object} rewards
  * @param {boolean} [young] Kinder learners default to Pip, others to the robot.
  */
@@ -67,7 +69,9 @@ export const lookOf = (rewards, young = false) => {
     const item = itemById(id);
     if (item && item.slot === slot) look[slot] = item.value;
   }
-  if (usesRobot(rewards, young)) look.robot = robotLook(rewards);
+  const who = companionOf(rewards, young);
+  if (who === 'bolt') look.robot = robotLook(rewards);
+  else if (who !== 'pip') look.crew = crewLook(rewards, who);
   return look;
 };
 

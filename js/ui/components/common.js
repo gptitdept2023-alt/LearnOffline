@@ -10,19 +10,22 @@ import { loadPackIndex, levelsOf } from '../../data/packs.js';
 import { getState } from '../../core/state.js';
 import { lookOf } from '../../engine/shop.js';
 import { robotSvg } from './robot.js';
+import { crewSvg } from './crew.js';
 
 export const AVATARS = ['🦊', '🐼', '🐯', '🐸', '🐵', '🦁', '🐨', '🐙', '🦄', '🐢', '🐧', '🦉'];
 
 /**
- * A learner's avatar: their robot's face when they use the robot, else the
- * buddy emoji they picked.
+ * A learner's avatar: their robot's face when they use a robot (crew
+ * character or Bolt), else the buddy emoji they picked.
  * @param {Object} profile
  * @param {Object} [look] From lookOf(); without it the emoji is shown.
  * @param {'sm'|'md'|'lg'} [size]
  */
-export const avatarBadge = (profile, look, size = 'sm') => (look?.robot
-  ? h(`span.avatar.avatar-${size}.avatar-robot`, { 'aria-hidden': 'true' }, robotSvg(look.robot, { headOnly: true }))
-  : h(`span.avatar.avatar-${size}`, { 'aria-hidden': 'true' }, profile.avatar));
+export const avatarBadge = (profile, look, size = 'sm') => {
+  if (look?.crew) return h(`span.avatar.avatar-${size}.avatar-robot`, { 'aria-hidden': 'true' }, crewSvg(look.crew, { headOnly: true, still: true }));
+  if (look?.robot) return h(`span.avatar.avatar-${size}.avatar-robot`, { 'aria-hidden': 'true' }, robotSvg(look.robot, { headOnly: true }));
+  return h(`span.avatar.avatar-${size}`, { 'aria-hidden': 'true' }, profile.avatar);
+};
 
 /**
  * Looks for several learners at once (start screen, parent area), so each

@@ -442,3 +442,136 @@
 @media (prefers-reduced-motion: reduce) {
   .robot-pet { animation: none; }
 }
+
+/* Robot crew characters ------------------------------------------------ */
+/* Idle motion on .crew-breathe/.crew-bob/.crew-sway; emotes on .crew-fig.emote-*.
+   Transform origins are set inline in SVG user units (transform-box: view-box). */
+.crew-svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.crew-svg g, .crew-svg ellipse, .crew-svg path { transform-box: view-box; }
+/* Crew characters are tall, so their frames are taller than Pip's square. */
+.pip-crew { --pip-size: 92px; height: 124px; }
+.pip-crew.pip-sm { --pip-size: 56px; width: 60px; height: 80px; }
+.pip-crew.pip-lg { --pip-size: 120px; width: 130px; height: 170px; }
+.pip-crew.pip-xl { --pip-size: 200px; width: 200px; height: 200px; }
+.pip-crew, .pip-crew.pip-cheer, .pip-crew.pip-oops { animation: none; }
+
+@keyframes crew-breathe { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2.5px); } }
+@keyframes crew-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+@keyframes crew-sway { 0%, 100% { transform: rotate(-1deg); } 50% { transform: rotate(1.2deg); } }
+@keyframes crew-blink { 0%, 91%, 97%, 100% { transform: scaleY(1); } 94% { transform: scaleY(0.1); } }
+@keyframes crew-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.55; } }
+@keyframes crew-flame { from { transform: scaleY(0.85); } to { transform: scaleY(1.1); } }
+@keyframes crew-scan { from { transform: translateX(-60px); } to { transform: translateX(60px); } }
+@keyframes crew-twinkle { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
+@keyframes crew-spin { to { transform: rotate(360deg); } }
+@keyframes crew-rotor { 0%, 100% { transform: scaleX(1); } 50% { transform: scaleX(0.2); } }
+@keyframes crew-wing { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(-4deg); } }
+@keyframes crew-hair { 0%, 100% { transform: skewX(0); } 50% { transform: skewX(-3deg); } }
+
+.crew-breathe { animation: crew-breathe 3.2s ease-in-out infinite; }
+.crew-bob { animation: crew-bob 2.6s ease-in-out infinite; }
+.crew-sway { animation: crew-sway 3.6s ease-in-out infinite; transform-origin: 110px 278px; }
+.crew-blink { animation: crew-blink 4.6s infinite; transform-box: fill-box !important; transform-origin: center; }
+.crew-pulse { animation: crew-pulse 2.2s ease-in-out infinite; }
+.crew-flame, .crew-flicker { animation: crew-flame 0.16s ease-in-out infinite alternate; }
+.crew-scan { animation: crew-scan 2.8s linear infinite; }
+.crew-twinkle { animation: crew-twinkle 1.4s ease-in-out infinite; }
+.crew-spin { animation: crew-spin 14s linear infinite; }
+.crew-rotor { animation: crew-rotor 0.18s linear infinite; }
+.crew-wing { animation: crew-wing 3s ease-in-out infinite; }
+.crew-hair { animation: crew-hair 3s ease-in-out infinite; transform-origin: 110px 20px; }
+.crew-float-l { animation: crew-bob 2.6s ease-in-out -0.6s infinite; }
+.crew-float-r { animation: crew-bob 2.6s ease-in-out -1.3s infinite; }
+.crew-flame-hair { animation: crew-pulse 0.5s ease-in-out infinite; }
+
+/* Emotes: each plays once (about 1.5s). */
+@keyframes em-jump { 0%, 100% { transform: translateY(0); } 30% { transform: translateY(-34px) scale(1.03, 0.97); } 60% { transform: translateY(0) scale(1.04, 0.95); } 80% { transform: translateY(-8px); } }
+@keyframes em-wave-r { 0%, 100% { transform: rotate(0); } 15%, 85% { transform: rotate(-150deg); } 30%, 60% { transform: rotate(-120deg); } 45%, 75% { transform: rotate(-160deg); } }
+@keyframes em-thumbs-r { 0%, 100% { transform: rotate(0); } 20%, 80% { transform: rotate(-80deg); } }
+@keyframes em-nod { 0%, 100% { transform: rotate(0); } 25%, 75% { transform: rotate(6deg); } 50% { transform: rotate(-2deg); } }
+@keyframes em-laugh { 0%, 100% { transform: rotate(0); } 10%, 30%, 50%, 70% { transform: rotate(-3deg) translateY(-2px); } 20%, 40%, 60%, 80% { transform: rotate(3deg); } }
+@keyframes em-flex-l { 0%, 100% { transform: rotate(0); } 20%, 80% { transform: rotate(110deg); } 50% { transform: rotate(125deg); } }
+@keyframes em-flex-r { 0%, 100% { transform: rotate(0); } 20%, 80% { transform: rotate(-110deg); } 50% { transform: rotate(-125deg); } }
+@keyframes em-salute-r { 0%, 100% { transform: rotate(0); } 20%, 80% { transform: rotate(-165deg); } }
+@keyframes em-spin { 0% { transform: scaleX(1); } 25% { transform: scaleX(0.1); } 50% { transform: scaleX(-1); } 75% { transform: scaleX(0.1); } 100% { transform: scaleX(1); } }
+@keyframes em-dance { 0%, 100% { transform: translateX(0) rotate(0); } 20% { transform: translateX(-8px) rotate(-6deg); } 40% { transform: translateX(8px) rotate(6deg); } 60% { transform: translateX(-8px) rotate(-6deg); } 80% { transform: translateX(8px) rotate(6deg); } }
+@keyframes em-arms-up-l { 0%, 100% { transform: rotate(0); } 20%, 80% { transform: rotate(160deg); } }
+@keyframes em-arms-up-r { 0%, 100% { transform: rotate(0); } 20%, 80% { transform: rotate(-160deg); } }
+@keyframes em-powerup { 0%, 100% { transform: scale(1); filter: none; } 40% { transform: scale(0.94); } 60% { transform: scale(1.08); filter: brightness(1.5) drop-shadow(0 0 12px #fff); } }
+@keyframes em-backflip { 0% { transform: translateY(0) rotate(0); } 15% { transform: translateY(6px) rotate(0); } 50% { transform: translateY(-70px) rotate(-180deg); } 85% { transform: translateY(0) rotate(-360deg); } 100% { transform: translateY(0) rotate(-360deg); } }
+@keyframes em-victory { 0%, 100% { transform: translateY(0); } 25% { transform: translateY(-30px); } 50% { transform: translateY(0); } 70% { transform: translateY(-16px); } }
+@keyframes em-hero { 0% { transform: translateY(-120px); opacity: 0; } 35% { transform: translateY(0) scale(1.1, 0.85); opacity: 1; } 50% { transform: scale(0.96, 1.04); } 65%, 100% { transform: none; } }
+
+.emote-jump { animation: em-jump 1.1s ease-in-out 1; }
+.emote-wave .crew-arm-r, .emote-wave .crew-float-r { animation: em-wave-r 1.6s ease-in-out 1; }
+.emote-thumbs .crew-arm-r { animation: em-thumbs-r 1.4s ease-in-out 1; }
+.emote-nod .crew-head { animation: em-nod 1.2s ease-in-out 1; }
+.emote-laugh { animation: em-laugh 1.4s ease-in-out 1; }
+.emote-flex .crew-arm-l { animation: em-flex-l 1.5s ease-in-out 1; }
+.emote-flex .crew-arm-r { animation: em-flex-r 1.5s ease-in-out 1; }
+.emote-salute .crew-arm-r { animation: em-salute-r 1.5s ease-in-out 1; }
+.emote-spin { animation: em-spin 1s ease-in-out 1; }
+.emote-dance { animation: em-dance 1.6s ease-in-out 1; }
+.emote-dance .crew-arm-l, .emote-victory .crew-arm-l { animation: em-arms-up-l 1.6s ease-in-out 1; }
+.emote-dance .crew-arm-r, .emote-victory .crew-arm-r { animation: em-arms-up-r 1.6s ease-in-out 1; }
+.emote-powerup { animation: em-powerup 1.4s ease-in-out 1; }
+.emote-backflip { animation: em-backflip 1.3s cubic-bezier(.3,.1,.3,1) 1; transform-origin: 110px 170px !important; }
+.emote-victory { animation: em-victory 1.6s ease-in-out 1; }
+.emote-hero { animation: em-hero 1.3s cubic-bezier(.2,.8,.3,1) 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .crew-breathe, .crew-bob, .crew-sway, .crew-blink, .crew-pulse, .crew-flame, .crew-flicker, .crew-scan, .crew-twinkle, .crew-spin, .crew-rotor, .crew-wing, .crew-hair, .crew-float-l, .crew-float-r, .crew-flame-hair,
+  .crew-fig, .crew-fig * { animation: none !important; }
+}
+.crew-still * { animation: none !important; }
+
+/* Crew picker, crew workshop, profile card ------------------------------ */
+.avatar-robot .crew-svg { width: 100%; height: 100%; }
+.crew-picker { display: grid; gap: 10px; }
+.crew-picker-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px; }
+.crew-picker-head .section-title { margin: 0; }
+.crew-free { font-weight: 800; color: var(--good); }
+.crew-row { display: flex; gap: 10px; overflow-x: auto; padding: 4px 2px 8px; scroll-snap-type: x proximity; }
+.crew-card { flex: none; width: 112px; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 8px 6px 10px; border-radius: var(--radius-sm); border: 2px solid var(--border); background: var(--surface); color: var(--text); font: inherit; cursor: pointer; scroll-snap-align: start; }
+.crew-card.using { border-color: var(--good); box-shadow: 0 0 0 3px var(--good-soft); }
+.crew-card.selected { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-soft); }
+.crew-card-art { display: grid; place-items: center; width: 96px; height: 110px; border-radius: 12px; background: linear-gradient(170deg, #263055, #0e1324); overflow: hidden; }
+.crew-card-art > svg { width: 100%; height: 100%; }
+.crew-card-art .pip { margin-top: 10px; }
+.crew-detail:empty { display: none; }
+.crew-detail-card { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; padding: 14px; border-radius: var(--radius); background: linear-gradient(160deg, #1b2340, #0d1220); color: #eef2fb; }
+.crew-detail-art { width: 170px; height: 220px; flex: none; margin: 0 auto; }
+.crew-detail-text { flex: 1 1 220px; display: grid; gap: 8px; min-width: 0; }
+.crew-detail-text h3 { margin: 0; font-size: 1.4rem; }
+.crew-detail-text p { margin: 0; color: #b9c3d8; }
+.crew-detail-text .btn-ghost { color: #eef2fb; }
+
+.crew-stage { min-height: 280px; background-color: #121a33; }
+.crew-stage.scene-default { background: radial-gradient(120% 70% at 50% 100%, #1e3a5f 0%, transparent 60%), linear-gradient(180deg, #1b2340, #0d1220); }
+.crew-stage .pip-crew { width: 220px; height: 280px; }
+.crew-item { position: relative; padding-top: 24px; }
+.crew-item .part-thumb { width: 72px; height: 80px; }
+.crew-item.locked { opacity: 0.78; }
+.crew-item.locked .part-thumb, .crew-item.locked .shop-swatch { filter: grayscale(0.6); }
+.crew-tier { position: absolute; top: 4px; left: 4px; padding: 1px 6px; border-radius: 6px; font-size: 0.62rem; font-weight: 900; letter-spacing: 0.04em; text-transform: uppercase; color: #fff; background: #6b7a90; }
+.tier-rare .crew-tier { background: #2f7cf0; }
+.tier-epic .crew-tier { background: #8b4ff0; }
+.tier-legendary .crew-tier { background: linear-gradient(90deg, #e09a00, #ff5a36); }
+.tier-legendary { border-color: #e0a52a; }
+.crew-swatch { background: conic-gradient(var(--a) 0 50%, var(--b) 50% 75%, var(--c) 75%); }
+.swatch-plasma { background: conic-gradient(#ff3df2, #9a6cff, #38e1ff, #ff3df2); }
+.emote-thumb { font-size: 2.2rem; }
+.crew-lock { margin: 0; font-weight: 700; color: var(--muted); text-align: center; flex-basis: 100%; }
+
+.crew-profile { display: flex; flex-wrap: wrap; gap: 18px; align-items: center; padding: 18px; border-radius: var(--radius); background: linear-gradient(160deg, #1b2340, #0d1220); color: #eef2fb; }
+.crew-profile-art { width: 180px; height: 240px; flex: none; margin: 0 auto; }
+.crew-profile-body { flex: 1 1 240px; display: grid; gap: 8px; min-width: 0; }
+.crew-profile-body h2 { margin: 0; font-size: 1.6rem; }
+.crew-profile-body .muted { color: #b9c3d8; margin: 0; }
+.crew-profile-rank { font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; color: #ffd23a; }
+.crew-profile .stat { background: rgba(255, 255, 255, 0.06); color: #eef2fb; }
+.crew-profile .stat small { color: #b9c3d8; }
+
+@media (max-width: 420px) {
+  .crew-stage .pip-crew { width: 170px; height: 215px; }
+}
