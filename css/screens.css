@@ -82,6 +82,9 @@
 .stage-concrete { background: var(--accent-soft); color: #9a6a00; }
 .stage-pictorial { background: var(--good-soft); color: var(--good); }
 .stage-abstract { background: var(--primary-soft); color: var(--primary); }
+.stage-observe { background: var(--accent-soft); color: #9a6a00; }
+.stage-explain { background: var(--good-soft); color: var(--good); }
+.stage-apply { background: var(--primary-soft); color: var(--primary); }
 
 /* Practice --------------------------------------------------------- */
 .practice-bar { display: grid; grid-template-columns: auto 1fr; gap: 6px 12px; align-items: center; }

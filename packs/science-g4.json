@@ -1,0 +1,667 @@
+{
+  "packId": "science-g4",
+  "version": "1.0.0",
+  "subject": "science",
+  "title": "Science · Grade 4",
+  "topics": [
+    {
+      "topicId": "sci4-matter",
+      "title": "Matter",
+      "icon": "🧪",
+      "summary": "Mass and volume; solids, liquids and gases.",
+      "skills": [
+        {
+          "skillId": "sci4-matter",
+          "title": "What is matter?",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Push an upside-down empty cup into a basin of water. Why does the water not go in?",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🥛 💧",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "Matter is anything that has mass and takes up space. Air is matter: it fills the cup. Light, heat and sound are not matter."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: Heat is…",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Heat is…",
+                  "choices": [
+                    "a form of energy, not matter",
+                    "a kind of gas",
+                    "a kind of liquid"
+                  ],
+                  "answer": "a form of energy, not matter",
+                  "explain": "Heat is energy. It has no mass."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "matter"
+          }
+        },
+        {
+          "skillId": "sci4-states",
+          "title": "Properties of solids, liquids and gases",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Pour 200 ml of water from a tall glass into a wide bowl. Push the plunger of a syringe (with no needle) full of air, then one full of water.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🥛 🥣",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "A solid has a fixed shape and volume. A liquid has a fixed volume but takes the shape of its container. A gas has no fixed shape or volume and can be compressed."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: A gas spreads out to…",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "A gas spreads out to…",
+                  "choices": [
+                    "fill all the space in its container",
+                    "the bottom of its container only",
+                    "make a fixed shape"
+                  ],
+                  "answer": "fill all the space in its container",
+                  "explain": "A gas fills any container completely."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "statesProps"
+          }
+        },
+        {
+          "skillId": "sci4-volume",
+          "title": "Measuring volume",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "A measuring cylinder has 50 ml of water. Drop in a stone. The water rises to 65 ml.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🧪",
+                  "text": "50 ml → 65 ml",
+                  "label": "50 ml → 65 ml"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "The stone pushes aside water equal to its own volume. 65 − 50 = 15 ml, and 1 ml takes up 1 cm³, so the stone's volume is 15 cm³."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: A measuring cylinder has 55 ml of water. A metal toy car is put in and the water rises to 70 ml. What is the volume of the metal toy car, in cm³?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "A measuring cylinder has 55 ml of water. A metal toy car is put in and the water rises to 70 ml. What is the volume of the metal toy car, in cm³?",
+                  "visual": {
+                    "kind": "letters",
+                    "text": "55 ml → 70 ml",
+                    "emoji": "🧪",
+                    "label": "55 ml → 70 ml"
+                  },
+                  "choices": [
+                    "14",
+                    "15",
+                    "16"
+                  ],
+                  "answer": "15",
+                  "explain": "70 ml − 55 ml = 15 ml, and 1 ml takes up 1 cm³. The metal toy car has a volume of 15 cm³."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "displacement"
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "sci4-changes",
+      "title": "Changes of state",
+      "icon": "💧",
+      "summary": "Melting, freezing, evaporation, condensation and the water cycle.",
+      "skills": [
+        {
+          "skillId": "sci4-change-names",
+          "title": "Melting, freezing, evaporating",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Leave an ice cube on a plate. Put a glass of iced water on the table and watch its outside.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🧊 🥤",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "Gaining heat: solids melt and liquids evaporate (or boil). Losing heat: gases condense and liquids freeze. Pure water freezes at 0 °C and boils at 100 °C.",
+                "visual": {
+                  "kind": "letters",
+                  "text": "solid ⇄ liquid ⇄ gas",
+                  "label": "solid ⇄ liquid ⇄ gas"
+                }
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: Water vapour loses heat and changes into water. This is…",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Water vapour loses heat and changes into water. This is…",
+                  "choices": [
+                    "condensation",
+                    "evaporation",
+                    "melting"
+                  ],
+                  "answer": "condensation",
+                  "explain": "Condensation is a gas changing into a liquid when it loses heat."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "changeState"
+          }
+        },
+        {
+          "skillId": "sci4-water-cycle",
+          "title": "The water cycle",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Puddles disappear on a sunny day. Where does the water go?",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "☀️ 💧 ☁️",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "The Sun heats water, which evaporates. The water vapour rises, cools and condenses into clouds. The droplets join and fall as rain, and the cycle repeats."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: In the water cycle, what comes just before \"the Sun heats water in seas and rivers\"?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "In the water cycle, what comes just before \"the Sun heats water in seas and rivers\"?",
+                  "visual": {
+                    "kind": "letters",
+                    "emoji": "💧",
+                    "label": "the water cycle"
+                  },
+                  "choices": [
+                    "it condenses into clouds",
+                    "water vapour rises and cools",
+                    "rain falls back to the Earth",
+                    "the water evaporates"
+                  ],
+                  "answer": "rain falls back to the Earth",
+                  "explain": "The water cycle: the Sun heats water in seas and rivers → the water evaporates → water vapour rises and cools → it condenses into clouds → rain falls back to the Earth, and then it starts again. The rain flows back to seas and rivers, and the cycle starts again."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciOrder",
+            "seqs": [
+              "waterCycle"
+            ]
+          }
+        },
+        {
+          "skillId": "sci4-melt-boil",
+          "title": "Melting and boiling points",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Butter melts on a hot day. Ice melts even in a cool room. Each substance melts and boils at its own temperatures.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🧈 🧊",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "Below its melting point, a substance is a solid. Between its melting and boiling points, it is a liquid. Above its boiling point, it is a gas."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: What is substance A at 12 °C?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "What is substance A at 12 °C?",
+                  "visual": {
+                    "kind": "table",
+                    "title": "Melting and boiling points",
+                    "head": [
+                      "Substance",
+                      "Melting point (°C)",
+                      "Boiling point (°C)"
+                    ],
+                    "rows": [
+                      [
+                        "A",
+                        "-30",
+                        "150"
+                      ],
+                      [
+                        "B",
+                        "-95",
+                        "0"
+                      ],
+                      [
+                        "C",
+                        "-20",
+                        "55"
+                      ],
+                      [
+                        "D",
+                        "90",
+                        "115"
+                      ]
+                    ]
+                  },
+                  "choices": [
+                    "solid",
+                    "liquid",
+                    "gas"
+                  ],
+                  "answer": "liquid",
+                  "explain": "12 °C is between its melting point (-30 °C) and boiling point (150 °C), so substance A is a liquid."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "stateAtTemp"
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "sci4-heat",
+      "title": "Heat",
+      "icon": "🔥",
+      "summary": "Heat and temperature; good and poor conductors.",
+      "skills": [
+        {
+          "skillId": "sci4-heat",
+          "title": "Heat and temperature",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Ask an adult to pour hot water into a bowl. Drop in a dented ping-pong ball. The dent pops out!",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🏓 ♨️",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "Heat flows from hotter to colder things. When things gain heat they usually expand; when they lose heat they contract. A thermometer measures temperature in °C."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: A cup of hot chocolate is left on the table. What happens?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "A cup of hot chocolate is left on the table. What happens?",
+                  "visual": {
+                    "kind": "letters",
+                    "emoji": "☕",
+                    "label": "a picture"
+                  },
+                  "choices": [
+                    "It loses heat to the air until it is as warm as the room.",
+                    "It gets hotter.",
+                    "It gains heat from the air."
+                  ],
+                  "answer": "It loses heat to the air until it is as warm as the room.",
+                  "explain": "Heat flows from the hot drink to the cooler air."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "heat"
+          }
+        },
+        {
+          "skillId": "sci4-conductors",
+          "title": "Good and poor conductors of heat",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Ask an adult to pour hot water into a cup, then stand a metal spoon and a wooden spoon in it. After a minute, which handle is warmer?",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🥄 ☕",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "Metals are good conductors of heat. Wood, plastic, cloth, rubber, foam and trapped air are poor conductors: they slow heat down."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: Is it a good or a poor conductor of heat?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Is it a good or a poor conductor of heat?",
+                  "visual": {
+                    "kind": "letters",
+                    "emoji": "🍳",
+                    "text": "an iron pan",
+                    "label": "an iron pan"
+                  },
+                  "choices": [
+                    "good conductor of heat",
+                    "poor conductor of heat"
+                  ],
+                  "answer": "good conductor of heat",
+                  "explain": "An iron pan is a good conductor of heat: it is a metal, and heat passes through metals quickly."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciSort",
+            "set": "heatConductors"
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "sci4-light",
+      "title": "Light",
+      "icon": "💡",
+      "summary": "How we see, transparent and opaque materials, and shadows.",
+      "skills": [
+        {
+          "skillId": "sci4-light",
+          "title": "Light and how we see",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "In a dark room you see nothing. Switch on a torch, and the room appears.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🔦",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "Light travels in straight lines. We see an object when light from it, or reflected off it, enters our eyes. The Moon and mirrors do not make light; they reflect it."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: Which surface reflects light best?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which surface reflects light best?",
+                  "choices": [
+                    "a shiny mirror",
+                    "black cloth",
+                    "rough wood"
+                  ],
+                  "answer": "a shiny mirror",
+                  "explain": "Smooth, shiny surfaces reflect the most light."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "light"
+          }
+        },
+        {
+          "skillId": "sci4-see-through",
+          "title": "Transparent, translucent, opaque",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Shine a torch through clear glass, wax paper and a book. How much light gets through each?",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🪟 📄 📕",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "Transparent: almost all light passes through. Translucent: some light passes through, so things look blurry. Opaque: no light passes through."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: Is it transparent, translucent or opaque?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Is it transparent, translucent or opaque?",
+                  "visual": {
+                    "kind": "letters",
+                    "text": "a clear plastic bottle",
+                    "label": "a clear plastic bottle"
+                  },
+                  "choices": [
+                    "transparent",
+                    "translucent",
+                    "opaque"
+                  ],
+                  "answer": "transparent",
+                  "explain": "A clear plastic bottle is transparent: almost all light passes through it, so you can see clearly through it."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciSort",
+            "set": "lightPass"
+          }
+        },
+        {
+          "skillId": "sci4-shadows",
+          "title": "Shadows",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Make a hand shadow on the wall with a torch. Move your hand closer to the torch, then farther away.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🔦 ✋",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "An opaque object blocks light, so a shadow forms on the side away from the light. The closer the object is to the light, the bigger its shadow."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: In the morning, the Sun is in the east. Your shadow points…",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "In the morning, the Sun is in the east. Your shadow points…",
+                  "visual": {
+                    "kind": "letters",
+                    "emoji": "🌅",
+                    "label": "a picture"
+                  },
+                  "choices": [
+                    "west",
+                    "east",
+                    "up"
+                  ],
+                  "answer": "west",
+                  "explain": "Your shadow points away from the Sun."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "shadows4"
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "sci4-inquiry",
+      "title": "Think like a scientist",
+      "icon": "🔬",
+      "summary": "Fair tests and what results show.",
+      "skills": [
+        {
+          "skillId": "sci4-fair-test",
+          "title": "Fair tests",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Ben wants to know if hot water dissolves sugar faster. He uses water at 4 temperatures.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🥄 ☕",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "A fair test changes only one thing (the variable). Everything else is kept the same, like the amount of sugar and water. Then the results show the effect of that one change."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: What did Ben change in this experiment?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "What did Ben change in this experiment?",
+                  "visual": {
+                    "kind": "stack",
+                    "column": true,
+                    "items": [
+                      {
+                        "kind": "passage",
+                        "title": "Dissolving sugar",
+                        "text": "Ben stirred 1 spoon of sugar into each of 4 cups of water at different temperatures. Ben timed how long the sugar took to dissolve."
+                      },
+                      {
+                        "kind": "table",
+                        "title": "Dissolving sugar",
+                        "head": [
+                          "Water temperature (°C)",
+                          "Time to dissolve (s)"
+                        ],
+                        "rows": [
+                          [
+                            "20 °C",
+                            "172"
+                          ],
+                          [
+                            "40 °C",
+                            "147"
+                          ],
+                          [
+                            "60 °C",
+                            "119"
+                          ],
+                          [
+                            "80 °C",
+                            "86"
+                          ]
+                        ]
+                      }
+                    ]
+                  },
+                  "choices": [
+                    "the time the sugar took to dissolve",
+                    "the temperature of the water",
+                    "the amount of sugar"
+                  ],
+                  "answer": "the temperature of the water",
+                  "explain": "Only the temperature of the water was different for each one, so that is what was changed."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "experiment",
+            "forms": [
+              "changed",
+              "measured",
+              "same",
+              "conclude"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "sci4-challenge",
+      "title": "Challenge zone",
+      "icon": "⭐",
+      "summary": "Ready for more? These go a step beyond this grade.",
+      "challenge": true,
+      "skills": [
+        {
+          "skillId": "sci4-ch-heat",
+          "title": "Gaining and losing heat",
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "heatGainLoss"
+          }
+        },
+        {
+          "skillId": "sci4-ch-predict",
+          "title": "Predict the result",
+          "generator": {
+            "type": "experiment",
+            "forms": [
+              "predict",
+              "conclude"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

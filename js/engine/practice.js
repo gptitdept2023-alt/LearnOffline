@@ -33,23 +33,30 @@ const fromFixed = (q, rng = Math.random) => ({
 export const questionsForSkill = (skill, count, rng = Math.random) => {
   const out = [];
   const seen = new Set();
+  const seenSame = new Set();
   // Same prompt with different numbers in the picture or choices is a different question.
   const keyOf = (q) => `${q.prompt}|${JSON.stringify(q.visual ?? '')}|${(q.choices || []).join(',')}|${q.answer}`;
-  const add = (q) => {
+  // The same choices in another order are the same question; avoided first, allowed only to fill a set.
+  const sameKeyOf = (q) => `${q.prompt}|${JSON.stringify(q.visual ?? '')}|${[...(q.choices || [])].sort().join(',')}|${q.answer}`;
+  const add = (q, allowReorder) => {
     const key = keyOf(q);
-    if (seen.has(key)) return false;
+    const sameKey = sameKeyOf(q);
+    if (seen.has(key) || (!allowReorder && seenSame.has(sameKey))) return false;
     seen.add(key);
+    seenSame.add(sameKey);
     out.push({ ...q, skillId: skill.skillId });
     return true;
   };
   for (const q of shuffle(skill.questions || [], rng)) {
     if (out.length >= count) break;
-    add(fromFixed(q, rng));
+    add(fromFixed(q, rng), true);
   }
   if (skill.generator) {
     // Bounded retries: small skills (e.g. "count to 5") may have few unique questions.
-    for (let tries = 0; out.length < count && tries < count * 10; tries += 1) {
-      add(generate(skill.generator, rng));
+    for (const allowReorder of [false, true]) {
+      for (let tries = 0; out.length < count && tries < count * 10; tries += 1) {
+        add(generate(skill.generator, rng), allowReorder);
+      }
     }
   }
   return out;

@@ -390,3 +390,10 @@
 .visual-hundred svg { max-width: 180px; }
 .hs-on { fill: var(--primary); stroke: var(--surface); stroke-width: 1.5; }
 .hs-off { fill: var(--primary-soft); stroke: var(--surface); stroke-width: 1.5; }
+
+/* Science results tables have their own, longer column headings: let them wrap, and scroll if still too wide. */
+.visual-table { overflow-x: auto; }
+.visual-table .data-table thead th { white-space: normal; }
+@media (max-width: 480px) {
+  .visual-table .data-table th, .visual-table .data-table td { padding: 6px 8px; }
+}

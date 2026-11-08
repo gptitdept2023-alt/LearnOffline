@@ -149,7 +149,7 @@ test('imported packs are saved, listed after their grade, loaded and removed', a
 
   const index = await loadPackIndex();
   const at = index.findIndex((p) => p.packId === PACK_ID);
-  assert.equal(index[at - 1].packId, 'math-g4', 'right after Grade 4 Math');
+  assert.equal(index[at - 1].packId, 'science-g4', 'right after the last built-in Grade 4 subject');
   assert.equal(index[at + 1].level, 'G5', 'before Grade 5');
 
   const indexed = await loadPack(PACK_ID);

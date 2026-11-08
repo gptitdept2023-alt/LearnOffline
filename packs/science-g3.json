@@ -1,0 +1,793 @@
+{
+  "packId": "science-g3",
+  "version": "1.0.0",
+  "subject": "science",
+  "title": "Science · Grade 3",
+  "topics": [
+    {
+      "topicId": "sci3-diversity",
+      "title": "Diversity of living things",
+      "icon": "🌿",
+      "summary": "What all living things do; classifying animals, plants, fungi and bacteria.",
+      "skills": [
+        {
+          "skillId": "sci3-life",
+          "title": "Signs of life",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Touch a makahiya leaf. It folds up! What else shows that something is alive?",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🌿",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "All living things need food, water and air, grow, respond to changes around them, and reproduce. A car moves, but cannot grow or reproduce, so it is not alive."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: Which shows that a kitten is living?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which shows that a kitten is living?",
+                  "choices": [
+                    "It grows into a cat.",
+                    "It is soft.",
+                    "It is brown."
+                  ],
+                  "answer": "It grows into a cat.",
+                  "explain": "Growing is a sign of life."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "lifeProcesses"
+          }
+        },
+        {
+          "skillId": "sci3-animal-groups",
+          "title": "Classifying animals",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "A whale lives in the sea like a fish. A bat flies like a bird. Are they fish and birds?",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🐋 🦇",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "We group animals by their features. Mammals have fur and feed their young milk, so whales and bats are mammals. Birds have feathers; fish have gills; reptiles have dry scales; amphibians have moist skin; insects have six legs."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: Which animal group does it belong to?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which animal group does it belong to?",
+                  "visual": {
+                    "kind": "letters",
+                    "emoji": "🐴",
+                    "text": "horse",
+                    "label": "horse"
+                  },
+                  "choices": [
+                    "bird",
+                    "mammal",
+                    "fish",
+                    "reptile"
+                  ],
+                  "answer": "mammal",
+                  "explain": "A horse is a mammal: it has hair or fur and feeds its young on milk."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciSort",
+            "set": "animals"
+          }
+        },
+        {
+          "skillId": "sci3-plant-groups",
+          "title": "Flowering and non-flowering plants",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Look under a fern leaf. You may see tiny brown dots. A gumamela has big red flowers.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🌿 🌺",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "Flowering plants make flowers, then fruits with seeds. Non-flowering plants do not: ferns and mosses make spores, and pine trees make seeds in cones."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: Is it a flowering or a non-flowering plant?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Is it a flowering or a non-flowering plant?",
+                  "visual": {
+                    "kind": "letters",
+                    "emoji": "🌴",
+                    "text": "coconut tree",
+                    "label": "coconut tree"
+                  },
+                  "choices": [
+                    "flowering plant",
+                    "non-flowering plant"
+                  ],
+                  "answer": "flowering plant",
+                  "explain": "A coconut tree has small flowers that grow into coconuts."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciSort",
+            "set": "plantGroups"
+          }
+        },
+        {
+          "skillId": "sci3-fungi",
+          "title": "Fungi and bacteria",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Seal a slice of damp bread in a clear plastic bag and leave it somewhere warm for a few days. Fuzzy mould grows on it. Do not open, touch or sniff it; throw it away still sealed.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🍞 🍄",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "Mould, mushrooms and yeast are fungi. They cannot make their own food; they feed on what they grow on and make spores. Bacteria are tiny living things seen only with a microscope. Some are harmful, some helpful."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: Which shows that some bacteria are helpful?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which shows that some bacteria are helpful?",
+                  "choices": [
+                    "They help make yogurt.",
+                    "They cause tooth decay.",
+                    "They make food spoil."
+                  ],
+                  "answer": "They help make yogurt.",
+                  "explain": "Some bacteria turn milk into yogurt. Others cause disease or spoil food."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "fungi"
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "sci3-materials",
+      "title": "Materials",
+      "icon": "🧱",
+      "summary": "Properties of materials and why we choose them.",
+      "skills": [
+        {
+          "skillId": "sci3-properties",
+          "title": "Properties of materials",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Bend a rubber band, a plastic ruler and a stick. Drop a cloth and a plastic cup onto a soft mat. (Glass would break and could cut you.)",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🪢 📏 🪵",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "Materials differ in strength, hardness, flexibility, whether they are waterproof, whether light passes through, and whether they float."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: A material you can see clearly through is…",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "A material you can see clearly through is…",
+                  "choices": [
+                    "transparent",
+                    "opaque",
+                    "flexible"
+                  ],
+                  "answer": "transparent",
+                  "explain": "Transparent materials, like clear glass, let light through."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "materialProps"
+          }
+        },
+        {
+          "skillId": "sci3-uses",
+          "title": "Choosing materials",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Why is a pot metal but its handle plastic? Why is a window glass?",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🍳 🪟",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "We choose a material because of its properties. Metal lets heat through to cook food; plastic does not, so it keeps our hands safe. Glass is transparent, so light comes in."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: Why are many bridges made of steel?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Why are many bridges made of steel?",
+                  "visual": {
+                    "kind": "letters",
+                    "emoji": "🌉",
+                    "label": "a picture"
+                  },
+                  "choices": [
+                    "Steel is very strong.",
+                    "Steel is soft.",
+                    "Steel is as light as paper."
+                  ],
+                  "answer": "Steel is very strong.",
+                  "explain": "Steel is strong enough to hold up heavy cars and trucks."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "materialUses"
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "sci3-cycles",
+      "title": "Life cycles",
+      "icon": "🦋",
+      "summary": "How animals and plants grow and reproduce.",
+      "skills": [
+        {
+          "skillId": "sci3-animal-cycles",
+          "title": "Animal life cycles",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "A caterpillar eats and grows, then hangs still as a pupa. Weeks later, a butterfly comes out!",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🐛 🦋",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "Some animals have 4 stages: egg, larva, pupa, adult (butterfly, mosquito). Others have 3: egg, young, adult (chicken, cockroach). A frog changes from a tadpole in water to an adult that can live on land.",
+                "visual": {
+                  "kind": "letters",
+                  "text": "egg → larva → pupa → adult",
+                  "label": "egg → larva → pupa → adult"
+                }
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: In the life cycle of a frog, what comes just before \"egg\"?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "In the life cycle of a frog, what comes just before \"egg\"?",
+                  "visual": {
+                    "kind": "letters",
+                    "emoji": "🐸",
+                    "label": "the life cycle of a frog"
+                  },
+                  "choices": [
+                    "young frog (froglet)",
+                    "tadpole with legs",
+                    "adult frog",
+                    "tadpole"
+                  ],
+                  "answer": "adult frog",
+                  "explain": "The life cycle of a frog: egg → tadpole → tadpole with legs → young frog (froglet) → adult frog, and then it starts again. The adult frog lays eggs in water, and the cycle starts again."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciOrder",
+            "seqs": [
+              "butterfly",
+              "frog",
+              "chicken",
+              "mosquito",
+              "cockroach"
+            ]
+          }
+        },
+        {
+          "skillId": "sci3-cycle-facts",
+          "title": "Life cycle facts",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Look for still water in old cans and tyres around your home. Tiny wriggling larvae may be mosquitoes.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🦟 🛞",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "Mosquito larvae live in still water. Emptying containers stops mosquitoes from breeding, which helps prevent dengue."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: A caterpillar sheds its skin as it grows. Why?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "A caterpillar sheds its skin as it grows. Why?",
+                  "visual": {
+                    "kind": "letters",
+                    "emoji": "🐛",
+                    "label": "a picture"
+                  },
+                  "choices": [
+                    "Its skin cannot stretch, so it grows a bigger one.",
+                    "It is cold.",
+                    "It wants to change colour."
+                  ],
+                  "answer": "Its skin cannot stretch, so it grows a bigger one.",
+                  "explain": "Insects moult: they shed their old skin to grow bigger."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "cycleFacts"
+          }
+        },
+        {
+          "skillId": "sci3-plant-cycle",
+          "title": "Plant life cycle",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Plant a mung bean (monggo) seed in wet cotton. Watch it grow day by day.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🌰 🌱",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "A seed germinates into a seedling, grows into an adult plant, makes flowers, and the flowers become fruits with seeds. The seeds start the cycle again."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: In the life cycle of a flowering plant, what comes just before \"seed\"?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "In the life cycle of a flowering plant, what comes just before \"seed\"?",
+                  "visual": {
+                    "kind": "letters",
+                    "emoji": "🌻",
+                    "label": "the life cycle of a flowering plant"
+                  },
+                  "choices": [
+                    "flower",
+                    "adult plant",
+                    "fruit with seeds",
+                    "seedling"
+                  ],
+                  "answer": "fruit with seeds",
+                  "explain": "The life cycle of a flowering plant: seed → seedling → adult plant → flower → fruit with seeds, and then it starts again. The seeds in the fruit grow into new plants, and the cycle starts again."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciOrder",
+            "seqs": [
+              "plantCycle"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "sci3-systems",
+      "title": "Plant and body systems",
+      "icon": "🫁",
+      "summary": "Plant parts and their jobs; the digestive system.",
+      "skills": [
+        {
+          "skillId": "sci3-plant-parts",
+          "title": "Plant parts and their jobs",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Put a celery stalk in coloured water. After a day, the colour reaches the leaves.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🥬",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "Roots hold the plant and take in water and mineral salts. The stem holds the plant up and carries water and food. Leaves make food. Flowers become fruits, which protect the seeds."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: A plant's stem is cut through. What happens to the leaves after a while?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "A plant's stem is cut through. What happens to the leaves after a while?",
+                  "choices": [
+                    "They droop because they get no water.",
+                    "They grow faster.",
+                    "They turn into roots."
+                  ],
+                  "answer": "They droop because they get no water.",
+                  "explain": "The stem carries water. Without it, the leaves droop and dry up."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "plantParts3"
+          }
+        },
+        {
+          "skillId": "sci3-digestion",
+          "title": "The digestive system",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Chew a piece of bread for a long time. It starts to taste sweet: digestion has begun in your mouth.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🍞",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "Food goes from the mouth, down the gullet, to the stomach, then the small intestine and the large intestine.",
+                "visual": {
+                  "kind": "letters",
+                  "text": "mouth → gullet → stomach → small intestine → large intestine",
+                  "label": "mouth → gullet → stomach → small intestine → large intestine"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "Digestion breaks food into tiny pieces. In the small intestine, digested food passes into the blood. The large intestine takes in water, and what is left leaves the body."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: Which tube carries food from the mouth to the stomach?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which tube carries food from the mouth to the stomach?",
+                  "choices": [
+                    "the small intestine",
+                    "the windpipe",
+                    "the gullet (oesophagus)"
+                  ],
+                  "answer": "the gullet (oesophagus)",
+                  "explain": "The gullet carries food down to the stomach. The windpipe carries air."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "mixed",
+            "of": [
+              {
+                "type": "sciQuiz",
+                "bank": "digestion"
+              },
+              {
+                "type": "sciQuiz",
+                "bank": "digestion"
+              },
+              {
+                "type": "sciOrder",
+                "seqs": [
+                  "digestion"
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "sci3-magnets",
+      "title": "Magnets",
+      "icon": "🧲",
+      "summary": "Magnetic materials; poles that attract and repel.",
+      "skills": [
+        {
+          "skillId": "sci3-magnetic",
+          "title": "Magnetic or not?",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Test a steel paper clip, an aluminium can and a copper wire with a magnet. All three are metals. Which ones stick?",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "📎 🥫",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "Magnets attract iron and steel. Not every metal is magnetic: aluminium, copper and gold are not attracted."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: Will a magnet attract it?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Will a magnet attract it?",
+                  "visual": {
+                    "kind": "letters",
+                    "emoji": "🧷",
+                    "text": "a steel safety pin",
+                    "label": "a steel safety pin"
+                  },
+                  "choices": [
+                    "attracted",
+                    "not attracted"
+                  ],
+                  "answer": "attracted",
+                  "explain": "A steel safety pin is attracted by a magnet: it is made of iron or steel."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciSort",
+            "set": "magnetic"
+          }
+        },
+        {
+          "skillId": "sci3-poles",
+          "title": "Poles: attract and repel",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Push the N poles of two magnets together. You can feel them push apart! Now turn one around.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🧲 🧲",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "Every magnet has a north (N) and a south (S) pole. Like poles repel. Unlike poles attract. Only a magnet can repel another magnet.",
+                "visual": {
+                  "kind": "letters",
+                  "text": "N → ← S attract · N ← → N repel",
+                  "label": "N → ← S attract · N ← → N repel"
+                }
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: Two bar magnets are placed end to end, as shown. What will they do?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Two bar magnets are placed end to end, as shown. What will they do?",
+                  "visual": {
+                    "kind": "letters",
+                    "text": "N ━━ S     S ━━ N",
+                    "emoji": "🧲",
+                    "label": "N ━━ S     S ━━ N"
+                  },
+                  "choices": [
+                    "They attract (pull together).",
+                    "They repel (push apart).",
+                    "Nothing happens."
+                  ],
+                  "answer": "They repel (push apart).",
+                  "explain": "The ends facing each other are S and S. Like poles repel."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "mixed",
+            "of": [
+              {
+                "type": "magnetPoles"
+              },
+              {
+                "type": "sciQuiz",
+                "bank": "magnetFacts"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "sci3-inquiry",
+      "title": "Think like a scientist",
+      "icon": "🔬",
+      "summary": "Read an experiment and its results.",
+      "skills": [
+        {
+          "skillId": "sci3-experiment",
+          "title": "Reading an experiment",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Scientists ask a question, then test it. For example: does light help plants grow? Give 4 plants different hours of light, and measure them.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🌱 💡",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "In a fair test, we change one thing and measure what happens. We write the results in a table so we can compare them."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: What did Ben change in this experiment?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "What did Ben change in this experiment?",
+                  "visual": {
+                    "kind": "stack",
+                    "column": true,
+                    "items": [
+                      {
+                        "kind": "passage",
+                        "title": "Dissolving sugar",
+                        "text": "Ben stirred 1 spoon of sugar into each of 4 cups of water at different temperatures. Ben timed how long the sugar took to dissolve."
+                      },
+                      {
+                        "kind": "table",
+                        "title": "Dissolving sugar",
+                        "head": [
+                          "Water temperature (°C)",
+                          "Time to dissolve (s)"
+                        ],
+                        "rows": [
+                          [
+                            "20 °C",
+                            "172"
+                          ],
+                          [
+                            "40 °C",
+                            "147"
+                          ],
+                          [
+                            "60 °C",
+                            "119"
+                          ],
+                          [
+                            "80 °C",
+                            "86"
+                          ]
+                        ]
+                      }
+                    ]
+                  },
+                  "choices": [
+                    "the time the sugar took to dissolve",
+                    "the temperature of the water",
+                    "the amount of sugar"
+                  ],
+                  "answer": "the temperature of the water",
+                  "explain": "Only the temperature of the water was different for each one, so that is what was changed."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "experiment",
+            "forms": [
+              "changed",
+              "measured",
+              "best",
+              "worst"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "sci3-challenge",
+      "title": "Challenge zone",
+      "icon": "⭐",
+      "summary": "Ready for more? These go a step beyond this grade.",
+      "challenge": true,
+      "skills": [
+        {
+          "skillId": "sci3-ch-orders",
+          "title": "Put the cycles in order",
+          "generator": {
+            "type": "sciOrder",
+            "seqs": [
+              "butterfly",
+              "frog",
+              "mosquito",
+              "cockroach",
+              "chicken",
+              "plantCycle",
+              "beanPlant",
+              "digestion"
+            ],
+            "forms": [
+              "order"
+            ]
+          }
+        },
+        {
+          "skillId": "sci3-ch-fair",
+          "title": "Fair tests",
+          "generator": {
+            "type": "experiment",
+            "forms": [
+              "same",
+              "conclude"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

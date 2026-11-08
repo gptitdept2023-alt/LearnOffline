@@ -1,0 +1,694 @@
+{
+  "packId": "science-g5",
+  "version": "1.0.0",
+  "subject": "science",
+  "title": "Science · Grade 5",
+  "topics": [
+    {
+      "topicId": "sci5-cells",
+      "title": "Cells",
+      "icon": "🔬",
+      "summary": "Parts of a cell; plant and animal cells.",
+      "skills": [
+        {
+          "skillId": "sci5-cell-parts",
+          "title": "Parts of a cell",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Under a microscope, a thin onion skin shows rows of tiny boxes. Each box is a cell.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🔬 🧅",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "The nucleus controls the cell. The cell membrane controls what goes in and out. Most activities happen in the cytoplasm. Plant cells also have a cell wall, a large vacuole and often chloroplasts."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: Which tool do we use to see cells?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which tool do we use to see cells?",
+                  "choices": [
+                    "a microscope",
+                    "a telescope",
+                    "a thermometer"
+                  ],
+                  "answer": "a microscope",
+                  "explain": "Most cells are too small to see without a microscope."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "cellParts"
+          }
+        },
+        {
+          "skillId": "sci5-cell-compare",
+          "title": "Plant and animal cells",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "explain",
+                "text": "Plant and animal cells both have a nucleus, cytoplasm and cell membrane. Only plant cells have a cell wall. Cells in green parts of plants have chloroplasts to make food.",
+                "visual": {
+                  "kind": "letters",
+                  "text": "plant cell: + cell wall + chloroplasts",
+                  "label": "plant cell: + cell wall + chloroplasts"
+                }
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: Plant cells usually have one large…",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Plant cells usually have one large…",
+                  "choices": [
+                    "vacuole",
+                    "chloroplast",
+                    "nucleus"
+                  ],
+                  "answer": "vacuole",
+                  "explain": "The large vacuole holds cell sap and helps keep the cell firm."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "cellCompare"
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "sci5-body",
+      "title": "Body systems",
+      "icon": "❤️",
+      "summary": "Breathing, the heart and blood, and how systems work together.",
+      "skills": [
+        {
+          "skillId": "sci5-respiratory",
+          "title": "Breathing",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Put your hand on your chest and breathe in deeply. Your chest rises as your lungs fill with air.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🫁",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "Air goes in through the nose, down the windpipe, into the lungs. In the tiny air sacs, oxygen passes into the blood and carbon dioxide passes out."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: Fish take in oxygen from water using their…",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Fish take in oxygen from water using their…",
+                  "visual": {
+                    "kind": "letters",
+                    "emoji": "🐟",
+                    "label": "a picture"
+                  },
+                  "choices": [
+                    "gills",
+                    "lungs",
+                    "fins"
+                  ],
+                  "answer": "gills",
+                  "explain": "Gills take in oxygen dissolved in water."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "respiratory"
+          }
+        },
+        {
+          "skillId": "sci5-circulatory",
+          "title": "The heart and blood",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Count your pulse for 15 seconds. Jump for a minute, then count again. It is faster!",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "❤️ ⏱️",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "The heart pumps blood. Arteries carry it away from the heart, capillaries reach every cell, and veins bring it back. Blood carries oxygen, food and carbon dioxide."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: Where does blood pick up oxygen?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Where does blood pick up oxygen?",
+                  "choices": [
+                    "in the lungs",
+                    "in the stomach",
+                    "in the brain"
+                  ],
+                  "answer": "in the lungs",
+                  "explain": "Oxygen passes from the air sacs into the blood."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "circulatory"
+          }
+        },
+        {
+          "skillId": "sci5-paths",
+          "title": "Follow the path",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "explain",
+                "text": "Air path: nose → windpipe → lungs → air sacs → blood. Blood path: heart → arteries → capillaries → veins → back to the heart."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: In the path of air into the body, what comes just before \"windpipe\"?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "In the path of air into the body, what comes just before \"windpipe\"?",
+                  "visual": {
+                    "kind": "letters",
+                    "emoji": "🫁",
+                    "label": "the path of air into the body"
+                  },
+                  "choices": [
+                    "blood",
+                    "air sacs",
+                    "nose",
+                    "lungs"
+                  ],
+                  "answer": "nose",
+                  "explain": "The path of air into the body: nose → windpipe → lungs → air sacs → blood."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciOrder",
+            "seqs": [
+              "airPath",
+              "bloodPath"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "sci5-plants",
+      "title": "Plant systems",
+      "icon": "🌸",
+      "summary": "How plants carry water and food; flowers, pollination and seeds.",
+      "skills": [
+        {
+          "skillId": "sci5-transport",
+          "title": "How plants carry water and food",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Put a white flower in water with red food colouring. After a day, its petals turn red.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🌸 🔴",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "Water-carrying tubes take water and mineral salts up from the roots to the leaves. Food-carrying tubes take food from the leaves to all parts of the plant."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: A white flower is put in red-coloured water. After a day, the petals turn red. Why?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "A white flower is put in red-coloured water. After a day, the petals turn red. Why?",
+                  "visual": {
+                    "kind": "letters",
+                    "emoji": "🌸",
+                    "label": "a picture"
+                  },
+                  "choices": [
+                    "The red colour came from the air.",
+                    "The flower made red food.",
+                    "The water-carrying tubes carried the red water up."
+                  ],
+                  "answer": "The water-carrying tubes carried the red water up.",
+                  "explain": "The coloured water went up the water-carrying tubes into the petals."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "mixed",
+            "of": [
+              {
+                "type": "sciQuiz",
+                "bank": "plantTransport"
+              },
+              {
+                "type": "sciQuiz",
+                "bank": "plantTransport"
+              },
+              {
+                "type": "sciOrder",
+                "seqs": [
+                  "plantWater"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "skillId": "sci5-flowers",
+          "title": "Flowers and pollination",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Look at a gumamela flower. The long stalk in the middle is covered with many tiny stamens; their yellow dust is pollen. The five fuzzy red pads at the tip are the stigma.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🌺",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "Pollination: pollen from an anther lands on a stigma. Fertilisation: a male cell joins an egg in the ovule. Then the ovary becomes the fruit and the ovules become seeds.",
+                "visual": {
+                  "kind": "letters",
+                  "text": "pollination → fertilisation → fruit and seeds",
+                  "label": "pollination → fertilisation → fruit and seeds"
+                }
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: Which part becomes the seed?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Which part becomes the seed?",
+                  "choices": [
+                    "the anther",
+                    "the ovary",
+                    "the ovule"
+                  ],
+                  "answer": "the ovule",
+                  "explain": "Each fertilised ovule becomes a seed inside the fruit."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "mixed",
+            "of": [
+              {
+                "type": "sciQuiz",
+                "bank": "flowerParts"
+              },
+              {
+                "type": "sciQuiz",
+                "bank": "flowerParts"
+              },
+              {
+                "type": "sciOrder",
+                "seqs": [
+                  "flowerToFruit"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "skillId": "sci5-dispersal",
+          "title": "How seeds travel",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "A coconut can float across the sea to a new island. Why do seeds need to travel?",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🥥 🌊",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "Seeds spread away from the parent plant so the young plants get enough light, water and space. They travel by wind, water, animals, or by pods splitting open."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: How are its seeds mainly spread?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "How are its seeds mainly spread?",
+                  "visual": {
+                    "kind": "letters",
+                    "text": "cogon grass seeds (fluffy)",
+                    "label": "cogon grass seeds (fluffy)"
+                  },
+                  "choices": [
+                    "by water",
+                    "by wind",
+                    "by animals",
+                    "by splitting open"
+                  ],
+                  "answer": "by wind",
+                  "explain": "Fluffy hairs let cogon seeds float on the wind."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciSort",
+            "set": "dispersal"
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "sci5-water",
+      "title": "Water",
+      "icon": "💧",
+      "summary": "The water cycle and saving water.",
+      "skills": [
+        {
+          "skillId": "sci5-water",
+          "title": "Water for life",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Most of the Earth is covered in water, yet some places run short. Why?",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🌍 🚰",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "Almost all of Earth's water is salty. The water cycle brings fresh water back as rain, but we must not waste or pollute it."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: Rainwater collected in a drum can be used for…",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Rainwater collected in a drum can be used for…",
+                  "choices": [
+                    "watering plants and flushing toilets",
+                    "making the rain stop",
+                    "cooling the Sun"
+                  ],
+                  "answer": "watering plants and flushing toilets",
+                  "explain": "Using rainwater saves tap water."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "waterResource"
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "sci5-electricity",
+      "title": "Electricity",
+      "icon": "⚡",
+      "summary": "Circuits, conductors and insulators, and using electricity safely.",
+      "skills": [
+        {
+          "skillId": "sci5-circuits",
+          "title": "Will the bulb light?",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Join a battery, wires and a bulb in a loop. The bulb lights. Open a switch, and it goes out.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "🔋 💡",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "Electricity flows only around a closed circuit. An open switch, a gap or an insulator in the loop stops the flow."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: A battery, a bulb and two switches, P and Q, are joined in one loop (a series circuit). Switch P is closed and switch Q is closed. Does the bulb light up?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "A battery, a bulb and two switches, P and Q, are joined in one loop (a series circuit). Switch P is closed and switch Q is closed. Does the bulb light up?",
+                  "visual": {
+                    "kind": "letters",
+                    "text": "🔋 ━━ 💡 ━━ 🔘",
+                    "label": "🔋 ━━ 💡 ━━ 🔘"
+                  },
+                  "choices": [
+                    "Yes, it lights up.",
+                    "No, it does not light up."
+                  ],
+                  "answer": "Yes, it lights up.",
+                  "explain": "Both switches are closed, so the circuit is complete and the bulb lights up."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "circuit",
+            "forms": [
+              "switches",
+              "gap"
+            ]
+          }
+        },
+        {
+          "skillId": "sci5-conductors",
+          "title": "Conductors and insulators",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "observe",
+                "text": "Test things in the gap of a circuit: a paper clip, a rubber band, pencil lead, a plastic ruler.",
+                "visual": {
+                  "kind": "letters",
+                  "emoji": "📎 ✏️ 📏",
+                  "label": "a picture"
+                }
+              },
+              {
+                "stage": "explain",
+                "text": "Conductors, like metals and graphite, let electricity flow. Insulators, like plastic, rubber, wood and glass, do not."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: Is it a conductor or an insulator of electricity?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Is it a conductor or an insulator of electricity?",
+                  "visual": {
+                    "kind": "letters",
+                    "text": "a strip of aluminium foil",
+                    "label": "a strip of aluminium foil"
+                  },
+                  "choices": [
+                    "conductor",
+                    "insulator"
+                  ],
+                  "answer": "conductor",
+                  "explain": "A strip of aluminium foil is a conductor of electricity: electricity can flow through it."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciSort",
+            "set": "electricConductors"
+          }
+        },
+        {
+          "skillId": "sci5-electricity",
+          "title": "Using electricity",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "explain",
+                "text": "In series (one loop), bulbs share the battery's energy, so they are dimmer, and all go out if one breaks. In parallel (separate branches), each bulb has its own path. Never touch switches with wet hands."
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: Why are plugs and switches covered in plastic?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "Why are plugs and switches covered in plastic?",
+                  "visual": {
+                    "kind": "letters",
+                    "emoji": "🔌",
+                    "label": "a picture"
+                  },
+                  "choices": [
+                    "Plastic is an electrical insulator.",
+                    "Plastic conducts electricity well.",
+                    "Plastic makes electricity."
+                  ],
+                  "answer": "Plastic is an electrical insulator.",
+                  "explain": "The plastic keeps electricity away from our fingers."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "electricity"
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "sci5-inquiry",
+      "title": "Think like a scientist",
+      "icon": "🔬",
+      "summary": "Plan fair tests and predict results.",
+      "skills": [
+        {
+          "skillId": "sci5-experiment",
+          "title": "Plan and predict",
+          "lesson": {
+            "steps": [
+              {
+                "stage": "explain",
+                "text": "Use the pattern in a results table to predict. If 4 hours gave 12 cm and 6 hours gave 16 cm, then 5 hours should give between 12 cm and 16 cm.",
+                "visual": {
+                  "kind": "letters",
+                  "text": "4 h → 12 cm · 5 h → ? · 6 h → 16 cm",
+                  "label": "4 h → 12 cm · 5 h → ? · 6 h → 16 cm"
+                }
+              },
+              {
+                "stage": "apply",
+                "text": "Your turn: To make it a fair test, what must Ben keep the same?",
+                "interact": {
+                  "kind": "check",
+                  "prompt": "To make it a fair test, what must Ben keep the same?",
+                  "visual": {
+                    "kind": "stack",
+                    "column": true,
+                    "items": [
+                      {
+                        "kind": "passage",
+                        "title": "Dissolving sugar",
+                        "text": "Ben stirred 1 spoon of sugar into each of 4 cups of water at different temperatures. Ben timed how long the sugar took to dissolve."
+                      },
+                      {
+                        "kind": "table",
+                        "title": "Dissolving sugar",
+                        "head": [
+                          "Water temperature (°C)",
+                          "Time to dissolve (s)"
+                        ],
+                        "rows": [
+                          [
+                            "20 °C",
+                            "172"
+                          ],
+                          [
+                            "40 °C",
+                            "147"
+                          ],
+                          [
+                            "60 °C",
+                            "119"
+                          ],
+                          [
+                            "80 °C",
+                            "86"
+                          ]
+                        ]
+                      }
+                    ]
+                  },
+                  "choices": [
+                    "the temperature of the water",
+                    "the amount of sugar",
+                    "the time the sugar took to dissolve"
+                  ],
+                  "answer": "the amount of sugar",
+                  "explain": "Only the temperature of the water should change. Keeping the amount of sugar the same makes the test fair."
+                }
+              }
+            ]
+          },
+          "generator": {
+            "type": "experiment",
+            "forms": [
+              "same",
+              "conclude",
+              "predict"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "topicId": "sci5-challenge",
+      "title": "Challenge zone",
+      "icon": "⭐",
+      "summary": "Ready for more? These go a step beyond this grade.",
+      "challenge": true,
+      "skills": [
+        {
+          "skillId": "sci5-ch-circuits",
+          "title": "Parallel circuits",
+          "generator": {
+            "type": "circuit",
+            "forms": [
+              "parallel"
+            ]
+          }
+        },
+        {
+          "skillId": "sci5-ch-systems",
+          "title": "Systems working together",
+          "generator": {
+            "type": "sciQuiz",
+            "bank": "bodyTogether"
+          }
+        }
+      ]
+    }
+  ]
+}

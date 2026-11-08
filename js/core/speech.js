@@ -188,6 +188,9 @@ const sayMeasures = (text) => text
   .replace(/\b(\d{1,2}):(\d{2})\b/g, (match, hh, mm, offset, whole) => sayClock(hh, mm, whole.slice(offset + match.length)))
   .replace(new RegExp(`${PESO_RE}(?:\\.(\\d{2}))?`, 'g'), (_, p, c) => sayMoney(p, c))
   .replace(/(\d+)¢/g, (_, c) => `${c} ${c === '1' ? 'centavo' : 'centavos'}`)
+  // Temperatures: "100 °C" is "100 degrees Celsius"; angles stay "45 degrees".
+  .replace(/(\d+)\s?°C/g, (_, n) => `${n} degrees Celsius`)
+  .replace(/°C/g, 'degrees Celsius')
   .replace(/(\d+)°/g, (_, n) => `${n} degrees`)
   .replace(new RegExp(`=\\s*\\?\\s*${UNIT_RE}`, 'g'), (_, u) => `equals how many ${UNIT_WORDS[u][1]}?`)
   // "25 min + ? min": the operator is read later ("plus how many minutes?").

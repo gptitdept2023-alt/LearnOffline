@@ -4,12 +4,18 @@
     { "packId": "english-k2", "subject": "english", "subjectName": "English", "icon": "🔤", "level": "K2", "levelName": "Kinder 2", "title": "English · Kinder 2", "file": "english-k2.json", "young": true },
     { "packId": "math-g1", "subject": "math", "subjectName": "Math", "icon": "🔢", "level": "G1", "levelName": "Grade 1", "title": "Math · Grade 1", "file": "math-g1.json", "young": false, "readAloud": true },
     { "packId": "english-g1", "subject": "english", "subjectName": "English", "icon": "🔤", "level": "G1", "levelName": "Grade 1", "title": "English · Grade 1", "file": "english-g1.json", "young": false, "readAloud": true },
+    { "packId": "science-g1", "subject": "science", "subjectName": "Science", "icon": "🔬", "level": "G1", "levelName": "Grade 1", "title": "Science · Grade 1", "file": "science-g1.json", "young": false, "readAloud": true },
     { "packId": "math-g2", "subject": "math", "subjectName": "Math", "icon": "🔢", "level": "G2", "levelName": "Grade 2", "title": "Math · Grade 2", "file": "math-g2.json", "young": false, "readAloud": true },
     { "packId": "english-g2", "subject": "english", "subjectName": "English", "icon": "🔤", "level": "G2", "levelName": "Grade 2", "title": "English · Grade 2", "file": "english-g2.json", "young": false, "readAloud": true },
+    { "packId": "science-g2", "subject": "science", "subjectName": "Science", "icon": "🔬", "level": "G2", "levelName": "Grade 2", "title": "Science · Grade 2", "file": "science-g2.json", "young": false, "readAloud": true },
     { "packId": "math-g3", "subject": "math", "subjectName": "Math", "icon": "🔢", "level": "G3", "levelName": "Grade 3", "title": "Math · Grade 3", "file": "math-g3.json", "young": false },
     { "packId": "english-g3", "subject": "english", "subjectName": "English", "icon": "🔤", "level": "G3", "levelName": "Grade 3", "title": "English · Grade 3", "file": "english-g3.json", "young": false },
+    { "packId": "science-g3", "subject": "science", "subjectName": "Science", "icon": "🔬", "level": "G3", "levelName": "Grade 3", "title": "Science · Grade 3", "file": "science-g3.json", "young": false },
     { "packId": "math-g4", "subject": "math", "subjectName": "Math", "icon": "🔢", "level": "G4", "levelName": "Grade 4", "title": "Math · Grade 4", "file": "math-g4.json", "young": false },
+    { "packId": "science-g4", "subject": "science", "subjectName": "Science", "icon": "🔬", "level": "G4", "levelName": "Grade 4", "title": "Science · Grade 4", "file": "science-g4.json", "young": false },
     { "packId": "math-g5", "subject": "math", "subjectName": "Math", "icon": "🔢", "level": "G5", "levelName": "Grade 5", "title": "Math · Grade 5", "file": "math-g5.json", "young": false },
-    { "packId": "math-g6", "subject": "math", "subjectName": "Math", "icon": "🔢", "level": "G6", "levelName": "Grade 6", "title": "Math · Grade 6", "file": "math-g6.json", "young": false }
+    { "packId": "science-g5", "subject": "science", "subjectName": "Science", "icon": "🔬", "level": "G5", "levelName": "Grade 5", "title": "Science · Grade 5", "file": "science-g5.json", "young": false },
+    { "packId": "math-g6", "subject": "math", "subjectName": "Math", "icon": "🔢", "level": "G6", "levelName": "Grade 6", "title": "Math · Grade 6", "file": "math-g6.json", "young": false },
+    { "packId": "science-g6", "subject": "science", "subjectName": "Science", "icon": "🔬", "level": "G6", "levelName": "Grade 6", "title": "Science · Grade 6", "file": "science-g6.json", "young": false }
   ]
 }
