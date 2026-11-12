@@ -586,3 +586,34 @@
 @media (max-width: 420px) {
   .crew-stage .pip-crew { width: 170px; height: 215px; }
 }
+
+/* Tips & Tricks -------------------------------------------------------- */
+.trick-mix { background: linear-gradient(135deg, #12a594, #2f6fde); }
+.trick-section { display: flex; flex-direction: column; gap: 10px; }
+.trick-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
+.trick-card { display: flex; align-items: center; gap: 12px; padding: 14px; border-radius: var(--radius); background: var(--surface); color: var(--text); text-decoration: none; box-shadow: var(--shadow); border: 2px solid transparent; }
+.trick-card:hover, .trick-card:focus-visible { border-color: var(--primary); }
+.trick-card-icon { font-size: 2rem; flex: none; }
+.trick-card-body { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+.trick-card-body small { color: var(--muted); }
+.trick-best { flex: none; padding: 4px 10px; border-radius: 999px; background: var(--surface-2); font-weight: 800; font-size: 0.9rem; }
+.trick-best-full { background: var(--good-soft); color: var(--good); }
+.trick-example { margin: 0; font-size: 1.2rem; }
+.trick-learn .method { width: 100%; text-align: left; }
+.trick-drill .answer-form { justify-content: center; }
+.trick-drill .choices { width: 100%; }
+.trick-tag { margin: 0; padding: 4px 12px; border-radius: 999px; background: var(--accent-soft); font-weight: 800; }
+.trick-help { width: 100%; text-align: left; }
+.trick-help:empty { display: none; }
+.trick-steps { margin: 0; }
+/* A trick has only 2-4 steps, so every picture stays open (the long methods fold old ones away). */
+.trick-learn .method-step.is-past .method-peek { display: none; }
+.trick-learn .method-step.is-past .method-body > .visual,
+.trick-learn .method-step.is-past .method-body > .visual-stack { display: flex; }
+.trick-learn .method-step.is-past .method-body p { color: inherit; }
+.trick-answer { width: 100%; flex-wrap: nowrap; }
+.trick-answer .answer-input { flex: 1 1 auto; min-width: 0; width: auto; }
+.trick-drill .choices { grid-template-columns: repeat(3, 1fr); }
+.home-actions-tricks .home-action-main { grid-column: span 3; }
+.home-action-tricks { background: var(--accent-soft); }
+.trick-prompt-long { font-size: clamp(1.3rem, 5vw, 1.8rem); line-height: 1.3; }

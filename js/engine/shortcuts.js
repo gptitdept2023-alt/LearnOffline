@@ -18,7 +18,7 @@ const fmt = (n) => Number(n).toLocaleString('en-US');
 const hops = (start, moves) => ({ kind: 'hops', start, moves });
 
 /** Bar of `parts` equal pieces, each labelled `each`, with the whole above. */
-const equalBar = (whole, parts, each, label = '') => ({
+export const equalBar = (whole, parts, each, label = '') => ({
   kind: 'bar',
   rows: [{ label, segments: Array.from({ length: parts }, () => ({ units: 1, text: fmt(each) })) }],
   braces: [{ row: 0, from: 0, to: parts, side: 'above', text: fmt(whole) }],
