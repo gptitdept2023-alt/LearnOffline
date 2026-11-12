@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import {
-  TRICKS, MIX_ID, trickById, tricksForGrade, gradeOfLevel, drillQuestion, exampleOf, trickStars,
+  TRICKS, MIX_ID, DRILL_LENGTH, trickById, tricksForGrade, gradeOfLevel, drillRound, exampleOf, trickStars,
 } from '../js/engine/tricks.js';
 import { seededRng } from '../js/core/random.js';
 
@@ -16,8 +16,16 @@ const solve = (prompt) => {
   if (m) return Number(m[2]) - Number(m[1]);
   m = /^(\d+)% of (\d+)$/.exec(p);
   if (m) return (Number(m[1]) * Number(m[2])) / 100;
+  m = /^(\d+)% of \? = (\d+)$/.exec(p);
+  if (m) return (Number(m[2]) * 100) / Number(m[1]);
+  m = /^1 (more|less) than (\d+)$/.exec(p);
+  if (m) return Number(m[2]) + (m[1] === 'more' ? 1 : -1);
+  m = /^(\d+) km\/h for (\d+) minutes: how many km\?$/.exec(p);
+  if (m) return (Number(m[1]) * Number(m[2])) / 60;
+  m = /^Share ₱(\d+) in the ratio (\d+) : (\d+)\. Bigger share\?$/.exec(p);
+  if (m) return (Number(m[1]) / (Number(m[2]) + Number(m[3]))) * Math.max(Number(m[2]), Number(m[3]));
   const js = p.replace(/−/g, '-').replace(/×/g, '*').replace(/÷/g, '/');
-  assert.match(js, /^[\d +\-*/]+$/, `unexpected prompt ${prompt}`);
+  assert.match(js, /^[\d. +\-*/]+$/, `unexpected prompt ${prompt}`);
   return Function(`return (${js});`)();
 };
 
@@ -25,7 +33,9 @@ test('tricks: ids are unique, every grade from Kinder 2 to 6 has some', () => {
   assert.equal(new Set(TRICKS.map((tr) => tr.id)).size, TRICKS.length);
   assert.ok(!trickById(MIX_ID), 'mix is not a trick id');
   for (let g = 0; g <= 6; g += 1) assert.ok(tricksForGrade(g).mine.length > 0, `grade ${g}`);
-  assert.equal(tricksForGrade(0).mine.length, 4, 'Kinder sees only its own tricks');
+  assert.ok(tricksForGrade(0).mine.every((tr) => tr.grade === 0), 'Kinder sees only its own tricks');
+  assert.ok(tricksForGrade(0).mine.length >= 9, 'at least 9 Kinder tricks');
+  assert.ok(tricksForGrade(6).newHere.length >= 6, 'at least 6 Grade 6 tricks');
   assert.ok(tricksForGrade(4).stretch.every((tr) => tr.grade === 5));
 });
 
@@ -43,10 +53,11 @@ test('tricks: answers are right and the steps reach the answer (2,000 questions 
       const said = q.steps.flatMap((st) => numbersIn(st.text));
       assert.ok(said.includes(q.answer), `${where}: steps never reach ${q.answer}`);
       assert.ok(q.say && !/undefined/.test(q.say), where);
+      assert.ok(q.reveal.includes(Number(q.answer).toLocaleString('en-US')) && !/\?/.test(q.reveal), `${where}: reveal "${q.reveal}"`);
       if (trick.grade === 0) {
-        assert.ok(q.answer <= 10, `${where}: Kinder stays within 10`);
+        assert.ok(q.answer <= 19, `${where}: Kinder stays within the teens`);
         assert.ok(q.choices.includes(q.answer) && new Set(q.choices).size === q.choices.length && q.choices.length === 3, where);
-        assert.ok(q.choices.every((c) => c >= 0 && c <= 10), `${where}: choices ${q.choices}`);
+        assert.ok(q.choices.every((c) => c >= 0 && c <= Math.max(10, q.answer)), `${where}: choices ${q.choices}`);
       } else {
         assert.equal(q.choices, undefined, `${where}: older learners type the answer`);
       }
@@ -82,10 +93,12 @@ test('tricks: mix draws from the learner\'s tricks; levels map to grades', () =>
   const rng = seededRng(11);
   const kinderIds = new Set(tricksForGrade(0).mine.map((tr) => tr.id));
   for (let i = 0; i < 200; i += 1) {
-    assert.ok(kinderIds.has(drillQuestion(MIX_ID, 0, rng).trickId));
-    assert.ok(trickById(drillQuestion(MIX_ID, 4, rng).trickId).grade <= 4);
+    const kinder = drillRound(MIX_ID, 0, DRILL_LENGTH.young, rng);
+    assert.ok(kinder.every((q) => kinderIds.has(q.trickId)));
+    assert.equal(new Set(kinder.map((q) => q.trickId)).size, DRILL_LENGTH.young, 'the mix spreads over different tricks');
+    assert.ok(drillRound(MIX_ID, 4, DRILL_LENGTH.older, rng).every((q) => trickById(q.trickId).grade <= 4));
   }
-  assert.throws(() => drillQuestion('nope', 4), /not found/);
+  assert.throws(() => drillRound('nope', 4, 8), /not found/);
   assert.throws(() => exampleOf('nope'), /not found/);
   assert.equal(trickStars(8), 8);
   assert.equal(trickStars(20), 8, 'stars are capped');
@@ -97,4 +110,18 @@ test('tricks: screens are routed and precached', () => {
   assert.match(app, /route\('trick', renderTrick\)/);
   const sw = readFileSync(new URL('../sw.js', import.meta.url), 'utf8');
   for (const f of ['./js/engine/tricks.js', './js/ui/screens/tricks.js']) assert.ok(sw.includes(`'${f}'`), f);
+});
+
+test('tricks: a round never repeats a question (when the trick has enough of them)', () => {
+  const rng = seededRng(21);
+  for (const trick of TRICKS) {
+    const n = trick.grade === 0 ? DRILL_LENGTH.young : DRILL_LENGTH.older;
+    // How many different questions can this trick make?
+    const possible = new Set(Array.from({ length: 5000 }, () => trick.make(rng).prompt)).size;
+    for (let i = 0; i < 100; i += 1) {
+      const prompts = drillRound(trick.id, trick.grade, n, rng).map((q) => q.prompt);
+      assert.equal(prompts.length, n);
+      assert.equal(new Set(prompts).size, Math.min(n, possible), `${trick.id}: ${prompts.join(' | ')}`);
+    }
+  }
 });

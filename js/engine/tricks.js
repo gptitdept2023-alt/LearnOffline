@@ -17,7 +17,7 @@
  */
 
 import { randInt, pick, shuffle } from '../core/random.js';
-import { addShortcut, mulShortcut } from './shortcuts.js';
+import { addShortcut, mulShortcut, equalBar } from './shortcuts.js';
 
 const fmt = (n) => Number(n).toLocaleString('en-US');
 const hops = (start, moves) => ({ kind: 'hops', start, moves });
@@ -48,11 +48,13 @@ const sayOf = (prompt) => prompt.replace(/\+/g, 'plus').replace(/−/g, 'minus')
   .replace(/÷/g, 'divided by').replace(/%/g, ' percent').replace(/=/g, 'makes').replace(/\?/g, 'what');
 
 /** Build a question; Kinder questions also get tap choices. */
-const question = (prompt, answer, steps, { young = false, rng = Math.random } = {}) => ({
+const question = (prompt, answer, steps, { young = false, rng = Math.random, reveal, say } = {}) => ({
   prompt,
-  say: prompt.includes('?') ? `${sayOf(prompt)}?` : `What is ${sayOf(prompt)}?`,
+  say: say || (prompt.includes('?') ? `${sayOf(prompt)}?` : `What is ${sayOf(prompt)}?`),
   answer,
   steps,
+  // The finished sentence shown after a wrong answer: "7 + 3 = 10", or the given one for word questions.
+  reveal: reveal || (prompt.includes('?') ? prompt.replace('?', fmt(answer)) : `${prompt} = ${fmt(answer)}`),
   ...(young ? { choices: choicesFor(answer, rng) } : {}),
 });
 
@@ -104,6 +106,63 @@ const fiveAndMore = (rng = Math.random) => {
     { text: 'The top row of a ten frame holds 5.', visual: frames(5) },
     { text: `Put ${k} more on the next row.`, visual: frames(5, k) },
     { text: `5 and ${k} more is ${5 + k}.` },
+  ], { young: true, rng });
+};
+
+/** ? + 2 = 5: the pairs that make five (one hand). */
+const fiveFriends = (rng = Math.random) => {
+  const a = randInt(1, 4, rng);
+  const b = 5 - a;
+  return question(`${a} + ? = 5`, b, [
+    { text: `One hand has 5 fingers. Put ${a} on the top row.`, visual: frames(a) },
+    { text: `${b} more fill the row of 5.`, visual: frames(a, b) },
+    { text: `${a} and ${b} are five friends. Together they make 5.`, visual: bond(5, [a, b]) },
+  ], { young: true, rng });
+};
+
+/** 1 more than 6, 1 less than 6: just say the next number, or the one before. */
+const oneMoreLess = (rng = Math.random) => {
+  const more = rng() < 0.5;
+  const n = more ? randInt(1, 9, rng) : randInt(2, 10, rng);
+  const ans = more ? n + 1 : n - 1;
+  return question(`1 ${more ? 'more' : 'less'} than ${n}`, ans, [
+    { text: more ? `1 more is the next number when you count. Count: ${n}, ${ans}.` : `1 less is the number just before. Count back: ${n}, ${ans}.`, visual: { kind: 'numberLine', from: 0, to: 10, mark: ans } },
+    { text: `1 ${more ? 'more' : 'less'} than ${n} is ${ans}.`, visual: more ? frames(n, 1) : { kind: 'pictureTakeAway', emoji: '⭐', a: n, b: 1 } },
+  ], { young: true, rng, reveal: `1 ${more ? 'more' : 'less'} than ${n} is ${ans}` });
+};
+
+/** 7 − 2: take away a small number by counting back. */
+const countBack = (rng = Math.random) => {
+  const a = randInt(4, 10, rng);
+  const b = randInt(1, 3, rng);
+  const emoji = pick(['🍎', '🐟', '🌸', '🐤', '🍓'], rng);
+  const back = Array.from({ length: b }, (_, i) => a - i - 1).join(', ');
+  return question(`${a} − ${b}`, a - b, [
+    { text: `Start at ${a}. Take away ${b}, so count back ${b}.`, visual: { kind: 'pictures', emoji, count: a } },
+    { text: `Count back: ${back}.`, visual: { kind: 'pictureTakeAway', emoji, a, b } },
+    { text: `${a} − ${b} = ${a - b}.` },
+  ], { young: true, rng });
+};
+
+/** 10 − 3: the answer is 3's ten friend. */
+const takeFromTen = (rng = Math.random) => {
+  const k = randInt(1, 9, rng);
+  return question(`10 − ${k}`, 10 - k, [
+    { text: 'A full ten frame is 10.', visual: frames(10) },
+    { text: `Take ${k} away. ${10 - k} are left.`, visual: frames(10 - k) },
+    { text: `${k} and ${10 - k} are ten friends, so 10 − ${k} = ${10 - k}.`, visual: bond(10, [k, 10 - k]) },
+  ], { young: true, rng });
+};
+
+const TEENS = ['eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
+
+/** 10 + 4 = 14: a teen number is a ten and some ones. */
+const tenAndSome = (rng = Math.random) => {
+  const k = randInt(1, 9, rng);
+  return question(`10 + ${k}`, 10 + k, [
+    { text: `One full ten frame is 10. ${k} more are on the next one.`, visual: frames(10, k) },
+    { text: `A ten and ${k} ones make ${10 + k}, ${TEENS[k - 1]}.` },
+    { text: `10 + ${k} = ${10 + k}.` },
   ], { young: true, rng });
 };
 
@@ -338,6 +397,121 @@ const squareFive = (rng = Math.random) => {
   ]);
 };
 
+/** 48 × 0.5: × 0.5 is halving, × 0.25 is a quarter, × 1.5 is the number and its half. */
+const timesDecimal = (rng = Math.random) => {
+  const kind = pick(['0.5', '0.25', '1.5'], rng);
+  if (kind === '0.25') {
+    const n = randInt(3, 40, rng) * 4;
+    return question(`${n} × 0.25`, n / 4, [
+      { text: '0.25 is a quarter, so × 0.25 means a quarter of the number.' },
+      { text: `A quarter is half of a half: ${n} ÷ 2 = ${n / 2}, then ${n / 2} ÷ 2 = ${n / 4}.`, visual: equalBar(n, 4, n / 4) },
+    ]);
+  }
+  const n = randInt(6, 60, rng) * 2;
+  if (kind === '0.5') {
+    return question(`${n} × 0.5`, n / 2, [
+      { text: '0.5 is a half, so × 0.5 means half of the number.' },
+      { text: `Half of ${n} is ${n / 2}.`, visual: equalBar(n, 2, n / 2) },
+    ]);
+  }
+  return question(`${n} × 1.5`, n * 1.5, [
+    { text: '1.5 is 1 and a half, so × 1.5 is the number plus half of it.' },
+    { text: `${n} + half of ${n} = ${n} + ${n / 2} = ${n * 1.5}.` },
+  ]);
+};
+
+/** 7 ÷ 0.5: how many halves fit? Twice as many. ÷ 0.25 is four times as many. */
+const divideByPart = (rng = Math.random) => {
+  const quarter = rng() < 0.4;
+  const n = randInt(3, quarter ? 25 : 45, rng);
+  const ans = quarter ? n * 4 : n * 2;
+  const part = quarter ? '0.25' : '0.5';
+  const each = quarter ? 4 : 2;
+  return question(`${n} ÷ ${part}`, ans, [
+    { text: `÷ ${part} asks: how many ${quarter ? 'quarters' : 'halves'} fit into ${n}?` },
+    { text: `Each 1 holds ${each} ${quarter ? 'quarters' : 'halves'}, so ${n} holds ${n} × ${each}.`, visual: quarter || n > 12 ? null : { kind: 'groups', groups: n, each } },
+    { text: `${n} ÷ ${part} = ${ans}. Dividing by a part makes the number bigger!` },
+  ]);
+};
+
+/** 20% of ? = 30: find 1%, 10% or another easy piece, then build up to 100%. */
+const percentWhole = (rng = Math.random) => {
+  const p = pick([10, 20, 25, 50], rng);
+  const parts = 100 / p;
+  const whole = randInt(3, 60, rng) * 10;
+  const part = (whole * p) / 100;
+  if (!Number.isInteger(part)) return percentWhole(rng);
+  return question(`${p}% of ? = ${fmt(part)}`, whole, [
+    // The whole is the unknown, so the picture shows "?" over the bar and only the one known part.
+    { text: `${p}% is 1 part out of ${parts} equal parts that make 100%.`, visual: {
+      kind: 'bar',
+      rows: [{ label: '', segments: Array.from({ length: parts }, (_, i) => ({ units: 1, text: i === 0 ? fmt(part) : '' })) }],
+      braces: [{ row: 0, from: 0, to: parts, side: 'above', text: '100% = ?' }],
+    } },
+    { text: `One part is ${fmt(part)}, so all ${parts} parts are ${parts} × ${fmt(part)} = ${fmt(whole)}.` },
+    { text: `Check: ${p}% of ${fmt(whole)} is ${fmt(part)}. ✓` },
+  ], { say: `${p} percent of what number is ${part}?`, reveal: `${p}% of ${fmt(whole)} = ${fmt(part)}` });
+};
+
+/** 60 km/h for 20 minutes: use the part of an hour. */
+const speedMinutes = (rng = Math.random) => {
+  const speed = pick([30, 48, 60, 72, 90, 120], rng);
+  const options = [10, 12, 15, 20, 30, 40, 45].filter((m) => (speed * m) % 60 === 0);
+  const minutes = pick(options, rng);
+  const km = (speed * minutes) / 60;
+  const share = 60 / minutes;
+  const steps = Number.isInteger(share)
+    ? [
+      { text: `${minutes} minutes is 1/${share} of an hour (60 ÷ ${minutes} = ${share}).` },
+      { text: `In 1/${share} of an hour you go 1/${share} of ${speed} km: ${speed} ÷ ${share} = ${km} km.` },
+    ]
+    : [
+      { text: `Find 1 minute first: ${speed} km in 60 minutes is ${speed} ÷ 60 = ${fmt(speed / 60)} km each minute.` },
+      { text: `${minutes} minutes: ${minutes} × ${fmt(speed / 60)} = ${km} km.` },
+    ];
+  return question(`${speed} km/h for ${minutes} minutes: how many km?`, km, [
+    { text: `${speed} km/h means ${speed} km in 1 hour (60 minutes).` },
+    ...steps,
+  ], { say: `A car goes ${speed} kilometres per hour for ${minutes} minutes. How many kilometres?`, reveal: `${speed} km/h for ${minutes} minutes is ${km} km` });
+};
+
+const gcd = (x, y) => (y ? gcd(y, x % y) : x);
+
+/** Share ₱50 in the ratio 2 : 3: find one unit, then the bigger share. */
+const ratioUnits = (rng = Math.random) => {
+  const a = randInt(1, 4, rng);
+  // b > a and no common factor, so the ratio is already in simplest form (no 2 : 4).
+  const bs = [2, 3, 4, 5, 6, 7].filter((n) => n > a && gcd(a, n) === 1);
+  const b = pick(bs, rng);
+  const unit = randInt(2, 15, rng) * (rng() < 0.5 ? 5 : 2);
+  const total = (a + b) * unit;
+  const units = a + b;
+  return question(`Share ₱${fmt(total)} in the ratio ${a} : ${b}. Bigger share?`, b * unit, [
+    { text: `The ratio ${a} : ${b} has ${a} + ${b} = ${units} units.`, visual: {
+      kind: 'bar',
+      rows: [
+        { label: 'A', segments: Array.from({ length: a }, () => ({ units: 1, text: '' })) },
+        { label: 'B', segments: Array.from({ length: b }, () => ({ units: 1, text: '' })) },
+      ],
+      braces: [{ rows: [0, 1], side: 'right', text: `₱${fmt(total)}` }],
+    } },
+    { text: `1 unit = ₱${fmt(total)} ÷ ${units} = ₱${fmt(unit)}.` },
+    { text: `The bigger share is ${b} units: ${b} × ₱${fmt(unit)} = ₱${fmt(b * unit)}.` },
+  ], { say: `Share ${total} pesos in the ratio ${a} to ${b}. How much is the bigger share?`, reveal: `${a} : ${b} of ₱${fmt(total)}: the bigger share is ₱${fmt(b * unit)}` });
+};
+
+/** 19 × 21: one below and one above a round number. */
+const aroundRound = (rng = Math.random) => {
+  const n = randInt(2, 9, rng) * 10;
+  const d = randInt(1, 3, rng);
+  const ans = (n - d) * (n + d);
+  return question(`${n - d} × ${n + d}`, ans, [
+    { text: `${n - d} and ${n + d} are both ${d} away from ${n}, one below and one above.` },
+    { text: `Then the answer is ${n} × ${n} take away ${d} × ${d}: ${fmt(n * n)} − ${d * d} = ${fmt(ans)}.` },
+    { text: `Why: ${n - d} × ${n + d} = ${n - d} × ${n} + ${n - d} × ${d}, and ${n} × ${n} = ${n - d} × ${n} + ${d} × ${n}. The two differ by ${d} × ${n} − ${n - d} × ${d} = ${d} × ${d}.` },
+  ]);
+};
+
 /* ------------------------------------------------------------------ */
 /* Catalogue                                                           */
 /* ------------------------------------------------------------------ */
@@ -348,6 +522,11 @@ export const TRICKS = Object.freeze([
   { id: 'ten-friends', icon: '🤝', title: 'Ten friends', grade: 0, idea: 'Pairs that make 10, like 7 and 3.', make: tenFriends },
   { id: 'doubles', icon: '👯', title: 'Doubles', grade: 0, idea: 'The same number twice, like 4 + 4.', make: doubles },
   { id: 'five-and-more', icon: '🖐️', title: 'Five and some more', grade: 0, idea: 'See 7 as 5 and 2 on a ten frame.', make: fiveAndMore },
+  { id: 'five-friends', icon: '✋', title: 'Five friends', grade: 0, idea: 'Pairs that make 5, like 2 and 3.', make: fiveFriends },
+  { id: 'one-more-less', icon: '🔢', title: 'One more, one less', grade: 0, idea: '1 more is the next number. 1 less is the one before.', make: oneMoreLess },
+  { id: 'count-back', icon: '⏪', title: 'Count back', grade: 0, idea: '7 − 2: start at 7 and count back 2.', make: countBack },
+  { id: 'take-from-ten', icon: '🧮', title: 'Take from 10', grade: 0, idea: '10 − 3 is 3’s ten friend: 7.', make: takeFromTen },
+  { id: 'ten-and-some', icon: '🔟', title: 'Ten and some more', grade: 0, idea: '10 + 4 = 14: a ten and 4 ones.', make: tenAndSome },
   { id: 'make-ten', icon: '🔟', title: 'Make a ten', grade: 1, idea: '8 + 5: fill the ten first, then add the rest.', make: makeTen },
   { id: 'near-doubles', icon: '➕', title: 'Doubles plus one', grade: 1, idea: '6 + 7 is double 6, plus 1.', make: nearDoubles },
   { id: 'count-up', icon: '🪜', title: 'Count up to take away', grade: 1, idea: '15 − 8: hop from 8 to 10, then to 15.', make: countUp },
@@ -365,7 +544,13 @@ export const TRICKS = Object.freeze([
   { id: 'times-quarter', icon: '🪙', title: 'Times 25', grade: 5, idea: '× 100, then share into 4.', make: timesQuarter },
   { id: 'percent-swap', icon: '🔁', title: 'Swap the percent', grade: 5, idea: '16% of 50 = 50% of 16 = 8.', make: percentSwap },
   { id: 'ten-percent', icon: '🧱', title: 'Build from 10%', grade: 5, idea: '15% = 10% + half of 10%.', make: fromTenPercent },
+  { id: 'times-decimal', icon: '🌓', title: 'Times 0.5, 0.25, 1.5', grade: 5, idea: '× 0.5 is half, × 0.25 a quarter, × 1.5 one and a half.', make: timesDecimal },
   { id: 'square-five', icon: '🟦', title: 'Squares ending in 5', grade: 6, idea: '35 × 35: 3 × 4 = 12, then 25 → 1,225.', make: squareFive },
+  { id: 'around-round', icon: '🎯', title: 'Either side of a ten', grade: 6, idea: '19 × 21 = 20 × 20 − 1 = 399.', make: aroundRound },
+  { id: 'divide-part', icon: '🍕', title: 'Divide by 0.5 or 0.25', grade: 6, idea: '7 ÷ 0.5 = 14: how many halves fit?', make: divideByPart },
+  { id: 'percent-whole', icon: '🧩', title: 'Find the whole', grade: 6, idea: '20% is 30, so 100% is 5 × 30 = 150.', make: percentWhole },
+  { id: 'speed-minutes', icon: '🚗', title: 'Speed in minutes', grade: 6, idea: '60 km/h for 20 min = a third of 60 = 20 km.', make: speedMinutes },
+  { id: 'ratio-units', icon: '🍫', title: 'Ratio units', grade: 6, idea: 'Share in 2 : 3: find 1 unit first.', make: ratioUnits },
 ]);
 
 export const trickById = (id) => TRICKS.find((tr) => tr.id === id) || null;
@@ -389,15 +574,27 @@ export const tricksForGrade = (grade) => ({
 });
 
 /**
- * One drill question. For the mix, any trick open to the learner is used.
- * Kinder questions come with tap choices.
- * @returns {TrickQuestion & {trickId: string, trickTitle: string}}
+ * A whole drill: `count` questions with no prompt twice. A trick with few
+ * possible questions (Kinder "doubles" has 5) still gets a full round, and
+ * only repeats once every different question has been used.
+ * The mix takes turns across tricks, so one trick cannot fill the round.
+ * @returns {Array<TrickQuestion & {trickId: string, trickTitle: string}>}
  */
-export const drillQuestion = (trickId, grade, rng = Math.random) => {
+export const drillRound = (trickId, grade, count, rng = Math.random) => {
   const pool = trickId === MIX_ID ? tricksForGrade(grade).mine : [trickById(trickId)].filter(Boolean);
   if (!pool.length) throw new Error('That trick was not found.');
-  const trick = pick(pool, rng);
-  return { ...trick.make(rng), trickId: trick.id, trickTitle: trick.title };
+  // Mix: walk through the tricks in a shuffled order, so the round covers as many as it can.
+  const order = shuffle(pool, rng);
+  const seen = new Set();
+  const round = [];
+  for (let i = 0; i < count; i += 1) {
+    const trick = order[i % order.length];
+    let q = trick.make(rng);
+    for (let tries = 0; seen.has(q.prompt) && tries < 60; tries += 1) q = trick.make(rng);
+    seen.add(q.prompt);
+    round.push({ ...q, trickId: trick.id, trickTitle: trick.title });
+  }
+  return round;
 };
 
 /** An example to teach with (the lesson uses the same maker as the drill). */

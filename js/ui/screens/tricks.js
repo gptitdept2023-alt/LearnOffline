@@ -16,7 +16,7 @@ import { playSfx } from '../../core/sfx.js';
 import { getRewards, recordActivity } from '../../data/repo.js';
 import {
   MIX_ID, TRICK_GAME_PREFIX, DRILL_LENGTH, trickById, tricksForGrade, gradeOfLevel,
-  drillQuestion, exampleOf, trickStars,
+  drillRound, exampleOf, trickStars,
 } from '../../engine/tricks.js';
 import { lookOf } from '../../engine/shop.js';
 import { learnerBar } from '../components/common.js';
@@ -24,8 +24,6 @@ import { mascotSays, pickLine } from '../components/mascot.js';
 import { methodPlayer } from '../components/interactive.js';
 import { renderVisual } from '../components/visuals.js';
 import { confetti } from '../components/celebrate.js';
-
-const fmt = (n) => Number(n).toLocaleString('en-US');
 
 /** Everything a tricks screen needs about the active learner. */
 const learnerContext = async () => {
@@ -104,7 +102,7 @@ const learnPanel = (stage, trick, ctx, onTry) => {
   const example = exampleOf(trick.id);
   mount(stage, h('section.game-panel.trick-learn', null,
     mascotSays(trick.idea, { mood: 'happy', look: ctx.look, size: 'md' }),
-    h('p.trick-example', null, 'Example: ', h('strong', null, `${example.prompt} = ?`)),
+    h('p.trick-example', null, 'Example: ', h('strong', null, example.prompt.includes('?') ? example.prompt : `${example.prompt} = ?`)),
     methodPlayer({ name: trick.title, steps: example.steps }, { autoSpeak: ctx.readAloud, compact: true }),
     h('div.results-actions', null,
       h('button.btn.btn-secondary', { type: 'button', onclick: () => learnPanel(stage, trick, ctx, onTry) }, '↻ Another example'),
@@ -145,12 +143,15 @@ const runDrill = (stage, id, ctx) => {
   const total = ctx.young ? DRILL_LENGTH.young : DRILL_LENGTH.older;
   let index = 0;
   let score = 0;
+  let questions = [];
 
   const show = () => {
     // Later questions start from a timer: stop if the child has left. (The first one runs before the screen is shown.)
     if (index > 0 && !stage.isConnected) return;
     if (index >= total) { finishDrill(stage, { id, score, total, ctx }); return; }
-    const q = drillQuestion(id, ctx.grade);
+    // A fresh round each play, made up front so no question comes twice.
+    if (index === 0) questions = drillRound(id, ctx.grade, total);
+    const q = questions[index];
     let peeked = false;
     let done = false;
     const feedback = h('p.check-feedback', { 'aria-live': 'polite' });
@@ -181,7 +182,7 @@ const runDrill = (stage, id, ctx) => {
         return;
       }
       choiceEl?.classList.add('choice-wrong');
-      feedback.textContent = `Not quite. ${q.prompt.replace('?', fmt(q.answer))}${q.prompt.includes('?') ? '' : ` = ${fmt(q.answer)}`}. Here is the trick:`;
+      feedback.textContent = `Not quite. ${q.reveal}. Here is the trick:`;
       playSfx('wrong');
       mount(help, stepsList(q.steps));
       nextBtn.hidden = false;
@@ -207,7 +208,7 @@ const runDrill = (stage, id, ctx) => {
         h('span', null, `Question ${index + 1} of ${total}`),
         h('span', null, 'Score ', h('strong', null, score))),
       id === MIX_ID && h('p.trick-tag', null, `💡 ${q.trickTitle}`),
-      h('p.game-prompt', null, q.prompt.includes('?') ? q.prompt : `${q.prompt} = ?`),
+      h(`p.game-prompt${q.prompt.length > 16 ? '.trick-prompt-long' : ''}`, null, q.prompt.includes('?') ? q.prompt : `${q.prompt} = ?`),
       input,
       feedback,
       peekBtn,

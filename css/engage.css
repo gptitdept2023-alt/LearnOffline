@@ -616,3 +616,4 @@
 .trick-drill .choices { grid-template-columns: repeat(3, 1fr); }
 .home-actions-tricks .home-action-main { grid-column: span 3; }
 .home-action-tricks { background: var(--accent-soft); }
+.trick-prompt-long { font-size: clamp(1.3rem, 5vw, 1.8rem); line-height: 1.3; }
