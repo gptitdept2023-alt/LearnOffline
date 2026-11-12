@@ -69,6 +69,7 @@ export const renderHome = async (view) => {
   const { profile, indexed } = getState();
   const young = Boolean(indexed.pack.young);
   const goalOn = profile.goal?.setsPerDay > 0;
+  const tricksOn = indexed.entry?.subject === 'math';
   const [mastery, rewards, weekSessions, subjects] = await Promise.all([
     getMasteryMap(profile.profileId),
     getRewardsWithQuest(profile.profileId, young),
@@ -85,8 +86,10 @@ export const renderHome = async (view) => {
     subjectTabs(profile, subjects),
     h(`section.home-hero.scene-${look.scene || 'default'}`, null,
       mascotSays(greeting(profile.name), { mood: 'happy', look, size: 'lg' }),
-      h('div.home-actions', null,
+      h(`div.home-actions${tricksOn ? '.home-actions-tricks' : ''}`, null,
         action('#/practice/mix', '🎯', t('dailyMix'), '.home-action-main'),
+        // Math tips & tricks sit beside the Daily mix, so the four small tiles stay one row.
+        tricksOn && action('#/tricks', '💡', t('tricks'), '.home-action-tricks'),
         action('#/games', '🎮', t('games')),
         action('#/practice/challenge', '🚀', t('challenge')),
         action('#/shop', '🛍️', t('shop')),
